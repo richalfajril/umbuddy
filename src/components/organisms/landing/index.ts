@@ -1,0 +1,5 @@
+export * from './navbar'
+export * from './hero'
+export * from './features'
+export * from './faq'
+export * from './footer'
