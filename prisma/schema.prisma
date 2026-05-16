@@ -1,0 +1,21 @@
+# Umbuddy — Prisma Schema
+
+# ============================================================
+# CATATAN: Schema ini adalah placeholder awal.
+# Definisi tabel lengkap mengacu pada 00_Data_Model.md.
+# Jangan edit schema ini secara langsung tanpa merujuk dokumen tersebut.
+# ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  # DATABASE_URL: Supabase pooled connection via Supavisor (port 6543) — untuk runtime
+  url       = env("DATABASE_URL")
+  # DIRECT_URL: Direct connection (port 5432) — HANYA untuk prisma migrate
+  directUrl = env("DIRECT_URL")
+}
+
+# Model akan ditambahkan saat mengimplementasi fitur sesuai 00_Data_Model.md

@@ -1,0 +1,699 @@
+/*
+ * ============================================================
+ * UMBUDDY GLOBAL STYLES & DESIGN TOKENS
+ * Tailwind CSS v4 — Token dikonfigurasi via @theme block
+ * ============================================================
+ *
+ * Arsitektur file ini:
+ * 1. @import tailwindcss
+ * 2. @theme — Design tokens (colors, fonts, spacing, radius, shadows)
+ * 3. :root / .dark — CSS Variables untuk dark mode manual toggle
+ * 4. Base styles — Reset & tipografi dasar
+ * 5. Component utilities — Chunky button, card, progress bar, dll.
+ * 6. Animation keyframes
+ * ============================================================
+ */
+
+/* ── 1. Tailwind v4 Core Import ─────────────────────────────── */
+@import "tailwindcss";
+
+/* ── 2. Design Tokens via @theme ──────────────────────────────
+ * Sumber: UI_UX.md — "Clean White & Gamified Green" palette
+ * Semua token di sini menjadi Tailwind utility class secara otomatis.
+ * Contoh: --color-primary → bg-primary, text-primary, border-primary
+ * ─────────────────────────────────────────────────────────── */
+@theme {
+  /* ── Typography ── */
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-nunito), system-ui, sans-serif;
+
+  /* ── Color: Base & Surface (80% layar) ── */
+  --color-background: #FFFFFF;
+  --color-surface: #F3F4F6;
+  --color-surface-hover: #E9EAEC;
+  --color-border: #E5E7EB;
+  --color-border-strong: #D1D5DB;
+
+  /* ── Color: Primary Green (10% layar — hanya CTA) ── */
+  --color-primary: #74C332;
+  --color-primary-hover: #65AC2A;
+  --color-primary-dark: #155D27;
+  --color-primary-light: #E8F5D6;
+  --color-primary-foreground: #FFFFFF;
+
+  /* ── Color: Gamification Accent (5% layar) ── */
+  --color-xp: #FFC300;
+  --color-xp-light: #FFF3CC;
+  --color-beige: #F4CA6A;
+  --color-error: #FF6B6B;
+  --color-error-light: #FFEDED;
+  --color-error-dark: #CC5555;
+  --color-success: #74C332;
+  --color-warning: #FFC300;
+
+  /* ── Color: Typography ── */
+  --color-headline: #1F2937;
+  --color-body: #4B5563;
+  --color-muted: #9CA3AF;
+  --color-placeholder: #D1D5DB;
+
+  /* ── Color: Dark Mode ── */
+  --color-dark-background: #0F172A;
+  --color-dark-surface: #1E293B;
+  --color-dark-surface-hover: #293548;
+  --color-dark-border: #334155;
+  --color-dark-headline: #F8FAFC;
+  --color-dark-body: #CBD5E1;
+  --color-dark-muted: #64748B;
+  --color-dark-primary: #5DA828;
+  --color-dark-xp: #E6B000;
+  --color-dark-error: #E85555;
+
+  /* ── Border Radius — Chunky & Rounded (gaming feel) ── */
+  --radius-sm: 0.5rem;   /* 8px  — input, small badge */
+  --radius-md: 0.75rem;  /* 12px — small card */
+  --radius-lg: 1rem;     /* 16px — card utama, modal */
+  --radius-xl: 1.25rem;  /* 20px — button CTA, answer option */
+  --radius-2xl: 1.5rem;  /* 24px — hero card, featured section */
+  --radius-full: 9999px; /* pill — badge, tag, avatar */
+
+  /* ── Spacing tambahan ── */
+  --spacing-safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* ── Shadow — Minimal, border-first approach ── */
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+  --shadow-elevated: 0 4px 6px -1px rgb(0 0 0 / 0.06), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+
+  /* ── Chunky Button Shadow (Duolingo-style 3D effect) ── */
+  --shadow-btn-primary: 0 4px 0 0 #155D27;
+  --shadow-btn-primary-pressed: 0 1px 0 0 #155D27;
+  --shadow-btn-secondary: 0 4px 0 0 #D1D5DB;
+  --shadow-btn-secondary-pressed: 0 1px 0 0 #D1D5DB;
+  --shadow-btn-danger: 0 4px 0 0 #CC5555;
+  --shadow-btn-danger-pressed: 0 1px 0 0 #CC5555;
+
+  /* ── Animation Duration ── */
+  --duration-fast: 100ms;
+  --duration-normal: 200ms;
+  --duration-slow: 350ms;
+}
+
+/* ── 3. CSS Variables untuk Dark Mode (class-based) ──────────
+ * Menggunakan class .dark pada <html> agar bisa di-toggle via Zustand.
+ * Sesuai UI_UX.md & AUDITOR.md: dark mode wajib eksplisit di setiap komponen.
+ * ─────────────────────────────────────────────────────────── */
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+/* ── 4. Base Styles ──────────────────────────────────────────
+ * Reset dan tipografi global yang konsisten.
+ * ─────────────────────────────────────────────────────────── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-color: var(--color-border);
+  }
+
+  html {
+    /* Smooth scroll untuk navigasi in-page */
+    scroll-behavior: smooth;
+    /* Mencegah font size adjustment di iOS */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    /* Line-height lega — sesuai UI_UX.md: minimal 1.5 untuk soal TWK panjang */
+    line-height: 1.6;
+    font-size: 1rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Min height untuk flex layout */
+    min-height: 100dvh;
+  }
+
+  /* Dark mode body */
+  .dark body {
+    background-color: var(--color-dark-background);
+    color: var(--color-dark-body);
+  }
+
+  /* Headings — Nunito, bold, game-feel */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--color-headline);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .dark h1,
+  .dark h2,
+  .dark h3,
+  .dark h4,
+  .dark h5,
+  .dark h6 {
+    color: var(--color-dark-headline);
+  }
+
+  /* Links */
+  a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+  }
+
+  a:hover {
+    color: var(--color-primary-hover);
+  }
+
+  /* Focus visible — aksesibilitas */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Scrollbar kustom (Webkit) */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-surface);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: var(--radius-full);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-muted);
+  }
+}
+
+/* ── 5. Component Utilities ──────────────────────────────────
+ * Utility classes khusus Umbuddy yang tidak tersedia di Tailwind default.
+ * Sesuai AUDITOR.md: ShadcnUI button dan card wajib di-override ke chunky style.
+ * ─────────────────────────────────────────────────────────── */
+@layer components {
+
+  /* ─── CHUNKY BUTTON (Duolingo-style 3D) ───
+   * Digunakan untuk tombol utama (CTA) di seluruh aplikasi.
+   * Prinsip: border-radius besar + bayangan bawah tegas + "turun" saat ditekan.
+   */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px; /* Touch target minimum — sesuai UI_UX.md */
+    padding: 0.625rem 1.5rem;
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: var(--radius-xl);
+    border: 2px solid var(--color-primary-dark);
+    /* Efek 3D chunky — bayangan bawah tegas */
+    box-shadow: var(--shadow-btn-primary);
+    cursor: pointer;
+    transition: transform var(--duration-fast) ease,
+                box-shadow var(--duration-fast) ease,
+                background-color var(--duration-fast) ease;
+    /* Prevent text selection saat klik cepat */
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  /* Efek "turun" saat ditekan — tactile & satisfying */
+  .btn-primary:active {
+    transform: translateY(3px);
+    box-shadow: var(--shadow-btn-primary-pressed);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: var(--shadow-btn-primary);
+  }
+
+  /* ─── SECONDARY BUTTON ─── */
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.625rem 1.5rem;
+    background-color: var(--color-background);
+    color: var(--color-headline);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: var(--radius-xl);
+    border: 2px solid var(--color-border-strong);
+    box-shadow: var(--shadow-btn-secondary);
+    cursor: pointer;
+    transition: transform var(--duration-fast) ease,
+                box-shadow var(--duration-fast) ease,
+                background-color var(--duration-fast) ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-surface);
+  }
+
+  .btn-secondary:active {
+    transform: translateY(3px);
+    box-shadow: var(--shadow-btn-secondary-pressed);
+  }
+
+  .dark .btn-secondary {
+    background-color: var(--color-dark-surface);
+    color: var(--color-dark-headline);
+    border-color: var(--color-dark-border);
+    box-shadow: 0 4px 0 0 var(--color-dark-border);
+  }
+
+  /* ─── DANGER BUTTON ─── */
+  .btn-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.625rem 1.5rem;
+    background-color: var(--color-error);
+    color: white;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: var(--radius-xl);
+    border: 2px solid var(--color-error-dark);
+    box-shadow: var(--shadow-btn-danger);
+    cursor: pointer;
+    transition: transform var(--duration-fast) ease,
+                box-shadow var(--duration-fast) ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-danger:active {
+    transform: translateY(3px);
+    box-shadow: var(--shadow-btn-danger-pressed);
+  }
+
+  /* ─── GHOST BUTTON ─── */
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.625rem 1rem;
+    background-color: transparent;
+    color: var(--color-primary);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: var(--radius-xl);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: background-color var(--duration-fast) ease,
+                color var(--duration-fast) ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-ghost:hover {
+    background-color: var(--color-primary-light);
+  }
+
+  .dark .btn-ghost:hover {
+    background-color: rgba(93, 168, 40, 0.15);
+  }
+
+  /* ─── CARD ───
+   * Border-first approach — sesuai UI_UX.md: border tegas daripada shadow blur.
+   * "Terasa seperti kartu game yang modern."
+   */
+  .card {
+    background-color: var(--color-background);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    transition: border-color var(--duration-normal) ease;
+  }
+
+  .card-surface {
+    background-color: var(--color-surface);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+  }
+
+  .dark .card {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+  }
+
+  .dark .card-surface {
+    background-color: var(--color-dark-background);
+    border-color: var(--color-dark-border);
+  }
+
+  /* ─── XP BADGE ─── */
+  .xp-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.625rem;
+    background-color: var(--color-xp-light);
+    color: #92610A;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.8125rem;
+    border-radius: var(--radius-full);
+    border: 1.5px solid var(--color-xp);
+  }
+
+  .dark .xp-chip {
+    background-color: rgba(230, 176, 0, 0.15);
+    color: var(--color-dark-xp);
+    border-color: var(--color-dark-xp);
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-bar-track {
+    width: 100%;
+    height: 0.75rem;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-primary) 0%, #8ED44A 100%);
+    border-radius: var(--radius-full);
+    transition: width var(--duration-slow) cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark .progress-bar-track {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+  }
+
+  /* ─── ANSWER OPTION (untuk Practice/CAT/Battle) ─── */
+  .answer-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    width: 100%;
+    min-height: 52px;
+    padding: 0.875rem 1rem;
+    background-color: var(--color-background);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    color: var(--color-headline);
+    transition: border-color var(--duration-fast) ease,
+                background-color var(--duration-fast) ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .answer-option:hover {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-light);
+  }
+
+  .answer-option.selected {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-light);
+  }
+
+  .answer-option.correct {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+  }
+
+  .answer-option.wrong {
+    border-color: var(--color-error);
+    background-color: var(--color-error-light);
+    color: var(--color-error-dark);
+  }
+
+  .dark .answer-option {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-body);
+  }
+
+  .dark .answer-option:hover {
+    border-color: var(--color-dark-primary);
+    background-color: rgba(93, 168, 40, 0.1);
+  }
+
+  /* ─── BOTTOM NAVIGATION (Mobile only) ─── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* Safe area untuk notch & home indicator iOS */
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+    background-color: var(--color-background);
+    border-top: 1.5px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    z-index: 50;
+  }
+
+  .dark .bottom-nav {
+    background-color: var(--color-dark-surface);
+    border-top-color: var(--color-dark-border);
+  }
+
+  /* ─── FOCUS/EXAM LAYOUT — Top Bar ─── */
+  .exam-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background-color: var(--color-background);
+    border-bottom: 1.5px solid var(--color-border);
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .dark .exam-topbar {
+    background-color: var(--color-dark-surface);
+    border-bottom-color: var(--color-dark-border);
+  }
+
+  /* ─── STREAK FLAME BADGE ─── */
+  .streak-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background-color: var(--color-xp-light);
+    color: #D97706;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.875rem;
+    border-radius: var(--radius-full);
+  }
+
+  .dark .streak-badge {
+    background-color: rgba(230, 176, 0, 0.12);
+    color: var(--color-dark-xp);
+  }
+
+  /* ─── EMPTY STATE ─── */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1rem;
+    padding: 3rem 1.5rem;
+    color: var(--color-muted);
+  }
+
+  /* ─── FORM INPUT ─── */
+  .input-field {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.75rem 1rem;
+    background-color: var(--color-surface);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    color: var(--color-headline);
+    transition: border-color var(--duration-fast) ease,
+                box-shadow var(--duration-fast) ease;
+    outline: none;
+  }
+
+  .input-field::placeholder {
+    color: var(--color-placeholder);
+  }
+
+  .input-field:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(116, 195, 50, 0.15);
+  }
+
+  .input-field:focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(116, 195, 50, 0.15);
+  }
+
+  .dark .input-field {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-headline);
+  }
+
+  .dark .input-field::placeholder {
+    color: var(--color-dark-muted);
+  }
+
+  .dark .input-field:focus {
+    border-color: var(--color-dark-primary);
+    box-shadow: 0 0 0 3px rgba(93, 168, 40, 0.2);
+  }
+}
+
+/* ── 6. Animation Keyframes ─────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes xpFloat {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  80%  { opacity: 1; transform: translateY(-40px) scale(1.1); }
+  100% { opacity: 0; transform: translateY(-60px) scale(0.9); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(116, 195, 50, 0.4); }
+  50%       { box-shadow: 0 0 0 8px rgba(116, 195, 50, 0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ─── Animation Utility Classes ─── */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn var(--duration-normal) ease forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp var(--duration-slow) ease forwards;
+  }
+
+  .animate-xp-float {
+    animation: xpFloat 1s ease forwards;
+  }
+
+  .animate-shake {
+    animation: shake 0.4s ease;
+  }
+
+  .animate-pulse-green {
+    animation: pulse-green 1.5s infinite;
+  }
+
+  /* Skeleton loader shimmer */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--color-surface) 25%,
+      var(--color-surface-hover) 50%,
+      var(--color-surface) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: var(--radius-md);
+  }
+
+  .dark .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--color-dark-surface) 25%,
+      var(--color-dark-surface-hover) 50%,
+      var(--color-dark-surface) 75%
+    );
+    background-size: 200% 100%;
+  }
+
+  /* Font utility */
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  /* Touch target helper */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Max width untuk area baca soal — sesuai UI_UX.md */
+  .prose-question {
+    max-width: 48rem; /* 768px — nyaman untuk teks soal panjang */
+    line-height: 1.7;
+    color: var(--color-body);
+  }
+
+  .dark .prose-question {
+    color: var(--color-dark-body);
+  }
+}
