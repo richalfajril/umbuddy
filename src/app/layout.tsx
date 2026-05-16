@@ -67,6 +67,8 @@ export const viewport: Viewport = {
  * Class `h-full` pada html & body diperlukan agar layout flexbox
  * bekerja dengan benar di seluruh halaman (terutama sticky bottom nav).
  */
+import { Providers } from './providers'
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -82,7 +84,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col antialiased bg-background text-body">
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   )

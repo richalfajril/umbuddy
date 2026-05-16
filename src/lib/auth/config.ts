@@ -19,10 +19,12 @@
 import 'server-only'
 import type { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import { AuthService } from '@/services/auth.service'
 
 /**
  * NextAuth configuration object.
- * Di-export untuk digunakan di app/api/auth/[...nextauth]/route.ts (Phase 1).
+ * Di-export untuk digunakan di app/api/auth/[...nextauth]/route.ts.
  */
 export const authConfig: NextAuthOptions = {
   providers: [
@@ -30,42 +32,63 @@ export const authConfig: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
-    // CredentialsProvider akan ditambahkan saat implementasi U1 (Phase 1)
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          return null
+        }
+
+        const user = await AuthService.findUserByEmail(credentials.email)
+
+        if (!user || !user.password_hash) {
+          return null
+        }
+
+        const isValid = AuthService.verifyPassword(credentials.password, user.password_hash)
+
+        if (!isValid) {
+          return null
+        }
+
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        }
+      }
+    })
   ],
 
   session: {
     strategy: 'jwt',
-    // Session expire 7 hari
     maxAge: 7 * 24 * 60 * 60,
   },
 
   secret: process.env.NEXTAUTH_SECRET,
 
   pages: {
-    // Custom halaman auth — diimplementasi di Phase 1 (U1)
     signIn: '/auth/login',
     error: '/auth/error',
   },
 
   callbacks: {
-    /**
-     * JWT callback — inject user id ke token.
-     * Akan diperluas di Phase 1 untuk menyimpan role dan golongan.
-     */
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id
+        token.email = user.email
+        token.name = user.name
       }
       return token
     },
 
-    /**
-     * Session callback — expose user id ke session object.
-     * Client dapat akses via useSession().data.user.id
-     */
     async session({ session, token }) {
-      if (token?.id && session.user) {
-        (session.user as { id?: string }).id = token.id as string
+      if (token && session.user) {
+        session.user.id = token.id as string
       }
       return session
     },
