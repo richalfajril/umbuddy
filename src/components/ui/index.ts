@@ -1,0 +1,9 @@
+/**
+ * Barrel export untuk semua UI components Umbuddy.
+ * Import dari sini: import { Button, Card, Badge } from '@/components/ui'
+ */
+export { Button } from './Button'
+export { Card, CardHeader, CardBody, CardFooter } from './Card'
+export { Badge } from './Badge'
+export { XPBar } from './XPBar'
+export { StreakIndicator } from './StreakIndicator'
