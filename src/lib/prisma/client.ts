@@ -13,7 +13,6 @@
  * Prisma v7: koneksi dikonfigurasi di prisma.config.ts, bukan di schema.
  */
 
-import 'server-only'
 import { PrismaClient } from '@prisma/client'
 
 // Deklarasi global untuk menyimpan instance di antara hot reload

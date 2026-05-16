@@ -45,6 +45,6 @@ export default defineConfig({
   datasource: {
     // DATABASE_URL: Supabase Supavisor pooled (port 6543) — untuk runtime & migrate
     // Saat menjalankan prisma migrate, ganti sementara ke DIRECT_URL (port 5432)
-    url: env('DATABASE_URL'),
+    url: process.env.DATABASE_URL,
   },
 })

@@ -22,10 +22,6 @@ import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { AuthService } from '@/services/auth.service'
 
-/**
- * NextAuth configuration object.
- * Di-export untuk digunakan di app/api/auth/[...nextauth]/route.ts.
- */
 export const authConfig: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -39,27 +35,11 @@ export const authConfig: NextAuthOptions = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          return null
-        }
-
+        if (!credentials?.email || !credentials?.password) return null
         const user = await AuthService.findUserByEmail(credentials.email)
-
-        if (!user || !user.password_hash) {
-          return null
-        }
-
+        if (!user || !user.password_hash) return null
         const isValid = AuthService.verifyPassword(credentials.password, user.password_hash)
-
-        if (!isValid) {
-          return null
-        }
-
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-        }
+        return isValid ? { id: user.id, name: user.name, email: user.email } : null
       }
     })
   ],

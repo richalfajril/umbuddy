@@ -3,7 +3,9 @@
 // Aturan: snake_case, uuid PK, soft delete via deleted_at, JSONB untuk options/metadata
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  engineType    = "library"
+  binaryTargets = ["native", "darwin-arm64"]
 }
 
 datasource db {
