@@ -23,13 +23,13 @@ export function LandingFooter() {
               Platform persiapan CPNS revolusioner yang menggabungkan keseruan bermain dengan akurasi simulasi CAT. 100% Gratis, oleh Umbies untuk Umbies.
             </p>
             <div className="flex items-center gap-4">
-              <Link href="https://instagram.com" className="p-2 rounded-lg bg-surface dark:bg-dark-surface hover:text-primary transition-colors">
+              <Link href="https://instagram.com" className="p-2 rounded-lg bg-surface dark:bg-dark-surface-hover hover:text-primary transition-colors text-body dark:text-dark-body">
                 <Globe className="w-5 h-5" />
               </Link>
-              <Link href="https://github.com" className="p-2 rounded-lg bg-surface dark:bg-dark-surface hover:text-primary transition-colors">
+              <Link href="https://github.com" className="p-2 rounded-lg bg-surface dark:bg-dark-surface-hover hover:text-primary transition-colors text-body dark:text-dark-body">
                 <Code className="w-5 h-5" />
               </Link>
-              <Link href="mailto:halo@umbuddy.com" className="p-2 rounded-lg bg-surface dark:bg-dark-surface hover:text-primary transition-colors">
+              <Link href="mailto:halo@umbuddy.com" className="p-2 rounded-lg bg-surface dark:bg-dark-surface-hover hover:text-primary transition-colors text-body dark:text-dark-body">
                 <Mail className="w-5 h-5" />
               </Link>
             </div>
@@ -37,7 +37,7 @@ export function LandingFooter() {
 
           {/* Links Col 1 */}
           <div>
-            <h4 className="font-black font-display text-slate-800 dark:text-slate-100 mb-6 uppercase tracking-wider text-xs">Produk</h4>
+            <h4 className="font-black font-display text-headline dark:text-dark-headline mb-6 uppercase tracking-wider text-xs">Produk</h4>
             <ul className="space-y-4 text-sm text-body">
               <li><Link href="/practice" className="hover:text-primary transition-colors">Latihan Soal</Link></li>
               <li><Link href="/cat-simulation" className="hover:text-primary transition-colors">Simulasi CAT</Link></li>
@@ -48,7 +48,7 @@ export function LandingFooter() {
 
           {/* Links Col 2 */}
           <div>
-            <h4 className="font-black font-display text-slate-800 dark:text-slate-100 mb-6 uppercase tracking-wider text-xs">Komunitas</h4>
+            <h4 className="font-black font-display text-headline dark:text-dark-headline mb-6 uppercase tracking-wider text-xs">Komunitas</h4>
             <ul className="space-y-4 text-sm text-body">
               <li><Link href="/donate-questions" className="hover:text-primary transition-colors">Sumbang Soal</Link></li>
               <li><Link href="https://saweria.co" className="hover:text-primary transition-colors">Donasi Saweria</Link></li>
@@ -59,7 +59,7 @@ export function LandingFooter() {
 
           {/* Links Col 3 */}
           <div>
-            <h4 className="font-black font-display text-slate-800 dark:text-slate-100 mb-6 uppercase tracking-wider text-xs">Legal</h4>
+            <h4 className="font-black font-display text-headline dark:text-dark-headline mb-6 uppercase tracking-wider text-xs">Legal</h4>
             <ul className="space-y-4 text-sm text-body">
               <li><Link href="/privacy" className="hover:text-primary transition-colors">Kebijakan Privasi</Link></li>
               <li><Link href="/terms" className="hover:text-primary transition-colors">Syarat & Ketentuan</Link></li>

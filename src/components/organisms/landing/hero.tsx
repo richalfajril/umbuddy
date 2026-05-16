@@ -36,7 +36,7 @@ export function LandingHero() {
                   className="h-16 md:h-24 w-auto dark:brightness-110"
                 />
               </div>
-              <h1 className="text-4xl md:text-6xl font-black font-display text-slate-800 dark:text-slate-100 leading-tight">
+              <h1 className="text-4xl md:text-6xl font-black font-display text-headline dark:text-dark-headline leading-tight">
                 Belajar CPNS Serasa <br />
                 <span className="text-primary italic">Main Game!</span>
               </h1>

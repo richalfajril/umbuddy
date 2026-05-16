@@ -2,17 +2,20 @@
 
 import * as React from 'react'
 import { SessionProvider } from 'next-auth/react'
+import { ThemeProvider } from 'next-themes'
 
 /**
  * Global client providers wrapper.
  * Menyediakan konteks:
  * - SessionProvider (NextAuth)
- * - Future: QueryClientProvider (React Query), ThemeProvider (if needed)
+ * - ThemeProvider (next-themes)
  */
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
-      {children}
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        {children}
+      </ThemeProvider>
     </SessionProvider>
   )
 }

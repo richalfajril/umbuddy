@@ -38,7 +38,7 @@ export function LandingFeatures() {
     <section id="features" className="py-24 bg-surface dark:bg-dark-surface/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 space-y-4">
-          <h2 className="text-3xl md:text-5xl font-black font-display text-slate-800 dark:text-slate-100">
+          <h2 className="text-3xl md:text-5xl font-black font-display text-headline dark:text-dark-headline">
             Fitur Tactical Untuk <span className="text-primary">Kemenanganmu</span>
           </h2>
           <p className="text-lg text-body max-w-2xl mx-auto">
@@ -57,7 +57,7 @@ export function LandingFeatures() {
                   {feature.icon}
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-black font-display text-slate-800 dark:text-slate-100">
+                  <h3 className="text-2xl font-black font-display text-headline dark:text-dark-headline">
                     {feature.title}
                   </h3>
                   <p className="text-body leading-relaxed">
@@ -87,7 +87,7 @@ export function LandingFeatures() {
               <Coffee className="w-8 h-8 text-primary" />
             </div>
             <div>
-              <h4 className="text-xl font-bold">Dukung Server Umbuddy</h4>
+              <h4 className="text-xl font-bold text-headline dark:text-dark-headline">Dukung Server Umbuddy</h4>
               <p className="text-body">Aplikasi ini 100% gratis tanpa iklan. Dukung kami agar server tetap menyala!</p>
             </div>
           </div>

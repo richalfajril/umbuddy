@@ -32,7 +32,7 @@ export function LandingFAQ() {
     <section id="faq" className="py-24 bg-background dark:bg-dark-background">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 space-y-4">
-          <h2 className="text-3xl md:text-5xl font-black font-display text-slate-800 dark:text-slate-100">
+          <h2 className="text-3xl md:text-5xl font-black font-display text-headline dark:text-dark-headline">
             Pertanyaan <span className="text-primary">Populer</span>
           </h2>
           <p className="text-lg text-body">
@@ -43,7 +43,7 @@ export function LandingFAQ() {
         <div className="space-y-6">
           {faqs.map((faq, idx) => (
             <Card key={idx} className="p-6 md:p-8 hover:border-primary/50 transition-colors">
-              <h3 className="text-xl font-black font-display text-slate-800 dark:text-slate-100 mb-3">
+              <h3 className="text-xl font-black font-display text-headline dark:text-dark-headline mb-3">
                 {faq.question}
               </h3>
               <p className="text-body leading-relaxed">

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui'
 import { Moon, Sun, Menu, X } from 'lucide-react'
+import { useTheme } from 'next-themes'
 
 /**
  * Navbar Landing Page — Client Component.
@@ -12,25 +13,26 @@ import { Moon, Sun, Menu, X } from 'lucide-react'
  */
 export function LandingNavbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
-  const [theme, setTheme] = React.useState<'light' | 'dark'>('light')
+  const { theme, setTheme, resolvedTheme } = useTheme()
+  const [mounted, setMounted] = React.useState(false)
 
-  // Inisialisasi theme dari localStorage atau system preference
+  // Avoid hydration mismatch
   React.useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    const initialTheme = savedTheme || systemTheme
-    
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setTheme(initialTheme)
-    document.documentElement.classList.toggle('dark', initialTheme === 'dark')
+    setMounted(true)
   }, [])
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light'
-    setTheme(newTheme)
-    localStorage.setItem('theme', newTheme)
-    document.documentElement.classList.toggle('dark', newTheme === 'dark')
+    setTheme(resolvedTheme === 'light' ? 'dark' : 'light')
   }
+
+  if (!mounted) return (
+    <nav className="w-full bg-background/80 backdrop-blur-md border-b border-border h-16">
+      {/* Skeleton / Placeholder while loading theme to prevent FOUC */}
+    </nav>
+  )
+
+  const currentTheme = resolvedTheme || theme
 
   return (
     <nav className="w-full bg-background/80 dark:bg-dark-background/80 backdrop-blur-md border-b border-border dark:border-dark-border">
@@ -73,7 +75,7 @@ export function LandingNavbar() {
                 className="p-2 rounded-xl border-2 border-border dark:border-dark-border hover:bg-surface dark:hover:bg-dark-surface transition-all"
                 aria-label="Toggle Theme"
               >
-                {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-yellow-400" />}
+                {currentTheme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-yellow-400" />}
               </button>
               <Link href="/auth/login">
                 <Button variant="secondary" size="sm">Masuk</Button>
@@ -90,7 +92,7 @@ export function LandingNavbar() {
               onClick={toggleTheme}
               className="p-2 rounded-xl border-2 border-border dark:border-dark-border"
             >
-              {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-yellow-400" />}
+              {currentTheme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-yellow-400" />}
             </button>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
