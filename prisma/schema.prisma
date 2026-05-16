@@ -1,21 +1,1009 @@
-# Umbuddy — Prisma Schema
-
-# ============================================================
-# CATATAN: Schema ini adalah placeholder awal.
-# Definisi tabel lengkap mengacu pada 00_Data_Model.md.
-# Jangan edit schema ini secara langsung tanpa merujuk dokumen tersebut.
-# ============================================================
+// Umbuddy — Prisma Schema
+// Sumber: 00_Data_Model.md
+// Aturan: snake_case, uuid PK, soft delete via deleted_at, JSONB untuk options/metadata
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider  = "postgresql"
-  # DATABASE_URL: Supabase pooled connection via Supavisor (port 6543) — untuk runtime
-  url       = env("DATABASE_URL")
-  # DIRECT_URL: Direct connection (port 5432) — HANYA untuk prisma migrate
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
 }
 
-# Model akan ditambahkan saat mengimplementasi fitur sesuai 00_Data_Model.md
+// ─── ENUMS ────────────────────────────────────────────────
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  PENDING_VERIFICATION
+  LOCKED
+}
+
+enum QuestionCategory {
+  TWK
+  TIU
+  TKP
+}
+
+enum QuestionStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+  FLAGGED
+}
+
+enum QuestionReportStatus {
+  PENDING
+  RESOLVED
+  REJECTED
+}
+
+enum QuestionDonationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum QuestionDonationSubmissionType {
+  FILE
+  LINK
+}
+
+enum SessionStatus {
+  IN_PROGRESS
+  SUBMITTED
+  EXPIRED
+  RECOVERED
+  ABANDONED
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELLED
+  BLOCKED
+}
+
+enum BattleStatus {
+  WAITING
+  READY
+  ACTIVE
+  COMPLETED
+  TERMINATED
+  SUSPICIOUS
+  EXPIRED
+}
+
+enum SeasonStatus {
+  ACTIVE
+  ENDED
+}
+
+enum NotificationStatus {
+  UNREAD
+  READ
+  DELETED
+}
+
+enum AdminRole {
+  CONTENT
+  SUPPORT
+  SUPER_ADMIN
+}
+
+enum BulkUploadStatus {
+  PENDING
+  PROCESSING
+  DONE
+  FAILED
+}
+
+// ─── AUTH & USER ──────────────────────────────────────────
+
+model User {
+  id                  String     @id @default(uuid())
+  name                String
+  email               String     @unique
+  password_hash       String?
+  oauth_provider      String?
+  email_verified      Boolean    @default(false)
+  phone               String?
+  phone_verified      Boolean    @default(false)
+  role                UserRole   @default(USER)
+  status              UserStatus @default(PENDING_VERIFICATION)
+  registration_source String?
+  created_at          DateTime   @default(now())
+  updated_at          DateTime   @updatedAt
+  deleted_at          DateTime?
+
+  profile             UserProfile?
+  settings            UserSettings?
+  progression         UserProgression?
+  onboarding          OnboardingState?
+  auth_sessions       AuthSession[]
+  practice_sessions   PracticeSession[]
+  cat_sessions        CatSimulationSession[]
+  diagnostic_attempts DiagnosticAttempt[]
+  xp_events           UserXpEvent[]
+  achievements        UserAchievement[]
+  daily_missions      UserDailyMission[]
+  notifications       Notification[]
+  friendships_sent    Friendship[]              @relation("Requester")
+  friendships_recv    Friendship[]              @relation("Receiver")
+  battles_host        Battle[]                  @relation("BattleHost")
+  battles_guest       Battle[]                  @relation("BattleGuest")
+  battle_answers      BattleAnswer[]
+  battle_participants BattleParticipant[]
+  question_reports    QuestionReport[]
+  question_donations  QuestionDonation[]
+  friend_activity     FriendActivity[]
+  analytics_reports   AnalyticsReport[]
+  perf_snapshots      UserPerformanceSnapshot[]
+  weakness_narratives WeaknessNarrative[]
+  personality         UserPersonality?
+  security_events     SecurityEvent[]
+  security_flags      UserSecurityFlag[]
+  activity_logs       UserActivityLog[]
+  support_notes       UserSupportNote[]
+  deletion_request    AccountDeletionRequest?
+  privacy_consents    PrivacyConsent[]
+  season_history      UserSeasonHistory[]
+  leaderboard_entries LeaderboardEntry[]
+
+  @@map("users")
+}
+
+model UserProfile {
+  user_id         String    @id
+  avatar_url      String?
+  target_instansi String?
+  target_score    Int?
+  exam_date       DateTime?
+  province        String?
+  city            String?
+  institution     String?
+  major           String?
+  public_slug     String?   @unique
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("user_profiles")
+}
+
+model AuthSession {
+  id                 String    @id @default(uuid())
+  user_id            String
+  refresh_token_hash String
+  issued_at          DateTime  @default(now())
+  expires_at         DateTime
+  revoked_at         DateTime?
+  device_info        Json?
+  ip_address         String?
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("auth_sessions")
+}
+
+model UserSettings {
+  user_id                  String   @id
+  theme                    String   @default("light")
+  language                 String   @default("id")
+  notification_preferences Json     @default("{}")
+  privacy_level            String   @default("public")
+  learning_preferences     Json     @default("{}")
+  quiet_hours              Json?
+  updated_at               DateTime @updatedAt
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("user_settings")
+}
+
+model OnboardingState {
+  user_id                 String    @id
+  profile_completed_at    DateTime?
+  diagnostic_completed_at DateTime?
+  completed_at            DateTime?
+  reward_claimed_at       DateTime?
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("onboarding_states")
+}
+
+model PremiumInterestLead {
+  id         String   @id @default(uuid())
+  email      String
+  source     String?
+  metadata   Json?
+  created_at DateTime @default(now())
+
+  @@map("premium_interest_leads")
+}
+
+// ─── QUESTIONS ────────────────────────────────────────────
+
+model Question {
+  id           String           @id @default(uuid())
+  category     QuestionCategory
+  package_code String
+  number       Int
+  text         String
+  options      Json
+  answer_key   String?
+  tkp_weights  Json?
+  explanation  String?
+  difficulty   String?
+  status       QuestionStatus   @default(DRAFT)
+  image_urls   Json             @default("[]")
+  created_by   String?
+  updated_by   String?
+  created_at   DateTime         @default(now())
+  updated_at   DateTime         @updatedAt
+  deleted_at   DateTime?
+
+  reports           QuestionReport[]
+  history           QuestionHistory[]
+  practice_attempts PracticeAttempt[]
+  cat_answers       CatSimulationAnswer[]
+  battle_answers    BattleAnswer[]
+
+  @@unique([package_code, number])
+  @@map("questions")
+}
+
+model QuestionReport {
+  id          String               @id @default(uuid())
+  user_id     String
+  question_id String
+  report_type String
+  description String?
+  status      QuestionReportStatus @default(PENDING)
+  admin_note  String?
+  resolved_by String?
+  created_at  DateTime             @default(now())
+  resolved_at DateTime?
+
+  user     User     @relation(fields: [user_id], references: [id])
+  question Question @relation(fields: [question_id], references: [id])
+
+  @@map("question_reports")
+}
+
+model QuestionHistory {
+  id          String   @id @default(uuid())
+  question_id String
+  admin_id    String
+  change_type String
+  changes     Json
+  created_at  DateTime @default(now())
+
+  question Question @relation(fields: [question_id], references: [id])
+
+  @@map("question_history")
+}
+
+model BulkUploadJob {
+  id            String           @id @default(uuid())
+  admin_id      String
+  file_name     String
+  package_code  String
+  status        BulkUploadStatus @default(PENDING)
+  total_count   Int              @default(0)
+  success_count Int              @default(0)
+  error_count   Int              @default(0)
+  errors        Json?
+  created_at    DateTime         @default(now())
+  completed_at  DateTime?
+
+  @@map("bulk_upload_jobs")
+}
+
+model QuestionDonation {
+  id              String                         @id @default(uuid())
+  user_id         String
+  submission_type QuestionDonationSubmissionType
+  file_url        String?
+  gdrive_link     String?
+  note            String?
+  status          QuestionDonationStatus         @default(PENDING)
+  admin_feedback  String?
+  created_at      DateTime                       @default(now())
+  updated_at      DateTime                       @updatedAt
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("question_donations")
+}
+
+// ─── PRACTICE ─────────────────────────────────────────────
+
+model PracticeSession {
+  id           String           @id @default(uuid())
+  user_id      String
+  category     QuestionCategory
+  difficulty   String?
+  mode         String
+  status       SessionStatus    @default(IN_PROGRESS)
+  started_at   DateTime         @default(now())
+  completed_at DateTime?
+  score        Float?
+  average_time Float?
+  metadata     Json?
+
+  user     User              @relation(fields: [user_id], references: [id])
+  attempts PracticeAttempt[]
+
+  @@map("practice_sessions")
+}
+
+model PracticeAttempt {
+  id              String   @id @default(uuid())
+  session_id      String
+  question_id     String
+  selected_option String?
+  correct         Boolean?
+  score           Float?
+  time_spent      Int?
+  flagged         Boolean  @default(false)
+  created_at      DateTime @default(now())
+
+  session  PracticeSession @relation(fields: [session_id], references: [id])
+  question Question        @relation(fields: [question_id], references: [id])
+
+  @@map("practice_attempts")
+}
+
+// ─── CAT SIMULATION ───────────────────────────────────────
+
+model CatSimulationSession {
+  id              String        @id @default(uuid())
+  user_id         String
+  mode            String
+  package_code    String?
+  current_subtest String?
+  status          SessionStatus @default(IN_PROGRESS)
+  started_at      DateTime      @default(now())
+  ended_at        DateTime?
+  last_saved_at   DateTime?
+  metadata        Json?
+
+  user    User                  @relation(fields: [user_id], references: [id])
+  answers CatSimulationAnswer[]
+  result  CatSimulationResult?
+
+  @@map("cat_simulation_sessions")
+}
+
+model CatSimulationAnswer {
+  id                String    @id @default(uuid())
+  session_id        String
+  question_id       String
+  selected_option   String?
+  marked_for_review Boolean   @default(false)
+  answered_at       DateTime?
+
+  session  CatSimulationSession @relation(fields: [session_id], references: [id])
+  question Question             @relation(fields: [question_id], references: [id])
+
+  @@map("cat_simulation_answers")
+}
+
+model CatSimulationResult {
+  id           String   @id @default(uuid())
+  session_id   String   @unique
+  twk_score    Float?
+  tiu_score    Float?
+  tkp_score    Float?
+  total_score  Float?
+  passed_skd   Boolean  @default(false)
+  special_pass Boolean  @default(false)
+  created_at   DateTime @default(now())
+
+  session CatSimulationSession @relation(fields: [session_id], references: [id])
+
+  @@map("cat_simulation_results")
+}
+
+model DiagnosticAttempt {
+  id                String    @id @default(uuid())
+  user_id           String
+  source_session_id String?
+  score_twk         Float?
+  score_tiu         Float?
+  score_tkp         Float?
+  total_score       Float?
+  completed_at      DateTime?
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("diagnostic_attempts")
+}
+
+// ─── SOCIAL & BATTLE ──────────────────────────────────────
+
+model Friendship {
+  id           String           @id @default(uuid())
+  requester_id String
+  receiver_id  String
+  status       FriendshipStatus @default(PENDING)
+  created_at   DateTime         @default(now())
+  accepted_at  DateTime?
+  blocked_at   DateTime?
+
+  requester User @relation("Requester", fields: [requester_id], references: [id])
+  receiver  User @relation("Receiver", fields: [receiver_id], references: [id])
+
+  @@map("friendships")
+}
+
+model FriendActivity {
+  id            String   @id @default(uuid())
+  user_id       String
+  activity_type String
+  metadata      Json?
+  created_at    DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("friend_activity")
+}
+
+model Battle {
+  id                 String       @id @default(uuid())
+  type               String
+  mode               String
+  status             BattleStatus @default(WAITING)
+  host_id            String
+  guest_id           String?
+  invite_code        String?      @unique
+  started_at         DateTime?
+  ended_at           DateTime?
+  winner_id          String?
+  terminated_by      String?
+  termination_reason String?
+  metadata           Json?
+  created_at         DateTime     @default(now())
+
+  host         User                @relation("BattleHost", fields: [host_id], references: [id])
+  guest        User?               @relation("BattleGuest", fields: [guest_id], references: [id])
+  answers      BattleAnswer[]
+  participants BattleParticipant[]
+  events       BattleEvent[]
+  flags        BattleFlag[]
+
+  @@map("battles")
+}
+
+model BattleAnswer {
+  id                 String    @id @default(uuid())
+  battle_id          String
+  user_id            String
+  question_id        String
+  selected_option    String?
+  correct            Boolean?
+  score              Float?
+  time_spent         Int?
+  client_answered_at DateTime?
+  created_at         DateTime  @default(now())
+
+  battle   Battle   @relation(fields: [battle_id], references: [id])
+  user     User     @relation(fields: [user_id], references: [id])
+  question Question @relation(fields: [question_id], references: [id])
+
+  @@map("battle_answers")
+}
+
+model BattleParticipant {
+  id          String    @id @default(uuid())
+  battle_id   String
+  user_id     String
+  join_time   DateTime  @default(now())
+  leave_time  DateTime?
+  final_score Float?
+  status      String?
+
+  battle Battle @relation(fields: [battle_id], references: [id])
+  user   User   @relation(fields: [user_id], references: [id])
+
+  @@map("battle_participants")
+}
+
+model BattleEvent {
+  id         String   @id @default(uuid())
+  battle_id  String
+  user_id    String?
+  event_type String
+  details    Json?
+  created_at DateTime @default(now())
+
+  battle Battle @relation(fields: [battle_id], references: [id])
+
+  @@map("battle_events")
+}
+
+model BattleFlag {
+  id          String    @id @default(uuid())
+  battle_id   String
+  flagged_by  String?
+  reason      String
+  severity    String?
+  resolved_by String?
+  resolved_at DateTime?
+  created_at  DateTime  @default(now())
+
+  battle Battle @relation(fields: [battle_id], references: [id])
+
+  @@map("battle_flags")
+}
+
+// ─── LEADERBOARD ──────────────────────────────────────────
+
+model LeaderboardSnapshot {
+  id         String    @id @default(uuid())
+  season_id  String?
+  type       String
+  scope_id   String?
+  created_at DateTime  @default(now())
+  expires_at DateTime?
+
+  entries LeaderboardEntry[]
+
+  @@map("leaderboard_snapshots")
+}
+
+model LeaderboardEntry {
+  id                String    @id @default(uuid())
+  snapshot_id       String
+  user_id           String
+  rank              Int
+  total_xp          Int
+  jabatan           String?
+  golongan          String?
+  last_xp_earned_at DateTime?
+  updated_at        DateTime  @updatedAt
+
+  snapshot LeaderboardSnapshot @relation(fields: [snapshot_id], references: [id])
+  user     User                @relation(fields: [user_id], references: [id])
+
+  @@map("leaderboard_entries")
+}
+
+// ─── PROGRESSION & GAMIFICATION ───────────────────────────
+
+model Season {
+  id         String       @id @default(uuid())
+  name       String
+  status     SeasonStatus @default(ACTIVE)
+  started_at DateTime
+  ended_at   DateTime?
+  created_at DateTime     @default(now())
+
+  xp_events UserXpEvent[]
+  history   UserSeasonHistory[]
+
+  @@map("seasons")
+}
+
+model UserSeasonHistory {
+  id             String   @id @default(uuid())
+  user_id        String
+  season_id      String
+  total_xp       Int
+  final_level    Int?
+  final_golongan String?
+  final_jabatan  String?
+  recorded_at    DateTime @default(now())
+
+  user   User   @relation(fields: [user_id], references: [id])
+  season Season @relation(fields: [season_id], references: [id])
+
+  @@map("user_season_history")
+}
+
+model UserXpEvent {
+  id              String   @id @default(uuid())
+  user_id         String
+  season_id       String?
+  source_type     String
+  source_id       String?
+  idempotency_key String?  @unique
+  base_xp         Int
+  bonus_xp        Int      @default(0)
+  total_xp        Int
+  reason          String?
+  created_at      DateTime @default(now())
+
+  user   User    @relation(fields: [user_id], references: [id])
+  season Season? @relation(fields: [season_id], references: [id])
+
+  @@unique([user_id, source_type, source_id])
+  @@map("user_xp_events")
+}
+
+model UserProgression {
+  user_id           String    @id
+  total_xp          Int       @default(0)
+  level             Int       @default(1)
+  golongan          String?
+  jabatan           String?
+  current_streak    Int       @default(0)
+  best_streak       Int       @default(0)
+  last_xp_earned_at DateTime?
+  updated_at        DateTime  @updatedAt
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("user_progression")
+}
+
+model Achievement {
+  id              String   @id @default(uuid())
+  achievement_key String   @unique
+  title           String
+  description     String?
+  rarity          String?
+  criteria        Json
+  reward_xp       Int      @default(0)
+  active          Boolean  @default(true)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  user_achievements UserAchievement[]
+
+  @@map("achievements")
+}
+
+model UserAchievement {
+  id             String    @id @default(uuid())
+  user_id        String
+  achievement_id String
+  progress       Json?
+  unlocked_at    DateTime?
+  created_at     DateTime  @default(now())
+
+  user        User        @relation(fields: [user_id], references: [id])
+  achievement Achievement @relation(fields: [achievement_id], references: [id])
+
+  @@map("user_achievements")
+}
+
+model DailyMission {
+  id           String  @id @default(uuid())
+  mission_key  String  @unique
+  title        String
+  description  String?
+  target_type  String
+  target_value Int
+  reward_xp    Int
+  active       Boolean @default(true)
+
+  user_missions UserDailyMission[]
+
+  @@map("daily_missions")
+}
+
+model UserDailyMission {
+  id           String    @id @default(uuid())
+  user_id      String
+  mission_id   String
+  mission_date DateTime
+  progress     Int       @default(0)
+  completed_at DateTime?
+  claimed_at   DateTime?
+  streak_count Int       @default(0)
+
+  user    User         @relation(fields: [user_id], references: [id])
+  mission DailyMission @relation(fields: [mission_id], references: [id])
+
+  @@map("user_daily_missions")
+}
+
+// ─── ANALYTICS ────────────────────────────────────────────
+
+model AnalyticsReport {
+  id                String   @id @default(uuid())
+  user_id           String
+  period            String
+  weak_areas        Json?
+  strength_areas    Json?
+  speed_score       Float?
+  consistency_score Float?
+  recommendations   Json?
+  generated_at      DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("analytics_reports")
+}
+
+model UserPerformanceSnapshot {
+  id            String           @id @default(uuid())
+  user_id       String
+  date          DateTime
+  category      QuestionCategory
+  accuracy      Float?
+  avg_time      Float?
+  attempt_count Int              @default(0)
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("user_performance_snapshots")
+}
+
+model WeaknessNarrative {
+  id             String           @id @default(uuid())
+  user_id        String
+  category       QuestionCategory
+  narrative_text String
+  source_data    Json?
+  created_at     DateTime         @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("weakness_narratives")
+}
+
+model UserPersonality {
+  user_id          String   @id
+  personality_type String?
+  score            Json?
+  last_updated     DateTime @updatedAt
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("user_personalities")
+}
+
+model PersonalityRule {
+  id         String   @id @default(uuid())
+  name       String
+  criteria   Json
+  weight     Float    @default(1)
+  active     Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("personality_rules")
+}
+
+// ─── NOTIFICATIONS ────────────────────────────────────────
+
+model Notification {
+  id          String             @id @default(uuid())
+  user_id     String
+  type        String
+  title       String
+  message     String
+  action_data Json?
+  status      NotificationStatus @default(UNREAD)
+  read_at     DateTime?
+  created_at  DateTime           @default(now())
+  deleted_at  DateTime?
+
+  user   User                @relation(fields: [user_id], references: [id])
+  events NotificationEvent[]
+
+  @@map("notifications")
+}
+
+model NotificationCampaign {
+  id             String    @id @default(uuid())
+  title          String
+  body           String
+  type           String
+  target_segment Json?
+  channel        String
+  status         String    @default("DRAFT")
+  scheduled_at   DateTime?
+  sent_at        DateTime?
+  created_by     String?
+  approved_by    String?
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+
+  delivery_logs NotificationDeliveryLog[]
+
+  @@map("notification_campaigns")
+}
+
+model NotificationDeliveryLog {
+  id           String    @id @default(uuid())
+  campaign_id  String
+  user_id      String
+  delivered_at DateTime?
+  opened_at    DateTime?
+  clicked_at   DateTime?
+  status       String
+
+  campaign NotificationCampaign @relation(fields: [campaign_id], references: [id])
+
+  @@map("notification_delivery_logs")
+}
+
+model NotificationEvent {
+  id              String   @id @default(uuid())
+  notification_id String
+  user_id         String
+  event_type      String
+  metadata        Json?
+  created_at      DateTime @default(now())
+
+  notification Notification @relation(fields: [notification_id], references: [id])
+
+  @@map("notification_events")
+}
+
+// ─── ADMIN & SECURITY ─────────────────────────────────────
+
+model Admin {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password_hash String
+  role          AdminRole @default(CONTENT)
+  created_by    String?
+  is_active     Boolean   @default(true)
+  last_login_at DateTime?
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  sessions AdminSession[]
+  logs     AdminLog[]
+
+  @@map("admins")
+}
+
+model AdminInvitation {
+  id          String    @id @default(uuid())
+  email       String
+  role        AdminRole
+  token_hash  String    @unique
+  invited_by  String?
+  expires_at  DateTime
+  accepted_at DateTime?
+  revoked_at  DateTime?
+  created_at  DateTime  @default(now())
+
+  @@map("admin_invitations")
+}
+
+model AdminSession {
+  id          String    @id @default(uuid())
+  admin_id    String
+  token_hash  String    @unique
+  ip_address  String?
+  device_info Json?
+  created_at  DateTime  @default(now())
+  expires_at  DateTime
+  revoked_at  DateTime?
+
+  admin Admin @relation(fields: [admin_id], references: [id])
+
+  @@map("admin_sessions")
+}
+
+model AdminLog {
+  id            String   @id @default(uuid())
+  admin_id      String
+  action        String
+  resource_type String?
+  resource_id   String?
+  changes       Json?
+  ip_address    String?
+  created_at    DateTime @default(now())
+
+  admin Admin @relation(fields: [admin_id], references: [id])
+
+  @@map("admin_logs")
+}
+
+model UserActivityLog {
+  id          String   @id @default(uuid())
+  user_id     String
+  type        String
+  description String?
+  metadata    Json?
+  created_at  DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("user_activity_logs")
+}
+
+model UserSupportNote {
+  id          String    @id @default(uuid())
+  user_id     String
+  admin_id    String?
+  note        String
+  category    String?
+  resolved_at DateTime?
+  created_at  DateTime  @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("user_support_notes")
+}
+
+model SecurityEvent {
+  id         String   @id @default(uuid())
+  user_id    String?
+  event_type String
+  metadata   Json?
+  severity   String?
+  created_at DateTime @default(now())
+
+  user User? @relation(fields: [user_id], references: [id])
+
+  @@map("security_events")
+}
+
+model UserSecurityFlag {
+  id          String    @id @default(uuid())
+  user_id     String
+  flag_type   String
+  status      String
+  resolved_at DateTime?
+  created_at  DateTime  @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("user_security_flags")
+}
+
+model AccountDeletionRequest {
+  id                  String    @id @default(uuid())
+  user_id             String    @unique
+  status              String
+  requested_at        DateTime  @default(now())
+  scheduled_delete_at DateTime?
+  completed_at        DateTime?
+  cancelled_at        DateTime?
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("account_deletion_requests")
+}
+
+model PrivacyConsent {
+  id           String    @id @default(uuid())
+  user_id      String
+  consent_type String
+  version      String
+  accepted_at  DateTime  @default(now())
+  revoked_at   DateTime?
+  metadata     Json?
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("privacy_consents")
+}
+
+model SystemSettings {
+  key        String   @id
+  value      Json
+  updated_at DateTime @updatedAt
+
+  @@map("system_settings")
+}
+
+model ProviderUsageSnapshot {
+  id           String   @id @default(uuid())
+  provider     String
+  metric_key   String
+  metric_value Float
+  quota_limit  Float?
+  quota_unit   String?
+  captured_at  DateTime @default(now())
+  metadata     Json?
+
+  @@map("provider_usage_snapshots")
+}
