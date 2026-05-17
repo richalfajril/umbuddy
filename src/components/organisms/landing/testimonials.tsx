@@ -4,38 +4,44 @@ import { Quote } from 'lucide-react'
 const row1Testimonials = [
   {
     name: 'Nadia',
-    result: '+84 poin simulasi',
-    quote: 'Battle bikin latihan jadi nagih, tapi tetap serius buat ngejar passing grade.',
+    alumni: 'Alumni Universitas Padjadjaran',
+    targetKL: 'Diterima di Kementerian Keuangan',
+    quote: 'Latihan di Umbuddy benar-benar ngelatih kecepatan berpikirku. Waktu CAT aslinya terasa lebih santai karena sudah biasa tertekan pas duel.',
     color: 'bg-primary text-primary-foreground',
   },
   {
     name: 'Fajar',
-    result: 'Streak 21 hari',
-    quote: 'Analytics-nya bantu aku tahu bagian TIU mana yang harus diserang duluan.',
+    alumni: 'Alumni Universitas Gadjah Mada',
+    targetKL: 'Diterima di BPK RI',
+    quote: 'Fitur Smart Analytics ngebantu banget bedah kelemahanku di TIU. Strategi belajarku jadi presisi dan gak buang-buang waktu.',
     color: 'bg-xp text-headline',
   },
   {
     name: 'Dewi',
-    result: 'Top 10 mingguan',
-    quote: 'Rasanya seperti punya sparring partner tiap hari, bukan cuma bank soal biasa.',
+    alumni: 'Alumni Universitas Indonesia',
+    targetKL: 'Diterima di Kementerian Luar Negeri',
+    quote: 'Fitur battle 1vs1 bikin aku selalu tertantang tiap hari. Berasa punya sparring partner nyata untuk evaluasi diri.',
     color: 'bg-error text-white',
   },
   {
     name: 'Rizky',
-    result: 'Menteri Division',
-    quote: 'Naik dari Esmelon IV ke Menteri butuh konsistensi, tapi grafiknya seru banget buat diikuti.',
+    alumni: 'Alumni Institut Teknologi Bandung',
+    targetKL: 'Target Kementerian Perhubungan',
+    quote: 'Sebagai Cambies angkatan baru, sistem peringkat di Umbuddy bikin aku terus terpacu menjaga streak belajar harian tetap menyala.',
     color: 'bg-primary text-primary-foreground',
   },
   {
     name: 'Amalia',
-    result: 'TIU Master',
-    quote: 'Deret angka yang tadinya jadi momok, sekarang jadi lumbung poin simulasiku.',
+    alumni: 'Alumni Universitas Diponegoro',
+    targetKL: 'Target Kejaksaan Agung',
+    quote: 'Belajar TWK jadi super seru berkat kuis harian. Hafalan sejarah dan undang-undang jadi gampang masuk karena disajikan kayak game.',
     color: 'bg-xp text-headline',
   },
   {
     name: 'Hendra',
-    result: 'Esmelon IV',
-    quote: 'Fitur review area lemah benar-benar hemat waktu belajarku dibanding tryout biasa.',
+    alumni: 'Alumni Universitas Airlangga',
+    targetKL: 'Diterima di Kementerian Hukum & HAM',
+    quote: 'Tryout di sini akurat banget pembobotannya dengan passing grade BKN asli. Bikin simulasi mental jadi sangat matang.',
     color: 'bg-error text-white',
   },
 ]
@@ -43,38 +49,44 @@ const row1Testimonials = [
 const row2Testimonials = [
   {
     name: 'Siti',
-    result: 'Lolos PG TKP',
-    quote: 'TKP dengan model narasi dan waktu mepet jadi lebih gampang dihadapi berkat simulasi.',
+    alumni: 'Alumni Universitas Brawijaya',
+    targetKL: 'Diterima di Kementerian Kesehatan',
+    quote: 'Naluri menjawab soal TKP saya meningkat drastis berkat ribuan latihan kasus taktis yang disajikan secara interaktif.',
     color: 'bg-xp text-headline',
   },
   {
     name: 'Budi',
-    result: 'Streak 30 hari',
-    quote: 'Mascot pendampingnya suka ngasih kalimat penyemangat pas aku lagi capek belajarnya.',
+    alumni: 'Alumni Universitas Sebelas Maret',
+    targetKL: 'Diterima di Kementerian PUPR',
+    quote: 'Maskot pendamping di Umbuddy selalu ngasih petunjuk taktis dan motivasi pas performa belajarku lagi agak turun.',
     color: 'bg-primary text-primary-foreground',
   },
   {
     name: 'Kiki',
-    result: 'Esmelon III',
-    quote: 'Grup belajar kami sekarang isinya link battle 1vs1. Belajar jadi ga membosankan lagi!',
+    alumni: 'Alumni Universitas Hasanuddin',
+    targetKL: 'Target Pemerintah Provinsi DKI',
+    quote: 'Setiap pulang kerja langsung nyempetin login buat ngerjain target harian. UI-nya yang bersih dan tanpa iklan bikin betah berjam-jam.',
     color: 'bg-error text-white',
   },
   {
     name: 'Lina',
-    result: '+120 poin TWK',
-    quote: 'Analisis sejarah dan nasionalisme di Umbuddy sangat membantu mendongkrak skor TWK-ku.',
+    alumni: 'Alumni Universitas Sriwijaya',
+    targetKL: 'Diterima di OJK',
+    quote: 'Latihan bareng teman lewat grup belajar bikin progress kami semua terukur secara transparan. Sangat bersyukur nemu platform ini.',
     color: 'bg-primary text-primary-foreground',
   },
   {
     name: 'Dika',
-    result: 'TWK Specialist',
-    quote: 'Sistem reward XP bikin adiktif, rasanya kurang kalau sehari belum ngerjain misi.',
+    alumni: 'Alumni IPB University',
+    targetKL: 'Target Kementerian BUMN',
+    quote: 'Prediksi kelolosan di Smart Analytics ngebantu saya tahu sub-materi mana yang masih bolong dan butuh serangan taktis tambahan.',
     color: 'bg-xp text-headline',
   },
   {
     name: 'Farhan',
-    result: 'Umbies Senior',
-    quote: 'Dulu pasrah sama passing grade, sekarang malah ketagihan ngejar leaderboard nasional.',
+    alumni: 'Alumni Universitas Sumatera Utara',
+    targetKL: 'Diterima di Badan Siber & Sandi Negara',
+    quote: 'Leaderboard nasionalnya bikin ketagihan bersaing sehat. Dari status Umbies magang sampai akhirnya bisa tembus rank Menteri!',
     color: 'bg-error text-white',
   },
 ]
@@ -139,12 +151,12 @@ export function LandingTestimonials() {
 
       <div className="w-full">
         {/* Title */}
-        <div className="mb-16 text-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="mb-16 text-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-4">
           <h2 className="font-display text-3xl font-black text-headline md:text-5xl">
-            Latihan Jadi Punya <span className="text-primary">Cerita</span>
+            Cerita Umbies & Harapan <span className="text-primary font-bold">Para Cambies</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-body">
-            Simulasi, battle, dan streak membuat belajar terasa seperti perjalanan naik level.
+          <p className="mx-auto mt-4 max-w-3xl text-lg text-body leading-relaxed">
+            Intip kisah sukses rekan-rekan Umbies yang kini telah mengabdi di berbagai Kementerian, Lembaga, dan Instansi Impian. Baca juga harapan membara para Cambies yang sedang berjuang menembus batas bersama Umbuddy!
           </p>
         </div>
 
@@ -157,19 +169,25 @@ export function LandingTestimonials() {
               <Card 
                 key={`r1-${item.name}-${idx}`} 
                 padding="lg" 
-                className="w-[280px] sm:w-[340px] flex-shrink-0 relative overflow-hidden group hover:scale-[1.02] transition-all duration-300 mx-3 border border-border"
+                className="w-[320px] sm:w-[380px] flex-shrink-0 relative overflow-hidden group hover:scale-[1.02] transition-all duration-300 mx-3 border border-border"
               >
-                <Quote className="absolute top-4 right-4 h-10 w-10 text-border opacity-30" aria-hidden="true" />
-                <div className="mb-4 flex items-center gap-3 relative z-10">
-                  <div className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-2xl font-display text-lg sm:text-xl font-black ${item.color}`}>
+                {/* Accentuated Gold Quote Mark Icon */}
+                <Quote className="absolute top-4 right-4 h-10 w-10 text-xp/20 fill-xp/10 dark:text-xp/30 dark:fill-xp/20 transition-transform group-hover:scale-110" aria-hidden="true" />
+                
+                <div className="mb-4 flex items-start gap-3 relative z-10">
+                  <div className={`flex-shrink-0 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-2xl font-display text-lg sm:text-xl font-black ${item.color}`}>
                     {item.name.charAt(0)}
                   </div>
                   <div>
-                    <p className="font-black text-headline text-sm sm:text-base">{item.name}</p>
-                    <p className="text-xs sm:text-sm font-bold text-primary">{item.result}</p>
+                    {/* Vertical Hierarchy: name, alumni, target K/L */}
+                    <p className="font-black text-headline text-sm sm:text-base leading-tight">{item.name}</p>
+                    <p className="text-xs font-semibold text-body mt-0.5">{item.alumni}</p>
+                    <p className="text-xs font-extrabold text-primary mt-1.5">{item.targetKL}</p>
                   </div>
                 </div>
-                <p className="leading-relaxed text-body text-xs sm:text-sm relative z-10">&ldquo;{item.quote}&rdquo;</p>
+                <p className="leading-relaxed text-body text-xs sm:text-sm relative z-10">
+                  &ldquo;{item.quote}&rdquo; <span className="text-primary font-bold hover:underline cursor-pointer ml-1">Selengkapnya</span>
+                </p>
               </Card>
             ))}
           </div>
@@ -180,19 +198,25 @@ export function LandingTestimonials() {
               <Card 
                 key={`r2-${item.name}-${idx}`} 
                 padding="lg" 
-                className="w-[280px] sm:w-[340px] flex-shrink-0 relative overflow-hidden group hover:scale-[1.02] transition-all duration-300 mx-3 border border-border"
+                className="w-[320px] sm:w-[380px] flex-shrink-0 relative overflow-hidden group hover:scale-[1.02] transition-all duration-300 mx-3 border border-border"
               >
-                <Quote className="absolute top-4 right-4 h-10 w-10 text-border opacity-30" aria-hidden="true" />
-                <div className="mb-4 flex items-center gap-3 relative z-10">
-                  <div className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-2xl font-display text-lg sm:text-xl font-black ${item.color}`}>
+                {/* Accentuated Gold Quote Mark Icon */}
+                <Quote className="absolute top-4 right-4 h-10 w-10 text-xp/20 fill-xp/10 dark:text-xp/30 dark:fill-xp/20 transition-transform group-hover:scale-110" aria-hidden="true" />
+                
+                <div className="mb-4 flex items-start gap-3 relative z-10">
+                  <div className={`flex-shrink-0 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-2xl font-display text-lg sm:text-xl font-black ${item.color}`}>
                     {item.name.charAt(0)}
                   </div>
                   <div>
-                    <p className="font-black text-headline text-sm sm:text-base">{item.name}</p>
-                    <p className="text-xs sm:text-sm font-bold text-primary">{item.result}</p>
+                    {/* Vertical Hierarchy: name, alumni, target K/L */}
+                    <p className="font-black text-headline text-sm sm:text-base leading-tight">{item.name}</p>
+                    <p className="text-xs font-semibold text-body mt-0.5">{item.alumni}</p>
+                    <p className="text-xs font-extrabold text-primary mt-1.5">{item.targetKL}</p>
                   </div>
                 </div>
-                <p className="leading-relaxed text-body text-xs sm:text-sm relative z-10">&ldquo;{item.quote}&rdquo;</p>
+                <p className="leading-relaxed text-body text-xs sm:text-sm relative z-10">
+                  &ldquo;{item.quote}&rdquo; <span className="text-primary font-bold hover:underline cursor-pointer ml-1">Selengkapnya</span>
+                </p>
               </Card>
             ))}
           </div>
