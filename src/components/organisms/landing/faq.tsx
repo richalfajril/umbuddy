@@ -1,4 +1,8 @@
+'use client'
+
+import * as React from 'react'
 import { Card } from '@/components/ui'
+import { ChevronDown } from 'lucide-react'
 
 const faqs = [
   {
@@ -28,6 +32,12 @@ const faqs = [
 ]
 
 export function LandingFAQ() {
+  const [activeIndex, setActiveIndex] = React.useState<number | null>(null)
+
+  const toggleIndex = (idx: number) => {
+    setActiveIndex(activeIndex === idx ? null : idx)
+  }
+
   return (
     <section id="faq" className="py-24 bg-background">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,13 +52,42 @@ export function LandingFAQ() {
 
         <div className="space-y-6">
           {faqs.map((faq, idx) => (
-            <Card key={idx} className="p-6 md:p-8 hover:border-primary/50 transition-colors">
-              <h3 className="text-xl font-black font-display text-headline mb-3">
-                {faq.question}
-              </h3>
-              <p className="text-body leading-relaxed">
-                {faq.answer}
-              </p>
+            <Card 
+              key={idx} 
+              padding="none"
+              className={`hover:border-primary/50 transition-all duration-300 ${
+                activeIndex === idx ? 'border-primary/50' : 'border-border'
+              }`}
+            >
+              <button
+                onClick={() => toggleIndex(idx)}
+                className="w-full flex justify-between items-center text-left p-6 md:p-8 focus:outline-none select-none touch-target"
+                aria-expanded={activeIndex === idx}
+              >
+                <span className="text-lg md:text-xl font-bold font-display text-headline pr-4">
+                  {faq.question}
+                </span>
+                <ChevronDown 
+                  className={`w-5 h-5 text-muted transition-transform duration-300 shrink-0 ${
+                    activeIndex === idx ? 'rotate-180 text-primary' : ''
+                  }`} 
+                />
+              </button>
+
+              {/* Pure CSS slide-down height transition */}
+              <div 
+                className={`grid transition-all duration-300 ease-in-out ${
+                  activeIndex === idx ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                }`}
+              >
+                <div className="overflow-hidden">
+                  <div className="pb-6 md:pb-8 px-6 md:px-8 border-t border-border/50">
+                    <p className="text-body leading-relaxed text-base pt-4">
+                      {faq.answer}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </Card>
           ))}
         </div>
