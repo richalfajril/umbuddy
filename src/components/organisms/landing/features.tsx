@@ -65,8 +65,11 @@ const features = [
 
 export function LandingFeatures() {
   return (
-    <section id="features" className="py-24 bg-gradient-to-b from-surface/50 to-background border-t border-border/40 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="features" className="py-24 bg-gradient-to-b from-surface/50 to-background border-t border-border/40 relative overflow-hidden bg-grid-pattern">
+      {/* Decorative glowing blobs */}
+      <div className="glow-blob-primary absolute top-1/4 left-1/4 opacity-40 dark:opacity-20 pointer-events-none -z-10 animate-pulse" />
+      <div className="glow-blob-secondary absolute bottom-1/4 right-1/4 opacity-40 dark:opacity-20 pointer-events-none -z-10 animate-pulse" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12 space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary mx-auto">
             <Sparkles className="w-4 h-4 text-primary animate-pulse" />

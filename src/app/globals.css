@@ -492,6 +492,52 @@
     box-shadow: none;
   }
 
+  /* ─── PREMIUM DECORATIVE PATTERNS ─── */
+  .bg-grid-pattern {
+    position: relative;
+  }
+
+  .bg-grid-pattern::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-size: 30px 30px;
+    background-image: 
+      linear-gradient(to right, rgba(116, 195, 50, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(116, 195, 50, 0.04) 1px, transparent 1px);
+    mask-image: radial-gradient(circle at center, black, transparent 75%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .dark .bg-grid-pattern::before {
+    background-image: 
+      linear-gradient(to right, rgba(116, 195, 50, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(116, 195, 50, 0.03) 1px, transparent 1px);
+  }
+
+  .glow-blob-primary {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(116, 195, 50, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(40px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .glow-blob-secondary {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 195, 0, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(40px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
   /* ─── XP BADGE ─── */
   .xp-chip {
     display: inline-flex;

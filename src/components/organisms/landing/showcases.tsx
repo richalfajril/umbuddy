@@ -61,7 +61,7 @@ export function LandingShowcases() {
   }, [])
 
   return (
-    <section id="why-different" className="bg-gradient-to-b from-background via-surface/60 to-background border-b border-border/40 py-20 overflow-hidden">
+    <section id="why-different" className="bg-gradient-to-b from-background via-surface/60 to-background border-b border-border/40 py-20 overflow-hidden bg-grid-pattern">
       
       {/* ── Section Title & Subtitle (Selling the USP) ── */}
       <div className="text-center mb-16 space-y-4 max-w-3xl mx-auto px-4">
@@ -104,8 +104,10 @@ export function LandingShowcases() {
           </div>
 
           {/* Right Visual Card */}
-          <div className={`transition-all duration-700 delay-200 ${progressionVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-            <Card padding="lg" className="relative overflow-hidden hover:border-primary/30 hover:shadow-elevated transition-all duration-300">
+          <div className="relative">
+            <div className="glow-blob-primary absolute -top-10 -right-10 opacity-70 dark:opacity-30 pointer-events-none -z-10" />
+            <div className={`transition-all duration-700 delay-200 ${progressionVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+              <Card padding="lg" className="relative overflow-hidden hover:border-primary/30 hover:shadow-elevated transition-all duration-300 bg-background">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <p className="text-xs font-black uppercase text-primary">Mission & Streak</p>
@@ -139,52 +141,56 @@ export function LandingShowcases() {
             </Card>
           </div>
         </div>
+      </div>
 
         {/* ── PILAR 2: PvP Battle Realtime (Reusing Battle Showcase) ── */}
         <div ref={battleRef} className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Visual Card (Reversed for alternate rhythm) */}
-          <div className={`order-2 lg:order-1 transition-all duration-700 delay-200 ${battleVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
-            <Card padding="lg" className="relative overflow-hidden hover:border-primary/30 hover:shadow-elevated transition-all duration-300">
-              <div className="mb-6 flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-black uppercase text-primary flex items-center gap-1.5">
-                    Arena TWK
-                    <span className="flex h-2.5 w-2.5 relative">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-error"></span>
-                    </span>
-                  </p>
-                  <h3 className="font-display text-2xl font-black text-headline">
-                    Kamu vs Bima
-                  </h3>
+          <div className="relative order-2 lg:order-1">
+            <div className="glow-blob-secondary absolute -bottom-10 -left-10 opacity-70 dark:opacity-30 pointer-events-none -z-10" />
+            <div className={`transition-all duration-700 delay-200 ${battleVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+              <Card padding="lg" className="relative overflow-hidden hover:border-primary/30 hover:shadow-elevated transition-all duration-300 bg-background">
+                <div className="mb-6 flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-black uppercase text-primary flex items-center gap-1.5">
+                      Arena TWK
+                      <span className="flex h-2.5 w-2.5 relative">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-error"></span>
+                      </span>
+                    </p>
+                    <h3 className="font-display text-2xl font-black text-headline">
+                      Kamu vs Bima
+                    </h3>
+                  </div>
+                  <Image src="/mascot/mascot_battle.png" alt="" width={96} height={96} className="h-20 w-20 object-contain animate-float" />
                 </div>
-                <Image src="/mascot/mascot_battle.png" alt="" width={96} height={96} className="h-20 w-20 object-contain animate-float" />
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-2xl border-2 border-primary bg-primary-light/50 dark:bg-primary/10 p-4 text-primary-dark dark:text-primary animate-pulse-subtle">
-                  <p className="text-sm font-black">Kamu</p>
-                  <p className="font-display text-4xl font-black">420</p>
-                  <p className="text-xs font-bold text-headline">18 jawaban benar</p>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="rounded-2xl border-2 border-primary bg-primary-light/50 dark:bg-primary/10 p-4 text-primary-dark dark:text-primary animate-pulse-subtle">
+                    <p className="text-sm font-black">Kamu</p>
+                    <p className="font-display text-4xl font-black">420</p>
+                    <p className="text-xs font-bold text-headline">18 jawaban benar</p>
+                  </div>
+                  <div className="rounded-2xl border border-border bg-surface p-4">
+                    <p className="text-sm font-black text-muted">Bima</p>
+                    <p className="font-display text-4xl font-black text-headline">395</p>
+                    <p className="text-xs font-bold text-body">17 jawaban benar</p>
+                  </div>
                 </div>
-                <div className="rounded-2xl border border-border bg-surface p-4">
-                  <p className="text-sm font-black text-muted">Bima</p>
-                  <p className="font-display text-4xl font-black text-headline">395</p>
-                  <p className="text-xs font-bold text-body">17 jawaban benar</p>
+                <div className="mt-6 rounded-2xl border border-border bg-background p-4">
+                  <div className="mb-2 flex items-center justify-between text-sm font-black">
+                    <span>Progress ronde</span>
+                    <span className="text-primary font-display">72%</span>
+                  </div>
+                  <div className="progress-bar-track">
+                    <div 
+                      className="progress-bar-fill transition-all duration-1000 ease-out" 
+                      style={{ width: battleVisible ? '72%' : '0%' }} 
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="mt-6 rounded-2xl border border-border bg-background p-4">
-                <div className="mb-2 flex items-center justify-between text-sm font-black">
-                  <span>Progress ronde</span>
-                  <span className="text-primary font-display">72%</span>
-                </div>
-                <div className="progress-bar-track">
-                  <div 
-                    className="progress-bar-fill transition-all duration-1000 ease-out" 
-                    style={{ width: battleVisible ? '72%' : '0%' }} 
-                  />
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </div>
           </div>
 
           {/* Right Text */}
@@ -237,65 +243,71 @@ export function LandingShowcases() {
           </div>
 
           {/* Right Visual Card */}
-          <div className={`transition-all duration-700 delay-200 ${analyticsVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-            <Card padding="lg" className="hover:border-primary/30 hover:shadow-elevated transition-all duration-300">
-              <div className="flex items-center gap-4">
-                <Image src="/mascot/mascot_detective.png" alt="" width={110} height={110} className="h-24 w-24 object-contain animate-float" />
-                <div>
-                  <p className="text-sm font-black uppercase text-primary">Weak Area Analysis</p>
-                  <h3 className="font-display text-2xl font-black text-headline">
-                    TIU butuh serangan taktis
-                  </h3>
+          <div className="relative">
+            <div className="glow-blob-primary absolute -top-10 -right-10 opacity-70 dark:opacity-30 pointer-events-none -z-10" />
+            <div className={`transition-all duration-700 delay-200 ${analyticsVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+              <Card padding="lg" className="relative overflow-hidden hover:border-primary/30 hover:shadow-elevated transition-all duration-300 bg-background">
+                <div className="flex items-center gap-4">
+                  <Image src="/mascot/mascot_detective.png" alt="" width={110} height={110} className="h-24 w-24 object-contain animate-float" />
+                  <div>
+                    <p className="text-sm font-black uppercase text-primary">Weak Area Analysis</p>
+                    <h3 className="font-display text-2xl font-black text-headline">
+                      TIU butuh serangan taktis
+                    </h3>
+                  </div>
                 </div>
-              </div>
-              <div className="mt-6 space-y-4">
-                {[
-                  { label: 'Deret angka', value: 42, icon: Target },
-                  { label: 'Sinonim', value: 68, icon: BarChart3 },
-                  { label: 'Nasionalisme', value: 81, icon: Shield },
-                ].map((item) => {
-                  const Icon = item.icon
-                  return (
-                    <div key={item.label} className="rounded-2xl border border-border bg-background p-4 hover:border-primary/20 transition-all duration-200">
-                      <div className="mb-2 flex items-center justify-between">
-                        <span className="flex items-center gap-2 font-black text-headline">
-                          <Icon className="h-5 w-5 text-primary" aria-hidden="true" />
-                          {item.label}
-                        </span>
-                        <span className="font-black text-body font-display">{item.value}%</span>
+                <div className="mt-6 space-y-4">
+                  {[
+                    { label: 'Deret angka', value: 42, icon: Target },
+                    { label: 'Sinonim', value: 68, icon: BarChart3 },
+                    { label: 'Nasionalisme', value: 81, icon: Shield },
+                  ].map((item) => {
+                    const Icon = item.icon
+                    return (
+                      <div key={item.label} className="rounded-2xl border border-border bg-background p-4 hover:border-primary/20 transition-all duration-200">
+                        <div className="mb-2 flex items-center justify-between">
+                          <span className="flex items-center gap-2 font-black text-headline">
+                            <Icon className="h-5 w-5 text-primary" aria-hidden="true" />
+                            {item.label}
+                          </span>
+                          <span className="font-black text-body font-display">{item.value}%</span>
+                        </div>
+                        <div className="progress-bar-track">
+                          <div 
+                            className="progress-bar-fill transition-all duration-1000 ease-out" 
+                            style={{ width: analyticsVisible ? `${item.value}%` : '0%' }} 
+                          />
+                        </div>
                       </div>
-                      <div className="progress-bar-track">
-                        <div 
-                          className="progress-bar-fill transition-all duration-1000 ease-out" 
-                          style={{ width: analyticsVisible ? `${item.value}%` : '0%' }} 
-                        />
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </Card>
+                    )
+                  })}
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
 
         {/* ── PILAR 4: Gamification Retention ── */}
         <div ref={gamificationRef} className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Visual Card (Reversed for alternate rhythm) */}
-          <div className={`order-2 lg:order-1 transition-all duration-700 delay-200 ${gamificationVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
-            <Card padding="lg" className="relative overflow-hidden hover:border-primary/30 hover:shadow-elevated transition-all duration-300 bg-gradient-to-br from-background to-primary-light/20 dark:to-primary/5">
-              <div className="flex items-start gap-4">
-                <Image src="/mascot/mascot_success.png" alt="" width={100} height={100} className="h-20 w-20 object-contain animate-float shrink-0" />
-                <div className="space-y-3 relative z-10">
-                  <div className="p-3 bg-background rounded-2xl border border-border text-xs sm:text-sm font-bold text-headline leading-relaxed shadow-sm relative before:absolute before:-left-3 before:top-6 before:w-0 before:h-0 before:border-y-8 before:border-y-transparent before:border-r-8 before:border-r-background">
-                    "Wah, TWK kamu meningkat pesat minggu ini! Kamu selangkah lagi naik pangkat ke <span className="text-primary font-black">Umbies Senior</span>. Yuk selesaikan misi hari ini!"
-                  </div>
-                  <div className="flex items-center justify-between text-xs font-black text-primary uppercase">
-                    <span>Mascot Mentor Feedback</span>
-                    <span className="flex items-center gap-1"><ArrowUpRight className="w-3.5 h-3.5" /> +150 XP</span>
+          <div className="relative order-2 lg:order-1">
+            <div className="glow-blob-secondary absolute -bottom-10 -left-10 opacity-70 dark:opacity-30 pointer-events-none -z-10" />
+            <div className={`transition-all duration-700 delay-200 ${gamificationVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+              <Card padding="lg" className="relative overflow-hidden hover:border-primary/30 hover:shadow-elevated transition-all duration-300 bg-gradient-to-br from-background to-primary-light/20 dark:to-primary/5 bg-background">
+                <div className="flex items-start gap-4">
+                  <Image src="/mascot/mascot_success.png" alt="" width={100} height={100} className="h-20 w-20 object-contain animate-float shrink-0" />
+                  <div className="space-y-3 relative z-10">
+                    <div className="p-3 bg-background rounded-2xl border border-border text-xs sm:text-sm font-bold text-headline leading-relaxed shadow-sm relative before:absolute before:-left-3 before:top-6 before:w-0 before:h-0 before:border-y-8 before:border-y-transparent before:border-r-8 before:border-r-background">
+                      "Wah, TWK kamu meningkat pesat minggu ini! Kamu selangkah lagi naik pangkat ke <span className="text-primary font-black">Umbies Senior</span>. Yuk selesaikan misi hari ini!"
+                    </div>
+                    <div className="flex items-center justify-between text-xs font-black text-primary uppercase">
+                      <span>Mascot Mentor Feedback</span>
+                      <span className="flex items-center gap-1"><ArrowUpRight className="w-3.5 h-3.5" /> +150 XP</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
+            </div>
           </div>
 
           {/* Right Text */}
@@ -346,58 +358,61 @@ export function LandingShowcases() {
           </div>
 
           {/* Right Visual Card */}
-          <div className={`transition-all duration-700 delay-200 ${leaderboardVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-            <Card padding="lg" className="hover:border-primary/20 hover:shadow-elevated transition-all duration-300">
-              <div className="mb-6 flex items-center justify-between">
-                <h3 className="font-display text-2xl font-black text-headline">
-                  Top Umbies Minggu Ini
-                </h3>
-                <Medal className="h-8 w-8 text-xp animate-bounce-subtle" aria-hidden="true" />
-              </div>
-              <div className="space-y-3">
-                {leaderboardUsers.map((user, index) => (
-                  <div 
-                    key={user.rank} 
-                    className="flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 hover:bg-surface-hover hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-sm transition-all duration-200"
-                    style={{
-                      transform: leaderboardVisible ? 'translateY(0)' : 'translateY(24px)',
-                      opacity: leaderboardVisible ? 1 : 0,
-                      transition: `all 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${index * 150}ms`,
-                    }}
-                  >
-                    {/* 1. Nomor (Rank) */}
-                    <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-lg text-sm font-black bg-surface-hover text-headline">
-                      {user.rank}
-                    </div>
+          <div className="relative">
+            <div className="glow-blob-primary absolute -top-10 -right-10 opacity-70 dark:opacity-30 pointer-events-none -z-10" />
+            <div className={`transition-all duration-700 delay-200 ${leaderboardVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+              <Card padding="lg" className="relative overflow-hidden hover:border-primary/20 hover:shadow-elevated transition-all duration-300 bg-background">
+                <div className="mb-6 flex items-center justify-between">
+                  <h3 className="font-display text-2xl font-black text-headline">
+                    Top Umbies Minggu Ini
+                  </h3>
+                  <Medal className="h-8 w-8 text-xp animate-bounce-subtle" aria-hidden="true" />
+                </div>
+                <div className="space-y-3">
+                  {leaderboardUsers.map((user, index) => (
+                    <div 
+                      key={user.rank} 
+                      className="flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 hover:bg-surface-hover hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-sm transition-all duration-200"
+                      style={{
+                        transform: leaderboardVisible ? 'translateY(0)' : 'translateY(24px)',
+                        opacity: leaderboardVisible ? 1 : 0,
+                        transition: `all 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${index * 150}ms`,
+                      }}
+                    >
+                      {/* 1. Nomor (Rank) */}
+                      <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-lg text-sm font-black bg-surface-hover text-headline">
+                        {user.rank}
+                      </div>
 
-                    {/* 2. Avatar Profil */}
-                    <div className={`flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-xl font-display text-base font-black ${user.color}`}>
-                      {user.name.charAt(0)}
-                    </div>
+                      {/* 2. Avatar Profil */}
+                      <div className={`flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-xl font-display text-base font-black ${user.color}`}>
+                        {user.name.charAt(0)}
+                      </div>
 
-                    {/* 3. Badge dari Asset */}
-                    <div className="flex-shrink-0 w-10 h-10 relative">
-                      <Image 
-                        src={user.badgeImg} 
-                        alt={user.badge} 
-                        width={40} 
-                        height={40} 
-                        className="w-full h-full object-contain" 
-                      />
-                    </div>
+                      {/* 3. Badge dari Asset */}
+                      <div className="flex-shrink-0 w-10 h-10 relative">
+                        <Image 
+                          src={user.badgeImg} 
+                          alt={user.badge} 
+                          width={40} 
+                          height={40} 
+                          className="w-full h-full object-contain" 
+                        />
+                      </div>
 
-                    {/* 4. Name & Badge Text */}
-                    <div className="min-w-0 flex-1">
-                      <p className="font-black text-headline leading-tight">{user.name}</p>
-                      <p className="text-xs font-bold text-muted mt-0.5">{user.badge}</p>
-                    </div>
+                      {/* 4. Name & Badge Text */}
+                      <div className="min-w-0 flex-1">
+                        <p className="font-black text-headline leading-tight">{user.name}</p>
+                        <p className="text-xs font-bold text-muted mt-0.5">{user.badge}</p>
+                      </div>
 
-                    {/* 5. XP */}
-                    <p className="font-display text-base sm:text-lg font-black text-primary">{user.xp}</p>
-                  </div>
-                ))}
-              </div>
-            </Card>
+                      {/* 5. XP */}
+                      <p className="font-display text-base sm:text-lg font-black text-primary">{user.xp}</p>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
 

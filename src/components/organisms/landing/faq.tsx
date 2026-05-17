@@ -39,8 +39,11 @@ export function LandingFAQ() {
   }
 
   return (
-    <section id="faq" className="py-20 bg-gradient-to-b from-background via-surface/60 to-background relative overflow-hidden border-b border-border/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="faq" className="py-20 bg-gradient-to-b from-background via-surface/60 to-background relative overflow-hidden border-b border-border/40 bg-grid-pattern">
+      {/* Decorative glowing blobs */}
+      <div className="glow-blob-primary absolute top-1/3 left-10 opacity-40 dark:opacity-20 pointer-events-none -z-10 animate-pulse" />
+      <div className="glow-blob-secondary absolute bottom-1/3 right-10 opacity-40 dark:opacity-20 pointer-events-none -z-10 animate-pulse" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Asymmetrical Layout Split */}
         <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-12 lg:gap-16 items-start">
