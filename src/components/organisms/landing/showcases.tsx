@@ -31,7 +31,7 @@ export function LandingShowcases() {
               Duel Mini CAT 1vs1 yang bikin latihan <span className="text-primary">terasa hidup</span>
             </h2>
             <p className="max-w-xl text-lg leading-8 text-body">
-              Undang teman, jawab soal bareng, dan bahas bersama. Cara seru belajar bareng.
+              Belajar sendirian emang sering bikin jenuh. Makanya, ajak partner belajarmu buat adu taktik di Arena Mini CAT secara realtime! Saling uji pemahaman materi, jawab cepat sebelum waktu habis, dan bahas pembahasannya bersama sehabis duel selesai. Cara paling seru buat saling dorong sampai lulus ASN bareng-bareng.
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
               {['Invite teman', 'Bahas bersama', 'XP fair-play'].map((item) => (
