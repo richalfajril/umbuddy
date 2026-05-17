@@ -44,7 +44,7 @@ export function FormSettingsLayout({
   maxWidth = 'md',
 }: FormSettingsLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col bg-background dark:bg-dark-background">
+    <div className="min-h-screen flex flex-col bg-background">
       {/* Scrollable content area */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-8">
         <div className={['w-full', maxWidthClasses[maxWidth]].join(' ')}>
@@ -64,7 +64,7 @@ export function FormSettingsLayout({
 
       {/* Sticky CTA footer (mobile-friendly) */}
       {stickyFooter && (
-        <div className="sticky bottom-0 z-10 w-full bg-background dark:bg-dark-background border-t border-border dark:border-dark-border px-4 py-3 safe-area-bottom">
+        <div className="sticky bottom-0 z-10 w-full bg-background border-t border-border px-4 py-3 safe-area-bottom">
           <div className={['mx-auto', maxWidthClasses[maxWidth]].join(' ')}>
             {stickyFooter}
           </div>

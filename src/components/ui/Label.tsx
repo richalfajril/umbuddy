@@ -7,7 +7,7 @@ const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
     <label
       ref={ref}
       className={[
-        "text-sm font-black leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-slate-700 dark:text-slate-300 mb-2 block",
+        "text-sm font-black leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-headline mb-2 block",
         className
       ].filter(Boolean).join(' ')}
       {...props}

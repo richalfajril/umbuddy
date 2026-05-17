@@ -12,6 +12,21 @@ export default function LoginPage() {
   const [password, setPassword] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
 
+  const getLoginErrorMessage = (error?: string | null) => {
+    switch (error) {
+      case 'PENDING_VERIFICATION':
+        return 'Akunmu belum diverifikasi. Silakan cek email verifikasi dulu.'
+      case 'SUSPENDED':
+        return 'Akunmu sedang ditangguhkan. Hubungi support Umbuddy.'
+      case 'LOCKED':
+        return 'Akunmu terkunci sementara karena alasan keamanan.'
+      case 'RATE_LIMITED':
+        return 'Terlalu banyak percobaan masuk. Coba lagi beberapa menit lagi.'
+      default:
+        return 'Email atau password salah!'
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -24,7 +39,7 @@ export default function LoginPage() {
       })
       
       if (result?.error) {
-        alert('Email atau password salah!')
+        alert(getLoginErrorMessage(result.error))
       } else {
         window.location.href = '/dashboard'
       }
@@ -55,7 +70,7 @@ export default function LoginPage() {
     >
       <div className="space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="text-2xl font-black text-slate-800 dark:text-slate-100">
+          <h1 className="text-2xl font-black text-headline">
             Selamat Datang Kembali!
           </h1>
           <p className="text-body text-sm">
@@ -67,19 +82,19 @@ export default function LoginPage() {
         <Button 
           type="button"
           variant="secondary" 
-          className="w-full h-14 bg-white dark:bg-dark-surface border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-dark-surface/80 flex items-center justify-center gap-3"
+          className="w-full h-14 bg-background border-border hover:bg-surface flex items-center justify-center gap-3"
           onClick={handleGoogleLogin}
         >
           <Image src="/logo/google.png" alt="Google" width={20} height={20} className="w-5 h-5" />
-          <span className="text-slate-700 dark:text-slate-200 font-bold">Lanjutkan dengan Google</span>
+          <span className="text-headline font-bold">Lanjutkan dengan Google</span>
         </Button>
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-slate-200 dark:border-slate-800" />
+            <span className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background dark:bg-dark-surface px-2 text-muted-foreground font-bold">
+            <span className="bg-background px-2 text-muted font-bold">
               Atau masuk dengan email
             </span>
           </div>

@@ -35,7 +35,7 @@ export function LandingNavbar() {
   const currentTheme = resolvedTheme || theme
 
   return (
-    <nav className="w-full bg-background/80 dark:bg-dark-background/80 backdrop-blur-md border-b border-border dark:border-dark-border">
+    <nav className="w-full bg-background/80 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo Section */}
@@ -66,16 +66,17 @@ export function LandingNavbar() {
           <div className="hidden md:flex items-center space-x-8">
             <Link href="#features" className="text-sm font-medium text-body hover:text-primary transition-colors">Fitur</Link>
             <Link href="#battle" className="text-sm font-medium text-body hover:text-primary transition-colors">Battle</Link>
+            <Link href="#analytics" className="text-sm font-medium text-body hover:text-primary transition-colors">Analytics</Link>
             <Link href="#leaderboard" className="text-sm font-medium text-body hover:text-primary transition-colors">Leaderboard</Link>
             <Link href="#faq" className="text-sm font-medium text-body hover:text-primary transition-colors">FAQ</Link>
             
             <div className="flex items-center gap-4 ml-4">
               <button 
                 onClick={toggleTheme}
-                className="p-2 rounded-xl border-2 border-border dark:border-dark-border hover:bg-surface dark:hover:bg-dark-surface transition-all"
+                className="p-2 rounded-xl border-2 border-border hover:bg-surface transition-all"
                 aria-label="Toggle Theme"
               >
-                {currentTheme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-yellow-400" />}
+                {currentTheme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-xp" />}
               </button>
               <Link href="/auth/login">
                 <Button variant="secondary" size="sm">Masuk</Button>
@@ -90,13 +91,13 @@ export function LandingNavbar() {
           <div className="flex md:hidden items-center gap-2">
             <button 
               onClick={toggleTheme}
-              className="p-2 rounded-xl border-2 border-border dark:border-dark-border"
+              className="p-2 rounded-xl border-2 border-border"
             >
-              {currentTheme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-yellow-400" />}
+              {currentTheme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-xp" />}
             </button>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-xl border-2 border-border dark:border-dark-border"
+              className="p-2 rounded-xl border-2 border-border"
             >
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -106,9 +107,10 @@ export function LandingNavbar() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-background dark:bg-dark-background border-b border-border dark:border-dark-border px-4 pt-2 pb-6 space-y-4">
+        <div className="md:hidden bg-background border-b border-border px-4 pt-2 pb-6 space-y-4">
           <Link href="#features" className="block text-base font-medium text-body py-2">Fitur</Link>
           <Link href="#battle" className="block text-base font-medium text-body py-2">Battle</Link>
+          <Link href="#analytics" className="block text-base font-medium text-body py-2">Analytics</Link>
           <Link href="#leaderboard" className="block text-base font-medium text-body py-2">Leaderboard</Link>
           <Link href="#faq" className="block text-base font-medium text-body py-2">FAQ</Link>
           <div className="grid grid-cols-2 gap-4 pt-4">

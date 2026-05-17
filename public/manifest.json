@@ -1,0 +1,25 @@
+{
+  "name": "Umbuddy",
+  "short_name": "Umbuddy",
+  "description": "Platform simulasi CPNS gamified untuk latihan TWK, TIU, TKP, battle, dan leaderboard.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#74C332",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo/logo_only.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo/logo_only.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

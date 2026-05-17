@@ -50,16 +50,16 @@ export function DataListLayout({
   sidebar,
 }: DataListLayoutProps) {
   return (
-    <div className="min-h-screen bg-surface dark:bg-dark-background">
+    <div className="min-h-screen bg-background">
 
       {/* ── MOBILE ── */}
       <div className="flex flex-col min-h-screen md:hidden">
         {/* Page header sticky */}
-        <header className="sticky top-0 z-40 bg-background dark:bg-dark-surface border-b border-border dark:border-dark-border">
+        <header className="sticky top-0 z-40 bg-background border-b border-border">
           {pageHeader}
           {/* Filter bar tepat di bawah header */}
           {filterBar && (
-            <div className="px-4 py-2 border-t border-border dark:border-dark-border bg-background dark:bg-dark-surface">
+            <div className="px-4 py-2 border-t border-border bg-background">
               {filterBar}
             </div>
           )}
@@ -73,7 +73,7 @@ export function DataListLayout({
 
         {/* BottomNav sticky */}
         {bottomNav && (
-          <nav className="fixed bottom-0 left-0 right-0 z-40 bg-background dark:bg-dark-surface border-t border-border dark:border-dark-border safe-area-bottom">
+          <nav className="fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border safe-area-bottom">
             {bottomNav}
           </nav>
         )}
@@ -82,16 +82,16 @@ export function DataListLayout({
       {/* ── DESKTOP ── */}
       <div className="hidden md:flex min-h-screen">
         {sidebar && (
-          <aside className="sticky top-0 h-screen w-64 shrink-0 border-r border-border dark:border-dark-border bg-background dark:bg-dark-surface overflow-y-auto">
+          <aside className="sticky top-0 h-screen w-64 shrink-0 border-r border-border bg-background overflow-y-auto">
             {sidebar}
           </aside>
         )}
 
         <div className="flex-1 flex flex-col">
-          <header className="sticky top-0 z-40 bg-background dark:bg-dark-surface border-b border-border dark:border-dark-border">
+          <header className="sticky top-0 z-40 bg-background border-b border-border">
             {pageHeader}
             {filterBar && (
-              <div className="px-6 py-3 border-t border-border dark:border-dark-border">
+              <div className="px-6 py-3 border-t border-border">
                 {filterBar}
               </div>
             )}

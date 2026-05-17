@@ -41,9 +41,9 @@ export function FocusExamLayout({
   actionFooter,
 }: FocusExamLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col bg-background dark:bg-dark-background">
+    <div className="min-h-screen flex flex-col bg-background">
       {/* ExamTopBar — sticky, minimalis */}
-      <header className="sticky top-0 z-50 w-full bg-background dark:bg-dark-surface border-b border-border dark:border-dark-border">
+      <header className="sticky top-0 z-50 w-full bg-background border-b border-border">
         {topBar}
       </header>
 
@@ -62,7 +62,7 @@ export function FocusExamLayout({
 
       {/* Footer aksi — sticky di bawah */}
       {actionFooter && (
-        <footer className="sticky bottom-0 z-10 w-full bg-background dark:bg-dark-surface border-t border-border dark:border-dark-border px-4 py-3 safe-area-bottom">
+        <footer className="sticky bottom-0 z-10 w-full bg-background border-t border-border px-4 py-3 safe-area-bottom">
           <div className="max-w-2xl mx-auto">
             {actionFooter}
           </div>

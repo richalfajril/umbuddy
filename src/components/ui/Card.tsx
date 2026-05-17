@@ -22,7 +22,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 const variantClasses: Record<CardVariant, string> = {
   default: 'card',
   surface: 'card-surface',
-  game: 'bg-white dark:bg-dark-surface border-2 border-primary rounded-2xl',
+  game: 'bg-background border-2 border-primary rounded-2xl',
 }
 
 const paddingClasses = {
@@ -75,7 +75,7 @@ export function CardBody({ children, className = '', ...props }: React.HTMLAttri
 /** Sub-komponen untuk footer kartu */
 export function CardFooter({ children, className = '', ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={['mt-4 pt-4 border-t border-border dark:border-dark-border', className].join(' ')} {...props}>
+    <div className={['mt-4 pt-4 border-t border-border', className].join(' ')} {...props}>
       {children}
     </div>
   )

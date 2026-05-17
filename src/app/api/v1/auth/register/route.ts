@@ -1,5 +1,26 @@
 import { NextResponse } from 'next/server'
 import { AuthService } from '@/services/auth.service'
+import { getClientIp, rateLimitByKey } from '@/lib/redis/rate-limit'
+import { validateDto } from '@/lib/validation/dto'
+import { RegisterUserDto } from './register.dto'
+
+function errorResponse(
+  code: string,
+  message: string,
+  status: number,
+  details: Array<{ field: string; message: string }> = []
+) {
+  return NextResponse.json(
+    {
+      error: {
+        code,
+        message,
+        details,
+      },
+    },
+    { status }
+  )
+}
 
 /**
  * API Route: /api/v1/auth/register
@@ -9,27 +30,52 @@ import { AuthService } from '@/services/auth.service'
  */
 export async function POST(req: Request) {
   try {
-    const { name, email, password } = await req.json()
+    const ip = getClientIp(req.headers)
+    const rateLimit = await rateLimitByKey(`auth:register:${ip}`, 5, 15 * 60)
 
-    if (!name || !email || !password) {
+    if (!rateLimit.allowed) {
       return NextResponse.json(
-        { error: 'Nama, email, dan password wajib diisi' },
-        { status: 400 }
+        {
+          error: {
+            code: 'RATE_LIMITED',
+            message: 'Terlalu banyak percobaan registrasi. Coba lagi nanti.',
+            details: [],
+          },
+        },
+        {
+          status: 429,
+          headers: { 'Retry-After': String(rateLimit.retryAfterSeconds) },
+        }
       )
     }
 
-    if (password.length < 8) {
-      return NextResponse.json(
-        { error: 'Password minimal 8 karakter' },
-        { status: 400 }
+    let payload: unknown
+    try {
+      payload = await req.json()
+    } catch {
+      return errorResponse('INVALID_JSON', 'Request body harus JSON valid', 400)
+    }
+
+    const validation = await validateDto(RegisterUserDto, payload)
+    if (validation.data === null) {
+      return errorResponse(
+        'VALIDATION_ERROR',
+        'Invalid request data',
+        400,
+        validation.errors
       )
     }
 
-    const user = await AuthService.registerUser({ name, email, password })
+    const user = await AuthService.registerUser({
+      name: validation.data.name.trim(),
+      email: validation.data.email.trim().toLowerCase(),
+      password: validation.data.password,
+    })
 
     return NextResponse.json(
       { 
-        message: 'Registrasi berhasil',
+        message: 'Registrasi berhasil. Silakan verifikasi email sebelum masuk.',
+        verification_required: true,
         user: {
           id: user.id,
           name: user.name,
@@ -43,12 +89,9 @@ export async function POST(req: Request) {
     
     const message = error instanceof Error ? error.message : ''
     if (message === 'Email sudah terdaftar') {
-      return NextResponse.json({ error: message }, { status: 409 })
+      return errorResponse('EMAIL_ALREADY_REGISTERED', message, 409)
     }
 
-    return NextResponse.json(
-      { error: 'Terjadi kesalahan saat pendaftaran' },
-      { status: 500 }
-    )
+    return errorResponse('INTERNAL_ERROR', 'Terjadi kesalahan saat pendaftaran', 500)
   }
 }

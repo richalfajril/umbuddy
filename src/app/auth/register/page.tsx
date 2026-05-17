@@ -7,15 +7,23 @@ import { signIn } from 'next-auth/react'
 import { FormSettingsLayout } from '@/components/layouts/form-settings-layout'
 import { Button, Input, Label } from '@/components/ui'
 
+type ApiErrorResponse = {
+  error?: {
+    message?: string
+  }
+}
+
 export default function RegisterPage() {
   const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
+  const [successMessage, setSuccessMessage] = React.useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setSuccessMessage('')
     
     try {
       const response = await fetch('/api/v1/auth/register', {
@@ -24,18 +32,18 @@ export default function RegisterPage() {
         body: JSON.stringify({ name, email, password }),
       })
 
-      const data = await response.json()
+      const data = (await response.json()) as ApiErrorResponse & { message?: string }
 
       if (!response.ok) {
-        throw new Error(data.error || 'Gagal mendaftar')
+        throw new Error(data.error?.message || 'Gagal mendaftar')
       }
 
-      // Login otomatis setelah pendaftaran sukses
-      await signIn('credentials', {
-        email,
-        password,
-        callbackUrl: '/dashboard',
-      })
+      setSuccessMessage(
+        data.message ?? 'Registrasi berhasil. Silakan cek email untuk verifikasi akun sebelum masuk.'
+      )
+      setName('')
+      setEmail('')
+      setPassword('')
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Gagal mendaftar'
       alert(message)
@@ -64,7 +72,7 @@ export default function RegisterPage() {
     >
       <div className="space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="text-2xl font-black text-slate-800 dark:text-slate-100">
+          <h1 className="text-2xl font-black text-headline">
             Daftar Akun Baru
           </h1>
           <p className="text-body text-sm">
@@ -76,19 +84,19 @@ export default function RegisterPage() {
         <Button 
           type="button"
           variant="secondary" 
-          className="w-full h-14 bg-white dark:bg-dark-surface border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-dark-surface/80 flex items-center justify-center gap-3"
+          className="w-full h-14 bg-background border-border hover:bg-surface flex items-center justify-center gap-3"
           onClick={handleGoogleLogin}
         >
           <Image src="/logo/google.png" alt="Google" width={20} height={20} className="w-5 h-5" />
-          <span className="text-slate-700 dark:text-slate-200 font-bold">Daftar dengan Google</span>
+          <span className="text-headline font-bold">Daftar dengan Google</span>
         </Button>
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-slate-200 dark:border-slate-800" />
+            <span className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background dark:bg-dark-surface px-2 text-muted-foreground font-bold">
+            <span className="bg-background px-2 text-muted font-bold">
               Atau isi form manual
             </span>
           </div>
@@ -96,6 +104,12 @@ export default function RegisterPage() {
 
         {/* Credentials Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
+          {successMessage && (
+            <div className="rounded-lg border border-primary/30 bg-primary-light px-4 py-3 text-sm font-bold text-primary-dark">
+              {successMessage}
+            </div>
+          )}
+
           <div className="space-y-2">
             <Label htmlFor="name">Nama Lengkap</Label>
             <Input 

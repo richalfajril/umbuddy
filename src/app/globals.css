@@ -19,29 +19,58 @@
 
 /* ── 2. Design Tokens via @theme ──────────────────────────────
  * Sumber: UI_UX.md — "Clean White & Gamified Green" palette
- * Semua token di sini menjadi Tailwind utility class secara otomatis.
- * Contoh: --color-primary → bg-primary, text-primary, border-primary
+ * Menggunakan CSS Variables agar dark mode bisa di-toggle otomatis.
  * ─────────────────────────────────────────────────────────── */
+:root {
+  color-scheme: light;
+  --background: #FFFFFF;
+  --surface: #F3F4F6;
+  --surface-hover: #E9EAEC;
+  --border: #E5E7EB;
+  --border-strong: #D1D5DB;
+  --headline: #1F2937;
+  --body: #4B5563;
+  --muted: #9CA3AF;
+  --placeholder: #D1D5DB;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #0F172A;
+  --surface: #1E293B;
+  --surface-hover: #293548;
+  --border: #334155;
+  --border-strong: #475569;
+  --headline: #F8FAFC;
+  --body: #CBD5E1;
+  --muted: #64748B;
+  --placeholder: #475569;
+}
+
 @theme {
   /* ── Typography ── */
   --font-sans: var(--font-inter), system-ui, sans-serif;
   --font-display: var(--font-nunito), system-ui, sans-serif;
 
-  /* ── Color: Base & Surface (80% layar) ── */
-  --color-background: #FFFFFF;
-  --color-surface: #F3F4F6;
-  --color-surface-hover: #E9EAEC;
-  --color-border: #E5E7EB;
-  --color-border-strong: #D1D5DB;
+  /* ── Core Colors (Automatic Dark Mode) ── */
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-headline: var(--headline);
+  --color-body: var(--body);
+  --color-muted: var(--muted);
+  --color-placeholder: var(--placeholder);
 
-  /* ── Color: Primary Green (10% layar — hanya CTA) ── */
+  /* ── Fixed Colors (Stay the same or slight shift) ── */
   --color-primary: #74C332;
   --color-primary-hover: #65AC2A;
   --color-primary-dark: #155D27;
   --color-primary-light: #E8F5D6;
   --color-primary-foreground: #FFFFFF;
 
-  /* ── Color: Gamification Accent (5% layar) ── */
+  /* ── Gamification Accent ── */
   --color-xp: #FFC300;
   --color-xp-light: #FFF3CC;
   --color-beige: #F4CA6A;
@@ -51,13 +80,7 @@
   --color-success: #74C332;
   --color-warning: #FFC300;
 
-  /* ── Color: Typography ── */
-  --color-headline: #1F2937;
-  --color-body: #4B5563;
-  --color-muted: #9CA3AF;
-  --color-placeholder: #D1D5DB;
-
-  /* ── Color: Dark Mode ── */
+  /* ── Legacy Tokens (for compatibility) ── */
   --color-dark-background: #0F172A;
   --color-dark-surface: #1E293B;
   --color-dark-surface-hover: #293548;
@@ -98,16 +121,76 @@
   --duration-slow: 350ms;
 }
 
-/* ── 3. CSS Variables untuk Dark Mode (class-based) ──────────
- * Menggunakan class .dark pada <html> agar bisa di-toggle via Zustand.
- * Sesuai UI_UX.md & AUDITOR.md: dark mode wajib eksplisit di setiap komponen.
+/* ── 3. Theme State Variables ───────────────────────────────
+ * Tailwind utilities seperti bg-background membaca --color-*.
+ * Definisikan --color-* langsung per theme agar toggle light/dark
+ * tidak hanya mengubah ikon, tetapi benar-benar mengganti warna UI.
  * ─────────────────────────────────────────────────────────── */
-:root {
+:root,
+.light {
   color-scheme: light;
+  --background: #FFFFFF;
+  --surface: #F3F4F6;
+  --surface-hover: #E9EAEC;
+  --border: #E5E7EB;
+  --border-strong: #D1D5DB;
+  --headline: #1F2937;
+  --body: #4B5563;
+  --muted: #9CA3AF;
+  --placeholder: #D1D5DB;
+
+  --color-background: #FFFFFF;
+  --color-surface: #F3F4F6;
+  --color-surface-hover: #E9EAEC;
+  --color-border: #E5E7EB;
+  --color-border-strong: #D1D5DB;
+  --color-headline: #1F2937;
+  --color-body: #4B5563;
+  --color-muted: #9CA3AF;
+  --color-placeholder: #D1D5DB;
+  --color-primary: #74C332;
+  --color-primary-hover: #65AC2A;
+  --color-primary-dark: #155D27;
+  --color-primary-light: #E8F5D6;
+  --color-primary-foreground: #FFFFFF;
+  --color-xp: #FFC300;
+  --color-xp-light: #FFF3CC;
+  --color-error: #FF6B6B;
+  --color-error-light: #FFEDED;
+  --color-error-dark: #CC5555;
 }
 
 .dark {
   color-scheme: dark;
+  --background: #0F172A;
+  --surface: #1E293B;
+  --surface-hover: #293548;
+  --border: #334155;
+  --border-strong: #475569;
+  --headline: #F8FAFC;
+  --body: #CBD5E1;
+  --muted: #64748B;
+  --placeholder: #475569;
+
+  --color-background: #0F172A;
+  --color-surface: #1E293B;
+  --color-surface-hover: #293548;
+  --color-border: #334155;
+  --color-border-strong: #475569;
+  --color-headline: #F8FAFC;
+  --color-body: #CBD5E1;
+  --color-muted: #64748B;
+  --color-placeholder: #475569;
+  --color-primary: #5DA828;
+  --color-primary-hover: #74C332;
+  --color-primary-dark: #155D27;
+  --color-primary-light: rgba(93, 168, 40, 0.15);
+  --color-primary-foreground: #FFFFFF;
+  --color-xp: #E6B000;
+  --color-xp-light: rgba(230, 176, 0, 0.15);
+  --color-error: #E85555;
+  --color-error-light: rgba(232, 85, 85, 0.15);
+  --color-error-dark: #FF8A8A;
 }
 
 /* ── 4. Base Styles ──────────────────────────────────────────
@@ -143,8 +226,8 @@
 
   /* Dark mode body */
   .dark body {
-    background-color: var(--color-dark-background);
-    color: var(--color-dark-body);
+    background-color: var(--color-background);
+    color: var(--color-body);
   }
 
   /* Headings — Nunito, bold, game-feel */
@@ -162,7 +245,7 @@
   .dark h4,
   .dark h5,
   .dark h6 {
-    color: var(--color-dark-headline);
+    color: var(--color-headline);
   }
 
   /* Links */
@@ -289,10 +372,10 @@
   }
 
   .dark .btn-secondary {
-    background-color: var(--color-dark-surface);
-    color: var(--color-dark-headline);
-    border-color: var(--color-dark-border);
-    box-shadow: 0 4px 0 0 var(--color-dark-border);
+    background-color: var(--color-surface);
+    color: var(--color-headline);
+    border-color: var(--color-border-strong);
+    box-shadow: 0 4px 0 0 var(--color-border-strong);
   }
 
   /* ─── DANGER BUTTON ─── */
@@ -350,7 +433,7 @@
   }
 
   .dark .btn-ghost:hover {
-    background-color: rgba(93, 168, 40, 0.15);
+    background-color: var(--color-primary-light);
   }
 
   /* ─── CARD ───
@@ -373,13 +456,13 @@
   }
 
   .dark .card {
-    background-color: var(--color-dark-surface);
-    border-color: var(--color-dark-border);
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
   }
 
   .dark .card-surface {
-    background-color: var(--color-dark-background);
-    border-color: var(--color-dark-border);
+    background-color: var(--color-background);
+    border-color: var(--color-border);
   }
 
   /* ─── XP BADGE ─── */
@@ -398,9 +481,9 @@
   }
 
   .dark .xp-chip {
-    background-color: rgba(230, 176, 0, 0.15);
-    color: var(--color-dark-xp);
-    border-color: var(--color-dark-xp);
+    background-color: var(--color-xp-light);
+    color: var(--color-xp);
+    border-color: var(--color-xp);
   }
 
   /* ─── PROGRESS BAR ─── */
@@ -421,8 +504,8 @@
   }
 
   .dark .progress-bar-track {
-    background-color: var(--color-dark-surface);
-    border-color: var(--color-dark-border);
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
   }
 
   /* ─── ANSWER OPTION (untuk Practice/CAT/Battle) ─── */
@@ -469,14 +552,14 @@
   }
 
   .dark .answer-option {
-    background-color: var(--color-dark-surface);
-    border-color: var(--color-dark-border);
-    color: var(--color-dark-body);
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-body);
   }
 
   .dark .answer-option:hover {
-    border-color: var(--color-dark-primary);
-    background-color: rgba(93, 168, 40, 0.1);
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-light);
   }
 
   /* ─── BOTTOM NAVIGATION (Mobile only) ─── */
@@ -495,8 +578,8 @@
   }
 
   .dark .bottom-nav {
-    background-color: var(--color-dark-surface);
-    border-top-color: var(--color-dark-border);
+    background-color: var(--color-surface);
+    border-top-color: var(--color-border);
   }
 
   /* ─── FOCUS/EXAM LAYOUT — Top Bar ─── */
@@ -513,8 +596,8 @@
   }
 
   .dark .exam-topbar {
-    background-color: var(--color-dark-surface);
-    border-bottom-color: var(--color-dark-border);
+    background-color: var(--color-surface);
+    border-bottom-color: var(--color-border);
   }
 
   /* ─── STREAK FLAME BADGE ─── */
@@ -532,8 +615,8 @@
   }
 
   .dark .streak-badge {
-    background-color: rgba(230, 176, 0, 0.12);
-    color: var(--color-dark-xp);
+    background-color: var(--color-xp-light);
+    color: var(--color-xp);
   }
 
   /* ─── EMPTY STATE ─── */
@@ -580,17 +663,17 @@
   }
 
   .dark .input-field {
-    background-color: var(--color-dark-surface);
-    border-color: var(--color-dark-border);
-    color: var(--color-dark-headline);
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-headline);
   }
 
   .dark .input-field::placeholder {
-    color: var(--color-dark-muted);
+    color: var(--color-muted);
   }
 
   .dark .input-field:focus {
-    border-color: var(--color-dark-primary);
+    border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(93, 168, 40, 0.2);
   }
 }
@@ -686,9 +769,9 @@
   .dark .skeleton {
     background: linear-gradient(
       90deg,
-      var(--color-dark-surface) 25%,
-      var(--color-dark-surface-hover) 50%,
-      var(--color-dark-surface) 75%
+      var(--color-surface) 25%,
+      var(--color-surface-hover) 50%,
+      var(--color-surface) 75%
     );
     background-size: 200% 100%;
   }
@@ -712,6 +795,6 @@
   }
 
   .dark .prose-question {
-    color: var(--color-dark-body);
+    color: var(--color-body);
   }
 }

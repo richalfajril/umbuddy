@@ -44,7 +44,7 @@ export function XPBar({
     <div className={['space-y-1.5', className].join(' ')}>
       {/* Labels atas */}
       <div className="flex items-center justify-between">
-        <span className="font-display font-bold text-sm text-headline dark:text-dark-headline">
+        <span className="font-display font-bold text-sm text-headline">
           {currentTitle}
         </span>
         <span className="font-display font-bold text-sm text-primary">
@@ -66,8 +66,8 @@ export function XPBar({
 
       {/* Label bawah — target berikutnya */}
       {!isMax && nextTitle && (
-        <p className="text-xs text-muted dark:text-dark-muted text-right">
-          Menuju <span className="font-bold text-body dark:text-dark-body">{nextTitle}</span>
+        <p className="text-xs text-muted text-right">
+          Menuju <span className="font-bold text-body">{nextTitle}</span>
         </p>
       )}
     </div>

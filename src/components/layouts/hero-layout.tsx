@@ -32,7 +32,7 @@ interface HeroLayoutProps {
  */
 export function HeroLayout({ navbar, hero, children, footer }: HeroLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col bg-background dark:bg-dark-background">
+    <div className="min-h-screen flex flex-col bg-background">
       {/* Navbar — sticky transparan, di atas semua konten */}
       {navbar && (
         <header className="sticky top-0 z-50 w-full">

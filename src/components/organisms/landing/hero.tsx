@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui'
-import { ArrowRight, Trophy, Zap } from 'lucide-react'
+import { ArrowRight, Clock, Target, Trophy, Zap } from 'lucide-react'
 
 /**
  * HeroSection Landing Page.
@@ -10,12 +10,6 @@ import { ArrowRight, Trophy, Zap } from 'lucide-react'
 export function LandingHero() {
   return (
     <section className="relative w-full pt-20 pb-32 overflow-hidden">
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full -z-10 opacity-10 dark:opacity-5">
-        <div className="absolute top-20 left-10 w-64 h-64 bg-primary rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent rounded-full blur-3xl animate-pulse delay-1000" />
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">
           
@@ -36,7 +30,7 @@ export function LandingHero() {
                   className="h-16 md:h-24 w-auto dark:brightness-110"
                 />
               </div>
-              <h1 className="text-4xl md:text-6xl font-black font-display text-headline dark:text-dark-headline leading-tight">
+              <h1 className="text-4xl md:text-6xl font-black font-display text-headline leading-tight">
                 Belajar CPNS Serasa <br />
                 <span className="text-primary italic">Main Game!</span>
               </h1>
@@ -61,13 +55,13 @@ export function LandingHero() {
 
             <div className="flex items-center justify-center lg:justify-start gap-6 pt-8 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
               <div className="flex items-center gap-2">
-                <Zap className="w-5 h-5 text-accent" />
+                <Zap className="w-5 h-5 text-xp" />
                 <span className="font-bold">100% GRATIS</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-2">
                   {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="w-8 h-8 rounded-full border-2 border-background bg-slate-200" />
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-background bg-surface" />
                   ))}
                 </div>
                 <span className="text-sm font-medium">10,000+ Umbies Bersaing</span>
@@ -87,8 +81,26 @@ export function LandingHero() {
                 priority
               />
             </div>
-            {/* Background Blob */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-primary/20 dark:bg-primary/10 rounded-full blur-3xl -z-10" />
+            <div className="absolute -left-6 top-8 z-20 rounded-2xl border-2 border-border bg-background p-4 shadow-card">
+              <div className="flex items-center gap-3">
+                <Target className="h-6 w-6 text-primary" aria-hidden="true" />
+                <div>
+                  <p className="text-xs font-black text-muted">Target SKD</p>
+                  <p className="font-display text-lg font-black text-headline">472+</p>
+                </div>
+              </div>
+            </div>
+            <div className="absolute -right-4 bottom-8 z-20 rounded-2xl border-2 border-border bg-background p-4 shadow-card">
+              <div className="flex items-center gap-3">
+                <Clock className="h-6 w-6 text-xp" aria-hidden="true" />
+                <div>
+                  <p className="text-xs font-black text-muted">CAT Mode</p>
+                  <p className="font-display text-lg font-black text-headline">100 menit</p>
+                </div>
+              </div>
+            </div>
+            {/* Green Glow Blob behind Mascot */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] bg-primary rounded-full blur-[80px] opacity-35 dark:opacity-25 -z-10 animate-pulse" />
           </div>
         </div>
       </div>

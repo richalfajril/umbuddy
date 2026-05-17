@@ -3,6 +3,7 @@ import {
   LandingNavbar, 
   LandingHero, 
   LandingFeatures, 
+  LandingShowcases,
   LandingFAQ, 
   LandingFooter 
 } from '@/components/organisms/landing'
@@ -19,7 +20,7 @@ export default function LandingPage() {
       footer={<LandingFooter />}
     >
       <LandingFeatures />
-      {/* Social Proof / Testimonials could go here */}
+      <LandingShowcases />
       <LandingFAQ />
     </HeroLayout>
   )

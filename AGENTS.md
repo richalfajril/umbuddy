@@ -23,7 +23,7 @@ AI Assistant wajib membaca dan mematuhi dokumen ini sebelum menulis, mengedit, a
 Sebagai AI Assistant di proyek Umbuddy, Anda wajib mematuhi aturan berikut:
 
 1. **Zero-Budget Mindset:**
-   Proyek ini memiliki budget operasional $0 untuk V1. **JANGAN PERNAH** mengimplementasikan, menyarankan, atau menginstal *library/service* yang memerlukan biaya (seperti AWS S3 berbayar, Google Cloud Tasks, layanan eksternal berbayar). Gunakan hanya *stack* yang disepakati: Supabase Free, Upstash Redis Free, dan Brevo Free.
+   Proyek ini memiliki budget operasional $0 untuk V1. **JANGAN PERNAH** mengimplementasikan, menyarankan, atau menginstal *library/service* yang memerlukan biaya (seperti AWS S3 berbayar, Google Cloud Tasks, layanan eksternal berbayar). Gunakan hanya *stack* yang disepakati: Supabase Free, Upstash Redis Free, dan Resend Free.
 2. **Canonical Docs First:**
    Sebelum membuat fitur baru atau skema database, Anda **WAJIB** membaca `00_Data_Model.md` dan `00_API_Spec.md`. Jangan membuat asumsi struktur database atau *endpoint* sendiri.
 3. **No Hallucinated Libraries:**

@@ -24,10 +24,10 @@ const variantClasses: Record<BadgeVariant, string> = {
   primary: 'bg-primary-light border border-primary text-primary-dark',
   xp: 'xp-chip',
   success: 'bg-primary-light border border-primary text-primary-dark',
-  warning: 'bg-xp-light border border-xp text-amber-800 dark:text-dark-xp',
+  warning: 'bg-xp-light border border-xp text-headline',
   error: 'bg-error-light border border-error text-error-dark',
-  neutral: 'bg-surface border border-border text-body dark:bg-dark-surface dark:border-dark-border dark:text-dark-body',
-  outline: 'bg-transparent border border-border text-body dark:border-dark-border dark:text-dark-body',
+  neutral: 'bg-surface border border-border text-body',
+  outline: 'bg-transparent border border-border text-body',
 }
 
 const sizeClasses = {

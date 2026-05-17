@@ -14,6 +14,7 @@
  */
 
 import { PrismaClient } from '@prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
 
 // Deklarasi global untuk menyimpan instance di antara hot reload
 declare global {
@@ -26,7 +27,15 @@ declare global {
  * Di production: buat instance baru (no global pollution).
  */
 function createPrismaClient(): PrismaClient {
+  const databaseUrl = process.env.DATABASE_URL
+  if (!databaseUrl) {
+    throw new Error('[Prisma] Missing DATABASE_URL env var')
+  }
+
+  const adapter = new PrismaPg(databaseUrl)
+
   return new PrismaClient({
+    adapter,
     log:
       process.env.NODE_ENV === 'development'
         ? ['query', 'error', 'warn']
