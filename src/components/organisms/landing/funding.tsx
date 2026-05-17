@@ -15,10 +15,10 @@ export function LandingFunding() {
         {/* Title & Description */}
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-3xl md:text-5xl font-black font-display text-headline">
-            Dari Pejuang, Oleh Pejuang, <span className="text-primary">Untuk Pejuang</span>
+            Dari Cambies, Oleh Cambies, <span className="text-primary">Untuk Cambies</span>
           </h2>
           <p className="text-lg text-body max-w-2xl mx-auto leading-relaxed">
-            Saat ini Umbuddy hadir tanpa iklan mengganggu agar belajarmu tetap fokus. Sebagai platform komunitas, setiap kontribusi kecilmu sangat berarti untuk menjaga mimpi para <span className="text-primary font-bold">Cambies (Calon Umbies)</span> terus menyala.
+            Saat ini Umbuddy hadir secara gratis agar belajarmu tetap fokus. Sebagai platform komunitas, setiap kontribusi kecilmu sangat berarti untuk menjaga mimpi para <span className="text-primary font-bold">Cambies (Calon Umbies)</span> terus menyala.
           </p>
         </div>
 
@@ -50,7 +50,7 @@ export function LandingFunding() {
                   Dukung Server
                 </h3>
                 <p className="text-sm sm:text-base text-body leading-relaxed max-w-sm">
-                  Satu cangkir kopi darimu adalah nafas bagi kelangsungan platform ini. Dukung pengembang lewat Saweria agar server tetap hidup dan Umbuddy bisa terus online melayani puluhan ribu pejuang CPNS!
+                  Satu cangkir kopi hangat darimu sangat berarti untuk menjaga server tetap menyala. Dukung pengembang lewat Saweria agar Umbuddy terus online melayani puluhan ribu Cambies!
                 </p>
               </div>
             </div>
@@ -92,7 +92,7 @@ export function LandingFunding() {
                   Crowdsourcing Soal
                 </h3>
                 <p className="text-sm sm:text-base text-body leading-relaxed max-w-sm">
-                  Punya kumpulan soal Tryout CPNS, Kedinasan, atau BUMN yang bagus? Bagikan kontribusimu ke sesama Umbies agar bisa dibahas bersama dan mempermudah perjuangan rekan lainnya agar selalu ada update soal dan paket tryout terbaru!
+                  Punya bank soal CPNS, Kedinasan, atau BUMN yang bagus? Bagikan kontribusimu agar selalu ada update paket tryout terbaru untuk mempermudah perjuangan sesama Cambies!
                 </p>
               </div>
             </div>

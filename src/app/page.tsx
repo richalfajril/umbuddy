@@ -24,8 +24,8 @@ export default function LandingPage() {
     >
       <LandingFeatures />
       <LandingShowcases />
-      <LandingTestimonials />
       <LandingFunding />
+      <LandingTestimonials />
       <LandingFAQ />
       <LandingBottomCTA />
     </HeroLayout>
