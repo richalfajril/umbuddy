@@ -9,7 +9,7 @@ import { ArrowRight, Clock, Target, Trophy, Zap } from 'lucide-react'
  */
 export function LandingHero() {
   return (
-    <section className="relative w-full pt-20 pb-32 overflow-hidden bg-gradient-to-b from-primary-light/40 to-background dark:from-primary/10 dark:to-background">
+    <section className="relative w-full pt-20 pb-32 overflow-hidden bg-gradient-to-b from-primary-light/30 via-background to-background dark:from-primary/5 dark:via-background dark:to-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">
           

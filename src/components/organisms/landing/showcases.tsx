@@ -40,7 +40,7 @@ const testimonials = [
 export function LandingShowcases() {
   return (
     <>
-      <section id="battle" className="bg-background py-24">
+      <section id="battle" className="bg-gradient-to-b from-background to-surface/60 border-b border-border/40 py-24">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">
@@ -98,7 +98,7 @@ export function LandingShowcases() {
         </div>
       </section>
 
-      <section id="analytics" className="bg-background py-24">
+      <section id="analytics" className="bg-gradient-to-b from-surface/60 to-background border-b border-border/40 py-24">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
           <Card padding="lg">
             <div className="flex items-center gap-4">
@@ -150,7 +150,7 @@ export function LandingShowcases() {
         </div>
       </section>
 
-      <section id="leaderboard" className="bg-background py-24">
+      <section id="leaderboard" className="bg-gradient-to-b from-background to-surface/60 border-b border-border/40 py-24">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">
@@ -190,7 +190,7 @@ export function LandingShowcases() {
         </div>
       </section>
 
-      <section id="testimonials" className="bg-background py-24">
+      <section id="testimonials" className="bg-gradient-to-b from-surface/60 via-primary-light/10 to-background border-b border-border/40 py-24 dark:via-primary/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
             <h2 className="font-display text-3xl font-black text-headline md:text-5xl">
@@ -219,7 +219,7 @@ export function LandingShowcases() {
         </div>
       </section>
 
-      <section className="bg-background py-20">
+      <section className="bg-gradient-to-b from-primary-light/25 via-background to-background dark:from-primary/8 dark:via-background dark:to-background py-20">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-4 text-center sm:px-6 lg:px-8">
           <Image src="/mascot/mascot_encouraging.png" alt="" width={180} height={180} className="h-36 w-36 object-contain" />
           <div>
