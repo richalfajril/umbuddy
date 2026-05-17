@@ -24,9 +24,9 @@
 :root {
   color-scheme: light;
   --background: #FFFFFF;
-  --surface: #F3F4F6;
-  --surface-hover: #E9EAEC;
-  --border: #E5E7EB;
+  --surface: #F4F6F2;
+  --surface-hover: #E9ECE5;
+  --border: #E2E6DD;
   --border-strong: #D1D5DB;
   --headline: #1F2937;
   --body: #4B5563;
@@ -103,9 +103,9 @@
   /* ── Spacing tambahan ── */
   --spacing-safe-bottom: env(safe-area-inset-bottom, 0px);
 
-  /* ── Shadow — Minimal, border-first approach ── */
-  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
-  --shadow-elevated: 0 4px 6px -1px rgb(0 0 0 / 0.06), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+  /* ── Shadow — Organic green-tinted premium approach ── */
+  --shadow-card: 0 4px 20px -2px rgba(116, 195, 50, 0.03), 0 2px 8px -1px rgba(0, 0, 0, 0.02);
+  --shadow-elevated: 0 10px 30px -5px rgba(116, 195, 50, 0.06), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
 
   /* ── Chunky Button Shadow (Duolingo-style 3D effect) ── */
   --shadow-btn-primary: 0 4px 0 0 #155D27;
@@ -130,9 +130,9 @@
 .light {
   color-scheme: light;
   --background: #FFFFFF;
-  --surface: #F3F4F6;
-  --surface-hover: #E9EAEC;
-  --border: #E5E7EB;
+  --surface: #F4F6F2;
+  --surface-hover: #E9ECE5;
+  --border: #E2E6DD;
   --border-strong: #D1D5DB;
   --headline: #1F2937;
   --body: #4B5563;
@@ -140,9 +140,9 @@
   --placeholder: #D1D5DB;
 
   --color-background: #FFFFFF;
-  --color-surface: #F3F4F6;
-  --color-surface-hover: #E9EAEC;
-  --color-border: #E5E7EB;
+  --color-surface: #F4F6F2;
+  --color-surface-hover: #E9ECE5;
+  --color-border: #E2E6DD;
   --color-border-strong: #D1D5DB;
   --color-headline: #1F2937;
   --color-body: #4B5563;
@@ -445,7 +445,10 @@
     border: 1.5px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: 1.25rem;
-    transition: border-color var(--duration-normal) ease;
+    box-shadow: var(--shadow-card);
+    transition: border-color var(--duration-normal) ease,
+                box-shadow var(--duration-normal) ease,
+                transform var(--duration-normal) ease;
   }
 
   .card-surface {
@@ -453,16 +456,19 @@
     border: 1.5px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: 1.25rem;
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.01);
   }
 
   .dark .card {
     background-color: var(--color-surface);
     border-color: var(--color-border);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.2);
   }
 
   .dark .card-surface {
     background-color: var(--color-background);
     border-color: var(--color-border);
+    box-shadow: none;
   }
 
   /* ─── XP BADGE ─── */
