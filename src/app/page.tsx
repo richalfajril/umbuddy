@@ -5,6 +5,7 @@ import {
   LandingFeatures, 
   LandingShowcases,
   LandingTestimonials,
+  LandingFunding,
   LandingFAQ, 
   LandingBottomCTA,
   LandingFooter 
@@ -24,6 +25,7 @@ export default function LandingPage() {
       <LandingFeatures />
       <LandingShowcases />
       <LandingTestimonials />
+      <LandingFunding />
       <LandingFAQ />
       <LandingBottomCTA />
     </HeroLayout>
