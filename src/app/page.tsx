@@ -8,7 +8,8 @@ import {
   LandingFunding,
   LandingFAQ, 
   LandingBottomCTA,
-  LandingFooter 
+  LandingFooter,
+  LandingMetrics
 } from '@/components/organisms/landing'
 
 /**
@@ -22,6 +23,7 @@ export default function LandingPage() {
       hero={<LandingHero />}
       footer={<LandingFooter />}
     >
+      <LandingMetrics />
       <LandingFeatures />
       <LandingShowcases />
       <LandingFunding />
