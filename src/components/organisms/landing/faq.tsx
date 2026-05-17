@@ -39,7 +39,7 @@ export function LandingFAQ() {
   }
 
   return (
-    <section id="faq" className="py-24 bg-gradient-to-b from-background via-surface/30 to-background relative overflow-hidden">
+    <section id="faq" className="py-24 bg-background relative overflow-hidden">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-3xl md:text-5xl font-black font-display text-headline">
