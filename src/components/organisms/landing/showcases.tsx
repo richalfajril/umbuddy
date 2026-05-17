@@ -11,9 +11,9 @@ import {
 } from 'lucide-react'
 
 const leaderboardUsers = [
-  { rank: 1, name: 'Rani', xp: '18.420 XP', badge: 'Eselon III', color: 'bg-xp text-headline' },
-  { rank: 2, name: 'Bima', xp: '17.880 XP', badge: 'Umbies Senior', color: 'bg-primary text-primary-foreground' },
-  { rank: 3, name: 'Alya', xp: '16.950 XP', badge: 'Umbies Senior', color: 'bg-error text-white' },
+  { rank: 1, name: 'Rani', xp: '18.420 XP', badge: 'Esmelon III', badgeImg: '/badge/esmelon_III_d.png', color: 'bg-xp text-headline' },
+  { rank: 2, name: 'Bima', xp: '17.880 XP', badge: 'Umbies Senior', badgeImg: '/badge/umbies_senior_III_a.png', color: 'bg-primary text-primary-foreground' },
+  { rank: 3, name: 'Alya', xp: '16.950 XP', badge: 'Umbies I', badgeImg: '/badge/umbies_I_a.png', color: 'bg-error text-white' },
 ]
 
 export function LandingShowcases() {
@@ -125,7 +125,7 @@ export function LandingShowcases() {
               Rekomendasi belajar yang <span className="text-primary">jelas</span>, bukan cuma angka skor
             </h2>
             <p className="max-w-xl text-lg leading-8 text-body">
-              Umbuddy membaca pola jawabanmu dan mengubahnya jadi misi harian, prioritas materi, dan prediksi progress yang mudah ditindaklanjuti.
+              Umbuddy membaca pola jawabanmu dan mengubahnya jadi misi harian, prioritas materi, dan prediksi progress yang mudah ditindaklanjuti. Kamu nggak perlu bingung lagi harus mulai belajar dari mana setiap hari.
             </p>
             {/* Stat highlights */}
             <div className="grid grid-cols-2 gap-4">
@@ -154,7 +154,7 @@ export function LandingShowcases() {
               Naik rank, kumpulkan XP, dan kejar <span className="text-primary">jabatan impian</span>
             </h2>
             <p className="max-w-xl text-lg leading-8 text-body">
-              Ranking nasional, teman, dan tryout membuat progress terasa terlihat. Setiap latihan kecil punya efek ke perjalanan musim kamu.
+              Ranking nasional, teman, dan tryout membuat progress terasa terlihat. Setiap latihan kecil punya efek ke perjalanan musim kamu. Rasakan sensasi berkompetisi secara sehat dan buktikan kemampuanmu di puncak klasemen!
             </p>
           </div>
 
@@ -168,14 +168,35 @@ export function LandingShowcases() {
             <div className="space-y-3">
               {leaderboardUsers.map((user) => (
                 <div key={user.rank} className="flex items-center gap-4 rounded-2xl border border-border bg-surface p-4">
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-lg font-black ${user.color}`}>
+                  {/* 1. Nomor (Rank) */}
+                  <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-lg text-sm font-black bg-surface-hover text-headline">
                     {user.rank}
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-black text-headline">{user.name}</p>
-                    <p className="text-sm font-bold text-muted">{user.badge}</p>
+
+                  {/* 2. Avatar Profil */}
+                  <div className={`flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-xl font-display text-base font-black ${user.color}`}>
+                    {user.name.charAt(0)}
                   </div>
-                  <p className="font-display text-lg font-black text-primary">{user.xp}</p>
+
+                  {/* 3. Badge dari Asset */}
+                  <div className="flex-shrink-0 w-10 h-10 relative">
+                    <Image 
+                      src={user.badgeImg} 
+                      alt={user.badge} 
+                      width={40} 
+                      height={40} 
+                      className="w-full h-full object-contain" 
+                    />
+                  </div>
+
+                  {/* 4. Name & Badge Text */}
+                  <div className="min-w-0 flex-1">
+                    <p className="font-black text-headline leading-tight">{user.name}</p>
+                    <p className="text-xs font-bold text-muted mt-0.5">{user.badge}</p>
+                  </div>
+
+                  {/* 5. XP */}
+                  <p className="font-display text-base sm:text-lg font-black text-primary">{user.xp}</p>
                 </div>
               ))}
             </div>
