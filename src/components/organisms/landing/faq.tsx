@@ -10,8 +10,8 @@ const faqs = [
     answer: 'Umbuddy adalah platform persiapan CPNS revolusioner yang menggunakan gamifikasi untuk membuat belajarmu jadi seru dan kompetitif. Kami menggabungkan bank soal berkualitas dengan sistem Battle dan Analytics cerdas.'
   },
   {
-    question: 'Apakah Umbuddy benar-benar gratis?',
-    answer: 'Ya, 100% GRATIS! Kami tidak memungut biaya langganan atau menampilkan iklan yang mengganggu. Kami hidup dari donasi komunitas dan semangat para Umbies untuk saling membantu.'
+    question: 'Apakah Umbuddy gratis untuk diakses?',
+    answer: 'Ya, saat ini seluruh fitur utama di Umbuddy dapat diakses secara gratis tanpa biaya langganan tersembunyi atau iklan yang mengganggu. Kami sangat mengapresiasi dukungan komunitas lewat kontribusi sukarela untuk membantu operasional platform ini.'
   },
   {
     question: 'Bagaimana cara kerja Battle Arena?',

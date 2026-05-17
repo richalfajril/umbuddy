@@ -20,7 +20,7 @@ export function LandingFooter() {
               className="h-16 w-auto"
             />
             <p className="text-body text-sm leading-relaxed">
-              Platform persiapan CPNS revolusioner yang menggabungkan keseruan bermain dengan akurasi simulasi CAT. 100% Gratis, oleh Umbies untuk Umbies.
+              Platform persiapan CPNS revolusioner yang menggabungkan keseruan bermain dengan akurasi simulasi CAT. Dari Cambies, oleh Cambies, untuk Cambies.
             </p>
             <div className="flex items-center gap-4">
               <Link href="https://instagram.com" className="p-2 rounded-lg bg-surface hover:text-primary transition-colors text-body">
