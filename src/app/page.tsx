@@ -4,7 +4,9 @@ import {
   LandingHero, 
   LandingFeatures, 
   LandingShowcases,
+  LandingTestimonials,
   LandingFAQ, 
+  LandingBottomCTA,
   LandingFooter 
 } from '@/components/organisms/landing'
 
@@ -21,7 +23,9 @@ export default function LandingPage() {
     >
       <LandingFeatures />
       <LandingShowcases />
+      <LandingTestimonials />
       <LandingFAQ />
+      <LandingBottomCTA />
     </HeroLayout>
   )
 }
