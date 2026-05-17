@@ -20,7 +20,7 @@ export function LandingShowcases() {
   return (
     <>
       {/* ── Battle Showcase ── */}
-      <section id="battle" className="bg-gradient-to-b from-background to-surface/60 border-b border-border/40 pt-24 pb-12">
+      <section id="battle" className="bg-gradient-to-b from-background to-surface/60 border-b border-border/40 pt-16 pb-8">
         <div className="mx-auto grid max-w-7xl items-center gap-8 lg:gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">
@@ -79,7 +79,7 @@ export function LandingShowcases() {
       </section>
 
       {/* ── Analytics Showcase ── */}
-      <section id="analytics" className="bg-gradient-to-b from-surface/60 to-background border-b border-border/40 py-12">
+      <section id="analytics" className="bg-gradient-to-b from-surface/60 to-background border-b border-border/40 py-8">
         <div className="mx-auto grid max-w-7xl items-center gap-8 lg:gap-12 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
           <Card padding="lg">
             <div className="flex items-center gap-4">
@@ -143,7 +143,7 @@ export function LandingShowcases() {
       </section>
 
       {/* ── Leaderboard Showcase ── */}
-      <section id="leaderboard" className="bg-gradient-to-b from-background to-surface/60 border-b border-border/40 pt-12 pb-24">
+      <section id="leaderboard" className="bg-gradient-to-b from-background to-surface/60 border-b border-border/40 pt-8 pb-16">
         <div className="mx-auto grid max-w-7xl items-center gap-8 lg:gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">

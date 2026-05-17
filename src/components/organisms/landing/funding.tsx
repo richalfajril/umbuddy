@@ -4,7 +4,7 @@ import { Heart, UploadCloud } from 'lucide-react'
 
 export function LandingFunding() {
   return (
-    <section id="funding" className="py-24 bg-gradient-to-b from-background via-surface/30 to-background border-b border-border/40 relative overflow-hidden">
+    <section id="funding" className="py-20 bg-gradient-to-b from-background via-surface/30 to-background border-b border-border/40 relative overflow-hidden">
       
       {/* Decorative background shapes */}
       <div className="absolute top-1/4 -left-12 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
@@ -13,7 +13,7 @@ export function LandingFunding() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Title & Description */}
-        <div className="text-center mb-16 space-y-4">
+        <div className="text-center mb-12 space-y-4">
           <h2 className="text-3xl md:text-5xl font-black font-display text-headline">
             Dari Cambies, Oleh Cambies, <span className="text-primary">Untuk Cambies</span>
           </h2>

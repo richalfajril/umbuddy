@@ -93,7 +93,7 @@ const row2Testimonials = [
 
 export function LandingTestimonials() {
   return (
-    <section id="testimonials" className="bg-gradient-to-b from-surface/60 via-primary-light/10 to-background border-b border-border/40 py-24 dark:via-primary/5 relative overflow-hidden">
+    <section id="testimonials" className="bg-gradient-to-b from-surface/60 via-primary-light/10 to-background border-b border-border/40 py-20 dark:via-primary/5 relative overflow-hidden">
       {/* CSS Auto Marquee styles */}
       <style>{`
         @keyframes marqueeLeft {
@@ -151,7 +151,7 @@ export function LandingTestimonials() {
 
       <div className="w-full">
         {/* Title */}
-        <div className="mb-16 text-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-4">
+        <div className="mb-12 text-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-4">
           <h2 className="font-display text-3xl font-black text-headline md:text-5xl">
             Cerita Umbies & Harapan <span className="text-primary">Para Cambies</span>
           </h2>
