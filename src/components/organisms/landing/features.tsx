@@ -37,7 +37,7 @@ export function LandingFeatures() {
   return (
     <section id="features" className="py-24 bg-gradient-to-b from-surface/50 to-background border-t border-border/40 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16 space-y-4">
+        <div className="text-center mb-12 space-y-4">
           <h2 className="text-3xl md:text-5xl font-black font-display text-headline">
             Fitur Tactical Untuk <span className="text-primary">Kemenanganmu</span>
           </h2>
