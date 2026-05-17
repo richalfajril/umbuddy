@@ -6,28 +6,28 @@ import { ChevronDown } from 'lucide-react'
 
 const faqs = [
   {
-    question: 'Apa itu Umbuddy?',
-    answer: 'Umbuddy adalah platform persiapan CPNS revolusioner yang menggunakan gamifikasi untuk membuat belajarmu jadi seru dan kompetitif. Kami menggabungkan bank soal berkualitas dengan sistem Battle dan Analytics cerdas.'
+    question: 'Apakah Umbuddy cocok untuk pemula yang baru pertama kali ikut CPNS?',
+    answer: 'Sangat cocok! Umbuddy didesain agar tidak mengintimidasi pemula. Kami memecah tumpukan materi SKD yang raksasa menjadi misi harian kecil yang mudah diselesaikan. Kamu tidak akan merasa kewalahan (burnout) karena maskot pendampingmu akan membimbing dari dasar step-by-step.'
   },
   {
-    question: 'Apakah Umbuddy gratis untuk diakses?',
-    answer: 'Ya, saat ini seluruh fitur utama di Umbuddy dapat diakses secara gratis tanpa biaya langganan tersembunyi atau iklan yang mengganggu. Kami sangat mengapresiasi dukungan komunitas lewat kontribusi sukarela untuk membantu operasional platform ini.'
+    question: 'Apa bedanya Umbuddy dengan platform tryout biasa?',
+    answer: 'Platform biasa hanya memberi skor akhir dan kunci jawaban kaku. Di Umbuddy, kami fokus pada pembentukan konsistensi belajar melalui gamifikasi (Streak & Battle 1vs1) serta Smart Analytics yang membedah narasi kelemahanmu secara mendalam. Belajar di sini terasa seperti bermain game RPG yang seru!'
   },
   {
-    question: 'Bagaimana cara kerja Battle Arena?',
-    answer: 'Kamu bisa menantang teman atau user lain untuk duel 1vs1 mengerjakan paket soal CAT. Siapa yang mendapatkan skor tertinggi dengan waktu tercepat akan memenangkan Battle dan mendapatkan XP ekstra!'
+    question: 'Kenapa Umbuddy saat ini gratis untuk diakses?',
+    answer: 'Kami percaya persiapan masa depan yang cerah tidak harus dibatasi oleh biaya tinggi. Umbuddy lahir dari komunitas untuk sesama pejuang ASN. Kami berkomitmen menyediakan akses utama bebas biaya tanpa iklan yang mengganggu, didukung oleh sumbangan sukarela dan kontribusi soal dari para Umbies.'
   },
   {
-    question: 'Apa itu Rule-Based Analytics?',
-    answer: 'Sistem cerdas kami membedah setiap jawabanmu. Kami tidak hanya memberi skor, tapi juga memberitahu "kenapa" kamu salah dan sub-materi apa yang harus kamu pelajari lebih dalam (TWK, TIU, atau TKP).'
+    question: 'Bagaimana sistem Smart Analytics membantu mendongkrak skorku?',
+    answer: 'Setiap kali kamu menjawab soal, algoritma kami membaca pola pemahamanmu secara realtime. Analytics tidak hanya merekam statistik, tetapi menerjemahkannya menjadi tindakan nyata: prioritas materi yang wajib kamu serang, narasi rekomendasi belajar pribadi, hingga kalkulasi probabilitas kelolosan seleksimu.'
   },
   {
-    question: 'Apakah bisa dibuka di HP?',
-    answer: 'Tentu! Umbuddy didesain mobile-first. Kamu bisa belajar dan battle di mana saja, kapan saja, langsung dari browser smartphone-mu.'
+    question: 'Apakah sistem Ranked & Leaderboard mempengaruhi proses belajarku?',
+    answer: 'Ya, secara psikologis sangat membantu menjaga konsistensi! Sistem kasta golongan (mulai dari Umbies Magang hingga puncak Menteri) dirancang untuk memicu jiwa kompetitif yang sehat. Progress kecil belajarmu setiap hari dikonversi menjadi XP, membuat perjuangan belajarmu terasa selalu dihargai dan terukur dibanding pesaing nasional.'
   },
   {
-    question: 'Bagaimana cara menyumbang soal?',
-    answer: 'Kamu bisa klik fitur "Sumbang Soal" di dashboard. Soal yang kamu kirim akan direview oleh admin dan jika lolos akan diterbitkan atas namamu sebagai kontributor!'
+    question: 'Apakah platform ini bisa diakses lancar lewat HP?',
+    answer: 'Tentu saja! Umbuddy didesain dari awal dengan pendekatan mobile-first. Seluruh simulasi CAT, duel Battle Arena 1vs1, dan fitur analitik dapat berjalan sangat responsif dan mulus langsung dari browser smartphone kamu tanpa perlu menginstal aplikasi tambahan.'
   }
 ]
 
