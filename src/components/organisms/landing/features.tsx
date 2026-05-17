@@ -70,8 +70,8 @@ export function LandingFeatures() {
           <h2 className="text-3xl md:text-5xl font-black font-display text-headline">
             Fitur Tactical Untuk <span className="text-primary">Kemenanganmu</span>
           </h2>
-          <p className="text-lg text-body max-w-2xl mx-auto">
-            Semua yang kamu butuhkan untuk menaklukkan CPNS, dikemas dalam pengalaman bermain yang adiktif.
+          <p className="text-lg text-body max-w-2xl mx-auto leading-relaxed">
+            Belajar sedikit demi sedikit setiap hari tanpa kehilangan motivasi. Ucapkan selamat tinggal pada rasa bingung dan burnout saat menghadapi ribuan materi SKD.
           </p>
         </div>
 

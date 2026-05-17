@@ -34,8 +34,8 @@ export function LandingHero() {
                 Belajar CPNS Serasa <br />
                 <span className="text-primary italic">Main Game!</span>
               </h1>
-              <p className="text-lg md:text-xl text-body max-w-xl mx-auto lg:mx-0">
-                Lupakan cara belajar membosankan. Hadapi simulasi CAT, tantang teman dalam Battle, dan raih rank tertinggi untuk jadi ASN impian!
+              <p className="text-lg md:text-xl text-body max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                Bingung harus mulai belajar dari mana, stres dengan tumpukan materi, atau sulit konsisten belajar? Ubah belajarmu jadi seru. Pantau progress, temukan kelemahanmu sebelum ujian asli, dan raih instansi impian!
               </p>
             </div>
 
