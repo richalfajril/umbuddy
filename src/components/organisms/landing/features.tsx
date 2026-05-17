@@ -1,35 +1,64 @@
 import Image from 'next/image'
 import { Card } from '@/components/ui'
-import { Swords, Zap, BarChart3, Gift, Coffee } from 'lucide-react'
+import { 
+  BookOpen, 
+  Swords, 
+  BarChart3, 
+  Zap, 
+  Trophy, 
+  TrendingUp, 
+  Brain 
+} from 'lucide-react'
 
 const features = [
   {
-    title: 'Realtime CAT Battle',
-    description: 'Tantang temanmu dalam simulasi CAT 1vs1 secara realtime. Siapa yang lebih cepat dan tepat?',
-    icon: <Swords className="w-10 h-10 text-primary" />,
+    title: 'Daily Question Practice',
+    description: 'Latih kemampuanmu setiap hari dengan bank soal berkualitas tinggi yang selalu di-update secara berkala.',
+    icon: <BookOpen className="w-8 h-8 text-primary" />,
+    mascot: '/mascot/mascot_workout.png',
+    className: 'lg:col-span-1',
+  },
+  {
+    title: 'Realtime Mini CAT Battle',
+    description: 'Tantang sesama Umbies secara realtime. Adu cepat dan tepat dalam menjawab paket soal mini 1vs1 yang seru!',
+    icon: <Swords className="w-8 h-8 text-primary" />,
     mascot: '/mascot/mascot_battle.png',
-    className: 'lg:col-span-2 bg-primary-light/50',
+    className: 'lg:col-span-2 bg-primary-light/40 dark:bg-primary/5',
   },
   {
     title: 'Smart Analytics',
-    description: 'Bedah kelemahanmu dengan Rule-Based Analytics. Tahu persis bagian mana yang harus diperbaiki.',
+    description: 'Sistem analisis cerdas yang membedah kelemahan materi TWK, TIU, dan TKP milikmu secara mendalam.',
     icon: <BarChart3 className="w-8 h-8 text-xp" />,
     mascot: '/mascot/mascot_detective.png',
     className: 'lg:col-span-1',
   },
   {
     title: 'Simulasi CAT Akurat',
-    description: 'Pengalaman ujian yang mirip aslinya. 110 soal, 100 menit, sistem penilaian resmi.',
+    description: 'Pengalaman simulasi ujian dengan standar resmi BKN. Lengkap dengan batasan waktu, passing grade, dan pembobotan nilai nyata.',
     icon: <Zap className="w-8 h-8 text-xp" />,
     mascot: '/mascot/mascot_teaching.png',
     className: 'lg:col-span-1',
   },
   {
-    title: 'Sumbang Soal',
-    description: 'Bantu sesama Umbies dengan menyumbangkan soal berkualitas. Crowdsourcing untuk kita semua!',
-    icon: <Gift className="w-8 h-8 text-error" />,
-    mascot: '/mascot/mascot_donation.png',
-    className: 'lg:col-span-2 bg-xp-light/40',
+    title: 'Ranked System',
+    description: 'Naikkan kasta golongan kepangkatanmu dari Umbies Magang hingga mencapai Eselon tertinggi lewat perolehan XP.',
+    icon: <Trophy className="w-8 h-8 text-xp" />,
+    mascot: '/mascot/mascot_crown.png',
+    className: 'lg:col-span-1 bg-xp-light/20 dark:bg-xp/5',
+  },
+  {
+    title: 'Predictive Rank & Passing Probability',
+    description: 'Ketahui probabilitas kelolosan seleksi CPNS milikmu secara realtime berdasarkan tren performa belajarmu dibanding pesaing lain.',
+    icon: <TrendingUp className="w-8 h-8 text-primary" />,
+    mascot: '/mascot/mascot_success.png',
+    className: 'lg:col-span-2 bg-primary-light/20 dark:bg-primary/5',
+  },
+  {
+    title: 'Weakness Narrative',
+    description: 'Dapatkan penjelasan strategi belajar yang ramah dan interaktif dari maskot pendamping mengenai materi yang wajib kamu serang selanjutnya.',
+    icon: <Brain className="w-8 h-8 text-primary" />,
+    mascot: '/mascot/mascot_support.png',
+    className: 'lg:col-span-1',
   },
 ]
 
@@ -50,24 +79,24 @@ export function LandingFeatures() {
           {features.map((feature, idx) => (
             <Card 
               key={idx} 
-              className={`relative overflow-hidden group hover:scale-[1.02] transition-all p-8 flex flex-col justify-between h-full ${feature.className}`}
+              className={`relative overflow-hidden group hover:scale-[1.01] hover:-translate-y-1 transition-all duration-300 p-8 flex flex-col justify-between min-h-[280px] sm:min-h-[260px] ${feature.className}`}
             >
-              <div className="space-y-6 relative z-10">
+              <div className="space-y-6 relative z-10 max-w-[80%] sm:max-w-[75%] lg:max-w-[70%]">
                 <div className="p-3 bg-background rounded-2xl w-fit shadow-sm border border-border">
                   {feature.icon}
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-black font-display text-headline">
+                  <h3 className="text-xl sm:text-2xl font-black font-display text-headline">
                     {feature.title}
                   </h3>
-                  <p className="text-body leading-relaxed">
+                  <p className="text-sm sm:text-base text-body leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
               </div>
 
               {/* Mascot Preview */}
-              <div className="absolute -right-4 -bottom-4 w-40 h-40 opacity-20 lg:opacity-100 group-hover:scale-110 group-hover:-rotate-6 transition-all grayscale-[0.5] group-hover:grayscale-0">
+              <div className="absolute -right-4 -bottom-4 w-36 h-36 sm:w-40 sm:h-40 opacity-20 group-hover:opacity-30 lg:opacity-100 lg:group-hover:opacity-100 group-hover:scale-105 group-hover:-rotate-3 transition-all duration-300 grayscale-[0.3] group-hover:grayscale-0">
                 <Image 
                   src={feature.mascot} 
                   alt={feature.title} 
@@ -78,25 +107,6 @@ export function LandingFeatures() {
               </div>
             </Card>
           ))}
-        </div>
-
-        {/* Community & Donation Teaser */}
-        <div className="mt-20 p-8 rounded-3xl border-4 border-dashed border-primary/20 bg-background flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="flex items-center gap-6">
-            <div className="p-4 bg-primary/10 rounded-full">
-              <Coffee className="w-8 h-8 text-primary" />
-            </div>
-            <div>
-              <h4 className="text-xl font-bold text-headline">Dukung Server Umbuddy</h4>
-              <p className="text-body">Aplikasi ini 100% gratis tanpa iklan. Dukung kami agar server tetap menyala!</p>
-            </div>
-          </div>
-          <div className="flex gap-4 w-full md:w-auto">
-            <button className="flex-1 md:flex-none px-6 py-3 bg-xp hover:bg-warning text-headline font-bold rounded-xl shadow-[0_4px_0_0_var(--color-beige)] active:translate-y-[2px] active:shadow-[0_2px_0_0_var(--color-beige)] transition-all flex items-center justify-center gap-2">
-              <Coffee className="h-5 w-5" aria-hidden="true" />
-              <span>Donasi via Saweria</span>
-            </button>
-          </div>
         </div>
       </div>
     </section>
