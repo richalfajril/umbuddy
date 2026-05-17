@@ -9,7 +9,7 @@ import { ArrowRight, Clock, Target, Trophy, Zap } from 'lucide-react'
  */
 export function LandingHero() {
   return (
-    <section className="relative w-full pt-20 pb-32 overflow-hidden bg-gradient-to-b from-primary-light/30 via-background to-background dark:from-primary/5 dark:via-background dark:to-background">
+    <section className="relative w-full pt-20 pb-24 overflow-hidden bg-gradient-to-b from-primary-light/30 via-background to-background dark:from-primary/5 dark:via-background dark:to-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">
           
@@ -53,18 +53,33 @@ export function LandingHero() {
               </Link>
             </div>
 
-            <div className="flex items-center justify-center lg:justify-start gap-6 pt-8 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
-              <div className="flex items-center gap-2">
-                <Zap className="w-5 h-5 text-xp" />
-                <span className="font-bold">100% GRATIS</span>
-              </div>
-              <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center lg:justify-start gap-6 pt-8">
+              <div className="flex items-center gap-3">
                 <div className="flex -space-x-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="w-8 h-8 rounded-full border-2 border-background bg-surface" />
+                  {[
+                    { initial: 'A', color: 'bg-primary text-primary-foreground' },
+                    { initial: 'B', color: 'bg-xp text-headline' },
+                    { initial: 'R', color: 'bg-error text-white' },
+                    { initial: 'D', color: 'bg-dark-primary text-white' },
+                  ].map((av) => (
+                    <div key={av.initial} className={`w-8 h-8 rounded-full border-2 border-background ${av.color} flex items-center justify-center text-xs font-black`}>
+                      {av.initial}
+                    </div>
                   ))}
                 </div>
-                <span className="text-sm font-medium">10,000+ Umbies Bersaing</span>
+                <div>
+                  <div className="flex items-center gap-0.5">
+                    {[1,2,3,4,5].map(s => (
+                      <Zap key={s} className="w-3 h-3 text-xp fill-xp" />
+                    ))}
+                  </div>
+                  <span className="text-xs font-bold text-muted">10,000+ Umbies Bersaing</span>
+                </div>
+              </div>
+              <div className="h-8 w-px bg-border" />
+              <div className="flex items-center gap-2">
+                <Zap className="w-5 h-5 text-xp" />
+                <span className="font-bold text-body text-sm">100% GRATIS</span>
               </div>
             </div>
           </div>

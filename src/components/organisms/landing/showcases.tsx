@@ -6,17 +6,17 @@ import {
   BarChart3,
   CheckCircle2,
   Medal,
+  Quote,
   Shield,
   Swords,
   Target,
   Trophy,
-  Users,
 } from 'lucide-react'
 
 const leaderboardUsers = [
-  { rank: 1, name: 'Rani', xp: '18.420 XP', badge: 'Eselon III' },
-  { rank: 2, name: 'Bima', xp: '17.880 XP', badge: 'Umbies Senior' },
-  { rank: 3, name: 'Alya', xp: '16.950 XP', badge: 'Umbies Senior' },
+  { rank: 1, name: 'Rani', xp: '18.420 XP', badge: 'Eselon III', color: 'bg-xp text-headline' },
+  { rank: 2, name: 'Bima', xp: '17.880 XP', badge: 'Umbies Senior', color: 'bg-primary text-primary-foreground' },
+  { rank: 3, name: 'Alya', xp: '16.950 XP', badge: 'Umbies Senior', color: 'bg-error text-white' },
 ]
 
 const testimonials = [
@@ -24,25 +24,29 @@ const testimonials = [
     name: 'Nadia',
     result: '+84 poin simulasi',
     quote: 'Battle bikin latihan jadi nagih, tapi tetap serius buat ngejar passing grade.',
+    color: 'bg-primary text-primary-foreground',
   },
   {
     name: 'Fajar',
     result: 'Streak 21 hari',
     quote: 'Analytics-nya bantu aku tahu bagian TIU mana yang harus diserang duluan.',
+    color: 'bg-xp text-headline',
   },
   {
     name: 'Dewi',
     result: 'Top 10 mingguan',
     quote: 'Rasanya seperti punya sparring partner tiap hari, bukan cuma bank soal biasa.',
+    color: 'bg-error text-white',
   },
 ]
 
 export function LandingShowcases() {
   return (
     <>
+      {/* ── Battle Showcase ── */}
       <section id="battle" className="bg-gradient-to-b from-background to-surface/60 border-b border-border/40 py-24">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">
               <Swords className="h-4 w-4" aria-hidden="true" />
               <span className="text-xs font-black uppercase">Battle Showcase</span>
@@ -60,6 +64,16 @@ export function LandingShowcases() {
                   {item}
                 </div>
               ))}
+            </div>
+            {/* Stat card mini */}
+            <div className="inline-flex items-center gap-4 rounded-2xl border border-border bg-background px-5 py-4 shadow-card">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                <Swords className="h-5 w-5 text-primary" aria-hidden="true" />
+              </div>
+              <div>
+                <p className="font-display text-2xl font-black text-headline">2.400+</p>
+                <p className="text-xs font-bold text-muted">Battle aktif hari ini</p>
+              </div>
             </div>
           </div>
 
@@ -98,6 +112,7 @@ export function LandingShowcases() {
         </div>
       </section>
 
+      {/* ── Analytics Showcase ── */}
       <section id="analytics" className="bg-gradient-to-b from-surface/60 to-background border-b border-border/40 py-24">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
           <Card padding="lg">
@@ -135,7 +150,7 @@ export function LandingShowcases() {
             </div>
           </Card>
 
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div className="inline-flex items-center gap-2 rounded-full border border-xp/30 bg-xp-light px-4 py-2 text-headline">
               <BarChart3 className="h-4 w-4" aria-hidden="true" />
               <span className="text-xs font-black uppercase">Analytics Showcase</span>
@@ -146,10 +161,22 @@ export function LandingShowcases() {
             <p className="max-w-xl text-lg leading-8 text-body">
               Umbuddy membaca pola jawabanmu dan mengubahnya jadi misi harian, prioritas materi, dan prediksi progress yang mudah ditindaklanjuti.
             </p>
+            {/* Stat highlights */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="rounded-2xl border border-border bg-background p-4 text-center shadow-card">
+                <p className="font-display text-3xl font-black text-primary">92%</p>
+                <p className="text-xs font-bold text-muted mt-1">Akurasi prediksi skor</p>
+              </div>
+              <div className="rounded-2xl border border-border bg-background p-4 text-center shadow-card">
+                <p className="font-display text-3xl font-black text-xp">30+</p>
+                <p className="text-xs font-bold text-muted mt-1">Sub-materi dianalisis</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
+      {/* ── Leaderboard Showcase ── */}
       <section id="leaderboard" className="bg-gradient-to-b from-background to-surface/60 border-b border-border/40 py-24">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div className="space-y-6">
@@ -175,7 +202,7 @@ export function LandingShowcases() {
             <div className="space-y-3">
               {leaderboardUsers.map((user) => (
                 <div key={user.rank} className="flex items-center gap-4 rounded-2xl border border-border bg-surface p-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-lg font-black text-primary-foreground">
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-lg font-black ${user.color}`}>
                     {user.rank}
                   </div>
                   <div className="min-w-0 flex-1">
@@ -190,6 +217,7 @@ export function LandingShowcases() {
         </div>
       </section>
 
+      {/* ── Testimonials ── */}
       <section id="testimonials" className="bg-gradient-to-b from-surface/60 via-primary-light/10 to-background border-b border-border/40 py-24 dark:via-primary/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
@@ -202,23 +230,26 @@ export function LandingShowcases() {
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {testimonials.map((item) => (
-              <Card key={item.name} padding="lg">
-                <div className="mb-4 flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-light text-primary-dark">
-                    <Users className="h-6 w-6" aria-hidden="true" />
+              <Card key={item.name} padding="lg" className="relative overflow-hidden">
+                {/* Dekoratif tanda kutip */}
+                <Quote className="absolute top-4 right-4 h-10 w-10 text-border opacity-60" aria-hidden="true" />
+                <div className="mb-4 flex items-center gap-3 relative z-10">
+                  <div className={`flex h-12 w-12 items-center justify-center rounded-2xl font-display text-xl font-black ${item.color}`}>
+                    {item.name.charAt(0)}
                   </div>
                   <div>
                     <p className="font-black text-headline">{item.name}</p>
                     <p className="text-sm font-bold text-primary">{item.result}</p>
                   </div>
                 </div>
-                <p className="leading-7 text-body">{item.quote}</p>
+                <p className="leading-7 text-body relative z-10">&ldquo;{item.quote}&rdquo;</p>
               </Card>
             ))}
           </div>
         </div>
       </section>
 
+      {/* ── Bottom CTA ── */}
       <section className="bg-gradient-to-b from-primary-light/25 via-background to-background dark:from-primary/8 dark:via-background dark:to-background py-20">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-4 text-center sm:px-6 lg:px-8">
           <Image src="/mascot/mascot_encouraging.png" alt="" width={180} height={180} className="h-36 w-36 object-contain" />
