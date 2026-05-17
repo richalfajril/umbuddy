@@ -83,8 +83,8 @@ export function LandingShowcases() {
         <div ref={progressionRef} className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Text */}
           <div className={`space-y-6 transition-all duration-700 ${progressionVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">
-              <Flame className="h-4 w-4" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-xp/30 bg-xp-light px-4 py-2 text-headline dark:text-xp">
+              <Flame className="h-4 w-4 text-xp animate-pulse" aria-hidden="true" />
               <span className="text-xs font-black uppercase">Pilar 1: Progression-Based</span>
             </div>
             <h3 className="font-display text-2xl sm:text-3xl font-black text-headline md:text-4xl">
@@ -189,8 +189,8 @@ export function LandingShowcases() {
 
           {/* Right Text */}
           <div className={`order-1 lg:order-2 space-y-6 transition-all duration-700 ${battleVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">
-              <Swords className="h-4 w-4" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-xp/30 bg-xp-light px-4 py-2 text-headline dark:text-xp">
+              <Swords className="h-4 w-4 text-xp animate-pulse" aria-hidden="true" />
               <span className="text-xs font-black uppercase">Pilar 2: PvP Battle Realtime</span>
             </div>
             <h3 className="font-display text-2xl sm:text-3xl font-black text-headline md:text-4xl">
@@ -214,8 +214,8 @@ export function LandingShowcases() {
         <div ref={analyticsRef} className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Text */}
           <div className={`space-y-6 transition-all duration-700 ${analyticsVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
-            <div className="inline-flex items-center gap-2 rounded-full border border-xp/30 bg-xp-light px-4 py-2 text-headline">
-              <BarChart3 className="h-4 w-4" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-xp/30 bg-xp-light px-4 py-2 text-headline dark:text-xp">
+              <BarChart3 className="h-4 w-4 text-xp animate-pulse" aria-hidden="true" />
               <span className="text-xs font-black uppercase">Pilar 3: Adaptive Analytics</span>
             </div>
             <h3 className="font-display text-2xl sm:text-3xl font-black text-headline md:text-4xl">
@@ -300,8 +300,8 @@ export function LandingShowcases() {
 
           {/* Right Text */}
           <div className={`order-1 lg:order-2 space-y-6 transition-all duration-700 ${gamificationVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">
-              <Sparkles className="h-4 w-4" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-xp/30 bg-xp-light px-4 py-2 text-headline dark:text-xp">
+              <Sparkles className="h-4 w-4 text-xp animate-pulse" aria-hidden="true" />
               <span className="text-xs font-black uppercase">Pilar 4: Gamified Retention</span>
             </div>
             <h3 className="font-display text-2xl sm:text-3xl font-black text-headline md:text-4xl">
@@ -325,8 +325,8 @@ export function LandingShowcases() {
         <div ref={leaderboardRef} className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Text */}
           <div className={`space-y-6 transition-all duration-700 ${leaderboardVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">
-              <Trophy className="h-4 w-4" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-xp/30 bg-xp-light px-4 py-2 text-headline dark:text-xp">
+              <Trophy className="h-4 w-4 text-xp animate-pulse" aria-hidden="true" />
               <span className="text-xs font-black uppercase">Pilar 5: Community Ranked</span>
             </div>
             <h3 className="font-display text-2xl sm:text-3xl font-black text-headline md:text-4xl">
