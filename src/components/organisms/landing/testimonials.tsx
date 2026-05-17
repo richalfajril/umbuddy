@@ -155,7 +155,7 @@ export function LandingTestimonials() {
           <h2 className="font-display text-3xl font-black text-headline md:text-5xl">
             Cerita Umbies & Harapan <span className="text-primary">Para Cambies</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-3xl text-lg text-body leading-relaxed">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-body leading-relaxed">
             Intip kisah sukses rekan-rekan Umbies yang kini telah mengabdi di berbagai Kementerian, Lembaga, dan Instansi Impian. Baca juga harapan membara para Cambies yang sedang berjuang dan testimoni mereka bersama Umbuddy!
           </p>
         </div>

@@ -88,7 +88,7 @@ export function LandingFAQ() {
                 >
                   <div className="overflow-hidden">
                     <div className="pb-6 md:pb-8 px-6 md:px-8 border-t border-border/50">
-                      <p className="text-body leading-relaxed text-sm sm:text-base pt-4">
+                      <p className="text-body leading-relaxed text-sm sm:text-base pt-4 max-w-xl">
                         {faq.answer}
                       </p>
                     </div>
