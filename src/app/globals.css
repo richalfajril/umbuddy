@@ -327,7 +327,7 @@
 
   /* Efek "turun" saat ditekan — tactile & satisfying */
   .btn-primary:active {
-    transform: translateY(3px);
+    transform: translateY(4px);
     box-shadow: var(--shadow-btn-primary-pressed);
   }
 
@@ -367,7 +367,7 @@
   }
 
   .btn-secondary:active {
-    transform: translateY(3px);
+    transform: translateY(4px);
     box-shadow: var(--shadow-btn-secondary-pressed);
   }
 
@@ -402,7 +402,7 @@
   }
 
   .btn-danger:active {
-    transform: translateY(3px);
+    transform: translateY(4px);
     box-shadow: var(--shadow-btn-danger-pressed);
   }
 
@@ -423,13 +423,18 @@
     border: 2px solid transparent;
     cursor: pointer;
     transition: background-color var(--duration-fast) ease,
-                color var(--duration-fast) ease;
+                color var(--duration-fast) ease,
+                transform var(--duration-fast) ease;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
   }
 
   .btn-ghost:hover {
     background-color: var(--color-primary-light);
+  }
+
+  .btn-ghost:active {
+    transform: scale(0.97);
   }
 
   .dark .btn-ghost:hover {
@@ -442,18 +447,34 @@
    */
   .card {
     background-color: var(--color-background);
-    border: 1.5px solid var(--color-border);
+    border: 2px solid var(--color-border);
+    border-bottom-width: 5px; /* Thicker bottom border for 3D gaming card feel */
     border-radius: var(--radius-lg);
     padding: 1.25rem;
     box-shadow: var(--shadow-card);
     transition: border-color var(--duration-normal) ease,
                 box-shadow var(--duration-normal) ease,
-                transform var(--duration-normal) ease;
+                transform var(--duration-normal) cubic-bezier(0.34, 1.56, 0.64, 1),
+                border-bottom-width var(--duration-normal) ease;
+  }
+
+  .card:hover {
+    border-color: var(--color-border-strong);
+    transform: translateY(-2px);
+    border-bottom-width: 7px;
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .card:active {
+    transform: translateY(2px);
+    border-bottom-width: 3px;
+    box-shadow: var(--shadow-card);
   }
 
   .card-surface {
     background-color: var(--color-surface);
-    border: 1.5px solid var(--color-border);
+    border: 2px solid var(--color-border);
+    border-bottom-width: 4px;
     border-radius: var(--radius-lg);
     padding: 1.25rem;
     box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.01);
