@@ -41,7 +41,7 @@ const features = [
   },
   {
     title: 'Ranked System',
-    description: 'Naikkan kasta golongan kepangkatanmu dari Umbies Magang hingga mencapai Eselon tertinggi lewat perolehan XP.',
+    description: 'Naikkan kasta golongan kepangkatanmu lewat perolehan XP, mulai dari Umbies, Umbies Senior, Esmelon, hingga mencapai tingkat Menteri!',
     icon: <Trophy className="w-8 h-8 text-xp" />,
     mascot: '/mascot/mascot_crown.png',
     className: 'lg:col-span-1 bg-xp-light/20 dark:bg-xp/5',
