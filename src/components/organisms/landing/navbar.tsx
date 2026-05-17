@@ -37,28 +37,18 @@ export function LandingNavbar() {
   return (
     <nav className="w-full bg-background/80 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           {/* Logo Section */}
           <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="md:hidden">
-                <Image 
-                  src="/logo/logo_only.png" 
-                  alt="Umbuddy Logo" 
-                  width={48} 
-                  height={48} 
-                  className="w-11 h-11"
-                />
-              </div>
-              <div className="hidden md:block">
-                <Image 
-                  src="/logo/logo_horizontal.png" 
-                  alt="Umbuddy Logo" 
-                  width={180} 
-                  height={48} 
-                  className="h-12 w-auto"
-                />
-              </div>
+            <Link href="/" className="flex items-center">
+              <Image 
+                src="/logo/logo_horizontal.png" 
+                alt="Umbuddy Logo" 
+                width={210} 
+                height={56} 
+                className="h-14 w-auto"
+                priority
+              />
             </Link>
           </div>
 
