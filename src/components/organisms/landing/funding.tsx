@@ -18,7 +18,7 @@ export function LandingFunding() {
             Dari Pejuang, Oleh Pejuang, <span className="text-primary">Untuk Pejuang</span>
           </h2>
           <p className="text-lg text-body max-w-2xl mx-auto leading-relaxed">
-            Umbuddy berkomitmen 100% gratis dan bebas dari iklan yang mengganggu. Platform ini bernafas dan berkembang sepenuhnya dari kepedulian serta kekuatan gotong royong komunitas.
+            Saat ini Umbuddy hadir tanpa iklan mengganggu agar belajarmu tetap fokus. Sebagai platform komunitas, setiap kontribusi kecilmu sangat berarti untuk menjaga mimpi para <span className="text-primary font-bold">Cambies (Calon Umbies)</span> terus menyala.
           </p>
         </div>
 
@@ -35,7 +35,7 @@ export function LandingFunding() {
               {/* Mascot Container */}
               <div className="w-40 h-40 mb-6 relative group-hover:scale-105 transition-transform duration-300">
                 <Image 
-                  src="/mascot/mascot_donation.png" 
+                  src="/mascot/mascot_support.png" 
                   alt="Dukung Server" 
                   width={180} 
                   height={180} 
@@ -50,7 +50,7 @@ export function LandingFunding() {
                   Dukung Server
                 </h3>
                 <p className="text-sm sm:text-base text-body leading-relaxed max-w-sm">
-                  Traktir segelas kopi hangat untuk membiayai operasional cloud database dan server bulanan agar Umbuddy tetap online melayani puluhan ribu pejuang CPNS.
+                  Satu cangkir kopi darimu adalah nafas bagi kelangsungan platform ini. Dukung pengembang lewat Saweria agar server tetap hidup dan Umbuddy bisa terus online melayani puluhan ribu pejuang CPNS!
                 </p>
               </div>
             </div>
@@ -77,7 +77,7 @@ export function LandingFunding() {
               {/* Mascot Container */}
               <div className="w-40 h-40 mb-6 relative group-hover:scale-105 transition-transform duration-300">
                 <Image 
-                  src="/mascot/mascot_thankyou.png" 
+                  src="/mascot/mascot_donation.png" 
                   alt="Sumbang Soal" 
                   width={180} 
                   height={180} 
@@ -92,7 +92,7 @@ export function LandingFunding() {
                   Crowdsourcing Soal
                 </h3>
                 <p className="text-sm sm:text-base text-body leading-relaxed max-w-sm">
-                  Punya kumpulan soal Tryout yang bagus? Bagikan kontribusimu ke sesama Umbies agar bisa dibahas bersama dan mempermudah perjuangan rekan lainnya.
+                  Punya kumpulan soal Tryout CPNS, Kedinasan, atau BUMN yang bagus? Bagikan kontribusimu ke sesama Umbies agar bisa dibahas bersama dan mempermudah perjuangan rekan lainnya agar selalu ada update soal dan paket tryout terbaru!
                 </p>
               </div>
             </div>
