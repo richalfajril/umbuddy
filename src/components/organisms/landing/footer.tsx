@@ -15,9 +15,9 @@ export function LandingFooter() {
             <Image 
               src="/logo/logo_horizontal.png" 
               alt="Umbuddy Logo" 
-              width={192} 
-              height={48} 
-              className="h-12 w-auto"
+              width={240} 
+              height={64} 
+              className="h-16 w-auto"
             />
             <p className="text-body text-sm leading-relaxed">
               Platform persiapan CPNS revolusioner yang menggabungkan keseruan bermain dengan akurasi simulasi CAT. 100% Gratis, oleh Umbies untuk Umbies.

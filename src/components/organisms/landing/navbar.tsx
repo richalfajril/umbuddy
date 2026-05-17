@@ -44,9 +44,9 @@ export function LandingNavbar() {
               <Image 
                 src="/logo/logo_horizontal.png" 
                 alt="Umbuddy Logo" 
-                width={210} 
-                height={56} 
-                className="h-14 w-auto"
+                width={240} 
+                height={64} 
+                className="h-16 w-auto"
                 priority
               />
             </Link>
