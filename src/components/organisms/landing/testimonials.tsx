@@ -153,10 +153,10 @@ export function LandingTestimonials() {
         {/* Title */}
         <div className="mb-16 text-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-4">
           <h2 className="font-display text-3xl font-black text-headline md:text-5xl">
-            Cerita Umbies & Harapan <span className="text-primary font-bold">Para Cambies</span>
+            Cerita Umbies & Harapan <span className="text-primary">Para Cambies</span>
           </h2>
           <p className="mx-auto mt-4 max-w-3xl text-lg text-body leading-relaxed">
-            Intip kisah sukses rekan-rekan Umbies yang kini telah mengabdi di berbagai Kementerian, Lembaga, dan Instansi Impian. Baca juga harapan membara para Cambies yang sedang berjuang menembus batas bersama Umbuddy!
+            Intip kisah sukses rekan-rekan Umbies yang kini telah mengabdi di berbagai Kementerian, Lembaga, dan Instansi Impian. Baca juga harapan membara para Cambies yang sedang berjuang dan testimoni mereka bersama Umbuddy!
           </p>
         </div>
 
