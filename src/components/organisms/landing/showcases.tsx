@@ -65,16 +65,6 @@ export function LandingShowcases() {
                 </div>
               ))}
             </div>
-            {/* Stat card mini */}
-            <div className="inline-flex items-center gap-4 rounded-2xl border border-border bg-background px-5 py-4 shadow-card">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-                <Swords className="h-5 w-5 text-primary" aria-hidden="true" />
-              </div>
-              <div>
-                <p className="font-display text-2xl font-black text-headline">2.400+</p>
-                <p className="text-xs font-bold text-muted">Battle aktif hari ini</p>
-              </div>
-            </div>
           </div>
 
           <Card padding="lg" className="relative overflow-hidden">
