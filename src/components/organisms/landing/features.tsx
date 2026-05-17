@@ -79,7 +79,7 @@ export function LandingFeatures() {
           {features.map((feature, idx) => (
             <Card 
               key={idx} 
-              className={`relative overflow-hidden group hover:scale-[1.01] hover:-translate-y-1 transition-all duration-300 p-8 flex flex-col justify-between min-h-[280px] sm:min-h-[260px] ${feature.className}`}
+              className={`relative overflow-hidden group hover:scale-[1.01] hover:-translate-y-1 hover:border-primary/30 hover:shadow-elevated transition-all duration-300 p-8 flex flex-col justify-between min-h-[280px] sm:min-h-[260px] ${feature.className}`}
             >
               <div className="space-y-6 relative z-10 max-w-[80%] sm:max-w-[75%] lg:max-w-[70%]">
                 <div className="p-3 bg-background rounded-2xl w-fit shadow-sm border border-border">
