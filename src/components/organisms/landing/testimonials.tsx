@@ -28,7 +28,7 @@ export function LandingTestimonials() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 text-center">
           <h2 className="font-display text-3xl font-black text-headline md:text-5xl">
-            Latihan Jadi Punya Cerita
+            Latihan Jadi Punya <span className="text-primary">Cerita</span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-body">
             Simulasi, battle, dan streak membuat belajar terasa seperti perjalanan naik level.

@@ -28,13 +28,13 @@ export function LandingShowcases() {
               <span className="text-xs font-black uppercase">Battle Showcase</span>
             </div>
             <h2 className="font-display text-3xl font-black text-headline md:text-5xl">
-              Duel CAT 1vs1 yang bikin latihan terasa hidup
+              Duel Mini CAT 1vs1 yang bikin latihan <span className="text-primary">terasa hidup</span>
             </h2>
             <p className="max-w-xl text-lg leading-8 text-body">
-              Undang teman, jawab soal bareng, dan biarkan backend menghitung skor secara adil. Cocok buat menguji kecepatan tanpa kehilangan akurasi.
+              Undang teman, jawab soal bareng, dan bahas bersama. Cara seru belajar bareng.
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
-              {['Invite teman', 'Realtime state', 'XP fair-play'].map((item) => (
+              {['Invite teman', 'Bahas bersama', 'XP fair-play'].map((item) => (
                 <div key={item} className="flex items-center gap-2 font-bold text-headline">
                   <CheckCircle2 className="h-5 w-5 text-primary" aria-hidden="true" />
                   {item}
@@ -122,7 +122,7 @@ export function LandingShowcases() {
               <span className="text-xs font-black uppercase">Analytics Showcase</span>
             </div>
             <h2 className="font-display text-3xl font-black text-headline md:text-5xl">
-              Rekomendasi belajar yang jelas, bukan cuma angka skor
+              Rekomendasi belajar yang <span className="text-primary">jelas</span>, bukan cuma angka skor
             </h2>
             <p className="max-w-xl text-lg leading-8 text-body">
               Umbuddy membaca pola jawabanmu dan mengubahnya jadi misi harian, prioritas materi, dan prediksi progress yang mudah ditindaklanjuti.
@@ -151,7 +151,7 @@ export function LandingShowcases() {
               <span className="text-xs font-black uppercase">Leaderboard Showcase</span>
             </div>
             <h2 className="font-display text-3xl font-black text-headline md:text-5xl">
-              Naik rank, kumpulkan XP, dan kejar jabatan impian
+              Naik rank, kumpulkan XP, dan kejar <span className="text-primary">jabatan impian</span>
             </h2>
             <p className="max-w-xl text-lg leading-8 text-body">
               Ranking nasional, teman, dan tryout membuat progress terasa terlihat. Setiap latihan kecil punya efek ke perjalanan musim kamu.

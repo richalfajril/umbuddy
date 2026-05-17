@@ -10,7 +10,7 @@ export function LandingBottomCTA() {
         <Image src="/mascot/mascot_encouraging.png" alt="" width={180} height={180} className="h-36 w-36 object-contain" />
         <div>
           <h2 className="font-display text-3xl font-black text-headline md:text-5xl">
-            Siap mulai naik level hari ini?
+            Siap mulai <span className="text-primary">naik level</span> hari ini?
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-body">
             Buat akun gratis, pilih mode latihan, dan biarkan Umbuddy bantu kamu menjaga ritme belajar.
