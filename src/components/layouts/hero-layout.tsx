@@ -40,10 +40,10 @@ export function HeroLayout({ navbar, hero, children, footer }: HeroLayoutProps) 
         </header>
       )}
 
-      {/* Hero Section — full viewport height */}
-      <section className="relative w-full min-h-[100svh] flex flex-col items-center justify-center">
+      {/* Hero Section — renders directly below sticky navbar */}
+      <div className="relative w-full">
         {hero}
-      </section>
+      </div>
 
       {/* Content Sections — Features, Testimonials, FAQ, dll */}
       {children && (
