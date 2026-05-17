@@ -4,7 +4,7 @@ import { Heart, UploadCloud, Sparkles } from 'lucide-react'
 
 export function LandingFunding() {
   return (
-    <section id="funding" className="py-20 bg-gradient-to-b from-background via-surface/30 to-background border-b border-border/40 relative overflow-hidden">
+    <section id="funding" className="py-20 bg-gradient-to-b from-background via-surface/60 to-background border-b border-border/40 relative overflow-hidden">
       
       {/* Decorative background shapes */}
       <div className="absolute top-1/4 -left-12 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />

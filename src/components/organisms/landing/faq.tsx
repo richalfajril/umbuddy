@@ -39,7 +39,7 @@ export function LandingFAQ() {
   }
 
   return (
-    <section id="faq" className="py-20 bg-gradient-to-b from-background via-surface/30 to-background relative overflow-hidden border-b border-border/40">
+    <section id="faq" className="py-20 bg-gradient-to-b from-background via-surface/60 to-background relative overflow-hidden border-b border-border/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Asymmetrical Layout Split */}

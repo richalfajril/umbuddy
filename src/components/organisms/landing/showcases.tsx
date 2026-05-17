@@ -61,7 +61,7 @@ export function LandingShowcases() {
   }, [])
 
   return (
-    <section id="why-different" className="bg-gradient-to-b from-background via-surface/30 to-background border-b border-border/40 py-20 overflow-hidden">
+    <section id="why-different" className="bg-gradient-to-b from-background via-surface/60 to-background border-b border-border/40 py-20 overflow-hidden">
       
       {/* ── Section Title & Subtitle (Selling the USP) ── */}
       <div className="text-center mb-16 space-y-4 max-w-3xl mx-auto px-4">

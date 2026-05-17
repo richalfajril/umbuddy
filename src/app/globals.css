@@ -110,8 +110,8 @@
   /* ── Chunky Button Shadow (Duolingo-style 3D effect) ── */
   --shadow-btn-primary: 0 4px 0 0 #155D27;
   --shadow-btn-primary-pressed: 0 1px 0 0 #155D27;
-  --shadow-btn-secondary: 0 4px 0 0 #D1D5DB;
-  --shadow-btn-secondary-pressed: 0 1px 0 0 #D1D5DB;
+  --shadow-btn-secondary: 0 4px 0 0 var(--color-border-strong);
+  --shadow-btn-secondary-pressed: 0 1px 0 0 var(--color-border-strong);
   --shadow-btn-danger: 0 4px 0 0 #CC5555;
   --shadow-btn-danger-pressed: 0 1px 0 0 #CC5555;
 
@@ -131,23 +131,23 @@
   color-scheme: light;
   --background: #FFFFFF;
   --surface: #F4F6F2;
-  --surface-hover: #E9ECE5;
-  --border: #E2E6DD;
-  --border-strong: #D1D5DB;
-  --headline: #1F2937;
-  --body: #4B5563;
-  --muted: #9CA3AF;
-  --placeholder: #D1D5DB;
+  --surface-hover: #E4E8DF;
+  --border: #D5DCD0;
+  --border-strong: #A8B5A0;
+  --headline: #111827;
+  --body: #374151;
+  --muted: #6B7280;
+  --placeholder: #9CA3AF;
 
   --color-background: #FFFFFF;
   --color-surface: #F4F6F2;
-  --color-surface-hover: #E9ECE5;
-  --color-border: #E2E6DD;
-  --color-border-strong: #D1D5DB;
-  --color-headline: #1F2937;
-  --color-body: #4B5563;
-  --color-muted: #9CA3AF;
-  --color-placeholder: #D1D5DB;
+  --color-surface-hover: #E4E8DF;
+  --color-border: #D5DCD0;
+  --color-border-strong: #A8B5A0;
+  --color-headline: #111827;
+  --color-body: #374151;
+  --color-muted: #6B7280;
+  --color-placeholder: #9CA3AF;
   --color-primary: #74C332;
   --color-primary-hover: #65AC2A;
   --color-primary-dark: #155D27;
