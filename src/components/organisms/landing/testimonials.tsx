@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui'
-import { Quote } from 'lucide-react'
+import { Quote, Heart, Sparkles } from 'lucide-react'
 
 const row1Testimonials = [
   {
@@ -152,6 +152,10 @@ export function LandingTestimonials() {
       <div className="w-full">
         {/* Title */}
         <div className="mb-12 text-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary mx-auto">
+            <Heart className="w-4 h-4 text-primary fill-primary animate-pulse" />
+            <span className="text-xs font-black uppercase tracking-wider">Harapan & Bukti Nyata</span>
+          </div>
           <h2 className="font-display text-3xl font-black text-headline md:text-5xl">
             Cerita Umbies & Harapan <span className="text-primary">Para Cambies</span>
           </h2>

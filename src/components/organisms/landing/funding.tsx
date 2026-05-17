@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { Card } from '@/components/ui'
-import { Heart, UploadCloud } from 'lucide-react'
+import { Heart, UploadCloud, Sparkles } from 'lucide-react'
 
 export function LandingFunding() {
   return (
@@ -14,6 +14,10 @@ export function LandingFunding() {
         
         {/* Title & Description */}
         <div className="text-center mb-12 space-y-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary mx-auto">
+            <Heart className="w-4 h-4 text-primary fill-primary animate-pulse" />
+            <span className="text-xs font-black uppercase tracking-wider">Dukung Komunitas</span>
+          </div>
           <h2 className="text-3xl md:text-5xl font-black font-display text-headline">
             Dari Cambies, Oleh Cambies, <span className="text-primary">Untuk Cambies</span>
           </h2>

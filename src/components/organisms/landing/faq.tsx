@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { Card } from '@/components/ui'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Sparkles } from 'lucide-react'
 
 const faqs = [
   {
@@ -47,6 +47,10 @@ export function LandingFAQ() {
           
           {/* Left Column: Title & Description (Sticky) */}
           <div className="lg:sticky lg:top-24 space-y-4 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary mx-auto lg:mx-0">
+              <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+              <span className="text-xs font-black uppercase tracking-wider">FAQ & Bantuan</span>
+            </div>
             <h2 className="text-3xl md:text-5xl font-black font-display text-headline leading-tight">
               Pertanyaan <span className="text-primary">Populer</span>
             </h2>
