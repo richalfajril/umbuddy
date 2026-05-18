@@ -1,10 +1,10 @@
 'use client'
 
-import * as React from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
 import { Button } from '@/components/ui'
 import { ArrowRight, Flame } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import * as React from 'react'
 
 export function LandingStickyCTA() {
   const [isVisible, setIsVisible] = React.useState(false)
@@ -43,7 +43,7 @@ export function LandingStickyCTA() {
           <span className="text-xs font-bold text-headline leading-tight">Belajar CPNS Seru</span>
           <span className="text-[10px] text-primary font-black uppercase tracking-wider flex items-center gap-1">
             <Flame className="w-3 h-3 text-xp fill-xp animate-pulse" />
-            Akses Gratis    
+            Akses Gratis
           </span>
         </div>
       </div>

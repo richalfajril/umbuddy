@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui'
-import { ArrowRight, Clock, Target, Trophy, Zap } from 'lucide-react'
+import { ArrowRight, Clock, Target, Trophy, Zap, Sprout, Shield, HelpCircle } from 'lucide-react'
 
 /**
  * HeroSection Landing Page.
@@ -10,6 +10,17 @@ import { ArrowRight, Clock, Target, Trophy, Zap } from 'lucide-react'
 export function LandingHero() {
   return (
     <section className="relative w-full py-20 md:py-24 overflow-hidden bg-gradient-to-b from-primary-light/30 via-background to-background dark:from-primary/5 dark:via-background dark:to-background bg-grid-pattern">
+      {/* Subtle Floating Background Decors */}
+      <div className="absolute top-16 right-16 text-primary/15 dark:text-primary/10 w-16 h-16 animate-float pointer-events-none hidden lg:block" style={{ animationDelay: '1s' }}>
+        <Sprout className="w-full h-full" />
+      </div>
+      <div className="absolute bottom-16 left-12 text-xp/20 dark:text-xp/10 w-14 h-14 animate-float pointer-events-none hidden lg:block" style={{ animationDelay: '3s' }}>
+        <Shield className="w-full h-full" />
+      </div>
+      <div className="absolute top-1/2 left-[15%] text-primary/10 dark:text-primary/5 w-12 h-12 animate-bounce-subtle pointer-events-none hidden lg:block">
+        <HelpCircle className="w-full h-full" />
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">
           

@@ -93,8 +93,23 @@ const row2Testimonials = [
 
 export function LandingTestimonials() {
   return (
-    <section id="testimonials" className="bg-gradient-to-b from-surface/60 via-primary-light/10 to-background border-b border-border/40 py-20 dark:via-primary/5 relative overflow-hidden">
-      {/* CSS Auto Marquee styles */}
+    <div className="relative">
+      {/* 1. Custom Section Divider: Soft Wave & Glow */}
+      <div className="w-full h-16 bg-gradient-to-b from-background to-surface/40 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--color-primary-light),_transparent)] opacity-40 dark:opacity-20" />
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+      </div>
+
+      <section id="testimonials" className="bg-gradient-to-b from-surface/40 via-primary-light/10 to-background py-20 dark:via-primary/5 relative overflow-hidden">
+        {/* Floating Decors */}
+        <div className="absolute left-[8%] top-1/4 text-error/15 w-14 h-14 animate-float pointer-events-none hidden lg:block" style={{ animationDelay: '1.5s' }}>
+          <Heart className="w-full h-full fill-error/5" />
+        </div>
+        <div className="absolute right-[10%] bottom-1/4 text-xp/25 w-16 h-16 animate-bounce-subtle pointer-events-none hidden lg:block" style={{ animationDelay: '3.5s' }}>
+          <Sparkles className="w-full h-full" />
+        </div>
+      
+        {/* CSS Auto Marquee styles */}
       <style>{`
         @keyframes marqueeLeft {
           0% { transform: translateX(0); }
@@ -228,5 +243,6 @@ export function LandingTestimonials() {
         </div>
       </div>
     </section>
+  </div>
   )
 }

@@ -14,6 +14,7 @@ import {
   Sparkles,
   Flame,
   ArrowUpRight,
+  HelpCircle,
 } from 'lucide-react'
 
 const leaderboardUsers = [
@@ -61,13 +62,37 @@ export function LandingShowcases() {
   }, [])
 
   return (
-    <section id="why-different" className="bg-gradient-to-b from-background via-surface/60 to-background border-b border-border/40 py-20 overflow-hidden bg-grid-pattern">
+    <div className="relative">
+      {/* 1. Custom Section Divider: Soft Wave & Glow */}
+      <div className="w-full h-16 bg-gradient-to-b from-background to-surface/30 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--color-primary-light),_transparent)] opacity-40 dark:opacity-20" />
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-xp/30 to-transparent" />
+      </div>
+
+      <section 
+        id="why-different" 
+        className="bg-gradient-to-b from-surface/30 via-background to-background py-20 overflow-hidden"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(116, 195, 50, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(116, 195, 50, 0.03) 1px, transparent 1px)
+          `,
+          backgroundSize: '32px 32px',
+        }}
+      >
+        {/* Floating Decors */}
+        <div className="absolute left-[5%] top-1/4 text-primary/10 w-16 h-16 animate-float pointer-events-none hidden lg:block" style={{ animationDelay: '1s' }}>
+          <HelpCircle className="w-full h-full" />
+        </div>
+        <div className="absolute right-[6%] bottom-1/3 text-xp/20 w-16 h-16 animate-bounce-subtle pointer-events-none hidden lg:block" style={{ animationDelay: '4s' }}>
+          <Trophy className="w-full h-full" />
+        </div>
       
-      {/* ── Section Title & Subtitle (Selling the USP) ── */}
-      <div className="text-center mb-16 space-y-4 max-w-3xl mx-auto px-4">
-        <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">
-          <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-          <span className="text-xs font-black uppercase tracking-wider">Kenapa Umbuddy Berbeda?</span>
+        {/* ── Section Title & Subtitle (Selling the USP) ── */}
+        <div className="text-center mb-16 space-y-4 max-w-3xl mx-auto px-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">
+            <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+            <span className="text-xs font-black uppercase tracking-wider">Kenapa Umbuddy Berbeda?</span>
         </div>
         <h2 className="font-display text-3xl font-black text-headline md:text-5xl leading-tight">
           Bukan Sekadar Tryout Biasa, <span className="text-primary">Ini Era Baru Belajar CPNS</span>
@@ -418,5 +443,6 @@ export function LandingShowcases() {
 
       </div>
     </section>
+  </div>
   )
 }
