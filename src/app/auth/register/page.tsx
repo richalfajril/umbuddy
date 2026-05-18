@@ -19,11 +19,13 @@ export default function RegisterPage() {
   const [password, setPassword] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
   const [successMessage, setSuccessMessage] = React.useState('')
+  const [errorMessage, setErrorMessage] = React.useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setSuccessMessage('')
+    setErrorMessage('')
     
     try {
       const response = await fetch('/api/v1/auth/register', {
@@ -46,7 +48,7 @@ export default function RegisterPage() {
       setPassword('')
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Gagal mendaftar'
-      alert(message)
+      setErrorMessage(message)
     } finally {
       setIsLoading(false)
     }
@@ -107,6 +109,12 @@ export default function RegisterPage() {
           {successMessage && (
             <div className="rounded-lg border border-primary/30 bg-primary-light px-4 py-3 text-sm font-bold text-primary-dark">
               {successMessage}
+            </div>
+          )}
+
+          {errorMessage && (
+            <div className="rounded-xl border-2 border-error/20 bg-error/10 px-4 py-3 text-sm font-bold text-error animate-pulse">
+              {errorMessage}
             </div>
           )}
 

@@ -1,6 +1,9 @@
 import Link from 'next/link'
 import { BarChart3, BookOpenCheck, Flame, ShieldCheck, Trophy, Users } from 'lucide-react'
 import { Card } from '@/components/ui'
+import { getServerSession } from 'next-auth'
+import { redirect } from 'next/navigation'
+import { authConfig } from '@/lib/auth/config'
 
 const quickStats = [
   { label: 'XP Musim Ini', value: '0', icon: Trophy },
@@ -14,7 +17,11 @@ const nextActions = [
   { label: 'Cari Teman', href: '#friends', icon: Users },
 ]
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const session = await getServerSession(authConfig)
+  if (!session) {
+    redirect('/auth/login')
+  }
   return (
     <main className="min-h-screen bg-background px-4 py-6 text-body sm:px-6 lg:px-8">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">

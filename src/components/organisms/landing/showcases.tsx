@@ -323,7 +323,7 @@ export function LandingShowcases() {
                   <Image src="/mascot/mascot_success.png" alt="" width={100} height={100} className="h-20 w-20 object-contain animate-float shrink-0" />
                   <div className="space-y-3 relative z-10">
                     <div className="p-3 bg-background rounded-2xl border border-border text-xs sm:text-sm font-bold text-headline leading-relaxed shadow-sm relative before:absolute before:-left-3 before:top-6 before:w-0 before:h-0 before:border-y-8 before:border-y-transparent before:border-r-8 before:border-r-background">
-                      "Wah, TWK kamu meningkat pesat minggu ini! Kamu selangkah lagi naik pangkat ke <span className="text-primary font-black">Umbies Senior</span>. Yuk selesaikan misi hari ini!"
+                      &ldquo;Wah, TWK kamu meningkat pesat minggu ini! Kamu selangkah lagi naik pangkat ke <span className="text-primary font-black">Umbies Senior</span>. Yuk selesaikan misi hari ini!&rdquo;
                     </div>
                     <div className="flex items-center justify-between text-xs font-black text-primary uppercase">
                       <span>Mascot Mentor Feedback</span>

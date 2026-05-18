@@ -1,6 +1,6 @@
-import Image from 'next/image'
 import { Card } from '@/components/ui'
-import { Heart, UploadCloud, Sparkles } from 'lucide-react'
+import { Heart, UploadCloud } from 'lucide-react'
+import Image from 'next/image'
 
 export function LandingFunding() {
   return (

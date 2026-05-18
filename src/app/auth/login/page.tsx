@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
+  const [errorMessage, setErrorMessage] = React.useState('')
 
   const getLoginErrorMessage = (error?: string | null) => {
     switch (error) {
@@ -30,6 +31,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setErrorMessage('')
     
     try {
       const result = await signIn('credentials', {
@@ -39,12 +41,12 @@ export default function LoginPage() {
       })
       
       if (result?.error) {
-        alert(getLoginErrorMessage(result.error))
+        setErrorMessage(getLoginErrorMessage(result.error))
       } else {
         window.location.href = '/dashboard'
       }
     } catch {
-      alert('Terjadi kesalahan saat masuk')
+      setErrorMessage('Terjadi kesalahan saat masuk')
     } finally {
       setIsLoading(false)
     }
@@ -64,6 +66,7 @@ export default function LoginPage() {
             width={180} 
             height={48} 
             className="h-12 w-auto dark:invert"
+            priority
           />
         </Link>
       }
@@ -77,6 +80,12 @@ export default function LoginPage() {
             Masuk untuk melanjutkan perjuanganmu menaklukkan CPNS.
           </p>
         </div>
+
+        {errorMessage && (
+          <div className="rounded-xl border-2 border-error/20 bg-error/10 px-4 py-3 text-sm font-bold text-error animate-pulse">
+            {errorMessage}
+          </div>
+        )}
 
         {/* Google OAuth Button */}
         <Button 
