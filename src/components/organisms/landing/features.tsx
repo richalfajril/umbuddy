@@ -16,7 +16,7 @@ import {
 const features = [
   {
     title: 'Daily Question Practice',
-    description: 'Latih kemampuanmu setiap hari dengan bank soal berkualitas tinggi yang selalu di-update secara berkala. Pilih kategori TWK, TIU, atau TKP, lalu sistem akan memuat 5 soal random harian dari bank soal',
+    description: 'Pilih TWK/TIU/TKP dan kerjakan 5 soal berkualitas tinggi yang di-update random setiap hari.',
     icon: <BookOpen className="w-8 h-8 text-[#ff6a65]" />,
     mascot: '/mascot/mascot_workout.png',
     className: 'lg:col-span-1 border border-border bg-background hover:border-[#ff6a65]/40 hover:shadow-[0_10px_30px_-5px_rgba(255,106,101,0.15)]',
@@ -30,18 +30,18 @@ const features = [
     className: 'lg:col-span-2 border-2 border-[#ff6a65]/30 bg-[#ff6a65]/5 dark:bg-[#ff6a65]/5 hover:border-[#ff6a65]/60 hover:shadow-[0_10px_30px_-5px_rgba(255,106,101,0.2)]',
   },
   {
-    title: 'Smart Analytics',
-    description: 'Sistem analisis cerdas yang membedah kelemahan materi TWK, TIU, dan TKP milikmu secara mendalam.',
-    icon: <BarChart3 className="w-8 h-8 text-xp" />,
-    mascot: '/mascot/mascot_detective.png',
-    className: 'lg:col-span-1 border border-border bg-background hover:border-xp/50 hover:shadow-[0_10px_30px_-5px_rgba(255,195,0,0.15)]',
-  },
-  {
     title: 'Accurate CAT Simulation',
     description: 'Pengalaman simulasi ujian dengan standar resmi BKN. Lengkap dengan batasan waktu, passing grade, dan pembobotan nilai nyata.',
     icon: <Zap className="w-8 h-8 text-xp" />,
     mascot: '/mascot/mascot_teaching.png',
-    // Highlighted card for row 2: gold/yellow background tint
+    className: 'lg:col-span-1 border border-border bg-background hover:border-xp/50 hover:shadow-[0_10px_30px_-5px_rgba(255,195,0,0.15)]',
+  },
+  {
+    title: 'Smart Analytics',
+    description: 'Sistem analisis cerdas yang membedah kelemahan materi TWK, TIU, dan TKP milikmu secara mendalam.',
+    icon: <BarChart3 className="w-8 h-8 text-xp" />,
+    mascot: '/mascot/mascot_detective.png',
+    // Highlighted card for row 2 (center): gold/yellow background tint
     className: 'lg:col-span-1 border-2 border-xp/40 bg-xp/5 dark:bg-xp/5 hover:border-xp/70 hover:shadow-[0_10px_30px_-5px_rgba(255,195,0,0.2)]',
   },
   {
