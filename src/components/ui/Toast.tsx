@@ -25,28 +25,32 @@ const getToastStyles = (type: ToastType['type']) => {
   switch (type) {
     case 'success':
       return {
-        container: 'bg-[#ecfdf5] dark:bg-emerald-950/20 border-emerald-500 text-emerald-800 dark:text-emerald-300 shadow-emerald-500/5',
-        icon: 'text-emerald-500 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/20',
-        close: 'hover:bg-emerald-500/10 dark:hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400',
+        container: 'bg-white/95 dark:bg-surface/90 border-emerald-500/30 dark:border-emerald-500/20 shadow-[0_10px_30px_-5px_rgba(16,185,129,0.25)]',
+        bar: 'bg-emerald-500',
+        icon: 'text-emerald-500 bg-emerald-500/10 dark:bg-emerald-500/20',
+        close: 'hover:bg-emerald-500/10 text-muted hover:text-emerald-600 dark:hover:text-emerald-400',
       }
     case 'error':
       return {
-        container: 'bg-[#fff5f5] dark:bg-rose-950/20 border-rose-500 text-rose-800 dark:text-rose-300 shadow-rose-500/5',
-        icon: 'text-rose-500 dark:text-rose-400 bg-rose-500/10 dark:bg-rose-500/20',
-        close: 'hover:bg-rose-500/10 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400',
+        container: 'bg-white/95 dark:bg-surface/90 border-rose-500/30 dark:border-rose-500/20 shadow-[0_10px_30px_-5px_rgba(244,63,94,0.25)]',
+        bar: 'bg-rose-500',
+        icon: 'text-rose-500 bg-rose-500/10 dark:bg-rose-500/20',
+        close: 'hover:bg-rose-500/10 text-muted hover:text-rose-600 dark:hover:text-rose-400',
       }
     case 'warning':
       return {
-        container: 'bg-[#fffbeb] dark:bg-amber-950/20 border-amber-500 text-amber-800 dark:text-amber-300 shadow-amber-500/5',
-        icon: 'text-amber-500 dark:text-amber-400 bg-amber-500/10 dark:bg-amber-500/20',
-        close: 'hover:bg-amber-500/10 dark:hover:bg-amber-500/20 text-amber-600 dark:text-amber-400',
+        container: 'bg-white/95 dark:bg-surface/90 border-amber-500/30 dark:border-amber-500/20 shadow-[0_10px_30px_-5px_rgba(245,158,11,0.25)]',
+        bar: 'bg-amber-500',
+        icon: 'text-amber-500 bg-amber-500/10 dark:bg-amber-500/20',
+        close: 'hover:bg-amber-500/10 text-muted hover:text-amber-600 dark:hover:text-amber-400',
       }
     case 'info':
     default:
       return {
-        container: 'bg-[#eff6ff] dark:bg-blue-950/20 border-blue-500 text-blue-800 dark:text-blue-300 shadow-blue-500/5',
-        icon: 'text-blue-500 dark:text-blue-400 bg-blue-500/10 dark:bg-blue-500/20',
-        close: 'hover:bg-blue-500/10 dark:hover:bg-blue-500/20 text-blue-600 dark:text-blue-400',
+        container: 'bg-white/95 dark:bg-surface/90 border-blue-500/30 dark:border-blue-500/20 shadow-[0_10px_30px_-5px_rgba(59,130,246,0.25)]',
+        bar: 'bg-blue-500',
+        icon: 'text-blue-500 bg-blue-500/10 dark:bg-blue-500/20',
+        close: 'hover:bg-blue-500/10 text-muted hover:text-blue-600 dark:hover:text-blue-400',
       }
   }
 }
@@ -69,35 +73,38 @@ function ToastItem({ toast, onClose }: ToastItemProps) {
       exit={{ opacity: 0, scale: 0.9, y: 20 }}
       transition={{ type: 'spring', stiffness: 350, damping: 25 }}
       className={cn(
-        "flex w-full items-start gap-3 rounded-2xl border-2 p-4 shadow-lg pointer-events-auto select-none",
-        "relative overflow-hidden group max-w-sm sm:max-w-md",
+        "flex w-full items-start gap-3 rounded-2xl border-2 p-4 pl-6 shadow-xl pointer-events-auto select-none",
+        "relative overflow-hidden group max-w-sm sm:max-w-md backdrop-blur-md",
         styles.container
       )}
     >
+      {/* Dynamic Left Accent Bar */}
+      <div className={cn("absolute left-0 top-0 bottom-0 w-1.5", styles.bar)} />
+
       {/* Dynamic Background Game Texture */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none" />
 
       {/* Main Status Icon */}
-      <div className={cn("p-2 rounded-xl shrink-0 flex items-center justify-center", styles.icon)}>
+      <div className={cn("p-2 rounded-xl shrink-0 flex items-center justify-center border-2 border-border/10", styles.icon)}>
         <IconComponent className={cn("w-5 h-5", toast.xpReward ? "animate-pulse" : "")} />
       </div>
 
       {/* Message and Title */}
-      <div className="flex-1 min-w-0 pr-4 space-y-1">
+      <div className="flex-1 min-w-0 pr-2 space-y-1 relative z-10">
         {toast.title && (
-          <h3 className="font-display font-black text-headline text-sm tracking-wide leading-none">
+          <h3 className="font-display font-black text-headline dark:text-white text-sm tracking-wider leading-none uppercase">
             {toast.title}
           </h3>
         )}
-        <p className="text-xs sm:text-sm font-semibold leading-relaxed">
+        <p className="text-xs sm:text-sm font-bold text-body dark:text-muted/90 leading-relaxed">
           {toast.message}
         </p>
 
         {/* Gamified XP Reward Badge */}
         {toast.xpReward && (
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-xp/10 dark:bg-xp/20 rounded-xl border border-xp/30 text-xp text-xs font-black animate-bounce mt-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-xp/10 dark:bg-xp/20 rounded-xl border-2 border-xp/40 text-xp text-xs font-black shadow-[0_0_15px_rgba(251,191,36,0.15)] animate-pulse mt-2">
             <Flame className="w-3.5 h-3.5 fill-current" />
-            <span>+{toast.xpReward} XP</span>
+            <span>+{toast.xpReward} XP REWARD</span>
           </div>
         )}
       </div>
@@ -106,7 +113,7 @@ function ToastItem({ toast, onClose }: ToastItemProps) {
       <button
         onClick={() => onClose(toast.id)}
         className={cn(
-          "p-1.5 rounded-lg border-2 border-transparent hover:border-border transition-all flex items-center justify-center shrink-0",
+          "p-1.5 rounded-lg border-2 border-transparent hover:border-border/30 hover:bg-surface transition-all flex items-center justify-center shrink-0",
           styles.close
         )}
         aria-label="Dismiss Toast"
@@ -119,7 +126,7 @@ function ToastItem({ toast, onClose }: ToastItemProps) {
         initial={{ width: '100%' }}
         animate={{ width: '0%' }}
         transition={{ duration: (toast.duration ?? 4000) / 1000, ease: 'linear' }}
-        className="absolute bottom-0 left-0 h-1 bg-current opacity-20"
+        className={cn("absolute bottom-0 left-0 h-1 opacity-40", styles.bar)}
       />
     </motion.div>
   )
