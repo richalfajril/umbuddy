@@ -103,7 +103,7 @@ export function LandingMetrics() {
 
             {/* Content highlighted in green */}
             <div className="space-y-1">
-              <p className="font-display text-2xl sm:text-3xl font-black text-primary leading-none">
+              <p className="font-display text-2xl sm:text-3xl lg:text-4xl font-black text-primary leading-none">
                 <AnimatedCounter value={item.value} suffix={item.suffix} />
               </p>
               <p className="font-bold text-sm text-headline leading-tight">
