@@ -83,11 +83,11 @@ export default function LoginPage() {
       header={
         <Link href="/" className="transition-transform hover:scale-105 active:scale-95">
           <Image 
-            src="/logo/logo_vertikal.png" 
+            src="/logo/logo_vertical.png" 
             alt="Umbuddy Logo" 
             width={180} 
             height={48} 
-            className="h-12 w-auto"
+            className="h-32 w-auto"
             priority
           />
         </Link>

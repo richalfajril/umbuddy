@@ -1,11 +1,11 @@
 'use client'
 
-import * as React from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { signIn } from 'next-auth/react'
 import { FormSettingsLayout } from '@/components/layouts/form-settings-layout'
 import { Button, Input, Label } from '@/components/ui'
+import { signIn } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import * as React from 'react'
 
 import { useToastStore } from '@/store/useToastStore'
 
@@ -79,11 +79,11 @@ export default function RegisterPage() {
       header={
         <Link href="/" className="transition-transform hover:scale-105 active:scale-95">
           <Image 
-            src="/logo/logo_text.png" 
+            src="/logo/logo_vertikal.png" 
             alt="Umbuddy Logo" 
             width={180} 
             height={48} 
-            className="h-12 w-auto dark:invert"
+            className="h-32 w-auto"
           />
         </Link>
       }
