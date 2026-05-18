@@ -46,7 +46,7 @@ export function FormSettingsLayout({
   maxWidth = 'md',
 }: FormSettingsLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col bg-background relative overflow-hidden bg-dot-pattern">
+    <div className="min-h-screen flex flex-col bg-background relative overflow-hidden bg-dot-pattern [&::after]:hidden">
       {/* Ambient auth background: branded, light, and intentionally behind the form. */}
       <div className="glow-blob-primary -top-[80px] -left-[80px] opacity-100 dark:opacity-60" />
       <div className="glow-blob-secondary -bottom-[80px] -right-[80px] opacity-95 dark:opacity-55" />
