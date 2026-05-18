@@ -8,3 +8,5 @@ export * from './testimonials'
 export * from './bottom-cta'
 export * from './funding'
 export * from './metrics'
+export * from './sticky-cta'
+

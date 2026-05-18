@@ -361,18 +361,18 @@ export function LandingShowcases() {
           <div className="relative">
             <div className="glow-blob-primary absolute -top-10 -right-10 opacity-70 dark:opacity-30 pointer-events-none -z-10" />
             <div className={`transition-all duration-700 delay-200 ${leaderboardVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-              <Card padding="lg" className="relative overflow-hidden hover:border-primary/20 hover:shadow-elevated transition-all duration-300 bg-background">
+              <Card padding="none" className="p-4 sm:p-7 relative overflow-hidden hover:border-primary/20 hover:shadow-elevated transition-all duration-300 bg-background">
                 <div className="mb-6 flex items-center justify-between">
-                  <h3 className="font-display text-2xl font-black text-headline">
+                  <h3 className="font-display text-xl sm:text-2xl font-black text-headline">
                     Top Umbies Minggu Ini
                   </h3>
-                  <Medal className="h-8 w-8 text-xp animate-bounce-subtle" aria-hidden="true" />
+                  <Medal className="h-6 w-6 sm:h-8 sm:w-8 text-xp animate-bounce-subtle" aria-hidden="true" />
                 </div>
                 <div className="space-y-3">
                   {leaderboardUsers.map((user, index) => (
                     <div 
                       key={user.rank} 
-                      className="flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 hover:bg-surface-hover hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-sm transition-all duration-200"
+                      className="flex items-center gap-2 sm:gap-4 rounded-2xl border border-border bg-surface p-3 sm:p-4 hover:bg-surface-hover hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-sm transition-all duration-200"
                       style={{
                         transform: leaderboardVisible ? 'translateY(0)' : 'translateY(24px)',
                         opacity: leaderboardVisible ? 1 : 0,
@@ -380,17 +380,17 @@ export function LandingShowcases() {
                       }}
                     >
                       {/* 1. Nomor (Rank) */}
-                      <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-lg text-sm font-black bg-surface-hover text-headline">
+                      <div className="flex-shrink-0 flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg text-xs sm:text-sm font-black bg-surface-hover text-headline">
                         {user.rank}
                       </div>
 
                       {/* 2. Avatar Profil */}
-                      <div className={`flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-xl font-display text-base font-black ${user.color}`}>
+                      <div className={`flex-shrink-0 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-xl font-display text-xs sm:text-base font-black ${user.color}`}>
                         {user.name.charAt(0)}
                       </div>
 
                       {/* 3. Badge dari Asset */}
-                      <div className="flex-shrink-0 w-10 h-10 relative">
+                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 relative">
                         <Image 
                           src={user.badgeImg} 
                           alt={user.badge} 
@@ -402,12 +402,12 @@ export function LandingShowcases() {
 
                       {/* 4. Name & Badge Text */}
                       <div className="min-w-0 flex-1">
-                        <p className="font-black text-headline leading-tight">{user.name}</p>
-                        <p className="text-xs font-bold text-muted mt-0.5">{user.badge}</p>
+                        <p className="font-black text-headline text-xs sm:text-sm md:text-base leading-tight truncate">{user.name}</p>
+                        <p className="text-[10px] sm:text-xs font-bold text-muted mt-0.5 truncate">{user.badge}</p>
                       </div>
 
                       {/* 5. XP */}
-                      <p className="font-display text-base sm:text-lg font-black text-primary">{user.xp}</p>
+                      <p className="flex-shrink-0 font-display text-xs sm:text-sm md:text-base font-black text-primary ml-auto">{user.xp}</p>
                     </div>
                   ))}
                 </div>

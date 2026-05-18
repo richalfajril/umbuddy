@@ -9,7 +9,8 @@ import {
   LandingFAQ, 
   LandingBottomCTA,
   LandingFooter,
-  LandingMetrics
+  LandingMetrics,
+  LandingStickyCTA
 } from '@/components/organisms/landing'
 
 /**
@@ -30,6 +31,8 @@ export default function LandingPage() {
       <LandingTestimonials />
       <LandingFAQ />
       <LandingBottomCTA />
+      <LandingStickyCTA />
     </HeroLayout>
   )
 }
+

@@ -1,8 +1,8 @@
 'use client'
 
-import * as React from 'react'
 import { Card } from '@/components/ui'
 import { ChevronDown, Sparkles } from 'lucide-react'
+import * as React from 'react'
 
 const faqs = [
   {
