@@ -56,7 +56,7 @@ export function LandingNavbar() {
           <div className="hidden md:flex items-center space-x-6">
             <Link href="#" className="text-sm font-medium text-body hover:text-primary transition-colors">Beranda</Link>
             <Link href="#features" className="text-sm font-medium text-body hover:text-primary transition-colors">Fitur</Link>
-            <Link href="#why-different" className="text-sm font-medium text-body hover:text-primary transition-colors">Kenapa Umbuddy</Link>
+            <Link href="#why-different" className="text-sm font-medium text-body hover:text-primary transition-colors">Keunggulan</Link>
             <Link href="#funding" className="text-sm font-medium text-body hover:text-primary transition-colors">Donasi</Link>
             <Link href="#testimonials" className="text-sm font-medium text-body hover:text-primary transition-colors">Testimoni</Link>
             <Link href="#faq" className="text-sm font-medium text-body hover:text-primary transition-colors">FAQ</Link>
@@ -101,7 +101,7 @@ export function LandingNavbar() {
         <div className="md:hidden bg-background border-b border-border px-4 pt-2 pb-6 space-y-4">
           <Link href="#" onClick={() => setIsMenuOpen(false)} className="block text-base font-medium text-body py-2">Beranda</Link>
           <Link href="#features" onClick={() => setIsMenuOpen(false)} className="block text-base font-medium text-body py-2">Fitur</Link>
-          <Link href="#why-different" onClick={() => setIsMenuOpen(false)} className="block text-base font-medium text-body py-2">Kenapa Umbuddy</Link>
+          <Link href="#why-different" onClick={() => setIsMenuOpen(false)} className="block text-base font-medium text-body py-2">Keunggulan</Link>
           <Link href="#funding" onClick={() => setIsMenuOpen(false)} className="block text-base font-medium text-body py-2">Donasi</Link>
           <Link href="#testimonials" onClick={() => setIsMenuOpen(false)} className="block text-base font-medium text-body py-2">Testimoni</Link>
           <Link href="#faq" onClick={() => setIsMenuOpen(false)} className="block text-base font-medium text-body py-2">FAQ</Link>
