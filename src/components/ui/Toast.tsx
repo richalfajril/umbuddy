@@ -25,32 +25,40 @@ const getToastStyles = (type: ToastType['type']) => {
   switch (type) {
     case 'success':
       return {
-        container: 'bg-white/95 dark:bg-surface/90 border-emerald-500/30 dark:border-emerald-500/20 shadow-[0_10px_30px_-5px_rgba(16,185,129,0.25)]',
+        container: 'bg-[#f0fdf4] dark:bg-emerald-950/40 border-emerald-500/40 dark:border-emerald-500/30 shadow-[0_10px_30px_-5px_rgba(16,185,129,0.2)]',
         bar: 'bg-emerald-500',
-        icon: 'text-emerald-500 bg-emerald-500/10 dark:bg-emerald-500/20',
-        close: 'hover:bg-emerald-500/10 text-muted hover:text-emerald-600 dark:hover:text-emerald-400',
+        icon: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500/20',
+        title: 'text-emerald-950 dark:text-emerald-100',
+        message: 'text-emerald-800 dark:text-emerald-300',
+        close: 'hover:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 hover:text-emerald-900 dark:hover:text-emerald-200',
       }
     case 'error':
       return {
-        container: 'bg-white/95 dark:bg-surface/90 border-rose-500/30 dark:border-rose-500/20 shadow-[0_10px_30px_-5px_rgba(244,63,94,0.25)]',
+        container: 'bg-[#fff5f5] dark:bg-rose-950/40 border-rose-500/40 dark:border-rose-500/30 shadow-[0_10px_30px_-5px_rgba(244,63,94,0.2)]',
         bar: 'bg-rose-500',
-        icon: 'text-rose-500 bg-rose-500/10 dark:bg-rose-500/20',
-        close: 'hover:bg-rose-500/10 text-muted hover:text-rose-600 dark:hover:text-rose-400',
+        icon: 'text-rose-600 dark:text-rose-400 bg-rose-500/10 dark:bg-rose-500/20 border-rose-500/20',
+        title: 'text-rose-950 dark:text-rose-100',
+        message: 'text-rose-800 dark:text-rose-300',
+        close: 'hover:bg-rose-500/10 text-rose-700 dark:text-rose-400 hover:text-rose-900 dark:hover:text-rose-200',
       }
     case 'warning':
       return {
-        container: 'bg-white/95 dark:bg-surface/90 border-amber-500/30 dark:border-amber-500/20 shadow-[0_10px_30px_-5px_rgba(245,158,11,0.25)]',
+        container: 'bg-[#fffbeb] dark:bg-amber-950/40 border-amber-500/40 dark:border-amber-500/30 shadow-[0_10px_30px_-5px_rgba(245,158,11,0.2)]',
         bar: 'bg-amber-500',
-        icon: 'text-amber-500 bg-amber-500/10 dark:bg-amber-500/20',
-        close: 'hover:bg-amber-500/10 text-muted hover:text-amber-600 dark:hover:text-amber-400',
+        icon: 'text-amber-600 dark:text-amber-400 bg-amber-500/10 dark:bg-amber-500/20 border-amber-500/20',
+        title: 'text-amber-950 dark:text-amber-100',
+        message: 'text-amber-800 dark:text-amber-300',
+        close: 'hover:bg-amber-500/10 text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-200',
       }
     case 'info':
     default:
       return {
-        container: 'bg-white/95 dark:bg-surface/90 border-blue-500/30 dark:border-blue-500/20 shadow-[0_10px_30px_-5px_rgba(59,130,246,0.25)]',
+        container: 'bg-[#f0f9ff] dark:bg-blue-950/40 border-blue-500/40 dark:border-blue-500/30 shadow-[0_10px_30px_-5px_rgba(59,130,246,0.2)]',
         bar: 'bg-blue-500',
-        icon: 'text-blue-500 bg-blue-500/10 dark:bg-blue-500/20',
-        close: 'hover:bg-blue-500/10 text-muted hover:text-blue-600 dark:hover:text-blue-400',
+        icon: 'text-blue-600 dark:text-blue-400 bg-blue-500/10 dark:bg-blue-500/20 border-blue-500/20',
+        title: 'text-blue-950 dark:text-blue-100',
+        message: 'text-blue-800 dark:text-blue-300',
+        close: 'hover:bg-blue-500/10 text-blue-700 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-200',
       }
   }
 }
@@ -85,18 +93,18 @@ function ToastItem({ toast, onClose }: ToastItemProps) {
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none" />
 
       {/* Main Status Icon */}
-      <div className={cn("p-2 rounded-xl shrink-0 flex items-center justify-center border-2 border-border/10", styles.icon)}>
+      <div className={cn("p-2 rounded-xl shrink-0 flex items-center justify-center border-2", styles.icon)}>
         <IconComponent className={cn("w-5 h-5", toast.xpReward ? "animate-pulse" : "")} />
       </div>
 
       {/* Message and Title */}
       <div className="flex-1 min-w-0 pr-2 space-y-1 relative z-10">
         {toast.title && (
-          <h3 className="font-display font-black text-headline dark:text-white text-sm tracking-wider leading-none uppercase">
+          <h3 className={cn("font-display font-black text-sm tracking-wider leading-none uppercase", styles.title)}>
             {toast.title}
           </h3>
         )}
-        <p className="text-xs sm:text-sm font-bold text-body dark:text-muted/90 leading-relaxed">
+        <p className={cn("text-xs sm:text-sm font-bold leading-relaxed", styles.message)}>
           {toast.message}
         </p>
 
