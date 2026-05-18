@@ -16,52 +16,55 @@ import {
 const features = [
   {
     title: 'Daily Question Practice',
-    description: 'Latih kemampuanmu setiap hari dengan bank soal berkualitas tinggi yang selalu di-update secara berkala.',
-    icon: <BookOpen className="w-8 h-8 text-primary" />,
+    description: 'Latih kemampuanmu setiap hari dengan bank soal berkualitas tinggi yang selalu di-update secara berkala. Pilih kategori TWK, TIU, atau TKP, lalu sistem akan memuat 5 soal random harian dari bank soal',
+    icon: <BookOpen className="w-8 h-8 text-[#ff6a65]" />,
     mascot: '/mascot/mascot_workout.png',
-    className: 'lg:col-span-1 border border-border bg-background',
+    className: 'lg:col-span-1 border border-border bg-background hover:border-[#ff6a65]/40 hover:shadow-[0_10px_30px_-5px_rgba(255,106,101,0.15)]',
   },
   {
     title: 'Realtime Mini CAT Battle',
     description: 'Tantang sesama Umbies secara realtime. Adu cepat dan tepat dalam menjawab paket soal mini 1vs1 yang seru!',
-    icon: <Swords className="w-8 h-8 text-primary" />,
+    icon: <Swords className="w-8 h-8 text-[#ff6a65]" />,
     mascot: '/mascot/mascot_battle.png',
-    className: 'lg:col-span-2 border-2 border-primary/30 shadow-card bg-background',
+    // Highlighted card for row 1: pink background tint
+    className: 'lg:col-span-2 border-2 border-[#ff6a65]/30 bg-[#ff6a65]/5 dark:bg-[#ff6a65]/5 hover:border-[#ff6a65]/60 hover:shadow-[0_10px_30px_-5px_rgba(255,106,101,0.2)]',
   },
   {
     title: 'Smart Analytics',
     description: 'Sistem analisis cerdas yang membedah kelemahan materi TWK, TIU, dan TKP milikmu secara mendalam.',
     icon: <BarChart3 className="w-8 h-8 text-xp" />,
     mascot: '/mascot/mascot_detective.png',
-    className: 'lg:col-span-1 border border-border bg-background',
+    className: 'lg:col-span-1 border border-border bg-background hover:border-xp/50 hover:shadow-[0_10px_30px_-5px_rgba(255,195,0,0.15)]',
   },
   {
-    title: 'Simulasi CAT Akurat',
+    title: 'Accurate CAT Simulation',
     description: 'Pengalaman simulasi ujian dengan standar resmi BKN. Lengkap dengan batasan waktu, passing grade, dan pembobotan nilai nyata.',
     icon: <Zap className="w-8 h-8 text-xp" />,
     mascot: '/mascot/mascot_teaching.png',
-    className: 'lg:col-span-1 border border-border bg-background',
+    // Highlighted card for row 2: gold/yellow background tint
+    className: 'lg:col-span-1 border-2 border-xp/40 bg-xp/5 dark:bg-xp/5 hover:border-xp/70 hover:shadow-[0_10px_30px_-5px_rgba(255,195,0,0.2)]',
   },
   {
     title: 'Ranked System',
     description: 'Naikkan kasta golongan kepangkatanmu lewat perolehan XP, mulai dari Umbies, Umbies Senior, Esmelon, hingga mencapai tingkat Menteri!',
     icon: <Trophy className="w-8 h-8 text-xp" />,
     mascot: '/mascot/mascot_crown.png',
-    className: 'lg:col-span-1 border-2 border-xp/40 shadow-card bg-background',
+    className: 'lg:col-span-1 border border-border bg-background hover:border-xp/50 hover:shadow-[0_10px_30px_-5px_rgba(255,195,0,0.15)]',
   },
   {
     title: 'Predictive Rank & Passing Probability',
     description: 'Ketahui probabilitas kelolosan seleksi CPNS milikmu secara realtime berdasarkan tren performa belajarmu dibanding pesaing lain.',
     icon: <TrendingUp className="w-8 h-8 text-primary" />,
     mascot: '/mascot/mascot_success.png',
-    className: 'lg:col-span-2 border-2 border-primary/20 shadow-card bg-background',
+    // Highlighted card for row 3: green background tint
+    className: 'lg:col-span-2 border-2 border-primary/30 bg-primary/5 dark:bg-primary/5 hover:border-primary/50 hover:shadow-[0_10px_30px_-5px_rgba(116,195,50,0.15)]',
   },
   {
     title: 'Weakness Narrative',
     description: 'Dapatkan penjelasan strategi belajar yang ramah dan interaktif dari maskot pendamping mengenai materi yang wajib kamu serang selanjutnya.',
     icon: <Brain className="w-8 h-8 text-primary" />,
     mascot: '/mascot/mascot_support.png',
-    className: 'lg:col-span-1 border border-border bg-background',
+    className: 'lg:col-span-1 border border-border bg-background hover:border-primary/30 hover:shadow-elevated',
   },
 ]
 
@@ -115,7 +118,7 @@ export function LandingFeatures() {
           {features.map((feature, idx) => (
             <Card 
               key={idx} 
-              className={`relative overflow-hidden group hover:scale-[1.01] hover:-translate-y-1 hover:border-primary/30 hover:shadow-elevated transition-all duration-300 p-8 flex flex-col justify-between min-h-[280px] sm:min-h-[260px] ${feature.className}`}
+              className={`relative overflow-hidden group hover:scale-[1.01] hover:-translate-y-1 transition-all duration-300 p-8 flex flex-col justify-between min-h-[280px] sm:min-h-[260px] ${feature.className}`}
             >
               <div className="space-y-6 relative z-10 max-w-[80%] sm:max-w-[75%] lg:max-w-[70%]">
                 <div className="p-3 bg-background rounded-2xl w-fit shadow-sm border border-border">
