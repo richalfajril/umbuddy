@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { BookOpen, Medal, Sparkles, Target, Trophy, Zap } from 'lucide-react'
 import { ThemeToggle } from '@/components/atoms/theme-toggle'
 
 /**
@@ -45,10 +46,18 @@ export function FormSettingsLayout({
   maxWidth = 'md',
 }: FormSettingsLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col bg-background relative overflow-hidden bg-grid-pattern">
-      {/* Decorative blobs for gaming aesthetics - light/dark responsive */}
-      <div className="glow-blob-primary -top-[100px] -left-[100px] opacity-70" />
-      <div className="glow-blob-secondary -bottom-[100px] -right-[100px] opacity-70" />
+    <div className="min-h-screen flex flex-col bg-background relative overflow-hidden bg-dot-pattern">
+      {/* Ambient auth background: branded, light, and intentionally behind the form. */}
+      <div className="glow-blob-primary -top-[80px] -left-[80px] opacity-100 dark:opacity-60" />
+      <div className="glow-blob-secondary -bottom-[80px] -right-[80px] opacity-95 dark:opacity-55" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <BookOpen className="absolute left-[9%] top-[22%] hidden h-12 w-12 text-primary/16 sm:block dark:text-primary/12" />
+        <Target className="absolute right-[12%] top-[20%] h-11 w-11 text-xp/18 dark:text-xp/14" />
+        <Trophy className="absolute bottom-[18%] left-[15%] hidden h-14 w-14 text-xp/16 lg:block dark:text-xp/12" />
+        <Medal className="absolute bottom-[20%] right-[15%] hidden h-12 w-12 text-primary/18 md:block dark:text-primary/14" />
+        <Sparkles className="absolute right-[26%] top-[38%] hidden h-8 w-8 text-beige/24 xl:block dark:text-xp/16" />
+        <Zap className="absolute bottom-[34%] left-[26%] hidden h-8 w-8 text-primary/18 xl:block dark:text-primary/14" />
+      </div>
 
       {/* Scrollable content area */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-16 relative z-10">

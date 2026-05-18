@@ -24,6 +24,7 @@ export function LandingFooter() {
               width={220} 
               height={58} 
               className="h-14 w-auto object-contain dark:brightness-115"
+              style={{ width: 'auto' }}
             />
             <p className="text-body text-sm leading-relaxed max-w-sm">
               Platform persiapan CPNS revolusioner yang menggabungkan keseruan bermain game RPG dengan akurasi simulasi CAT BKN asli. Dari Cambies, oleh Cambies, untuk Cambies.

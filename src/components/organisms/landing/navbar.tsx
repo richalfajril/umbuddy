@@ -26,6 +26,7 @@ export function LandingNavbar() {
                 width={240} 
                 height={64} 
                 className="h-16 w-auto"
+                style={{ width: 'auto' }}
                 priority
               />
             </Link>

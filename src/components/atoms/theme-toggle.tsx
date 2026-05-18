@@ -11,21 +11,53 @@ import { useTheme } from 'next-themes'
 export function ThemeToggle() {
   const { theme, setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
+  const transitionTimeoutRef = React.useRef<number | null>(null)
 
   React.useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
+
+    return () => {
+      if (transitionTimeoutRef.current) {
+        window.clearTimeout(transitionTimeoutRef.current)
+      }
+    }
   }, [])
 
   if (!mounted) return null
 
   const currentTheme = resolvedTheme || theme
+  const nextTheme = currentTheme === 'light' ? 'dark' : 'light'
+
+  const handleThemeChange = () => {
+    const root = document.documentElement
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    if (!prefersReducedMotion) {
+      root.classList.remove('theme-to-dark', 'theme-to-light')
+      root.classList.add(nextTheme === 'dark' ? 'theme-to-dark' : 'theme-to-light')
+
+      if (transitionTimeoutRef.current) {
+        window.clearTimeout(transitionTimeoutRef.current)
+      }
+
+      transitionTimeoutRef.current = window.setTimeout(() => {
+        root.classList.remove('theme-to-dark', 'theme-to-light')
+        transitionTimeoutRef.current = null
+      }, 680)
+    }
+
+    root.classList.remove('light', 'dark')
+    root.classList.add(nextTheme)
+    root.style.colorScheme = nextTheme
+    setTheme(nextTheme)
+  }
 
   return (
     <button
-      onClick={() => setTheme(currentTheme === 'light' ? 'dark' : 'light')}
+      onClick={handleThemeChange}
       className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-background border-2 border-border shadow-[0_4px_0_0_var(--color-border)] transition-all hover:translate-y-[2px] hover:shadow-[0_2px_0_0_var(--color-border)] active:translate-y-[4px] active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary group"
-      aria-label="Toggle Theme"
+      aria-label={`Ubah ke mode ${nextTheme === 'dark' ? 'gelap' : 'terang'}`}
     >
       {currentTheme === 'light' ? (
         <Moon className="w-6 h-6 text-headline transition-transform duration-300 group-hover:rotate-12" />

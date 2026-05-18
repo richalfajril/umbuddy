@@ -197,6 +197,67 @@
  * Reset dan tipografi global yang konsisten.
  * ─────────────────────────────────────────────────────────── */
 @layer base {
+  html.theme-to-dark::before,
+  html.theme-to-light::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    mix-blend-mode: soft-light;
+    will-change: opacity, transform;
+  }
+
+  html.theme-to-dark::before {
+    background:
+      radial-gradient(circle at 78% 18%, rgba(255, 195, 0, 0.24), transparent 22%),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.10), rgba(15, 23, 42, 0.68));
+    animation: day-to-night-wash 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  html.theme-to-light::before {
+    background:
+      radial-gradient(circle at 80% 18%, rgba(255, 195, 0, 0.20), transparent 24%),
+      linear-gradient(135deg, rgba(15, 23, 42, 0.52), rgba(255, 255, 255, 0.18));
+    animation: night-to-day-wash 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes day-to-night-wash {
+    0% {
+      opacity: 0;
+      transform: translate3d(8%, -6%, 0) scale(1.08);
+    }
+    42% {
+      opacity: 0.34;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(-3%, 3%, 0) scale(1.02);
+    }
+  }
+
+  @keyframes night-to-day-wash {
+    0% {
+      opacity: 0;
+      transform: translate3d(-8%, 6%, 0) scale(1.08);
+    }
+    42% {
+      opacity: 0.30;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(3%, -3%, 0) scale(1.02);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.theme-to-dark::before,
+    html.theme-to-light::before {
+      animation: none;
+      content: none;
+    }
+  }
+
   *,
   *::before,
   *::after {
@@ -497,6 +558,28 @@
     position: relative;
   }
 
+  .bg-dot-pattern {
+    position: relative;
+  }
+
+  .bg-dot-pattern {
+    background:
+      radial-gradient(circle at 12% 12%, rgba(116, 195, 50, 0.24), transparent 34%),
+      radial-gradient(circle at 88% 84%, rgba(244, 202, 106, 0.30), transparent 32%),
+      radial-gradient(circle at 74% 18%, rgba(255, 195, 0, 0.10), transparent 26%),
+      linear-gradient(135deg, rgba(116, 195, 50, 0.055), transparent 42%, rgba(244, 202, 106, 0.070)),
+      var(--color-background);
+  }
+
+  .dark .bg-dot-pattern {
+    background:
+      radial-gradient(circle at 18% 18%, rgba(93, 168, 40, 0.22), transparent 36%),
+      radial-gradient(circle at 88% 84%, rgba(230, 176, 0, 0.17), transparent 32%),
+      radial-gradient(circle at 48% 42%, rgba(51, 65, 85, 0.42), transparent 44%),
+      linear-gradient(135deg, rgba(116, 195, 50, 0.055), transparent 44%, rgba(230, 176, 0, 0.050)),
+      var(--color-background);
+  }
+
   .bg-grid-pattern::before {
     content: "";
     position: absolute;
@@ -514,6 +597,40 @@
     background-image: 
       linear-gradient(to right, rgba(116, 195, 50, 0.03) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(116, 195, 50, 0.03) 1px, transparent 1px);
+  }
+
+  .bg-dot-pattern::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-size: 24px 24px;
+    background-image: radial-gradient(circle, rgba(21, 93, 39, 0.14) 1px, transparent 1.5px);
+    mask-image: radial-gradient(circle at center, black, transparent 78%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .dark .bg-dot-pattern::before {
+    background-image: radial-gradient(circle, rgba(116, 195, 50, 0.12) 1px, transparent 1.5px);
+  }
+
+  .bg-dot-pattern::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(116, 195, 50, 0.10), transparent 48%),
+      radial-gradient(ellipse at 0% 100%, rgba(244, 202, 106, 0.14), transparent 46%),
+      linear-gradient(115deg, transparent 0 36%, rgba(116, 195, 50, 0.050) 36% 48%, transparent 48% 58%, rgba(255, 195, 0, 0.050) 58% 70%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .dark .bg-dot-pattern::after {
+    background:
+      radial-gradient(ellipse at 52% 0%, rgba(93, 168, 40, 0.10), transparent 48%),
+      radial-gradient(ellipse at 0% 100%, rgba(230, 176, 0, 0.085), transparent 46%),
+      linear-gradient(115deg, transparent 0 36%, rgba(93, 168, 40, 0.060) 36% 48%, transparent 48% 58%, rgba(230, 176, 0, 0.045) 58% 70%, transparent 70%);
   }
 
   .glow-blob-primary {

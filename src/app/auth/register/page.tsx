@@ -99,6 +99,7 @@ export default function RegisterPage() {
             width={120} 
             height={120} 
             className="h-20 w-auto sm:h-28 animate-bounce-subtle"
+            style={{ width: 'auto' }}
             priority
           />
           <Image 
@@ -107,6 +108,7 @@ export default function RegisterPage() {
             width={224} 
             height={56} 
             className="w-48 sm:w-56 h-auto -mt-1 sm:-mt-2"
+            style={{ height: 'auto' }}
             priority
           />
         </Link>
