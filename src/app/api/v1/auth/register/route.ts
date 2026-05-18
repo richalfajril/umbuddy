@@ -22,6 +22,16 @@ function errorResponse(
   )
 }
 
+function registrationAcceptedResponse() {
+  return NextResponse.json(
+    {
+      message: 'Jika email dapat didaftarkan, instruksi verifikasi akan dikirim.',
+      verification_required: true,
+    },
+    { status: 202 }
+  )
+}
+
 /**
  * API Route: /api/v1/auth/register
  * 
@@ -88,8 +98,17 @@ export async function POST(req: Request) {
     console.error('Registration API error:', error)
     
     const message = error instanceof Error ? error.message : ''
+    if (message === 'INVALID_NAME') {
+      return errorResponse(
+        'VALIDATION_ERROR',
+        'Invalid request data',
+        400,
+        [{ field: 'name', message: 'Nama tidak valid' }]
+      )
+    }
+
     if (message === 'Email sudah terdaftar') {
-      return errorResponse('EMAIL_ALREADY_REGISTERED', message, 409)
+      return registrationAcceptedResponse()
     }
 
     return errorResponse('INTERNAL_ERROR', 'Terjadi kesalahan saat pendaftaran', 500)

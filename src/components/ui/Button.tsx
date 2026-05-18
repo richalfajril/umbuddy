@@ -19,6 +19,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
   size?: ButtonSize
   isLoading?: boolean
+  loadingLabel?: string
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
 }
@@ -31,7 +32,7 @@ const variantClasses: Record<ButtonVariant, string> = {
 }
 
 const sizeClasses: Record<ButtonSize, string> = {
-  sm: 'text-sm px-3 py-2 min-h-[36px]',
+  sm: 'text-sm px-3 py-2 min-h-[44px]',
   md: 'text-base px-6 py-2.5 min-h-[44px]',
   lg: 'text-lg px-8 py-3 min-h-[52px]',
 }
@@ -45,6 +46,7 @@ export function Button({
   variant = 'primary',
   size = 'md',
   isLoading = false,
+  loadingLabel = 'Memproses...',
   leftIcon,
   rightIcon,
   children,
@@ -63,8 +65,10 @@ export function Button({
       {...props}
     >
       {isLoading ? (
-        // Spinner minimal — tidak pakai library external
-        <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+        <>
+          <span className="inline-block h-4 w-4 rounded-full border-2 border-current border-t-transparent animate-spin" />
+          <span>{loadingLabel}</span>
+        </>
       ) : (
         <>
           {leftIcon && <span className="shrink-0">{leftIcon}</span>}

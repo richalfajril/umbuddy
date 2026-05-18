@@ -32,6 +32,17 @@ function createPrismaClient(): PrismaClient {
     throw new Error('[Prisma] Missing DATABASE_URL env var')
   }
 
+  const parsedDatabaseUrl = new URL(databaseUrl)
+  const isSupabaseDirectHost =
+    parsedDatabaseUrl.hostname.startsWith('db.') &&
+    parsedDatabaseUrl.hostname.endsWith('.supabase.co')
+
+  if (isSupabaseDirectHost) {
+    throw new Error(
+      '[Prisma] DATABASE_URL must use Supabase Supavisor pooled connection for runtime, not the direct db.*.supabase.co host. Use the pooler host on port 6543 and restart the dev server.'
+    )
+  }
+
   const adapter = new PrismaPg(databaseUrl)
 
   return new PrismaClient({

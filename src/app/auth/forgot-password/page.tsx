@@ -10,22 +10,42 @@ import { Button, Input, Label } from '@/components/ui'
 export default function ForgotPasswordPage() {
   const [email, setEmail] = React.useState('')
   const [isSubmitted, setIsSubmitted] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    setIsSubmitted(true)
+    setIsLoading(true)
+    try {
+      await fetch('/api/v1/auth/password-reset/request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      setIsSubmitted(true)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <FormSettingsLayout
       header={
-        <Link href="/" className="transition-transform hover:scale-105 active:scale-95">
-          <Image
-            src="/logo/logo_text.png"
-            alt="Umbuddy Logo"
-            width={180}
-            height={48}
-            className="h-12 w-auto dark:invert"
+        <Link href="/" className="flex flex-col items-center gap-1 group transition-transform duration-300 hover:scale-105 active:scale-95">
+          <Image 
+            src="/logo/logo_only.png" 
+            alt="Umbuddy Mascot" 
+            width={120} 
+            height={120} 
+            className="h-20 w-auto sm:h-28 animate-bounce-subtle"
+            priority
+          />
+          <Image 
+            src="/logo/logo_text.png" 
+            alt="Umbuddy" 
+            width={224} 
+            height={56} 
+            className="w-48 sm:w-56 h-auto -mt-1 sm:-mt-2"
+            priority
           />
         </Link>
       }
@@ -39,12 +59,16 @@ export default function ForgotPasswordPage() {
             Reset Password
           </h1>
           <p className="mt-2 text-sm leading-6 text-body">
-            Masukkan email akunmu. Link reset akan dikirim saat endpoint reset password aktif.
+            Masukkan email akunmu. Link reset berlaku 1 jam dan akan dikirim jika akun aktif.
           </p>
         </div>
 
         {isSubmitted ? (
-          <div className="rounded-lg border border-primary/30 bg-primary-light px-4 py-3 text-sm font-bold text-primary-dark">
+          <div
+            role="status"
+            aria-live="polite"
+            className="rounded-lg border border-primary/30 bg-primary-light px-4 py-3 text-sm font-bold text-primary-dark"
+          >
             Jika email terdaftar, instruksi reset akan dikirim ke inbox kamu.
           </div>
         ) : null}
@@ -62,7 +86,13 @@ export default function ForgotPasswordPage() {
             />
           </div>
 
-          <Button type="submit" variant="primary" className="h-14 w-full text-lg">
+          <Button
+            type="submit"
+            variant="primary"
+            className="h-14 w-full text-lg"
+            isLoading={isLoading}
+            loadingLabel="Mengirim..."
+          >
             Kirim Link Reset
           </Button>
         </form>

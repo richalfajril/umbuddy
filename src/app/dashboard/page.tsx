@@ -19,9 +19,14 @@ const nextActions = [
 
 export default async function DashboardPage() {
   const session = await getServerSession(authConfig)
-  if (!session) {
+  if (!session || session.user.revoked) {
     redirect('/auth/login')
   }
+
+  if (session.user.onboardingRequired) {
+    redirect('/onboarding')
+  }
+
   return (
     <main className="min-h-screen bg-background px-4 py-6 text-body sm:px-6 lg:px-8">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">

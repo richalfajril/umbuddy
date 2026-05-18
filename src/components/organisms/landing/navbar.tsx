@@ -4,35 +4,14 @@ import * as React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui'
-import { Moon, Sun, Menu, X } from 'lucide-react'
-import { useTheme } from 'next-themes'
+import { Menu, X } from 'lucide-react'
 
 /**
  * Navbar Landing Page — Client Component.
- * Menangani toggle theme dan mobile menu.
+ * Menangani mobile menu.
  */
 export function LandingNavbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
-  const { theme, setTheme, resolvedTheme } = useTheme()
-  const [mounted, setMounted] = React.useState(false)
-
-  // Avoid hydration mismatch
-  React.useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true)
-  }, [])
-
-  const toggleTheme = () => {
-    setTheme(resolvedTheme === 'light' ? 'dark' : 'light')
-  }
-
-  if (!mounted) return (
-    <nav className="w-full bg-background/80 backdrop-blur-md border-b border-border h-16">
-      {/* Skeleton / Placeholder while loading theme to prevent FOUC */}
-    </nav>
-  )
-
-  const currentTheme = resolvedTheme || theme
 
   return (
     <nav className="w-full bg-background/80 backdrop-blur-md border-b border-border">
@@ -62,13 +41,6 @@ export function LandingNavbar() {
             <Link href="#faq" className="text-sm font-medium text-body hover:text-primary transition-colors">FAQ</Link>
             
             <div className="flex items-center gap-3 ml-2">
-              <button 
-                onClick={toggleTheme}
-                className="p-2 rounded-xl border-2 border-border hover:bg-surface transition-all"
-                aria-label="Toggle Theme"
-              >
-                {currentTheme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-xp" />}
-              </button>
               <Link href="/auth/login">
                 <Button variant="secondary" size="sm">Masuk</Button>
               </Link>
@@ -80,15 +52,10 @@ export function LandingNavbar() {
 
           {/* Mobile Toggle */}
           <div className="flex md:hidden items-center gap-2">
-            <button 
-              onClick={toggleTheme}
-              className="p-2 rounded-xl border-2 border-border"
-            >
-              {currentTheme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-xp" />}
-            </button>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-xl border-2 border-border"
+              aria-label="Toggle Menu"
             >
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
