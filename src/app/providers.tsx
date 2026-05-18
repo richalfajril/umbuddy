@@ -15,17 +15,21 @@ if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
   }
 }
 
+import { ToastContainer } from '@/components/ui'
+
 /**
  * Global client providers wrapper.
  * Menyediakan konteks:
  * - SessionProvider (NextAuth)
  * - ThemeProvider (next-themes)
+ * - ToastContainer (Global Toast Notification Stack)
  */
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         {children}
+        <ToastContainer />
       </ThemeProvider>
     </SessionProvider>
   )

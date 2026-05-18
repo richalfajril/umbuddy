@@ -7,6 +7,8 @@ import { signIn } from 'next-auth/react'
 import { FormSettingsLayout } from '@/components/layouts/form-settings-layout'
 import { Button, Input, Label } from '@/components/ui'
 
+import { useToastStore } from '@/store/useToastStore'
+
 type ApiErrorResponse = {
   error?: {
     message?: string
@@ -20,6 +22,7 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = React.useState(false)
   const [successMessage, setSuccessMessage] = React.useState('')
   const [errorMessage, setErrorMessage] = React.useState('')
+  const { addToast } = useToastStore()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -40,15 +43,28 @@ export default function RegisterPage() {
         throw new Error(data.error?.message || 'Gagal mendaftar')
       }
 
-      setSuccessMessage(
-        data.message ?? 'Registrasi berhasil. Silakan cek email untuk verifikasi akun sebelum masuk.'
-      )
+      const successMsg = data.message ?? 'Registrasi berhasil. Silakan cek email untuk verifikasi akun sebelum masuk.'
+      setSuccessMessage(successMsg)
+      
+      addToast({
+        type: 'success',
+        title: 'Registrasi Berhasil! 🎉',
+        message: 'Selamat datang Pejuang! Silakan cek email kamu untuk verifikasi.',
+        xpReward: 50,
+      })
+
       setName('')
       setEmail('')
       setPassword('')
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Gagal mendaftar'
       setErrorMessage(message)
+      
+      addToast({
+        type: 'error',
+        title: 'Registrasi Gagal ⚠️',
+        message: message,
+      })
     } finally {
       setIsLoading(false)
     }

@@ -7,11 +7,14 @@ import { signIn } from 'next-auth/react'
 import { FormSettingsLayout } from '@/components/layouts/form-settings-layout'
 import { Button, Input, Label } from '@/components/ui'
 
+import { useToastStore } from '@/store/useToastStore'
+
 export default function LoginPage() {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState('')
+  const { addToast } = useToastStore()
 
   const getLoginErrorMessage = (error?: string | null) => {
     switch (error) {
@@ -41,12 +44,31 @@ export default function LoginPage() {
       })
       
       if (result?.error) {
-        setErrorMessage(getLoginErrorMessage(result.error))
+        const errorMsg = getLoginErrorMessage(result.error)
+        setErrorMessage(errorMsg)
+        
+        addToast({
+          type: 'error',
+          title: 'Masuk Gagal ⚠️',
+          message: errorMsg,
+        })
       } else {
+        addToast({
+          type: 'success',
+          title: 'Berhasil Masuk! 🚀',
+          message: 'Selamat datang kembali Pejuang! Memuat markas...',
+        })
         window.location.href = '/dashboard'
       }
     } catch {
-      setErrorMessage('Terjadi kesalahan saat masuk')
+      const errorMsg = 'Terjadi kesalahan saat masuk'
+      setErrorMessage(errorMsg)
+      
+      addToast({
+        type: 'error',
+        title: 'Masuk Gagal ⚠️',
+        message: errorMsg,
+      })
     } finally {
       setIsLoading(false)
     }
