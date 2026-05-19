@@ -35,7 +35,7 @@ export default async function AuthErrorPage({ searchParams }: AuthErrorPageProps
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-background px-4 py-8">
-      <Card padding="lg" className="w-full max-w-md text-center border-2 border-border shadow-chunky">
+      <Card padding="lg" className="card-static w-full max-w-md text-center border-2 border-border shadow-chunky">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-error/10 text-error">
           <AlertTriangle className="h-7 w-7" aria-hidden="true" />
         </div>

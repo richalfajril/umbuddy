@@ -553,6 +553,20 @@
     box-shadow: none;
   }
 
+  .card-static:hover,
+  .card-static:active {
+    border-color: var(--color-border);
+    border-bottom-width: 5px;
+    box-shadow: var(--shadow-card);
+    transform: none;
+  }
+
+  .dark .card-static:hover,
+  .dark .card-static:active {
+    border-color: var(--color-border);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.2);
+  }
+
   /* ─── PREMIUM DECORATIVE PATTERNS ─── */
   .bg-grid-pattern {
     position: relative;

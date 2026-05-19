@@ -27,6 +27,8 @@ interface FormSettingsLayoutProps {
   stickyFooter?: React.ReactNode
   /** Lebar maksimal card form. Default: 448px (max-w-md) */
   maxWidth?: 'sm' | 'md' | 'lg'
+  /** Matikan hover/press pada card form untuk halaman yang murni input. */
+  staticCard?: boolean
 }
 
 const maxWidthClasses = {
@@ -44,6 +46,7 @@ export function FormSettingsLayout({
   children,
   stickyFooter,
   maxWidth = 'md',
+  staticCard = false,
 }: FormSettingsLayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-background relative overflow-hidden bg-dot-pattern [&::after]:hidden">
@@ -70,7 +73,7 @@ export function FormSettingsLayout({
           )}
 
           {/* Form content */}
-          <div className="card p-5 sm:p-8">
+          <div className={['card p-5 sm:p-8', staticCard ? 'card-static' : ''].filter(Boolean).join(' ')}>
             {children}
           </div>
         </div>

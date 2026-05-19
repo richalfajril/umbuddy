@@ -45,6 +45,7 @@ export function ResetPasswordForm() {
 
   return (
     <FormSettingsLayout
+      staticCard
       header={
         <Link href="/" className="transition-transform hover:scale-105 active:scale-95">
           <Image

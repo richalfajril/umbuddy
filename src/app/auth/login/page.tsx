@@ -104,6 +104,7 @@ export default function LoginPage() {
 
   return (
     <FormSettingsLayout
+      staticCard
       header={
         <Link href="/" className="flex flex-col items-center gap-1 group transition-transform duration-300 hover:scale-105 active:scale-95">
           <Image 

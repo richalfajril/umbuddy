@@ -534,6 +534,7 @@ export function OnboardingFlow() {
 
   return (
     <FormSettingsLayout
+      staticCard
       maxWidth="md"
       header={onboardingLogoHeader}
     >
