@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { AlertTriangle, ArrowLeft } from 'lucide-react'
-import { Card } from '@/components/ui'
 
 type SearchParams = Promise<{ error?: string }>
 
@@ -35,7 +34,7 @@ export default async function AuthErrorPage({ searchParams }: AuthErrorPageProps
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-background px-4 py-8">
-      <Card padding="lg" className="card-static w-full max-w-md text-center border-2 border-border shadow-chunky">
+      <div className="form-card-static w-full max-w-md p-7 text-center">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-error/10 text-error">
           <AlertTriangle className="h-7 w-7" aria-hidden="true" />
         </div>
@@ -52,7 +51,7 @@ export default async function AuthErrorPage({ searchParams }: AuthErrorPageProps
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Kembali Masuk
         </Link>
-      </Card>
+      </div>
     </main>
   )
 }

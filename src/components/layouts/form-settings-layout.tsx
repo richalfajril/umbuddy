@@ -73,7 +73,7 @@ export function FormSettingsLayout({
           )}
 
           {/* Form content */}
-          <div className={['card p-5 sm:p-8', staticCard ? 'card-static' : ''].filter(Boolean).join(' ')}>
+          <div className={[staticCard ? 'form-card-static' : 'card', 'p-5 sm:p-8'].join(' ')}>
             {children}
           </div>
         </div>
