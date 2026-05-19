@@ -162,7 +162,7 @@ export const authConfig: NextAuthOptions = {
       }
     },
 
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.id = user.id
         token.email = user.email
@@ -176,6 +176,12 @@ export const authConfig: NextAuthOptions = {
       }
 
       if (token.id) {
+        // Session update is used after U18 onboarding completes. Re-read DB state
+        // instead of trusting client-provided session fields.
+        if (trigger === 'update') {
+          token.onboardingRequired = true
+        }
+
         const sessionState = await AuthService.getUserSessionState(token.id)
         if (
           !sessionState ||
