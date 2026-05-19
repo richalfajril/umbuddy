@@ -31,7 +31,7 @@ export default function ForgotPasswordPage() {
     <FormSettingsLayout
       staticCard
       header={
-        <Link href="/" className="flex flex-col items-center gap-1 group transition-transform duration-300 hover:scale-105 active:scale-95">
+        <Link href="/" className="flex flex-col items-center gap-0 group transition-transform duration-300 hover:scale-105 active:scale-95">
           <Image 
             src="/logo/logo_only.png" 
             alt="Umbuddy Mascot" 
@@ -46,7 +46,7 @@ export default function ForgotPasswordPage() {
             alt="Umbuddy" 
             width={224} 
             height={56} 
-            className="w-48 sm:w-56 h-auto -mt-1 sm:-mt-2"
+            className="w-48 h-auto -mt-3 sm:w-56 sm:-mt-4"
             style={{ height: 'auto' }}
             priority
           />
@@ -59,7 +59,7 @@ export default function ForgotPasswordPage() {
             <Mail className="h-7 w-7" aria-hidden="true" />
           </div>
           <h1 className="font-display text-2xl font-black text-headline">
-            Reset Password
+            Reset <span className="text-primary">Password</span>
           </h1>
           <p className="mt-2 text-sm leading-6 text-body">
             Masukkan email akunmu. Link reset berlaku 1 jam dan akan dikirim jika akun aktif.

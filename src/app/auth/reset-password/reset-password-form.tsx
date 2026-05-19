@@ -47,13 +47,24 @@ export function ResetPasswordForm() {
     <FormSettingsLayout
       staticCard
       header={
-        <Link href="/" className="transition-transform hover:scale-105 active:scale-95">
+        <Link href="/" className="flex flex-col items-center gap-0 transition-transform hover:scale-105 active:scale-95">
           <Image
-            src="/logo/logo_vertical.png"
-            alt="Umbuddy Logo"
-            width={180}
-            height={96}
-            className="h-24 w-auto sm:h-32"
+            src="/logo/logo_only.png"
+            alt="Umbuddy Mascot"
+            width={120}
+            height={120}
+            className="h-20 w-auto sm:h-28 animate-bounce-subtle"
+            style={{ width: 'auto' }}
+            priority
+          />
+          <Image
+            src="/logo/logo_text.png"
+            alt="Umbuddy"
+            width={224}
+            height={56}
+            className="w-48 h-auto -mt-3 sm:w-56 sm:-mt-4"
+            style={{ height: 'auto' }}
+            priority
           />
         </Link>
       }
@@ -64,7 +75,7 @@ export function ResetPasswordForm() {
             <KeyRound className="h-7 w-7" aria-hidden="true" />
           </div>
           <h1 className="font-display text-2xl font-black text-headline">
-            Buat Password Baru
+            Buat Password <span className="text-primary">Baru</span>
           </h1>
           <p className="mt-2 text-sm leading-6 text-body">
             Gunakan password baru minimal 8 karakter. Setelah berhasil, semua sesi lama dicabut.

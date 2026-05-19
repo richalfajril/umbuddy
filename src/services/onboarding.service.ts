@@ -3,13 +3,13 @@ import type { Prisma } from '@prisma/client'
 
 const DIAGNOSTIC_MODE = 'DIAGNOSTIC'
 const ONBOARDING_REWARD_XP = 50
-const DIAGNOSTIC_DURATION_SECONDS = 20 * 60
+const DIAGNOSTIC_DURATION_SECONDS = 15 * 60
 const ANSWER_OPTIONS = ['A', 'B', 'C', 'D', 'E'] as const
 
 const CATEGORY_CONFIG = {
-  TWK: { count: 5, maxScore: 150, label: 'TWK' },
-  TIU: { count: 5, maxScore: 175, label: 'TIU' },
-  TKP: { count: 5, maxScore: 225, label: 'TKP' },
+  TWK: { count: 5, maxScore: 150, label: 'TWK', packageCode: 'U18_DIAGNOSTIC_TWK' },
+  TIU: { count: 5, maxScore: 175, label: 'TIU', packageCode: 'U18_DIAGNOSTIC_TIU' },
+  TKP: { count: 5, maxScore: 225, label: 'TKP', packageCode: 'U18_DIAGNOSTIC_TKP' },
 } as const
 
 type DiagnosticCategory = keyof typeof CATEGORY_CONFIG
@@ -301,6 +301,10 @@ export class OnboardingService {
   }
 
   static async startDiagnostic(userId: string) {
+    let existingFallbackSession:
+      | { id: string; questions: PrivateDiagnosticQuestion[] }
+      | null = null
+
     const existingSession = await prisma.practiceSession.findFirst({
       where: {
         user_id: userId,
@@ -312,7 +316,8 @@ export class OnboardingService {
 
     if (existingSession) {
       const questions = getDiagnosticQuestionsFromMetadata(existingSession.metadata)
-      if (questions.length > 0) {
+      const hasFallbackQuestions = questions.some((question) => question.source === 'fallback')
+      if (questions.length > 0 && !hasFallbackQuestions) {
         return {
           diagnostic_session_id: existingSession.id,
           duration_seconds: DIAGNOSTIC_DURATION_SECONDS,
@@ -320,10 +325,26 @@ export class OnboardingService {
           fallback_used: questions.some((question) => question.source === 'fallback'),
         }
       }
+
+      if (questions.length > 0 && hasFallbackQuestions) {
+        existingFallbackSession = {
+          id: existingSession.id,
+          questions,
+        }
+      }
     }
 
     const questions = await this.selectDiagnosticQuestions()
     const fallbackUsed = questions.some((question) => question.source === 'fallback')
+
+    if (fallbackUsed && existingFallbackSession) {
+      return {
+        diagnostic_session_id: existingFallbackSession.id,
+        duration_seconds: DIAGNOSTIC_DURATION_SECONDS,
+        questions: existingFallbackSession.questions.map(toPublicQuestion),
+        fallback_used: true,
+      }
+    }
 
     const session = await prisma.practiceSession.create({
       data: {
@@ -548,10 +569,11 @@ export class OnboardingService {
         prisma.question.findMany({
           where: {
             category,
+            package_code: CATEGORY_CONFIG[category].packageCode,
             status: 'PUBLISHED',
             deleted_at: null,
           },
-          orderBy: { created_at: 'asc' },
+          orderBy: { number: 'asc' },
           take: CATEGORY_CONFIG[category].count,
         })
       )

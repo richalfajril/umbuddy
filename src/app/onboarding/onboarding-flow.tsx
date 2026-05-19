@@ -71,7 +71,7 @@ const categoryLabel = {
 }
 
 const onboardingLogoHeader = (
-  <Link href="/" className="flex flex-col items-center gap-1 transition-transform duration-300 hover:scale-105 active:scale-95">
+  <Link href="/" className="flex flex-col items-center gap-0 transition-transform duration-300 hover:scale-105 active:scale-95">
     <Image
       src="/logo/logo_only.png"
       alt="Umbuddy Mascot"
@@ -86,7 +86,7 @@ const onboardingLogoHeader = (
       alt="Umbuddy"
       width={224}
       height={56}
-      className="w-48 h-auto -mt-1 sm:w-56 sm:-mt-2"
+      className="w-48 h-auto -mt-3 sm:w-56 sm:-mt-4"
       style={{ height: 'auto' }}
       priority
     />
@@ -111,8 +111,8 @@ export function OnboardingFlow() {
   const [message, setMessage] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
   const [sessionId, setSessionId] = React.useState('')
-  const [durationSeconds, setDurationSeconds] = React.useState(20 * 60)
-  const [remainingSeconds, setRemainingSeconds] = React.useState(20 * 60)
+  const [durationSeconds, setDurationSeconds] = React.useState(15 * 60)
+  const [remainingSeconds, setRemainingSeconds] = React.useState(15 * 60)
   const [questions, setQuestions] = React.useState<PublicQuestion[]>([])
   const [currentIndex, setCurrentIndex] = React.useState(0)
   const [answers, setAnswers] = React.useState<Record<string, string>>({})
@@ -333,9 +333,9 @@ export function OnboardingFlow() {
                   Terjawab {answeredCount}/{questions.length}
                 </span>
               </div>
-              <h1 className="font-display text-2xl font-black text-headline">
+              <h2 className="font-display text-2xl font-black text-headline">
                 {currentQuestion.text}
-              </h1>
+              </h2>
               {message && (
                 <p role="status" aria-live="polite" className="rounded-xl bg-xp-light px-3 py-2 text-xs font-bold text-headline">
                   {message}
@@ -427,7 +427,7 @@ export function OnboardingFlow() {
           <div>
             <p className="text-sm font-black uppercase text-primary">Baseline Kamu Siap</p>
             <h1 className="mt-2 font-display text-3xl font-black text-headline">
-              Skor Awal: {result.total_score}/550
+              Skor <span className="text-primary">Awal:</span> {result.total_score}/550
             </h1>
             <p className="mt-2 text-sm leading-6 text-body">
               Ini bukan nilai akhir, ini titik start biar latihanmu lebih tepat sasaran.
@@ -490,7 +490,7 @@ export function OnboardingFlow() {
           <div>
             <p className="text-sm font-black uppercase text-primary">Tes Mini 15 Soal</p>
             <h1 className="mt-2 font-display text-3xl font-black text-headline">
-              Yuk cari titik start Kamu
+              Yuk cari <span className="text-primary">titik start</span> Kamu
             </h1>
             <p className="mt-3 text-sm leading-6 text-body">
               Tes ini berisi 5 TWK, 5 TIU, dan 5 TKP. Jangan takut salah, ini bukan ujian sungguhan.
@@ -506,7 +506,7 @@ export function OnboardingFlow() {
           <div className="grid gap-3 text-left">
             <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-3">
               <Clock className="h-5 w-5 text-primary" aria-hidden="true" />
-              <span className="text-sm font-bold text-headline">Durasi 20 menit</span>
+              <span className="text-sm font-bold text-headline">Durasi 15 menit</span>
             </div>
             <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-3">
               <ShieldCheck className="h-5 w-5 text-primary" aria-hidden="true" />
@@ -542,7 +542,7 @@ export function OnboardingFlow() {
         <div className="space-y-2 text-center">
           <p className="text-sm font-black uppercase text-primary">Profil Belajar</p>
           <h1 className="font-display text-3xl font-black text-headline">
-            Siapkan target Kamu
+            Siapkan <span className="text-primary">target</span> Kamu
           </h1>
           <p className="text-sm leading-6 text-body">
             Umbuddy pakai data ini untuk membuat rekomendasi awal yang lebih relevan.

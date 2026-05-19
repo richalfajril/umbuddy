@@ -106,7 +106,7 @@ export default function LoginPage() {
     <FormSettingsLayout
       staticCard
       header={
-        <Link href="/" className="flex flex-col items-center gap-1 group transition-transform duration-300 hover:scale-105 active:scale-95">
+        <Link href="/" className="flex flex-col items-center gap-0 group transition-transform duration-300 hover:scale-105 active:scale-95">
           <Image 
             src="/logo/logo_only.png" 
             alt="Umbuddy Mascot" 
@@ -121,7 +121,7 @@ export default function LoginPage() {
             alt="Umbuddy" 
             width={224} 
             height={56} 
-            className="w-48 sm:w-56 h-auto -mt-1 sm:-mt-2"
+            className="w-48 h-auto -mt-3 sm:w-56 sm:-mt-4"
             style={{ height: 'auto' }}
             priority
           />
@@ -131,10 +131,10 @@ export default function LoginPage() {
       <div className="space-y-6">
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-black text-headline">
-            Selamat Datang Kembali!
+            Selamat Datang <span className="text-primary">Kembali!</span>
           </h1>
           <p className="text-body text-sm">
-            Masuk untuk melanjutkan perjuanganmu menaklukkan CPNS.
+            Masuk lagi dan lanjutkan latihanmu menuju CPNS impian.
           </p>
         </div>
 

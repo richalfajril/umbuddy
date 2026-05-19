@@ -39,7 +39,7 @@ export default async function AuthErrorPage({ searchParams }: AuthErrorPageProps
           <AlertTriangle className="h-7 w-7" aria-hidden="true" />
         </div>
         <h1 className="mt-5 font-display text-2xl font-black text-headline">
-          {title}
+          <span className="text-primary">Oops,</span> {title}
         </h1>
         <p className="mt-3 text-sm leading-6 text-body">
           {description}
