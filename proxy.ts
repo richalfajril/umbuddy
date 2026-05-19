@@ -20,7 +20,9 @@ function isProtectedPath(pathname: string) {
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
-  if (!isProtectedPath(pathname)) {
+  const isAuthPage = pathname.startsWith('/auth')
+
+  if (!isProtectedPath(pathname) && !isAuthPage) {
     return NextResponse.next()
   }
 
@@ -30,9 +32,17 @@ export async function proxy(request: NextRequest) {
   })
 
   if (!token || token.revoked) {
+    if (isAuthPage) {
+      return NextResponse.next()
+    }
+
     const loginUrl = new URL('/auth/login', request.url)
     loginUrl.searchParams.set('callbackUrl', request.nextUrl.pathname)
     return NextResponse.redirect(loginUrl)
+  }
+
+  if (isAuthPage && pathname !== '/auth/error') {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
   const onboardingRequired = Boolean(token.onboardingRequired)
@@ -56,5 +66,6 @@ export const config = {
     '/settings/:path*',
     '/profile/:path*',
     '/onboarding/:path*',
+    '/auth/:path*',
   ],
 }

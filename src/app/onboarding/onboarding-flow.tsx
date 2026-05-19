@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Flag, ShieldCheck, Target, Trophy } from 'lucide-react'
@@ -68,6 +69,29 @@ const categoryLabel = {
   TIU: 'TIU',
   TKP: 'TKP',
 }
+
+const onboardingLogoHeader = (
+  <Link href="/" className="flex flex-col items-center gap-1 transition-transform duration-300 hover:scale-105 active:scale-95">
+    <Image
+      src="/logo/logo_only.png"
+      alt="Umbuddy Mascot"
+      width={120}
+      height={120}
+      className="h-20 w-auto sm:h-28 animate-bounce-subtle"
+      style={{ width: 'auto' }}
+      priority
+    />
+    <Image
+      src="/logo/logo_text.png"
+      alt="Umbuddy"
+      width={224}
+      height={56}
+      className="w-48 h-auto -mt-1 sm:w-56 sm:-mt-2"
+      style={{ height: 'auto' }}
+      priority
+    />
+  </Link>
+)
 
 async function readApiError(response: Response) {
   const data = (await response.json().catch(() => null)) as { error?: { message?: string } } | null
@@ -272,7 +296,7 @@ export function OnboardingFlow() {
 
   if (step === 'loading') {
     return (
-      <FormSettingsLayout maxWidth="md">
+      <FormSettingsLayout maxWidth="md" header={onboardingLogoHeader}>
         <div className="space-y-4 text-center">
           <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
           <p className="font-bold text-body">Menyiapkan onboarding kamu...</p>
@@ -395,7 +419,7 @@ export function OnboardingFlow() {
     }
 
     return (
-      <FormSettingsLayout maxWidth="lg">
+      <FormSettingsLayout maxWidth="lg" header={onboardingLogoHeader}>
         <div className="space-y-6 text-center">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-light text-primary-dark">
             <Trophy className="h-9 w-9" aria-hidden="true" />
@@ -457,21 +481,19 @@ export function OnboardingFlow() {
     return (
       <FormSettingsLayout
         maxWidth="md"
-        header={
-          <Image src="/logo/logo_only.png" alt="Umbuddy" width={88} height={88} className="h-20 w-auto" priority />
-        }
+        header={onboardingLogoHeader}
       >
         <div className="space-y-6 text-center">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-xp-light text-xp">
             <Flag className="h-8 w-8" aria-hidden="true" />
           </div>
           <div>
-            <p className="text-sm font-black uppercase text-primary">Tes Mini 20 Soal</p>
+            <p className="text-sm font-black uppercase text-primary">Tes Mini 15 Soal</p>
             <h1 className="mt-2 font-display text-3xl font-black text-headline">
               Yuk cari titik start Kamu
             </h1>
             <p className="mt-3 text-sm leading-6 text-body">
-              Tes ini campuran TWK, TIU, dan TKP. Jangan takut salah, ini bukan ujian sungguhan.
+              Tes ini berisi 5 TWK, 5 TIU, dan 5 TKP. Jangan takut salah, ini bukan ujian sungguhan.
             </p>
           </div>
 
@@ -489,6 +511,10 @@ export function OnboardingFlow() {
             <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-3">
               <ShieldCheck className="h-5 w-5 text-primary" aria-hidden="true" />
               <span className="text-sm font-bold text-headline">Skor dihitung server, aman dari manipulasi</span>
+            </div>
+            <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-3">
+              <Target className="h-5 w-5 text-primary" aria-hidden="true" />
+              <span className="text-sm font-bold text-headline">Komposisi 5 TWK, 5 TIU, 5 TKP</span>
             </div>
           </div>
 
@@ -509,9 +535,7 @@ export function OnboardingFlow() {
   return (
     <FormSettingsLayout
       maxWidth="md"
-      header={
-        <Image src="/logo/logo_only.png" alt="Umbuddy" width={88} height={88} className="h-20 w-auto" priority />
-      }
+      header={onboardingLogoHeader}
     >
       <form onSubmit={submitProfile} className="space-y-5">
         <div className="space-y-2 text-center">

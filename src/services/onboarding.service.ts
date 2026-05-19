@@ -7,9 +7,9 @@ const DIAGNOSTIC_DURATION_SECONDS = 20 * 60
 const ANSWER_OPTIONS = ['A', 'B', 'C', 'D', 'E'] as const
 
 const CATEGORY_CONFIG = {
-  TWK: { count: 7, maxScore: 150, label: 'TWK' },
-  TIU: { count: 7, maxScore: 175, label: 'TIU' },
-  TKP: { count: 6, maxScore: 225, label: 'TKP' },
+  TWK: { count: 5, maxScore: 150, label: 'TWK' },
+  TIU: { count: 5, maxScore: 175, label: 'TIU' },
+  TKP: { count: 5, maxScore: 225, label: 'TKP' },
 } as const
 
 type DiagnosticCategory = keyof typeof CATEGORY_CONFIG

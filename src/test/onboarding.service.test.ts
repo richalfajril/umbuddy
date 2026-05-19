@@ -128,7 +128,7 @@ describe('U18 OnboardingService', () => {
     const result = await OnboardingService.startDiagnostic('user-1')
 
     expect(result.diagnostic_session_id).toBe('session-1')
-    expect(result.questions).toHaveLength(20)
+    expect(result.questions).toHaveLength(15)
     expect(result.fallback_used).toBe(true)
     expect(result.questions[0]).not.toHaveProperty('answer_key')
     expect(result.questions[0]).not.toHaveProperty('tkp_weights')
