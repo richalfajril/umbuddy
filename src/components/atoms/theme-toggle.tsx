@@ -8,7 +8,11 @@ import { useTheme } from 'next-themes'
  * ThemeToggle Atom — Tombol melayang di kanan bawah untuk beralih mode gelap/terang.
  * Mengikuti Umbuddy Gamified Design System (3D pressing button effect).
  */
-export function ThemeToggle() {
+interface ThemeToggleProps {
+  variant?: 'floating' | 'inline'
+}
+
+export function ThemeToggle({ variant = 'floating' }: ThemeToggleProps) {
   const { theme, setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
   const transitionTimeoutRef = React.useRef<number | null>(null)
@@ -56,7 +60,10 @@ export function ThemeToggle() {
   return (
     <button
       onClick={handleThemeChange}
-      className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-background border-2 border-border shadow-[0_4px_0_0_var(--color-border)] transition-all hover:translate-y-[2px] hover:shadow-[0_2px_0_0_var(--color-border)] active:translate-y-[4px] active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary group"
+      className={[
+        variant === 'floating' ? 'fixed bottom-6 right-6 z-50 h-14 w-14' : 'h-11 w-11',
+        'flex items-center justify-center rounded-full bg-background border-2 border-border shadow-[0_4px_0_0_var(--color-border)] transition-all hover:translate-y-[2px] hover:shadow-[0_2px_0_0_var(--color-border)] active:translate-y-[4px] active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary group',
+      ].join(' ')}
       aria-label={`Ubah ke mode ${nextTheme === 'dark' ? 'gelap' : 'terang'}`}
     >
       {currentTheme === 'light' ? (
