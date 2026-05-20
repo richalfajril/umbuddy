@@ -119,6 +119,7 @@ export function OnboardingFlow() {
   const [timeSpent, setTimeSpent] = React.useState<Record<string, number>>({})
   const [result, setResult] = React.useState<DiagnosticResult | null>(null)
   const [recommendation, setRecommendation] = React.useState<Recommendation | null>(null)
+  const didAutoSubmitRef = React.useRef(false)
 
   React.useEffect(() => {
     let active = true
@@ -242,6 +243,7 @@ export function OnboardingFlow() {
       setCurrentIndex(0)
       setAnswers({})
       setTimeSpent({})
+      didAutoSubmitRef.current = false
       if (data.fallback_used) {
         setMessage('Bank soal published belum lengkap, jadi Umbuddy pakai soal mini aman sementara.')
       }
@@ -253,7 +255,7 @@ export function OnboardingFlow() {
     }
   }
 
-  async function submitDiagnostic() {
+  const submitDiagnostic = React.useCallback(async () => {
     if (!sessionId || questions.length === 0 || isLoading) return
 
     setIsLoading(true)
@@ -286,7 +288,14 @@ export function OnboardingFlow() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [answers, isLoading, questions, sessionId, timeSpent])
+
+  React.useEffect(() => {
+    if (step !== 'diagnostic' || remainingSeconds > 0 || didAutoSubmitRef.current) return
+
+    didAutoSubmitRef.current = true
+    void submitDiagnostic()
+  }, [remainingSeconds, step, submitDiagnostic])
 
   async function enterDashboard() {
     setIsLoading(true)

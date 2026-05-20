@@ -9,55 +9,56 @@ datasource db {
 }
 
 model User {
-  id                  String                    @id @default(uuid())
-  name                String
-  email               String                    @unique
-  password_hash       String?
-  oauth_provider      String?
-  email_verified      Boolean                   @default(false)
-  phone               String?
-  phone_verified      Boolean                   @default(false)
-  role                UserRole                  @default(USER)
-  status              UserStatus                @default(PENDING_VERIFICATION)
-  session_version     Int                       @default(1)
-  registration_source String?
-  created_at          DateTime                  @default(now())
-  updated_at          DateTime                  @updatedAt
-  deleted_at          DateTime?
-  deletion_request    AccountDeletionRequest?
-  analytics_reports   AnalyticsReport[]
-  auth_sessions       AuthSession[]
-  battle_answers      BattleAnswer[]
-  battle_participants BattleParticipant[]
-  battles_guest       Battle[]                  @relation("BattleGuest")
-  battles_host        Battle[]                  @relation("BattleHost")
-  cat_sessions        CatSimulationSession[]
-  diagnostic_attempts DiagnosticAttempt[]
-  friend_activity     FriendActivity[]
-  friendships_recv    Friendship[]              @relation("Receiver")
-  friendships_sent    Friendship[]              @relation("Requester")
-  leaderboard_entries LeaderboardEntry[]
-  notifications       Notification[]
-  onboarding          OnboardingState?
-  practice_sessions   PracticeSession[]
-  privacy_consents    PrivacyConsent[]
-  password_reset_tokens PasswordResetToken[]
-  question_donations  QuestionDonation[]
-  question_reports    QuestionReport[]
-  security_events     SecurityEvent[]
-  achievements        UserAchievement[]
-  activity_logs       UserActivityLog[]
-  daily_missions      UserDailyMission[]
-  perf_snapshots      UserPerformanceSnapshot[]
-  personality         UserPersonality?
-  profile             UserProfile?
-  progression         UserProgression?
-  season_history      UserSeasonHistory[]
-  security_flags      UserSecurityFlag[]
-  settings            UserSettings?
-  support_notes       UserSupportNote[]
-  xp_events           UserXpEvent[]
-  weakness_narratives WeaknessNarrative[]
+  id                        String                    @id @default(uuid())
+  name                      String
+  email                     String                    @unique
+  password_hash             String?
+  oauth_provider            String?
+  email_verified            Boolean                   @default(false)
+  phone                     String?
+  phone_verified            Boolean                   @default(false)
+  role                      UserRole                  @default(USER)
+  status                    UserStatus                @default(PENDING_VERIFICATION)
+  session_version           Int                       @default(1)
+  registration_source       String?
+  created_at                DateTime                  @default(now())
+  updated_at                DateTime                  @updatedAt
+  deleted_at                DateTime?
+  deletion_request          AccountDeletionRequest?
+  analytics_reports         AnalyticsReport[]
+  auth_sessions             AuthSession[]
+  email_verification_tokens EmailVerificationToken[]
+  battle_answers            BattleAnswer[]
+  battle_participants       BattleParticipant[]
+  battles_guest             Battle[]                  @relation("BattleGuest")
+  battles_host              Battle[]                  @relation("BattleHost")
+  cat_sessions              CatSimulationSession[]
+  diagnostic_attempts       DiagnosticAttempt[]
+  friend_activity           FriendActivity[]
+  friendships_recv          Friendship[]              @relation("Receiver")
+  friendships_sent          Friendship[]              @relation("Requester")
+  leaderboard_entries       LeaderboardEntry[]
+  notifications             Notification[]
+  onboarding                OnboardingState?
+  practice_sessions         PracticeSession[]
+  privacy_consents          PrivacyConsent[]
+  password_reset_tokens     PasswordResetToken[]
+  question_donations        QuestionDonation[]
+  question_reports          QuestionReport[]
+  security_events           SecurityEvent[]
+  achievements              UserAchievement[]
+  activity_logs             UserActivityLog[]
+  daily_missions            UserDailyMission[]
+  perf_snapshots            UserPerformanceSnapshot[]
+  personality               UserPersonality?
+  profile                   UserProfile?
+  progression               UserProgression?
+  season_history            UserSeasonHistory[]
+  security_flags            UserSecurityFlag[]
+  settings                  UserSettings?
+  support_notes             UserSupportNote[]
+  xp_events                 UserXpEvent[]
+  weakness_narratives       WeaknessNarrative[]
 
   @@map("users")
 }
@@ -105,6 +106,19 @@ model PasswordResetToken {
 
   @@index([user_id, expires_at])
   @@map("password_reset_tokens")
+}
+
+model EmailVerificationToken {
+  id         String    @id @default(uuid())
+  user_id    String
+  token_hash String    @unique
+  expires_at DateTime
+  used_at    DateTime?
+  created_at DateTime  @default(now())
+  user       User      @relation(fields: [user_id], references: [id])
+
+  @@index([user_id, expires_at])
+  @@map("email_verification_tokens")
 }
 
 model UserSettings {

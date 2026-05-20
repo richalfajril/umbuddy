@@ -14,6 +14,7 @@ const USER_STATUS = {
 const FAILED_LOGIN_LIMIT = 5
 const FAILED_LOGIN_WINDOW_MS = 15 * 60 * 1000
 const PASSWORD_RESET_TOKEN_TTL_MS = 60 * 60 * 1000
+const EMAIL_VERIFICATION_TOKEN_TTL_MS = 24 * 60 * 60 * 1000
 
 type TransactionClient = Omit<
   typeof prisma,
@@ -35,6 +36,13 @@ interface OAuthUserData {
 }
 
 interface PasswordResetRequestResult {
+  email: string
+  name: string
+  token: string
+  expiresAt: Date
+}
+
+interface EmailVerificationRequestResult {
   email: string
   name: string
   token: string
@@ -326,6 +334,112 @@ export class AuthService {
       token,
       expiresAt,
     }
+  }
+
+  static async canCreatePasswordResetRequest(email: string) {
+    const user = await this.findUserByEmail(email)
+    return Boolean(user && user.status === USER_STATUS.ACTIVE)
+  }
+
+  static async canCreateEmailVerificationRequest(email: string) {
+    const user = await this.findUserByEmail(email)
+    return Boolean(
+      user &&
+        user.status === USER_STATUS.PENDING_VERIFICATION &&
+        !user.email_verified
+    )
+  }
+
+  static async createEmailVerificationRequest(email: string): Promise<EmailVerificationRequestResult | null> {
+    const user = await this.findUserByEmail(email)
+    if (
+      !user ||
+      user.status !== USER_STATUS.PENDING_VERIFICATION ||
+      user.email_verified
+    ) {
+      return null
+    }
+
+    const token = randomBytes(32).toString('base64url')
+    const expiresAt = new Date(Date.now() + EMAIL_VERIFICATION_TOKEN_TTL_MS)
+    const tokenHash = hashToken(token)
+
+    await prisma.$transaction(async (tx: TransactionClient) => {
+      await tx.emailVerificationToken.create({
+        data: {
+          user_id: user.id,
+          token_hash: tokenHash,
+          expires_at: expiresAt,
+        },
+      })
+
+      await tx.securityEvent.create({
+        data: {
+          user_id: user.id,
+          event_type: 'AUTH_EMAIL_VERIFICATION_REQUESTED',
+          severity: 'LOW',
+          metadata: { email: user.email },
+        },
+      })
+    })
+
+    return {
+      email: user.email,
+      name: user.name,
+      token,
+      expiresAt,
+    }
+  }
+
+  static async verifyEmailWithToken(token: string) {
+    const tokenHash = hashToken(token)
+
+    return prisma.$transaction(async (tx: TransactionClient) => {
+      const verificationToken = await tx.emailVerificationToken.findFirst({
+        where: {
+          token_hash: tokenHash,
+          used_at: null,
+          expires_at: {
+            gt: new Date(),
+          },
+        },
+        include: {
+          user: true,
+        },
+      })
+
+      if (
+        !verificationToken ||
+        verificationToken.user.deleted_at ||
+        verificationToken.user.status !== USER_STATUS.PENDING_VERIFICATION
+      ) {
+        throw new Error('EMAIL_VERIFICATION_TOKEN_INVALID')
+      }
+
+      await tx.user.update({
+        where: { id: verificationToken.user_id },
+        data: {
+          email_verified: true,
+          status: USER_STATUS.ACTIVE,
+        },
+      })
+
+      await tx.emailVerificationToken.update({
+        where: { id: verificationToken.id },
+        data: { used_at: new Date() },
+      })
+
+      await tx.securityEvent.create({
+        data: {
+          user_id: verificationToken.user_id,
+          event_type: 'AUTH_EMAIL_VERIFIED',
+          severity: 'LOW',
+          metadata: { email: verificationToken.user.email },
+        },
+      })
+
+      return { userId: verificationToken.user_id }
+    })
   }
 
   static async resetPasswordWithToken(token: string, newPassword: string) {

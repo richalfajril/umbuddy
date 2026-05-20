@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 import { AuthService } from '@/services/auth.service'
+import { EmailQuotaService } from '@/services/email-quota.service'
+import { EMAIL_FROM, getResendClient } from '@/lib/email/client'
 import { getClientIp, rateLimitByKey } from '@/lib/redis/rate-limit'
 import { validateDto } from '@/lib/validation/dto'
 import { RegisterUserDto } from './register.dto'
@@ -25,11 +27,48 @@ function errorResponse(
 function registrationAcceptedResponse() {
   return NextResponse.json(
     {
-      message: 'Jika email dapat didaftarkan, instruksi verifikasi akan dikirim.',
+      message: 'Jika email dapat didaftarkan, instruksi verifikasi akan dikirim. Jika belum masuk, coba lagi nanti atau lanjut dengan Google.',
       verification_required: true,
     },
     { status: 202 }
   )
+}
+
+async function sendVerificationEmail(email: string, ip: string) {
+  const canCreateVerification = await AuthService.canCreateEmailVerificationRequest(email)
+  if (!canCreateVerification) return
+
+  const quota = await EmailQuotaService.consumeAuthEmailQuota({
+    type: 'verification',
+    email,
+    ip,
+  })
+  if (!quota.allowed) return
+
+  const verificationRequest = await AuthService.createEmailVerificationRequest(email)
+  if (!verificationRequest) return
+
+  const baseUrl = process.env.NEXTAUTH_URL ?? 'http://localhost:3000'
+  const verifyUrl = new URL('/auth/login', baseUrl)
+  verifyUrl.searchParams.set('verify_token', verificationRequest.token)
+
+  try {
+    await getResendClient().emails.send({
+      from: EMAIL_FROM,
+      to: verificationRequest.email,
+      subject: 'Verifikasi Email Umbuddy',
+      text: [
+        `Halo ${verificationRequest.name},`,
+        '',
+        'Klik link berikut untuk mengaktifkan akun Umbuddy kamu. Link berlaku 24 jam:',
+        verifyUrl.toString(),
+        '',
+        'Kalau kamu tidak membuat akun Umbuddy, abaikan email ini.',
+      ].join('\n'),
+    })
+  } catch (error) {
+    console.error('Email verification send error:', error)
+  }
 }
 
 /**
@@ -39,8 +78,11 @@ function registrationAcceptedResponse() {
  * Sesuai U1_Authentication.md: "Registration flow via Email/Password."
  */
 export async function POST(req: Request) {
+  let normalizedEmail = ''
+  let ip = 'unknown'
+
   try {
-    const ip = getClientIp(req.headers)
+    ip = getClientIp(req.headers)
     const rateLimit = await rateLimitByKey(`auth:register:${ip}`, 5, 15 * 60)
 
     if (!rateLimit.allowed) {
@@ -76,24 +118,17 @@ export async function POST(req: Request) {
       )
     }
 
-    const user = await AuthService.registerUser({
+    normalizedEmail = validation.data.email.trim().toLowerCase()
+
+    await AuthService.registerUser({
       name: validation.data.name.trim(),
-      email: validation.data.email.trim().toLowerCase(),
+      email: normalizedEmail,
       password: validation.data.password,
     })
 
-    return NextResponse.json(
-      { 
-        message: 'Registrasi berhasil. Silakan verifikasi email sebelum masuk.',
-        verification_required: true,
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email
-        }
-      },
-      { status: 201 }
-    )
+    await sendVerificationEmail(normalizedEmail, ip)
+
+    return registrationAcceptedResponse()
   } catch (error: unknown) {
     console.error('Registration API error:', error)
     
@@ -108,6 +143,9 @@ export async function POST(req: Request) {
     }
 
     if (message === 'Email sudah terdaftar') {
+      if (normalizedEmail) {
+        await sendVerificationEmail(normalizedEmail, ip)
+      }
       return registrationAcceptedResponse()
     }
 

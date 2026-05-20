@@ -119,6 +119,7 @@ describe('U18 OnboardingService', () => {
   })
 
   it('starts diagnostic with safe fallback questions when published bank is empty', async () => {
+    vi.mocked(prisma.onboardingState.findUnique).mockResolvedValue(null)
     vi.mocked(prisma.practiceSession.findFirst).mockResolvedValue(null)
     vi.mocked(prisma.question.findMany).mockResolvedValue([])
     vi.mocked(prisma.practiceSession.create).mockResolvedValue({
@@ -134,7 +135,20 @@ describe('U18 OnboardingService', () => {
     expect(result.questions[0]).not.toHaveProperty('tkp_weights')
   })
 
+  it('blocks diagnostic start after onboarding is already completed', async () => {
+    vi.mocked(prisma.onboardingState.findUnique).mockResolvedValue({
+      user_id: 'user-1',
+      completed_at: new Date('2026-01-01'),
+    } as Awaited<ReturnType<typeof prisma.onboardingState.findUnique>>)
+
+    await expect(OnboardingService.startDiagnostic('user-1')).rejects.toMatchObject({
+      code: 'ONBOARDING_ALREADY_COMPLETED',
+    })
+    expect(prisma.practiceSession.findFirst).not.toHaveBeenCalled()
+  })
+
   it('computes diagnostic score server-side and creates idempotent XP reward', async () => {
+    vi.mocked(prisma.onboardingState.findUnique).mockResolvedValue(null)
     vi.mocked(prisma.practiceSession.findFirst).mockResolvedValue({
       id: 'session-1',
       user_id: 'user-1',
@@ -170,6 +184,7 @@ describe('U18 OnboardingService', () => {
       expect.objectContaining({
         data: expect.objectContaining({
           source_type: 'ONBOARDING_DIAGNOSTIC',
+          idempotency_key: 'onboarding:user-1:diagnostic',
           total_xp: 50,
         }),
       })
@@ -178,6 +193,7 @@ describe('U18 OnboardingService', () => {
   })
 
   it('returns existing diagnostic result on duplicate submit without duplicate reward', async () => {
+    vi.mocked(prisma.onboardingState.findUnique).mockResolvedValue(null)
     vi.mocked(prisma.practiceSession.findFirst).mockResolvedValue({
       id: 'session-1',
       user_id: 'user-1',
@@ -202,5 +218,35 @@ describe('U18 OnboardingService', () => {
     expect(result.reward.already_claimed).toBe(true)
     expect(prisma.userXpEvent.create).not.toHaveBeenCalled()
     expect(prisma.userProgression.upsert).not.toHaveBeenCalled()
+  })
+
+  it('expires diagnostic sessions that exceed the server-side time limit', async () => {
+    vi.mocked(prisma.diagnosticAttempt.findFirst).mockResolvedValue(null)
+    vi.mocked(prisma.onboardingState.findUnique).mockResolvedValue(null)
+    vi.mocked(prisma.practiceSession.findFirst).mockResolvedValue({
+      id: 'session-expired',
+      user_id: 'user-1',
+      mode: 'DIAGNOSTIC',
+      status: 'IN_PROGRESS',
+      started_at: new Date(Date.now() - 901_000),
+      metadata: {
+        diagnostic: {
+          questions: privateQuestions,
+        },
+      },
+    } as unknown as PracticeSession)
+
+    await expect(OnboardingService.submitDiagnostic('user-1', 'session-expired', [
+      { question_id: 'q-twk-1', selected_option: 'A', time_spent: 10 },
+    ])).rejects.toMatchObject({
+      code: 'DIAGNOSTIC_EXPIRED',
+    })
+
+    expect(prisma.practiceSession.update).toHaveBeenCalledWith({
+      where: { id: 'session-expired' },
+      data: expect.objectContaining({
+        status: 'EXPIRED',
+      }),
+    })
   })
 })

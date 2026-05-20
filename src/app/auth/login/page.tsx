@@ -34,6 +34,48 @@ export default function LoginPage() {
     }
   }, [])
 
+  React.useEffect(() => {
+    const token = new URLSearchParams(window.location.search).get('verify_token')
+    if (!token) return
+
+    let active = true
+    fetch('/api/v1/auth/email/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    })
+      .then(async (response) => {
+        const data = (await response.json()) as {
+          message?: string
+          error?: { message?: string }
+        }
+        if (!response.ok) throw new Error(data.error?.message ?? 'Verifikasi email gagal.')
+        return data
+      })
+      .then((data) => {
+        if (!active) return
+        addToast({
+          type: 'success',
+          title: 'Email Terverifikasi',
+          message: data.message ?? 'Email berhasil diverifikasi. Kamu sudah bisa masuk.',
+        })
+        window.history.replaceState(null, '', '/auth/login')
+      })
+      .catch((error: unknown) => {
+        if (!active) return
+        addToast({
+          type: 'error',
+          title: 'Verifikasi Gagal',
+          message: error instanceof Error ? error.message : 'Link verifikasi tidak valid.',
+        })
+        window.history.replaceState(null, '', '/auth/login')
+      })
+
+    return () => {
+      active = false
+    }
+  }, [addToast])
+
   const getLoginErrorMessage = (error?: string | null) => {
     switch (error) {
       case 'PENDING_VERIFICATION':

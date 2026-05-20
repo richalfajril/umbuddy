@@ -191,6 +191,21 @@ function getRecommendation(category: DiagnosticCategory) {
 }
 
 export class OnboardingService {
+  private static async ensureOnboardingOpen(userId: string) {
+    const onboarding = await prisma.onboardingState.findUnique({
+      where: { user_id: userId },
+      select: { completed_at: true },
+    })
+
+    if (onboarding?.completed_at) {
+      throw new OnboardingError(
+        'ONBOARDING_ALREADY_COMPLETED',
+        'Onboarding kamu sudah selesai. Yuk lanjut ke dashboard.',
+        409
+      )
+    }
+  }
+
   static async getStatus(userId: string) {
     const [profile, onboarding, diagnosticAttempt] = await Promise.all([
       prisma.userProfile.findUnique({
@@ -234,6 +249,8 @@ export class OnboardingService {
   }
 
   static async saveProfile(userId: string, input: OnboardingProfileInput) {
+    await this.ensureOnboardingOpen(userId)
+
     const targetInstansi = sanitizeText(input.target_instansi)
     const province = sanitizeText(input.province)
     const city = sanitizeText(input.city)
@@ -301,6 +318,8 @@ export class OnboardingService {
   }
 
   static async startDiagnostic(userId: string) {
+    await this.ensureOnboardingOpen(userId)
+
     let existingFallbackSession:
       | { id: string; questions: PrivateDiagnosticQuestion[] }
       | null = null
@@ -372,18 +391,6 @@ export class OnboardingService {
   }
 
   static async submitDiagnostic(userId: string, sessionId: string, answers: DiagnosticAnswerInput[]) {
-    const session = await prisma.practiceSession.findFirst({
-      where: {
-        id: sessionId,
-        user_id: userId,
-        mode: DIAGNOSTIC_MODE,
-      },
-    })
-
-    if (!session) {
-      throw new OnboardingError('NOT_FOUND', 'Sesi diagnostic tidak ditemukan.', 404)
-    }
-
     const existingAttempt = await prisma.diagnosticAttempt.findFirst({
       where: {
         user_id: userId,
@@ -398,6 +405,39 @@ export class OnboardingService {
         recommendations: this.toRecommendationPayload(existingAttempt),
         reward: { xp: ONBOARDING_REWARD_XP, already_claimed: true },
       }
+    }
+
+    await this.ensureOnboardingOpen(userId)
+
+    const session = await prisma.practiceSession.findFirst({
+      where: {
+        id: sessionId,
+        user_id: userId,
+        mode: DIAGNOSTIC_MODE,
+        status: 'IN_PROGRESS',
+      },
+    })
+
+    if (!session) {
+      throw new OnboardingError('NOT_FOUND', 'Sesi diagnostic tidak ditemukan.', 404)
+    }
+
+    const startedAt = session.started_at instanceof Date ? session.started_at : new Date()
+    const expiresAt = new Date(startedAt.getTime() + DIAGNOSTIC_DURATION_SECONDS * 1000)
+    if (Date.now() > expiresAt.getTime()) {
+      await prisma.practiceSession.update({
+        where: { id: sessionId },
+        data: {
+          status: 'EXPIRED',
+          completed_at: new Date(),
+        },
+      })
+
+      throw new OnboardingError(
+        'DIAGNOSTIC_EXPIRED',
+        'Waktu tes mini sudah habis. Mulai ulang diagnostic dari onboarding ya.',
+        410
+      )
     }
 
     const questions = getDiagnosticQuestionsFromMetadata(session.metadata)
@@ -519,7 +559,7 @@ export class OnboardingService {
         },
       })
 
-      const idempotencyKey = `onboarding:${userId}:${diagnosticAttempt.id}`
+      const idempotencyKey = `onboarding:${userId}:diagnostic`
       const existingReward = await tx.userXpEvent.findUnique({
         where: { idempotency_key: idempotencyKey },
       })

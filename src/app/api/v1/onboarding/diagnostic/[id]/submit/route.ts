@@ -43,8 +43,8 @@ function validateAnswers(payload: unknown[]): AnswerValidationResult {
     }
 
     const timeSpent = answer.time_spent
-    if (typeof timeSpent !== 'number' || !Number.isInteger(timeSpent) || timeSpent < 0 || timeSpent > 1200) {
-      return { ok: false, errors: [{ field: `answers.${index}.time_spent`, message: 'time_spent harus dalam rentang 0 sampai 1200 detik.' }] }
+    if (typeof timeSpent !== 'number' || !Number.isInteger(timeSpent) || timeSpent < 0 || timeSpent > 900) {
+      return { ok: false, errors: [{ field: `answers.${index}.time_spent`, message: 'time_spent harus dalam rentang 0 sampai 900 detik.' }] }
     }
 
     seenQuestionIds.add(answer.question_id)

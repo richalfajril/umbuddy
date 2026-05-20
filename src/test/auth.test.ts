@@ -39,6 +39,11 @@ vi.mock('@/lib/prisma', () => {
       findFirst: vi.fn(),
       update: vi.fn(),
     },
+    emailVerificationToken: {
+      create: vi.fn(),
+      findFirst: vi.fn(),
+      update: vi.fn(),
+    },
     authSession: {
       updateMany: vi.fn(),
     },
@@ -202,6 +207,51 @@ describe('U1 Auth — AuthService Unit Tests', () => {
 
       expect(result).toBeNull()
       expect(prisma.passwordResetToken.create).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('Email Verification Flow', () => {
+    it('should generate a verification token for pending users', async () => {
+      const email = 'pending@umbuddy.com'
+
+      vi.mocked(prisma.user.findFirst).mockResolvedValue({
+        id: 'pending-uuid',
+        name: 'Pending User',
+        email,
+        status: 'PENDING_VERIFICATION',
+        email_verified: false,
+      } as unknown as User)
+
+      const result = await AuthService.createEmailVerificationRequest(email)
+
+      expect(result).not.toBeNull()
+      expect(result?.email).toBe(email)
+      expect(result?.token).toBeDefined()
+      expect(prisma.emailVerificationToken.create).toHaveBeenCalled()
+    })
+
+    it('should activate a pending user with a valid verification token', async () => {
+      vi.mocked(prisma.emailVerificationToken.findFirst).mockResolvedValue({
+        id: 'token-uuid',
+        user_id: 'pending-uuid',
+        user: {
+          id: 'pending-uuid',
+          email: 'pending@umbuddy.com',
+          status: 'PENDING_VERIFICATION',
+          deleted_at: null,
+        },
+      } as unknown as Awaited<ReturnType<typeof prisma.emailVerificationToken.findFirst>>)
+
+      await AuthService.verifyEmailWithToken('valid-token')
+
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { id: 'pending-uuid' },
+        data: {
+          email_verified: true,
+          status: 'ACTIVE',
+        },
+      })
+      expect(prisma.emailVerificationToken.update).toHaveBeenCalled()
     })
   })
 })

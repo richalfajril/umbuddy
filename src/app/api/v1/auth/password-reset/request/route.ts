@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { AuthService } from '@/services/auth.service'
+import { EmailQuotaService } from '@/services/email-quota.service'
 import { EMAIL_FROM, getResendClient } from '@/lib/email/client'
 import { getClientIp, rateLimitByKey } from '@/lib/redis/rate-limit'
 import { validateDto } from '@/lib/validation/dto'
@@ -54,9 +55,22 @@ export async function POST(req: Request) {
     return errorResponse('VALIDATION_ERROR', 'Invalid request data', 400, validation.errors)
   }
 
-  const resetRequest = await AuthService.createPasswordResetRequest(
-    validation.data.email.trim().toLowerCase()
-  )
+  const normalizedEmail = validation.data.email.trim().toLowerCase()
+  const canCreateReset = await AuthService.canCreatePasswordResetRequest(normalizedEmail)
+  if (!canCreateReset) {
+    return successResponse()
+  }
+
+  const quota = await EmailQuotaService.consumeAuthEmailQuota({
+    type: 'password-reset',
+    email: normalizedEmail,
+    ip,
+  })
+  if (!quota.allowed) {
+    return successResponse()
+  }
+
+  const resetRequest = await AuthService.createPasswordResetRequest(normalizedEmail)
 
   if (!resetRequest) {
     return successResponse()
