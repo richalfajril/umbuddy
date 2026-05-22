@@ -308,7 +308,7 @@ export default async function DashboardPage() {
         />
       }
     >
-      <div className="mx-auto grid w-full max-w-[1180px] gap-4 xl:grid-cols-12">
+      <div className="grid w-full gap-4 xl:grid-cols-12">
         <Card padding="md" className="card-static overflow-hidden xl:col-span-5">
           <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:gap-5 sm:text-left">
             <div className="relative h-24 w-24 shrink-0 sm:h-24 sm:w-24">
