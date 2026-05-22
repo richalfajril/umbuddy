@@ -1,6 +1,7 @@
 import * as React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { LogOut, Settings } from 'lucide-react'
 import type { AppNavItem } from './BottomNav'
 
 interface SidebarProps {
@@ -12,11 +13,6 @@ interface SidebarProps {
   className?: string
 }
 
-function getInitial(name?: string | null, email?: string | null) {
-  const source = name || email || 'U'
-  return source.trim().charAt(0).toUpperCase()
-}
-
 /**
  * Sidebar desktop untuk app shell Umbuddy.
  * Dibuat stateless agar bisa dipakai ulang oleh Dashboard, Analytics, dan halaman app lain.
@@ -24,37 +20,32 @@ function getInitial(name?: string | null, email?: string | null) {
 export function Sidebar({
   items,
   activeHref,
-  userName,
-  userEmail,
   footer,
   className = '',
 }: SidebarProps) {
-  const initial = getInitial(userName, userEmail)
-
   return (
-    <div className={['flex h-full flex-col gap-6 p-4', className].join(' ')}>
+    <div className={['flex h-full flex-col items-center gap-5 px-3 py-5', className].join(' ')}>
       <Link
         href="/dashboard"
-        className="flex min-h-[52px] items-center rounded-2xl px-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-white shadow-[0_4px_0_0_var(--color-primary-dark)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         aria-label="Ke dashboard Umbuddy"
       >
         <Image
-          src="/logo/logo_horizontal.png"
+          src="/logo/logo_only.png"
           alt="Umbuddy"
-          width={170}
-          height={52}
-          className="h-10 object-contain"
-          style={{ width: 'auto' }}
+          width={42}
+          height={42}
+          className="h-10 w-10 rounded-xl object-contain"
           priority
         />
       </Link>
 
-      <nav className="grid gap-2" aria-label="Navigasi utama">
+      <nav className="mt-5 grid w-full gap-3" aria-label="Navigasi utama">
         {items.map((item) => {
           const Icon = item.icon
           const isActive = item.href === activeHref
           const classes = [
-            'flex min-h-[48px] items-center gap-3 rounded-2xl px-3 text-sm font-black transition-colors',
+            'flex min-h-[64px] flex-col items-center justify-center gap-1 rounded-2xl px-1 text-[12px] font-bold transition-colors',
             isActive
               ? 'bg-primary-light text-primary-dark dark:bg-primary/15 dark:text-primary'
               : 'text-body',
@@ -66,12 +57,7 @@ export function Sidebar({
           const content = (
             <>
               <Icon className="h-5 w-5 shrink-0" aria-hidden="true" />
-              <span className="truncate">{item.label}</span>
-              {item.disabled && (
-                <span className="ml-auto rounded-full bg-surface px-2 py-0.5 text-[10px] font-black uppercase text-muted">
-                  Segera
-                </span>
-              )}
+              <span className="max-w-full truncate">{item.label}</span>
             </>
           )
 
@@ -91,26 +77,23 @@ export function Sidebar({
         })}
       </nav>
 
-      <div className="mt-auto space-y-4">
+      <div className="mt-auto grid w-full gap-3">
         {footer}
 
-        <div className="card-static rounded-2xl border-2 border-border bg-surface p-3">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-base font-black text-white">
-              {initial}
-            </div>
-            <div className="min-w-0">
-              <p className="truncate text-sm font-black text-headline">
-                {userName || 'Umbies'}
-              </p>
-              {userEmail && (
-                <p className="truncate text-xs font-bold text-muted">
-                  {userEmail}
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
+        <span
+          className="flex min-h-[52px] flex-col items-center justify-center gap-1 rounded-2xl bg-surface text-[11px] font-bold text-body opacity-60"
+          aria-disabled="true"
+        >
+          <Settings className="h-5 w-5" aria-hidden="true" />
+          Set
+        </span>
+        <span
+          className="flex min-h-[52px] flex-col items-center justify-center gap-1 rounded-2xl bg-surface text-[11px] font-bold text-body opacity-60"
+          aria-disabled="true"
+        >
+          <LogOut className="h-5 w-5" aria-hidden="true" />
+          Keluar
+        </span>
       </div>
     </div>
   )

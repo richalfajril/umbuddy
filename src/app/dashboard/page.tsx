@@ -1,13 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import {
-  ArrowRight,
-  BarChart3,
-  BookOpenCheck,
-  CalendarDays,
-  ClipboardList,
+  Check,
+  ChevronRight,
+  Flame,
   Home,
-  ShieldCheck,
+  PencilLine,
   Swords,
   Target,
   Trophy,
@@ -23,20 +21,31 @@ import {
   Badge,
   BottomNav,
   Card,
-  EmptyState,
-  MascotState,
   Sidebar,
   StreakIndicator,
-  XPBar,
   type AppNavItem,
 } from '@/components/ui'
 
 const DASHBOARD_NAV_ITEMS: AppNavItem[] = [
-  { label: 'Markas', href: '/dashboard', icon: Home },
-  { label: 'Latihan', href: '/practice', icon: BookOpenCheck, disabled: true },
+  { label: 'Home', href: '/dashboard', icon: Home },
+  { label: 'Practice', href: '/practice', icon: PencilLine, disabled: true },
   { label: 'Battle', href: '/battle', icon: Swords, disabled: true },
   { label: 'Rank', href: '/leaderboard', icon: Trophy, disabled: true },
-  { label: 'Profil', href: '/profile', icon: UserRound, disabled: true },
+  { label: 'Profile', href: '/profile', icon: UserRound, disabled: true },
+]
+
+const friendsPreview = [
+  { name: 'Siska Amelia', initial: 'S', online: true },
+  { name: 'Dimas P.', initial: 'D', online: true },
+  { name: 'Arya Wijaya', initial: 'A', online: true },
+  { name: 'Budi S.', initial: 'B', online: false },
+]
+
+const rankingPreview = [
+  { rank: '01', name: 'Aris M.', score: '24.5k', tone: 'bg-xp' },
+  { rank: '02', name: 'Budi S.', score: '22.1k', tone: 'bg-muted' },
+  { rank: '142', name: 'YOU', score: '12.4k', tone: 'bg-primary', highlight: true },
+  { rank: '143', name: 'Citra W.', score: '12.3k', tone: 'bg-slate-500' },
 ]
 
 function calculateLevelProgress(totalXp: number, level: number) {
@@ -51,54 +60,161 @@ function calculateLevelProgress(totalXp: number, level: number) {
   }
 }
 
-function getWeakestArea(attempt: {
-  score_twk: number | null
-  score_tiu: number | null
-  score_tkp: number | null
-}) {
-  const areas = [
-    { label: 'TWK', score: attempt.score_twk ?? 0, max: 150 },
-    { label: 'TIU', score: attempt.score_tiu ?? 0, max: 175 },
-    { label: 'TKP', score: attempt.score_tkp ?? 0, max: 225 },
-  ]
+function getScorePercent(score: number | null | undefined, maxScore: number) {
+  if (!score) return 0
+  return Math.max(0, Math.min(Math.round((score / maxScore) * 100), 100))
+}
 
-  return areas.sort((a, b) => a.score / a.max - b.score / b.max)[0]
+function getWeakestArea(scores: Array<{ label: string; percent: number }>) {
+  return [...scores].sort((a, b) => a.percent - b.percent)[0]
+}
+
+function UserAvatar({ name }: { name?: string | null }) {
+  const initial = (name || 'U').trim().charAt(0).toUpperCase()
+
+  return (
+    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 border-border bg-primary text-xl font-black text-white">
+      {initial}
+    </div>
+  )
 }
 
 function DashboardTopBar({
+  name,
   totalXp,
+  level,
+  currentTitle,
   streakDays,
+  xpProgress,
 }: {
+  name?: string | null
   totalXp: number
+  level: number
+  currentTitle: string
   streakDays: number
+  xpProgress: number
 }) {
   return (
-    <div className="flex min-h-[72px] items-center justify-between gap-3 px-4 md:px-6">
-      <div className="flex min-w-0 items-center gap-2">
+    <div className="flex min-h-[86px] items-center justify-between gap-4 px-4 md:px-8">
+      <div className="flex min-w-0 items-center gap-3 md:gap-4">
+        <UserAvatar name={name} />
+        <div className="hidden min-w-0 md:block">
+          <p className="truncate font-display text-2xl font-black text-headline">
+            {name || 'Umbies'}
+          </p>
+        </div>
         <Image
-          src="/logo/logo_only.png"
-          alt="Umbuddy"
-          width={44}
-          height={44}
-          className="h-11 w-11 rounded-xl"
+          src="/badge/umbies_senior_III_a.png"
+          alt=""
+          width={58}
+          height={58}
+          className="hidden h-14 w-14 object-contain sm:block"
+          aria-hidden="true"
           priority
         />
-        <div className="min-w-0">
-          <p className="text-xs font-black uppercase tracking-wide text-primary">
-            Dashboard
-          </p>
+        <div className="hidden min-w-[230px] md:block">
+          <div className="flex items-center justify-between gap-3">
+            <p className="truncate text-sm font-black text-headline">
+              {currentTitle}
+            </p>
+            <p className="text-sm font-bold text-headline">
+              {totalXp.toLocaleString('id-ID')} xp
+            </p>
+          </div>
+          <div className="mt-2 h-2 rounded-full bg-surface">
+            <div
+              className="h-full rounded-full bg-primary"
+              style={{ width: `${xpProgress}%` }}
+            />
+          </div>
+        </div>
+        <div className="min-w-0 md:hidden">
           <p className="truncate font-display text-lg font-black text-headline">
-            Markas Umbuddy
+            {name || 'Umbies'}
+          </p>
+          <p className="truncate text-xs font-bold text-muted">
+            Level {level} • {totalXp.toLocaleString('id-ID')} XP
           </p>
         </div>
       </div>
 
-      <div className="flex shrink-0 items-center gap-2">
-        <div className="hidden rounded-full border-2 border-border bg-surface px-3 py-2 text-sm font-black text-headline sm:block">
-          {totalXp.toLocaleString('id-ID')} XP
-        </div>
-        <StreakIndicator streakDays={streakDays} size="sm" />
+      <div className="flex shrink-0 items-center gap-2 md:gap-4">
+        <Badge
+          variant="warning"
+          className="hidden min-h-[44px] items-center gap-2 rounded-2xl px-4 text-base sm:inline-flex"
+          icon={<Flame className="h-5 w-5" aria-hidden="true" />}
+        >
+          {streakDays}
+        </Badge>
+        <Badge variant="success" className="hidden min-h-[40px] px-4 md:inline-flex">
+          Online: beta
+        </Badge>
+        <StreakIndicator streakDays={streakDays} size="sm" className="sm:hidden" />
         <ThemeToggle variant="inline" />
+      </div>
+    </div>
+  )
+}
+
+function MissionRow({
+  title,
+  status,
+  progress,
+  done = false,
+}: {
+  title: string
+  status: string
+  progress: number
+  done?: boolean
+}) {
+  return (
+    <div className="space-y-2">
+      <div className="flex min-h-[44px] items-center gap-3">
+        <div
+          className={[
+            'flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-2',
+            done
+              ? 'border-primary bg-primary text-white'
+              : 'border-border bg-background dark:bg-surface',
+          ].join(' ')}
+        >
+          {done && <Check className="h-4 w-4" aria-hidden="true" />}
+        </div>
+        <p className="flex-1 text-sm font-black text-headline">{title}</p>
+        <p className={['text-xs font-bold', done ? 'text-primary' : 'text-muted'].join(' ')}>
+          {status}
+        </p>
+      </div>
+      <div className="ml-9 h-2 rounded-full bg-surface dark:bg-background">
+        <div className="h-full rounded-full bg-primary" style={{ width: `${progress}%` }} />
+      </div>
+    </div>
+  )
+}
+
+function AnalyticsBar({
+  label,
+  percent,
+  tone = 'primary',
+}: {
+  label: string
+  percent: number
+  tone?: 'primary' | 'xp' | 'error'
+}) {
+  const toneClass = {
+    primary: 'bg-primary',
+    xp: 'bg-xp',
+    error: 'bg-error',
+  }[tone]
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-sm font-black text-headline">{label}</p>
+        <p className="text-sm font-black text-headline">{percent}%</p>
+      </div>
+      <div className="h-3 rounded-full bg-surface dark:bg-background">
+        <div className={['h-full rounded-full', toneClass].join(' ')} style={{ width: `${percent}%` }} />
       </div>
     </div>
   )
@@ -120,7 +236,6 @@ export default async function DashboardPage() {
       select: {
         target_instansi: true,
         target_score: true,
-        exam_date: true,
         province: true,
         city: true,
       },
@@ -133,7 +248,6 @@ export default async function DashboardPage() {
         golongan: true,
         jabatan: true,
         current_streak: true,
-        best_streak: true,
       },
     }),
     prisma.diagnosticAttempt.findFirst({
@@ -147,7 +261,6 @@ export default async function DashboardPage() {
         score_tiu: true,
         score_tkp: true,
         total_score: true,
-        completed_at: true,
       },
     }),
   ])
@@ -156,13 +269,29 @@ export default async function DashboardPage() {
   const level = progression?.level ?? 1
   const streakDays = progression?.current_streak ?? 0
   const levelProgress = calculateLevelProgress(totalXp, level)
-  const currentTitle = progression?.jabatan || progression?.golongan || `Level ${level}`
-  const weakestArea = latestDiagnostic ? getWeakestArea(latestDiagnostic) : null
+  const currentTitle = progression?.jabatan || progression?.golongan || 'Umbies Senior IIIa'
+  const diagnosticScore = latestDiagnostic?.total_score ? Math.round(latestDiagnostic.total_score) : 0
+  const targetScoreDisplay = profile?.target_score?.toLocaleString('id-ID') ?? '-'
   const targetLocation = [profile?.city, profile?.province].filter(Boolean).join(', ')
+  const analytics = [
+    { label: 'TWK', percent: getScorePercent(latestDiagnostic?.score_twk, 150), tone: 'primary' as const },
+    { label: 'TIU', percent: getScorePercent(latestDiagnostic?.score_tiu, 175), tone: 'xp' as const },
+    { label: 'TKP', percent: getScorePercent(latestDiagnostic?.score_tkp, 225), tone: 'primary' as const },
+  ]
+  const weakestArea = latestDiagnostic ? getWeakestArea(analytics) : null
 
   return (
     <BentoDashboardLayout
-      topBar={<DashboardTopBar totalXp={totalXp} streakDays={streakDays} />}
+      topBar={
+        <DashboardTopBar
+          name={session.user.name}
+          totalXp={totalXp}
+          level={level}
+          currentTitle={currentTitle}
+          streakDays={streakDays}
+          xpProgress={levelProgress.progressPercentage}
+        />
+      }
       bottomNav={<BottomNav items={DASHBOARD_NAV_ITEMS} activeHref="/dashboard" />}
       sidebar={
         <Sidebar
@@ -173,150 +302,230 @@ export default async function DashboardPage() {
         />
       }
     >
-      <div className="mx-auto grid w-full max-w-7xl gap-4 lg:grid-cols-12">
-        <Card padding="lg" className="card-static lg:col-span-8">
-          <MascotState
-            variant="greeting"
-            size="lg"
-            title={
-              <>
+      <div className="mx-auto grid w-full max-w-[1180px] gap-4 xl:grid-cols-12">
+        <Card padding="lg" className="card-static overflow-hidden xl:col-span-5">
+          <div className="flex items-center gap-5">
+            <Image
+              src="/mascot/mascot_greeting.png"
+              alt=""
+              width={124}
+              height={124}
+              className="hidden h-24 w-24 shrink-0 object-contain sm:block"
+              aria-hidden="true"
+              priority
+            />
+            <div className="min-w-0">
+              <h1 className="font-display text-3xl font-black leading-tight text-headline">
                 Hai, <span className="text-primary">{session.user.name || 'Pejuang'}</span>!
-              </>
-            }
-            description="Markas belajarmu sudah siap. Hari ini kita fokus ke langkah kecil yang paling berdampak buat target CPNS Kamu."
-            action={
+              </h1>
+              <p className="mt-3 text-sm leading-6 text-body">
+                Markas belajarmu sudah siap. Fokus hari ini ke langkah kecil yang paling berdampak buat target CPNS Kamu.
+              </p>
               <Link
-                href="#next-action"
-                className="btn-primary inline-flex min-h-[44px] items-center justify-center gap-2 px-5 py-2.5 text-sm"
+                href="#daily-missions"
+                className="btn-primary mt-4 inline-flex min-h-[44px] items-center justify-center gap-2 px-5 py-2.5 text-sm"
               >
-                Lihat Rekomendasi
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                Mulai Daily Practice
+                <ChevronRight className="h-4 w-4" aria-hidden="true" />
               </Link>
-            }
-          />
+            </div>
+          </div>
         </Card>
 
-        <Card padding="lg" className="lg:col-span-4">
+        <Card padding="lg" className="card-static xl:col-span-3">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-bold text-headline">Progress Score</p>
+                <p className="font-display text-4xl font-black leading-none text-headline">
+                  {diagnosticScore || '-'}
+                </p>
+              </div>
+              <Badge variant="success" size="sm">{latestDiagnostic ? 'Aktif' : 'Baru'}</Badge>
+            </div>
+            <div className="flex items-center justify-between gap-3 border-t border-border pt-4 sm:border-l sm:border-t-0 sm:pl-4 sm:pt-0 xl:border-l-0 xl:border-t xl:pl-0 xl:pt-4">
+              <div>
+                <p className="text-sm font-bold text-headline">Target Score</p>
+                <p className="font-display text-4xl font-black leading-none text-headline">
+                  {targetScoreDisplay}
+                </p>
+              </div>
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-beige text-headline dark:bg-beige/80">
+                <Target className="h-6 w-6" aria-hidden="true" />
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        <Card padding="lg" className="card-static xl:col-span-4">
           <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="text-sm font-black uppercase text-primary">Progress XP</p>
-              <h2 className="mt-1 font-display text-2xl font-black text-headline">
-                Level {level}
-              </h2>
+            <h2 className="text-lg font-black text-headline">Teman Online</h2>
+            <div className="flex gap-2 text-muted">
+              <ChevronRight className="h-5 w-5 rotate-180" aria-hidden="true" />
+              <ChevronRight className="h-5 w-5" aria-hidden="true" />
             </div>
-            <Badge variant="xp">+{totalXp.toLocaleString('id-ID')} XP</Badge>
           </div>
-          <XPBar
-            currentTitle={currentTitle}
-            currentXP={totalXp}
-            nextThresholdXP={levelProgress.nextThreshold}
-            progressPercentage={levelProgress.progressPercentage}
-            nextTitle={`Level ${level + 1}`}
-            className="mt-5"
+          <div className="mt-5 grid grid-cols-4 gap-3">
+            {friendsPreview.map((friend) => (
+              <div key={friend.name} className="min-w-0 text-center">
+                <div className="relative mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-surface text-lg font-black text-headline">
+                  {friend.initial}
+                  <span
+                    className={[
+                      'absolute bottom-0 right-1 h-3.5 w-3.5 rounded-full border-2 border-background',
+                      friend.online ? 'bg-primary' : 'bg-muted',
+                    ].join(' ')}
+                  />
+                </div>
+                <p className="mt-2 truncate text-xs font-bold text-headline">
+                  {friend.name}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        <Card padding="lg" className="card-static relative min-h-[220px] overflow-hidden xl:col-span-5">
+          <Swords className="absolute -right-8 bottom-4 h-40 w-40 rotate-[-18deg] text-border/60 dark:text-border/30" aria-hidden="true" />
+          <div className="relative z-10 max-w-sm">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
+              Competitive Mode
+            </p>
+            <h2 className="mt-3 font-display text-5xl font-black uppercase italic leading-[0.9] text-headline">
+              Battle Arena
+            </h2>
+            <p className="mt-4 text-sm leading-6 text-body">
+              Tantang temanmu dalam simulasi CAT real-time. Pemenang mendapatkan bonus XP saat mode battle aktif.
+            </p>
+            <span className="btn-primary mt-5 inline-flex min-h-[44px] items-center justify-center px-5 py-2.5 text-sm opacity-70">
+              Tantang Dia!
+            </span>
+          </div>
+        </Card>
+
+        <Card padding="lg" className="card-static relative min-h-[220px] overflow-hidden xl:col-span-4">
+          <div className="absolute bottom-1 right-4 font-display text-8xl font-black uppercase text-border/35 dark:text-border/20" aria-hidden="true">
+            CAT
+          </div>
+          <div className="relative z-10 max-w-sm">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-muted">
+              Main Simulation
+            </p>
+            <h2 className="mt-3 font-display text-5xl font-black uppercase leading-[0.9] text-headline">
+              Simulasi CAT
+            </h2>
+            <p className="mt-4 text-sm leading-6 text-body">
+              Practice with 110 real exam questions. Siap dipakai setelah core practice aktif.
+            </p>
+            <span className="btn-primary mt-5 inline-flex min-h-[44px] items-center justify-center px-5 py-2.5 text-sm opacity-70">
+              Ayo Lanjut!
+            </span>
+          </div>
+        </Card>
+
+        <Card padding="md" className="card-static row-span-2 xl:col-span-3">
+          <div className="grid grid-cols-2 rounded-2xl bg-surface p-1 text-sm font-black text-body dark:bg-background">
+            <button className="min-h-[44px] rounded-xl bg-background text-headline shadow-sm dark:bg-surface">
+              Rankings National
+            </button>
+            <button className="min-h-[44px] rounded-xl text-muted">
+              Friend Rankings
+            </button>
+          </div>
+          <div className="mt-4 grid gap-3">
+            {rankingPreview.map((row) => (
+              <div
+                key={row.rank}
+                className={[
+                  'grid min-h-[56px] grid-cols-[32px_40px_1fr_auto] items-center gap-3 rounded-xl px-2 text-sm',
+                  row.highlight ? 'bg-primary-light text-primary-dark dark:bg-primary/15 dark:text-primary' : 'text-headline',
+                ].join(' ')}
+              >
+                <span className="font-black text-muted">{row.rank}</span>
+                <span className={['h-9 w-9 rounded-full', row.tone].join(' ')} />
+                <span className="min-w-0 truncate font-black">{row.name}</span>
+                <span className="font-bold">{row.highlight ? totalXp.toLocaleString('id-ID') : row.score}</span>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        <Card id="daily-missions" padding="lg" className="card-static xl:col-span-4">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <h2 className="font-display text-xl font-black uppercase text-headline">
+              Daily Missions
+            </h2>
+            <p className="text-sm font-black text-headline">2/3</p>
+          </div>
+          <div className="grid gap-4">
+            <MissionRow title="Complete 20 TWK Questions" status="Done" progress={100} done />
+            <MissionRow title="Win 1 Battle Arena" status="0/1" progress={0} />
+            <MissionRow title="Login for 3 days streak" status={`${Math.min(streakDays, 3)}/3`} progress={Math.min(streakDays / 3 * 100, 100)} />
+          </div>
+        </Card>
+
+        <Card padding="lg" className="card-static xl:col-span-5">
+          <h2 className="font-display text-xl font-black uppercase text-headline">
+            Tactical Analytics
+          </h2>
+          <div className="mt-5 grid gap-4 sm:grid-cols-3">
+            <AnalyticsBar label="TWK" percent={analytics[0].percent} />
+            <AnalyticsBar label="TIU" percent={analytics[1].percent} tone="xp" />
+            <AnalyticsBar label="TKP" percent={analytics[2].percent} />
+          </div>
+          <div className="mt-5 border-t border-border pt-4">
+            <p className="text-sm font-black text-headline">Coach Narrative</p>
+            <h3 className="mt-1 font-display text-xl font-black leading-tight text-headline">
+              {weakestArea ? (
+                <>
+                  Fokus pada <span className="text-primary">{weakestArea.label}</span> dulu...
+                </>
+              ) : (
+                <>
+                  Selesaikan <span className="text-primary">diagnostic</span> dulu...
+                </>
+              )}
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-body">
+              {weakestArea
+                ? `Area ${weakestArea.label} jadi prioritas awal. Setelah practice aktif, Umbuddy akan mengarahkan Kamu ke latihan yang paling relevan.`
+                : 'Belum ada data cukup untuk membaca pola Kamu. Diagnostic mini akan jadi titik awal rekomendasi.'}
+            </p>
+            {targetLocation && (
+              <p className="mt-2 text-xs font-bold text-muted">
+                Target area: {targetLocation}
+              </p>
+            )}
+          </div>
+        </Card>
+
+        <Card padding="lg" className="card-static relative overflow-hidden bg-primary text-white dark:bg-primary-dark xl:col-span-3">
+          <Image
+            src="/mascot/mascot_donation.png"
+            alt=""
+            width={120}
+            height={120}
+            className="absolute -right-3 -top-3 h-24 w-24 object-contain opacity-90"
+            aria-hidden="true"
           />
-        </Card>
-
-        <section className="grid gap-4 sm:grid-cols-2 lg:col-span-12 lg:grid-cols-4" aria-label="Ringkasan utama">
-          <Card padding="md">
-            <Trophy className="h-7 w-7 text-primary" aria-hidden="true" />
-            <p className="mt-4 text-sm font-bold text-muted">Total XP</p>
-            <p className="font-display text-3xl font-black text-headline">
-              {totalXp.toLocaleString('id-ID')}
+          <div className="relative z-10 max-w-[220px]">
+            <h2 className="font-display text-3xl font-black leading-none">
+              Donasi
+            </h2>
+            <p className="mt-1 text-lg font-black">Dukung Umbuddy!</p>
+            <p className="mt-3 text-xs leading-5 text-white/85">
+              Bantu server tetap ringan dan Umbuddy tetap gratis untuk pejuang CPNS lain.
             </p>
-          </Card>
-
-          <Card padding="md">
-            <ShieldCheck className="h-7 w-7 text-primary" aria-hidden="true" />
-            <p className="mt-4 text-sm font-bold text-muted">Streak Saat Ini</p>
-            <p className="font-display text-3xl font-black text-headline">
-              {streakDays} hari
-            </p>
-          </Card>
-
-          <Card padding="md">
-            <BarChart3 className="h-7 w-7 text-primary" aria-hidden="true" />
-            <p className="mt-4 text-sm font-bold text-muted">Skor Diagnostic</p>
-            <p className="font-display text-3xl font-black text-headline">
-              {latestDiagnostic?.total_score ? Math.round(latestDiagnostic.total_score) : 0}
-            </p>
-          </Card>
-
-          <Card padding="md">
-            <Target className="h-7 w-7 text-primary" aria-hidden="true" />
-            <p className="mt-4 text-sm font-bold text-muted">Target Skor</p>
-            <p className="font-display text-3xl font-black text-headline">
-              {profile?.target_score ?? '-'}
-            </p>
-          </Card>
-        </section>
-
-        <Card id="next-action" padding="lg" className="lg:col-span-7">
-          <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary-light text-primary-dark dark:bg-primary/10 dark:text-primary">
-              <ClipboardList className="h-6 w-6" aria-hidden="true" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-sm font-black uppercase text-primary">Rekomendasi Awal</p>
-              <h2 className="mt-1 font-display text-2xl font-black text-headline">
-                {weakestArea ? (
-                  <>
-                    Perkuat <span className="text-primary">{weakestArea.label}</span> dulu
-                  </>
-                ) : (
-                  <>
-                    Mulai dari <span className="text-primary">tes mini</span>
-                  </>
-                )}
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-body">
-                {weakestArea
-                  ? `Area ${weakestArea.label} terlihat paling butuh perhatian dari hasil diagnostic. Begitu modul latihan aktif, Kamu bisa langsung mulai dari sana.`
-                  : 'Selesaikan onboarding diagnostic untuk membuka rekomendasi belajar yang lebih personal.'}
-              </p>
-            </div>
+            <Link
+              href="https://saweria.co"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-2xl bg-xp px-4 text-sm font-black text-headline shadow-[0_4px_0_0_#b38b08]"
+            >
+              Dukung via Saweria
+            </Link>
           </div>
         </Card>
-
-        <Card padding="lg" className="lg:col-span-5">
-          <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-beige text-headline dark:bg-beige/80">
-              <CalendarDays className="h-6 w-6" aria-hidden="true" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-sm font-black uppercase text-primary">Target Kamu</p>
-              <h2 className="mt-1 font-display text-2xl font-black text-headline">
-                {profile?.target_instansi || 'Belum diatur'}
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-body">
-                {targetLocation || 'Lengkapi profil target supaya dashboard bisa memberi arah belajar yang lebih pas.'}
-              </p>
-            </div>
-          </div>
-        </Card>
-
-        <EmptyState
-          className="lg:col-span-6"
-          mascot="encouraging"
-          title={
-            <>
-              Aktivitas <span className="text-primary">belum ramai</span>
-            </>
-          }
-          description="Riwayat latihan, battle, dan misi harian akan muncul di sini setelah fitur berikutnya aktif."
-          icon={BookOpenCheck}
-        />
-
-        <EmptyState
-          className="lg:col-span-6"
-          mascot="detective"
-          title={
-            <>
-              Insight <span className="text-primary">sedang disiapkan</span>
-            </>
-          }
-          description="Grafik tren mingguan dan peluang kelulusan akan memakai data latihan Kamu, bukan angka tebak-tebakan."
-          icon={BarChart3}
-        />
       </div>
     </BentoDashboardLayout>
   )

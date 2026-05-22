@@ -67,7 +67,7 @@ export function BentoDashboardLayout({
       <div className="hidden md:flex min-h-screen">
         {/* Sidebar tetap */}
         {sidebar && (
-          <aside className="sticky top-0 h-screen w-64 shrink-0 border-r border-border bg-background overflow-y-auto">
+          <aside className="sticky top-0 h-screen w-24 shrink-0 border-r border-border bg-background overflow-y-auto dark:bg-background">
             {sidebar}
           </aside>
         )}
