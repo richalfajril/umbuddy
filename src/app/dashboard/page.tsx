@@ -49,6 +49,7 @@ const rankingPreview = [
     title: 'Esmelon III',
     xp: '18.4k XP',
     tone: 'bg-xp',
+    rankTone: 'from-xp to-[#f59e0b]',
     badge: '/badge/esmelon_III_d.png',
   },
   {
@@ -58,6 +59,7 @@ const rankingPreview = [
     title: 'Umbies Senior',
     xp: '17.9k XP',
     tone: 'bg-primary',
+    rankTone: 'from-slate-200 to-slate-400',
     badge: '/badge/umbies_senior_III_a.png',
   },
   {
@@ -67,6 +69,7 @@ const rankingPreview = [
     title: 'Umbies I',
     xp: '17.0k XP',
     tone: 'bg-error',
+    rankTone: 'from-[#f4b183] to-[#c07635]',
     badge: '/badge/umbies_I_a.png',
   },
 ]
@@ -457,25 +460,25 @@ export default async function DashboardPage() {
         </Card>
 
         <aside className="grid gap-4 xl:col-span-3 xl:row-span-2">
-          <Card padding="md" className="card-static">
+          <Card padding="sm" className="card-static">
             <div className="grid grid-cols-2 gap-2 text-sm font-black">
-              <button className="btn-primary min-h-[44px] rounded-2xl px-3 py-2 text-sm">
+              <button className="btn-primary min-h-[40px] rounded-2xl px-3 py-2 text-sm">
                 Nasional
               </button>
-              <button className="btn-secondary min-h-[44px] rounded-2xl px-3 py-2 text-sm">
+              <button className="btn-secondary min-h-[40px] rounded-2xl px-3 py-2 text-sm">
                 Teman
               </button>
             </div>
-            <div className="mt-4 grid gap-3">
+            <div className="mt-3 grid gap-2.5">
               {rankingPreview.map((row) => (
                 <div
                   key={row.rank}
-                  className="grid min-h-[72px] grid-cols-[30px_40px_42px_minmax(0,1fr)_auto] items-center gap-2 rounded-[1.75rem] border-2 border-border bg-background px-3 text-sm text-headline dark:bg-surface sm:min-h-[86px] sm:grid-cols-[42px_56px_54px_minmax(0,1fr)_auto] sm:gap-3 sm:px-4"
+                  className="grid min-h-[64px] grid-cols-[28px_34px_36px_minmax(0,1fr)_58px] items-center gap-1.5 rounded-2xl border-2 border-border bg-background px-2 text-sm text-headline dark:bg-surface sm:min-h-[72px] sm:grid-cols-[34px_42px_42px_minmax(0,1fr)_72px] sm:gap-2 sm:px-3 xl:min-h-[66px] xl:grid-cols-[32px_38px_38px_minmax(0,1fr)_64px]"
                 >
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-surface text-sm font-black text-headline dark:bg-background sm:h-10 sm:w-10 sm:text-base">
+                  <span className={['flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br text-xs font-black text-headline shadow-inner sm:h-8 sm:w-8 sm:text-sm', row.rankTone].join(' ')}>
                     {row.rank}
                   </span>
-                  <span className={['flex h-10 w-10 items-center justify-center rounded-full text-base font-black text-white sm:h-14 sm:w-14 sm:text-xl', row.tone].join(' ')}>
+                  <span className={['flex h-8 w-8 items-center justify-center rounded-full text-sm font-black text-white sm:h-10 sm:w-10 sm:text-base', row.tone].join(' ')}>
                     {row.initial}
                   </span>
                   <Image
@@ -483,18 +486,18 @@ export default async function DashboardPage() {
                     alt=""
                     width={56}
                     height={56}
-                    className="h-10 w-10 object-contain sm:h-12 sm:w-12"
+                    className="h-9 w-9 object-contain sm:h-10 sm:w-10"
                     aria-hidden="true"
                   />
                   <span className="min-w-0">
-                    <span className="block truncate font-display text-base font-black leading-tight text-headline sm:text-xl">
+                    <span className="block truncate font-display text-sm font-black leading-tight text-headline sm:text-base">
                       {row.name}
                     </span>
-                    <span className="block truncate text-xs font-black text-muted sm:text-sm">
+                    <span className="block truncate text-[11px] font-black text-muted sm:text-xs">
                       {row.title}
                     </span>
                   </span>
-                  <span className="text-right font-display text-sm font-black text-primary sm:text-lg">
+                  <span className="text-right font-display text-xs font-black leading-tight text-primary sm:text-sm">
                     {row.xp}
                   </span>
                 </div>
