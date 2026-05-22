@@ -74,6 +74,8 @@ const rankingPreview = [
   },
 ]
 
+const dashboardCardGlow = 'hover:shadow-[0_0_0_4px_rgba(116,195,50,0.18),0_18px_36px_-24px_rgba(116,195,50,0.55)]'
+
 const progressionRanks = [
   { golongan: 'I/a', requiredXp: 0, jabatan: 'Umbies', badge: 'umbies_I_a.png' },
   { golongan: 'I/b', requiredXp: 300, jabatan: 'Umbies', badge: 'umbies_I_b.png' },
@@ -126,6 +128,14 @@ function resolveProgression(totalXp: number) {
 function getScorePercent(score: number | null | undefined, maxScore: number) {
   if (!score) return 0
   return Math.max(0, Math.min(Math.round((score / maxScore) * 100), 100))
+}
+
+function formatCompactXp(xp: number) {
+  if (xp >= 1000) {
+    return `${(xp / 1000).toFixed(1)}k XP`
+  }
+
+  return `${xp} XP`
 }
 
 function getWeakestArea(scores: Array<{ label: string; percent: number }>) {
@@ -308,6 +318,20 @@ export default async function DashboardPage() {
     { label: 'TIU', percent: getScorePercent(latestDiagnostic?.score_tiu, 175), tone: 'xp' as const },
     { label: 'TKP', percent: getScorePercent(latestDiagnostic?.score_tkp, 225), tone: 'primary' as const },
   ]
+  const leaderboardRows = [
+    ...rankingPreview,
+    {
+      rank: '142',
+      initial: 'Y',
+      name: 'YOU',
+      title: currentProgression.currentJabatan,
+      xp: formatCompactXp(totalXp),
+      tone: 'bg-primary',
+      rankTone: 'from-primary-light to-primary',
+      badge: currentProgression.currentBadge,
+      highlight: true,
+    },
+  ]
   const weakestArea = latestDiagnostic ? getWeakestArea(analytics) : null
 
   return (
@@ -335,7 +359,7 @@ export default async function DashboardPage() {
       }
     >
       <div className="grid w-full gap-4 xl:grid-cols-12">
-        <Card padding="md" className="card-static overflow-hidden xl:col-span-5">
+        <Card padding="md" className={`overflow-hidden xl:col-span-5 ${dashboardCardGlow}`}>
           <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:gap-5 sm:text-left">
             <div className="relative h-24 w-24 shrink-0 sm:h-24 sm:w-24">
               <div className="absolute inset-3 rounded-full bg-primary-light blur-xl dark:bg-primary/20" aria-hidden="true" />
@@ -368,7 +392,7 @@ export default async function DashboardPage() {
           </div>
         </Card>
 
-        <Card padding="lg" className="card-static xl:col-span-3">
+        <Card padding="lg" className={`xl:col-span-3 ${dashboardCardGlow}`}>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
             <div className="flex items-center justify-between gap-3">
               <div>
@@ -393,7 +417,7 @@ export default async function DashboardPage() {
           </div>
         </Card>
 
-        <Card padding="lg" className="card-static xl:col-span-4">
+        <Card padding="lg" className={`xl:col-span-4 ${dashboardCardGlow}`}>
           <div className="flex items-center justify-between gap-3">
             <h2 className="text-lg font-black text-headline">Teman Online</h2>
             <div className="flex gap-2 text-muted">
@@ -421,7 +445,7 @@ export default async function DashboardPage() {
           </div>
         </Card>
 
-        <Card padding="lg" className="card-static relative min-h-[220px] overflow-hidden xl:col-span-5">
+        <Card padding="lg" className={`relative min-h-[220px] overflow-hidden xl:col-span-5 ${dashboardCardGlow}`}>
           <Swords className="absolute -right-8 bottom-4 h-40 w-40 rotate-[-18deg] text-border/60 dark:text-border/30" aria-hidden="true" />
           <div className="relative z-10 max-w-sm">
             <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
@@ -439,7 +463,7 @@ export default async function DashboardPage() {
           </div>
         </Card>
 
-        <Card padding="lg" className="card-static relative min-h-[220px] overflow-hidden xl:col-span-4">
+        <Card padding="lg" className={`relative min-h-[220px] overflow-hidden xl:col-span-4 ${dashboardCardGlow}`}>
           <div className="absolute bottom-1 right-4 font-display text-8xl font-black uppercase text-border/35 dark:text-border/20" aria-hidden="true">
             CAT
           </div>
@@ -460,7 +484,10 @@ export default async function DashboardPage() {
         </Card>
 
         <aside className="grid gap-4 xl:col-span-3 xl:row-span-2">
-          <Card padding="sm" className="card-static">
+          <Card padding="sm" className={dashboardCardGlow}>
+            <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-primary">
+              Leaderboard
+            </p>
             <div className="grid grid-cols-2 gap-2 text-sm font-black">
               <button className="btn-primary min-h-[40px] rounded-2xl px-3 py-2 text-sm">
                 Nasional
@@ -470,10 +497,13 @@ export default async function DashboardPage() {
               </button>
             </div>
             <div className="mt-3 grid gap-2.5">
-              {rankingPreview.map((row) => (
+              {leaderboardRows.map((row) => (
                 <div
                   key={row.rank}
-                  className="grid min-h-[64px] grid-cols-[28px_34px_36px_minmax(0,1fr)_58px] items-center gap-1.5 rounded-2xl border-2 border-border bg-background px-2 text-sm text-headline dark:bg-surface sm:min-h-[72px] sm:grid-cols-[34px_42px_42px_minmax(0,1fr)_72px] sm:gap-2 sm:px-3 xl:min-h-[66px] xl:grid-cols-[32px_38px_38px_minmax(0,1fr)_64px]"
+                  className={[
+                    'grid min-h-[64px] grid-cols-[28px_34px_36px_minmax(0,1fr)_58px] items-center gap-1.5 rounded-2xl border-2 border-border bg-background px-2 text-sm text-headline dark:bg-surface sm:min-h-[72px] sm:grid-cols-[34px_42px_42px_minmax(0,1fr)_72px] sm:gap-2 sm:px-3 xl:min-h-[62px] xl:grid-cols-[30px_36px_36px_minmax(0,1fr)_60px]',
+                    'highlight' in row && row.highlight ? 'bg-primary-light/70 dark:bg-primary/15' : '',
+                  ].join(' ')}
                 >
                   <span className={['flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br text-xs font-black text-headline shadow-inner sm:h-8 sm:w-8 sm:text-sm', row.rankTone].join(' ')}>
                     {row.rank}
@@ -505,7 +535,7 @@ export default async function DashboardPage() {
             </div>
           </Card>
 
-          <Card padding="lg" className="card-static relative overflow-hidden border-primary bg-gradient-to-br from-primary via-[#64b82c] to-primary-dark text-white">
+          <Card padding="lg" className={`relative overflow-hidden border-primary bg-gradient-to-br from-primary via-[#64b82c] to-primary-dark text-white ${dashboardCardGlow}`}>
             <Image
               src="/mascot/mascot_donation.png"
               alt=""
@@ -533,7 +563,7 @@ export default async function DashboardPage() {
           </Card>
         </aside>
 
-        <Card id="daily-missions" padding="lg" className="card-static xl:col-span-4">
+        <Card id="daily-missions" padding="lg" className={`xl:col-span-3 ${dashboardCardGlow}`}>
           <div className="mb-4 flex items-center justify-between gap-3">
             <h2 className="font-display text-xl font-black uppercase text-headline">
               Daily Missions
@@ -547,7 +577,7 @@ export default async function DashboardPage() {
           </div>
         </Card>
 
-        <Card padding="lg" className="card-static xl:col-span-5">
+        <Card padding="lg" className={`xl:col-span-6 ${dashboardCardGlow}`}>
           <h2 className="font-display text-xl font-black uppercase text-headline">
             Tactical Analytics
           </h2>
