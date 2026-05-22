@@ -44,8 +44,8 @@ const friendsPreview = [
 const rankingPreview = [
   { rank: '01', name: 'Aris M.', score: '24.5k', tone: 'bg-xp' },
   { rank: '02', name: 'Budi S.', score: '22.1k', tone: 'bg-muted' },
+  { rank: '03', name: 'Dimas P.', score: '19.7k', tone: 'bg-beige' },
   { rank: '142', name: 'YOU', score: '12.4k', tone: 'bg-primary', highlight: true },
-  { rank: '143', name: 'Citra W.', score: '12.3k', tone: 'bg-slate-500' },
 ]
 
 const progressionRanks = [
@@ -433,32 +433,61 @@ export default async function DashboardPage() {
           </div>
         </Card>
 
-        <Card padding="md" className="card-static row-span-2 xl:col-span-3">
-          <div className="grid grid-cols-2 rounded-2xl bg-surface p-1 text-sm font-black text-body dark:bg-background">
-            <button className="min-h-[44px] rounded-xl bg-background text-headline shadow-sm dark:bg-surface">
-              Rankings National
-            </button>
-            <button className="min-h-[44px] rounded-xl text-muted">
-              Friend Rankings
-            </button>
-          </div>
-          <div className="mt-4 grid gap-3">
-            {rankingPreview.map((row) => (
-              <div
-                key={row.rank}
-                className={[
-                  'grid min-h-[56px] grid-cols-[32px_40px_1fr_auto] items-center gap-3 rounded-xl px-2 text-sm',
-                  row.highlight ? 'bg-primary-light text-primary-dark dark:bg-primary/15 dark:text-primary' : 'text-headline',
-                ].join(' ')}
+        <aside className="grid gap-4 xl:col-span-3 xl:row-span-2">
+          <Card padding="md" className="card-static">
+            <div className="grid grid-cols-2 gap-2 text-sm font-black">
+              <button className="btn-primary min-h-[44px] rounded-2xl px-3 py-2 text-sm">
+                Nasional
+              </button>
+              <button className="btn-secondary min-h-[44px] rounded-2xl px-3 py-2 text-sm">
+                Teman
+              </button>
+            </div>
+            <div className="mt-4 grid gap-3">
+              {rankingPreview.map((row) => (
+                <div
+                  key={row.rank}
+                  className={[
+                    'grid min-h-[56px] grid-cols-[32px_40px_1fr_auto] items-center gap-3 rounded-xl px-2 text-sm',
+                    row.highlight ? 'bg-primary-light text-primary-dark dark:bg-primary/15 dark:text-primary' : 'text-headline',
+                  ].join(' ')}
+                >
+                  <span className="font-black text-muted">{row.rank}</span>
+                  <span className={['h-9 w-9 rounded-full', row.tone].join(' ')} />
+                  <span className="min-w-0 truncate font-black">{row.name}</span>
+                  <span className="font-bold">{row.highlight ? totalXp.toLocaleString('id-ID') : row.score}</span>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card padding="lg" className="card-static relative overflow-hidden border-primary bg-gradient-to-br from-primary via-[#64b82c] to-primary-dark text-white">
+            <Image
+              src="/mascot/mascot_donation.png"
+              alt=""
+              width={120}
+              height={120}
+              className="absolute -right-3 -top-3 h-24 w-24 object-contain opacity-90"
+              aria-hidden="true"
+            />
+            <div className="relative z-10 max-w-[240px]">
+              <h2 className="font-display text-3xl font-black leading-none">
+                Donasi
+              </h2>
+              <p className="mt-3 text-sm font-bold leading-6 text-white/90">
+                Dukung pengembang lewat Saweria agar Umbuddy terus online melayani puluhan ribu Cambies!
+              </p>
+              <Link
+                href="https://saweria.co"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-2xl bg-xp px-4 text-sm font-black text-headline shadow-[0_4px_0_0_#b38b08]"
               >
-                <span className="font-black text-muted">{row.rank}</span>
-                <span className={['h-9 w-9 rounded-full', row.tone].join(' ')} />
-                <span className="min-w-0 truncate font-black">{row.name}</span>
-                <span className="font-bold">{row.highlight ? totalXp.toLocaleString('id-ID') : row.score}</span>
-              </div>
-            ))}
-          </div>
-        </Card>
+                Dukung via Saweria
+              </Link>
+            </div>
+          </Card>
+        </aside>
 
         <Card id="daily-missions" padding="lg" className="card-static xl:col-span-4">
           <div className="mb-4 flex items-center justify-between gap-3">
@@ -509,33 +538,6 @@ export default async function DashboardPage() {
           </div>
         </Card>
 
-        <Card padding="lg" className="card-static relative overflow-hidden bg-primary text-white dark:bg-primary-dark xl:col-span-3">
-          <Image
-            src="/mascot/mascot_donation.png"
-            alt=""
-            width={120}
-            height={120}
-            className="absolute -right-3 -top-3 h-24 w-24 object-contain opacity-90"
-            aria-hidden="true"
-          />
-          <div className="relative z-10 max-w-[220px]">
-            <h2 className="font-display text-3xl font-black leading-none">
-              Donasi
-            </h2>
-            <p className="mt-1 text-lg font-black">Dukung Umbuddy!</p>
-            <p className="mt-3 text-xs leading-5 text-white/85">
-              Bantu server tetap ringan dan Umbuddy tetap gratis untuk pejuang CPNS lain.
-            </p>
-            <Link
-              href="https://saweria.co"
-              target="_blank"
-              rel="noreferrer"
-              className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-2xl bg-xp px-4 text-sm font-black text-headline shadow-[0_4px_0_0_#b38b08]"
-            >
-              Dukung via Saweria
-            </Link>
-          </div>
-        </Card>
       </div>
     </BentoDashboardLayout>
     <ThemeToggle />
