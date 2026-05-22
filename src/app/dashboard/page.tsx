@@ -66,36 +66,47 @@ function DashboardTopBar({
   const progressPercentage = Math.round((initialXp / nextRankXp) * 100)
 
   return (
-    <div className="flex min-h-[86px] items-center justify-between gap-4 px-4 md:px-8">
-      <div className="flex min-w-0 items-center gap-3 md:gap-4">
-        <Image
-          src="/badge/umbies_I_a.png"
-          alt=""
-          width={58}
-          height={58}
-          className="h-14 w-14 shrink-0 object-contain"
-          aria-hidden="true"
-          priority
-        />
-        <div className="min-w-0">
-          <div className="grid gap-0.5">
-            <p className="truncate font-display text-xl font-black leading-tight text-headline md:text-2xl">
-              Jabatan: Umbies
-            </p>
-            <p className="truncate text-sm font-bold leading-tight text-muted">
-              Golongan: I/a
-            </p>
+    <div className="flex min-h-[96px] items-center justify-between gap-4 px-4 md:px-8">
+      <div className="min-w-0">
+        <div className="flex min-w-0 items-center gap-3 rounded-[1.75rem] border-2 border-border bg-background/90 p-2.5 pr-4 shadow-[0_5px_0_0_var(--color-border)] dark:bg-surface/90 md:gap-4 md:pr-5">
+          <div className="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-xp-light ring-2 ring-xp/35 dark:bg-xp-light">
+            <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-primary shadow-[0_0_0_4px_var(--color-background)] dark:shadow-[0_0_0_4px_var(--color-surface)]" aria-hidden="true" />
+            <Image
+              src="/badge/umbies_I_a.png"
+              alt=""
+              width={64}
+              height={64}
+              className="h-14 w-14 object-contain drop-shadow-sm"
+              aria-hidden="true"
+              priority
+            />
           </div>
-          <div className="mt-2 min-w-[190px] max-w-[300px]">
-            <div className="flex items-center justify-between gap-3 text-xs font-bold text-muted">
-              <span>{initialXp} / {nextRankXp} xp</span>
-              <span>menuju I/b</span>
+
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <p className="truncate font-display text-2xl font-black leading-tight text-headline md:text-3xl">
+                Umbies
+              </p>
+              <p className="rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-black text-muted dark:bg-background">
+                Golongan I/a
+              </p>
             </div>
-            <div className="mt-1.5 h-2.5 rounded-full bg-surface dark:bg-background">
-              <div
-                className="h-full rounded-full bg-primary"
-                style={{ width: `${progressPercentage}%` }}
-              />
+
+            <div className="mt-2 w-[210px] max-w-[52vw] md:w-[320px]">
+              <div className="flex items-center justify-between gap-3 text-xs font-black text-muted">
+                <span className="text-headline">{initialXp} / {nextRankXp} xp</span>
+                <span>{progressPercentage}%</span>
+              </div>
+              <div className="mt-1.5 h-3 rounded-full border border-border bg-surface p-0.5 dark:bg-background">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-primary to-xp"
+                  style={{ width: `${progressPercentage}%` }}
+                  aria-hidden="true"
+                />
+              </div>
+              <p className="mt-1 text-[11px] font-bold text-muted">
+                Progress awal menuju kenaikan golongan berikutnya.
+              </p>
             </div>
           </div>
         </div>
