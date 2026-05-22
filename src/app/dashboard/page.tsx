@@ -42,10 +42,33 @@ const friendsPreview = [
 ]
 
 const rankingPreview = [
-  { rank: '01', name: 'Aris M.', score: '24.5k', tone: 'bg-xp' },
-  { rank: '02', name: 'Budi S.', score: '22.1k', tone: 'bg-muted' },
-  { rank: '03', name: 'Dimas P.', score: '19.7k', tone: 'bg-beige' },
-  { rank: '142', name: 'YOU', score: '12.4k', tone: 'bg-primary', highlight: true },
+  {
+    rank: '1',
+    initial: 'R',
+    name: 'Rani',
+    title: 'Esmelon III',
+    xp: '18.4k XP',
+    tone: 'bg-xp',
+    badge: '/badge/esmelon_III_d.png',
+  },
+  {
+    rank: '2',
+    initial: 'B',
+    name: 'Bima',
+    title: 'Umbies Senior',
+    xp: '17.9k XP',
+    tone: 'bg-primary',
+    badge: '/badge/umbies_senior_III_a.png',
+  },
+  {
+    rank: '3',
+    initial: 'A',
+    name: 'Alya',
+    title: 'Umbies I',
+    xp: '17.0k XP',
+    tone: 'bg-error',
+    badge: '/badge/umbies_I_a.png',
+  },
 ]
 
 const progressionRanks = [
@@ -447,15 +470,33 @@ export default async function DashboardPage() {
               {rankingPreview.map((row) => (
                 <div
                   key={row.rank}
-                  className={[
-                    'grid min-h-[56px] grid-cols-[32px_40px_1fr_auto] items-center gap-3 rounded-xl px-2 text-sm',
-                    row.highlight ? 'bg-primary-light text-primary-dark dark:bg-primary/15 dark:text-primary' : 'text-headline',
-                  ].join(' ')}
+                  className="grid min-h-[72px] grid-cols-[30px_40px_42px_minmax(0,1fr)_auto] items-center gap-2 rounded-[1.75rem] border-2 border-border bg-background px-3 text-sm text-headline dark:bg-surface sm:min-h-[86px] sm:grid-cols-[42px_56px_54px_minmax(0,1fr)_auto] sm:gap-3 sm:px-4"
                 >
-                  <span className="font-black text-muted">{row.rank}</span>
-                  <span className={['h-9 w-9 rounded-full', row.tone].join(' ')} />
-                  <span className="min-w-0 truncate font-black">{row.name}</span>
-                  <span className="font-bold">{row.highlight ? totalXp.toLocaleString('id-ID') : row.score}</span>
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-surface text-sm font-black text-headline dark:bg-background sm:h-10 sm:w-10 sm:text-base">
+                    {row.rank}
+                  </span>
+                  <span className={['flex h-10 w-10 items-center justify-center rounded-full text-base font-black text-white sm:h-14 sm:w-14 sm:text-xl', row.tone].join(' ')}>
+                    {row.initial}
+                  </span>
+                  <Image
+                    src={row.badge}
+                    alt=""
+                    width={56}
+                    height={56}
+                    className="h-10 w-10 object-contain sm:h-12 sm:w-12"
+                    aria-hidden="true"
+                  />
+                  <span className="min-w-0">
+                    <span className="block truncate font-display text-base font-black leading-tight text-headline sm:text-xl">
+                      {row.name}
+                    </span>
+                    <span className="block truncate text-xs font-black text-muted sm:text-sm">
+                      {row.title}
+                    </span>
+                  </span>
+                  <span className="text-right font-display text-sm font-black text-primary sm:text-lg">
+                    {row.xp}
+                  </span>
                 </div>
               ))}
             </div>
