@@ -19,6 +19,7 @@ interface StreakIndicatorProps {
   /** Tampilkan label teks di sebelah angka */
   showLabel?: boolean
   size?: 'sm' | 'md' | 'lg'
+  variant?: 'badge' | 'plain'
   className?: string
 }
 
@@ -33,15 +34,21 @@ export function StreakIndicator({
   streakDays,
   showLabel = false,
   size = 'md',
+  variant = 'badge',
   className = '',
 }: StreakIndicatorProps) {
   const isActive = streakDays > 0
   const sizes = sizeClasses[size]
+  const variantClass =
+    variant === 'badge'
+      ? 'streak-badge'
+      : 'text-headline'
 
   return (
     <div
       className={[
-        'streak-badge inline-flex items-center font-display font-black',
+        'inline-flex items-center font-display font-black',
+        variantClass,
         sizes.container,
         isActive ? 'opacity-100' : 'opacity-40 grayscale',
         className,

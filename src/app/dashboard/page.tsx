@@ -3,7 +3,6 @@ import Link from 'next/link'
 import {
   Check,
   ChevronRight,
-  Flame,
   Home,
   PencilLine,
   Swords,
@@ -22,6 +21,8 @@ import {
   BottomNav,
   Card,
   Sidebar,
+  StreakIndicator,
+  XPBar,
   type AppNavItem,
 } from '@/components/ui'
 
@@ -77,35 +78,24 @@ function DashboardTopBar({
           aria-hidden="true"
           priority
         />
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="grid gap-0.5">
-            <p className="truncate font-display text-xl font-black leading-tight text-headline md:text-2xl">
-              Jabatan: Umbies
-            </p>
-            <p className="truncate text-sm font-bold leading-tight text-muted">
-              Golongan: I/a
+            <p className="truncate font-display text-lg font-black leading-tight text-headline md:text-xl">
+              Umbies
             </p>
           </div>
-          <div className="mt-2 min-w-[190px] max-w-[300px]">
-            <div className="flex items-center justify-between gap-3 text-xs font-bold text-muted">
-              <span>{initialXp} / {nextRankXp} xp</span>
-              <span>menuju I/b</span>
-            </div>
-            <div className="mt-1.5 h-2.5 rounded-full bg-surface dark:bg-background">
-              <div
-                className="h-full rounded-full bg-primary"
-                style={{ width: `${progressPercentage}%` }}
-              />
-            </div>
-          </div>
+          <XPBar
+            currentTitle="Golongan I/a"
+            currentXP={initialXp}
+            nextThresholdXP={nextRankXp}
+            progressPercentage={progressPercentage}
+            className="mt-1.5 w-[min(58vw,420px)]"
+          />
         </div>
       </div>
 
       <div className="flex shrink-0 items-center gap-4">
-        <div className="flex min-h-[44px] items-center gap-1.5 font-display text-xl font-black text-headline">
-          <Flame className="h-7 w-7 fill-error text-error" aria-hidden="true" />
-          <span>{streakDays}</span>
-        </div>
+        <StreakIndicator streakDays={streakDays} size="lg" variant="plain" className="min-h-[44px] px-0" />
         <div className="hidden min-h-[44px] items-center gap-2 text-sm font-bold text-headline sm:flex">
           <span className="h-3 w-3 rounded-full bg-primary animate-pulse" aria-hidden="true" />
           <span>4.120 users</span>
