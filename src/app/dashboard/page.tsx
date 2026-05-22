@@ -22,7 +22,6 @@ import {
   BottomNav,
   Card,
   Sidebar,
-  StreakIndicator,
   type AppNavItem,
 } from '@/components/ui'
 
@@ -48,18 +47,6 @@ const rankingPreview = [
   { rank: '143', name: 'Citra W.', score: '12.3k', tone: 'bg-slate-500' },
 ]
 
-function calculateLevelProgress(totalXp: number, level: number) {
-  const safeLevel = Math.max(level, 1)
-  const levelBase = (safeLevel - 1) * 1000
-  const nextThreshold = safeLevel * 1000
-  const progress = ((totalXp - levelBase) / (nextThreshold - levelBase)) * 100
-
-  return {
-    nextThreshold,
-    progressPercentage: Math.max(0, Math.min(progress, 100)),
-  }
-}
-
 function getScorePercent(score: number | null | undefined, maxScore: number) {
   if (!score) return 0
   return Math.max(0, Math.min(Math.round((score / maxScore) * 100), 100))
@@ -69,88 +56,60 @@ function getWeakestArea(scores: Array<{ label: string; percent: number }>) {
   return [...scores].sort((a, b) => a.percent - b.percent)[0]
 }
 
-function UserAvatar({ name }: { name?: string | null }) {
-  const initial = (name || 'U').trim().charAt(0).toUpperCase()
-
-  return (
-    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 border-border bg-primary text-xl font-black text-white">
-      {initial}
-    </div>
-  )
-}
-
 function DashboardTopBar({
-  name,
-  totalXp,
-  level,
-  currentTitle,
   streakDays,
-  xpProgress,
 }: {
-  name?: string | null
-  totalXp: number
-  level: number
-  currentTitle: string
   streakDays: number
-  xpProgress: number
 }) {
+  const initialXp = 50
+  const nextRankXp = 300
+  const progressPercentage = Math.round((initialXp / nextRankXp) * 100)
+
   return (
     <div className="flex min-h-[86px] items-center justify-between gap-4 px-4 md:px-8">
       <div className="flex min-w-0 items-center gap-3 md:gap-4">
-        <UserAvatar name={name} />
-        <div className="hidden min-w-0 md:block">
-          <p className="truncate font-display text-2xl font-black text-headline">
-            {name || 'Umbies'}
-          </p>
-        </div>
         <Image
-          src="/badge/umbies_senior_III_a.png"
+          src="/badge/umbies_I_a.png"
           alt=""
           width={58}
           height={58}
-          className="hidden h-14 w-14 object-contain sm:block"
+          className="h-14 w-14 shrink-0 object-contain"
           aria-hidden="true"
           priority
         />
-        <div className="hidden min-w-[230px] md:block">
-          <div className="flex items-center justify-between gap-3">
-            <p className="truncate text-sm font-black text-headline">
-              {currentTitle}
+        <div className="min-w-0">
+          <div className="grid gap-0.5">
+            <p className="truncate font-display text-xl font-black leading-tight text-headline md:text-2xl">
+              Jabatan: Umbies
             </p>
-            <p className="text-sm font-bold text-headline">
-              {totalXp.toLocaleString('id-ID')} xp
+            <p className="truncate text-sm font-bold leading-tight text-muted">
+              Golongan: I/a
             </p>
           </div>
-          <div className="mt-2 h-2 rounded-full bg-surface">
-            <div
-              className="h-full rounded-full bg-primary"
-              style={{ width: `${xpProgress}%` }}
-            />
+          <div className="mt-2 min-w-[190px] max-w-[300px]">
+            <div className="flex items-center justify-between gap-3 text-xs font-bold text-muted">
+              <span>{initialXp} / {nextRankXp} xp</span>
+              <span>menuju I/b</span>
+            </div>
+            <div className="mt-1.5 h-2.5 rounded-full bg-surface dark:bg-background">
+              <div
+                className="h-full rounded-full bg-primary"
+                style={{ width: `${progressPercentage}%` }}
+              />
+            </div>
           </div>
-        </div>
-        <div className="min-w-0 md:hidden">
-          <p className="truncate font-display text-lg font-black text-headline">
-            {name || 'Umbies'}
-          </p>
-          <p className="truncate text-xs font-bold text-muted">
-            Level {level} • {totalXp.toLocaleString('id-ID')} XP
-          </p>
         </div>
       </div>
 
-      <div className="flex shrink-0 items-center gap-2 md:gap-4">
-        <Badge
-          variant="warning"
-          className="hidden min-h-[44px] items-center gap-2 rounded-2xl px-4 text-base sm:inline-flex"
-          icon={<Flame className="h-5 w-5" aria-hidden="true" />}
-        >
-          {streakDays}
-        </Badge>
-        <Badge variant="success" className="hidden min-h-[40px] px-4 md:inline-flex">
-          Online: beta
-        </Badge>
-        <StreakIndicator streakDays={streakDays} size="sm" className="sm:hidden" />
-        <ThemeToggle variant="inline" />
+      <div className="flex shrink-0 items-center gap-4">
+        <div className="flex min-h-[44px] items-center gap-1.5 font-display text-xl font-black text-headline">
+          <Flame className="h-7 w-7 fill-error text-error" aria-hidden="true" />
+          <span>{streakDays}</span>
+        </div>
+        <div className="hidden min-h-[44px] items-center gap-2 text-sm font-bold text-headline sm:flex">
+          <span className="h-3 w-3 rounded-full bg-primary animate-pulse" aria-hidden="true" />
+          <span>4.120 users</span>
+        </div>
       </div>
     </div>
   )
@@ -266,10 +225,7 @@ export default async function DashboardPage() {
   ])
 
   const totalXp = progression?.total_xp ?? 0
-  const level = progression?.level ?? 1
   const streakDays = progression?.current_streak ?? 0
-  const levelProgress = calculateLevelProgress(totalXp, level)
-  const currentTitle = progression?.jabatan || progression?.golongan || 'Umbies Senior IIIa'
   const diagnosticScore = latestDiagnostic?.total_score ? Math.round(latestDiagnostic.total_score) : 0
   const targetScoreDisplay = profile?.target_score?.toLocaleString('id-ID') ?? '-'
   const targetLocation = [profile?.city, profile?.province].filter(Boolean).join(', ')
@@ -281,15 +237,11 @@ export default async function DashboardPage() {
   const weakestArea = latestDiagnostic ? getWeakestArea(analytics) : null
 
   return (
-    <BentoDashboardLayout
+    <>
+      <BentoDashboardLayout
       topBar={
         <DashboardTopBar
-          name={session.user.name}
-          totalXp={totalXp}
-          level={level}
-          currentTitle={currentTitle}
           streakDays={streakDays}
-          xpProgress={levelProgress.progressPercentage}
         />
       }
       bottomNav={<BottomNav items={DASHBOARD_NAV_ITEMS} activeHref="/dashboard" />}
@@ -528,5 +480,7 @@ export default async function DashboardPage() {
         </Card>
       </div>
     </BentoDashboardLayout>
+    <ThemeToggle />
+    </>
   )
 }
