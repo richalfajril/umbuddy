@@ -27,6 +27,7 @@ interface XPBarProps {
   /** Nama jabatan berikutnya. undefined jika sudah MAX */
   nextTitle?: string
   currentTitleClassName?: string
+  valueClassName?: string
   className?: string
 }
 
@@ -38,6 +39,7 @@ export function XPBar({
   progressPercentage,
   nextTitle,
   currentTitleClassName = 'font-display font-bold text-sm text-headline',
+  valueClassName = 'font-display font-bold text-sm text-primary',
   className = '',
 }: XPBarProps) {
   const isMax = nextThresholdXP === null
@@ -49,7 +51,7 @@ export function XPBar({
         <span className={currentTitleClassName}>
           {currentTitle}
         </span>
-        <span className="font-display font-bold text-sm text-primary">
+        <span className={valueClassName}>
           {isMax ? (
             <span className="text-xp">✨ MAX</span>
           ) : (
