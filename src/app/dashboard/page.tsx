@@ -48,6 +48,55 @@ const rankingPreview = [
   { rank: '143', name: 'Citra W.', score: '12.3k', tone: 'bg-slate-500' },
 ]
 
+const progressionRanks = [
+  { golongan: 'I/a', requiredXp: 0, jabatan: 'Umbies', badge: 'umbies_I_a.png' },
+  { golongan: 'I/b', requiredXp: 300, jabatan: 'Umbies', badge: 'umbies_I_b.png' },
+  { golongan: 'I/c', requiredXp: 800, jabatan: 'Umbies', badge: 'umbies_I_c.png' },
+  { golongan: 'I/d', requiredXp: 1500, jabatan: 'Umbies', badge: 'umbies_I_d.png' },
+  { golongan: 'II/a', requiredXp: 2500, jabatan: 'Umbies Senior', badge: 'umbies_senior_II_a.png' },
+  { golongan: 'II/b', requiredXp: 4000, jabatan: 'Umbies Senior', badge: 'umbies_senior_II_b.png' },
+  { golongan: 'II/c', requiredXp: 6000, jabatan: 'Umbies Senior', badge: 'umbies_senior_II_c.png' },
+  { golongan: 'II/d', requiredXp: 8500, jabatan: 'Umbies Senior', badge: 'umbies_senior_II_d.png' },
+  { golongan: 'III/a', requiredXp: 12000, jabatan: 'Umbies Senior', badge: 'umbies_senior_III_a.png' },
+  { golongan: 'III/b', requiredXp: 16000, jabatan: 'Esmelon IV', badge: 'esmelon_III_b.png' },
+  { golongan: 'III/c', requiredXp: 21000, jabatan: 'Esmelon IV', badge: 'esmelon_III_c.png' },
+  { golongan: 'III/d', requiredXp: 27000, jabatan: 'Esmelon III', badge: 'esmelon_III_d.png' },
+  { golongan: 'IV/a', requiredXp: 34000, jabatan: 'Esmelon III', badge: 'esmelon_IV_a.png' },
+  { golongan: 'IV/b', requiredXp: 42000, jabatan: 'Esmelon II', badge: 'esmelon_IV_b.png' },
+  { golongan: 'IV/c', requiredXp: 51000, jabatan: 'Esmelon II', badge: 'esmelon_IV_c.png' },
+  { golongan: 'IV/d', requiredXp: 61000, jabatan: 'Esmelon I', badge: 'esmelon_IV_d.png' },
+  { golongan: 'IV/e', requiredXp: 72000, jabatan: 'Esmelon I', badge: 'esmelon_IV_e.png' },
+  { golongan: 'MAX', requiredXp: 85000, jabatan: 'Menteri', badge: 'menteri.png' },
+] as const
+
+function resolveProgression(totalXp: number) {
+  let currentIndex = 0
+  for (let index = progressionRanks.length - 1; index >= 0; index -= 1) {
+    if (progressionRanks[index].requiredXp <= totalXp) {
+      currentIndex = index
+      break
+    }
+  }
+  const current = progressionRanks[Math.max(currentIndex, 0)]
+  const next = progressionRanks[Math.min(Math.max(currentIndex, 0) + 1, progressionRanks.length - 1)]
+  const rankSpan = Math.max(next.requiredXp - current.requiredXp, 1)
+  const currentRankXp = Math.max(totalXp - current.requiredXp, 0)
+  const nextRankXp = next.golongan === current.golongan ? current.requiredXp : rankSpan
+  const progressPercentage =
+    next.golongan === current.golongan
+      ? 100
+      : Math.max(0, Math.min(Math.round((currentRankXp / rankSpan) * 100), 100))
+
+  return {
+    currentJabatan: current.jabatan,
+    currentGolongan: current.golongan,
+    currentBadge: `/badge/${current.badge}`,
+    currentRankXp,
+    nextRankXp,
+    progressPercentage,
+  }
+}
+
 function getScorePercent(score: number | null | undefined, maxScore: number) {
   if (!score) return 0
   return Math.max(0, Math.min(Math.round((score / maxScore) * 100), 100))
@@ -59,18 +108,26 @@ function getWeakestArea(scores: Array<{ label: string; percent: number }>) {
 
 function DashboardTopBar({
   streakDays,
+  currentJabatan,
+  currentGolongan,
+  currentBadge,
+  currentRankXp,
+  nextRankXp,
+  progressPercentage,
 }: {
   streakDays: number
+  currentJabatan: string
+  currentGolongan: string
+  currentBadge: string
+  currentRankXp: number
+  nextRankXp: number
+  progressPercentage: number
 }) {
-  const initialXp = 50
-  const nextRankXp = 300
-  const progressPercentage = Math.round((initialXp / nextRankXp) * 100)
-
   return (
     <div className="flex min-h-[86px] items-center justify-between gap-4 px-4 md:px-8">
       <div className="flex min-w-0 items-center gap-3 md:gap-4">
         <Image
-          src="/badge/umbies_I_a.png"
+          src={currentBadge}
           alt=""
           width={58}
           height={58}
@@ -79,17 +136,18 @@ function DashboardTopBar({
           priority
         />
         <div className="min-w-0 flex-1">
-          <div className="grid gap-0.5">
-            <p className="truncate font-display text-lg font-black leading-tight text-headline md:text-xl">
-              Umbies
+          <div className="grid gap-0">
+            <p className="truncate font-display text-lg font-black leading-none text-headline md:text-xl">
+              {currentJabatan}
             </p>
           </div>
           <XPBar
-            currentTitle="Golongan I/a"
-            currentXP={initialXp}
+            currentTitle={`Golongan ${currentGolongan}`}
+            currentXP={currentRankXp}
             nextThresholdXP={nextRankXp}
             progressPercentage={progressPercentage}
-            className="mt-1.5 w-[min(58vw,420px)]"
+            currentTitleClassName="font-sans text-sm font-semibold leading-tight text-muted"
+            className="mt-0.5 w-[min(58vw,420px)]"
           />
         </div>
       </div>
@@ -193,9 +251,6 @@ export default async function DashboardPage() {
       where: { user_id: session.user.id },
       select: {
         total_xp: true,
-        level: true,
-        golongan: true,
-        jabatan: true,
         current_streak: true,
       },
     }),
@@ -215,6 +270,7 @@ export default async function DashboardPage() {
   ])
 
   const totalXp = progression?.total_xp ?? 0
+  const currentProgression = resolveProgression(totalXp)
   const streakDays = progression?.current_streak ?? 0
   const diagnosticScore = latestDiagnostic?.total_score ? Math.round(latestDiagnostic.total_score) : 0
   const targetScoreDisplay = profile?.target_score?.toLocaleString('id-ID') ?? '-'
@@ -232,6 +288,12 @@ export default async function DashboardPage() {
       topBar={
         <DashboardTopBar
           streakDays={streakDays}
+          currentJabatan={currentProgression.currentJabatan}
+          currentGolongan={currentProgression.currentGolongan}
+          currentBadge={currentProgression.currentBadge}
+          currentRankXp={currentProgression.currentRankXp}
+          nextRankXp={currentProgression.nextRankXp}
+          progressPercentage={currentProgression.progressPercentage}
         />
       }
       bottomNav={<BottomNav items={DASHBOARD_NAV_ITEMS} activeHref="/dashboard" />}

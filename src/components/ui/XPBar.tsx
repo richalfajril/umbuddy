@@ -26,6 +26,7 @@ interface XPBarProps {
   progressPercentage: number
   /** Nama jabatan berikutnya. undefined jika sudah MAX */
   nextTitle?: string
+  currentTitleClassName?: string
   className?: string
 }
 
@@ -36,6 +37,7 @@ export function XPBar({
   nextThresholdXP,
   progressPercentage,
   nextTitle,
+  currentTitleClassName = 'font-display font-bold text-sm text-headline',
   className = '',
 }: XPBarProps) {
   const isMax = nextThresholdXP === null
@@ -44,7 +46,7 @@ export function XPBar({
     <div className={['space-y-1.5', className].join(' ')}>
       {/* Labels atas */}
       <div className="flex items-center justify-between">
-        <span className="font-display font-bold text-sm text-headline">
+        <span className={currentTitleClassName}>
           {currentTitle}
         </span>
         <span className="font-display font-bold text-sm text-primary">
