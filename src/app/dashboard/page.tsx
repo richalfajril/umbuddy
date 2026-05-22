@@ -124,20 +124,20 @@ function DashboardTopBar({
   progressPercentage: number
 }) {
   return (
-    <div className="flex min-h-[86px] items-center justify-between gap-4 px-4 md:px-8">
-      <div className="flex min-w-0 items-center gap-3 md:gap-4">
+    <div className="flex min-h-[74px] items-center justify-between gap-2 px-3 sm:min-h-[82px] sm:gap-4 sm:px-4 md:px-8">
+      <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3 md:gap-4">
         <Image
           src={currentBadge}
           alt=""
           width={58}
           height={58}
-          className="h-14 w-14 shrink-0 object-contain"
+          className="h-10 w-10 shrink-0 object-contain sm:h-12 sm:w-12 md:h-14 md:w-14"
           aria-hidden="true"
           priority
         />
         <div className="min-w-0 flex-1">
           <div className="grid gap-0">
-            <p className="truncate font-display text-lg font-black leading-none text-headline md:text-xl">
+            <p className="truncate font-display text-base font-black leading-none text-headline sm:text-lg md:text-xl">
               {currentJabatan}
             </p>
           </div>
@@ -146,17 +146,18 @@ function DashboardTopBar({
             currentXP={currentRankXp}
             nextThresholdXP={nextRankXp}
             progressPercentage={progressPercentage}
-            currentTitleClassName="font-sans text-sm font-semibold leading-tight text-muted"
-            className="mt-0.5 w-[min(58vw,420px)]"
+            currentTitleClassName="font-sans text-xs font-semibold leading-tight text-muted sm:text-sm"
+            className="mt-0.5 w-full max-w-[420px]"
           />
         </div>
       </div>
 
-      <div className="flex shrink-0 items-center gap-4">
-        <StreakIndicator streakDays={streakDays} size="lg" variant="plain" className="min-h-[44px] px-0" />
-        <div className="hidden min-h-[44px] items-center gap-2 text-sm font-bold text-headline sm:flex">
-          <span className="h-3 w-3 rounded-full bg-primary animate-pulse" aria-hidden="true" />
-          <span>4.120 users</span>
+      <div className="flex shrink-0 items-center gap-2 sm:gap-4">
+        <StreakIndicator streakDays={streakDays} size="sm" variant="plain" className="min-h-[36px] px-0 sm:min-h-[44px] sm:text-base" />
+        <div className="hidden min-h-[40px] items-center gap-2 text-xs font-bold text-headline sm:flex md:text-sm">
+          <span className="h-2.5 w-2.5 rounded-full bg-primary animate-pulse md:h-3 md:w-3" aria-hidden="true" />
+          <span className="hidden md:inline">4.120 users</span>
+          <span className="md:hidden">4.1k</span>
         </div>
       </div>
     </div>
@@ -307,23 +308,27 @@ export default async function DashboardPage() {
       }
     >
       <div className="mx-auto grid w-full max-w-[1180px] gap-4 xl:grid-cols-12">
-        <Card padding="lg" className="card-static overflow-hidden xl:col-span-5">
-          <div className="flex items-center gap-5">
-            <Image
-              src="/mascot/mascot_greeting.png"
-              alt=""
-              width={124}
-              height={124}
-              className="hidden h-24 w-24 shrink-0 object-contain sm:block"
-              aria-hidden="true"
-              priority
-            />
+        <Card padding="md" className="card-static overflow-hidden xl:col-span-5">
+          <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:gap-5 sm:text-left">
+            <div className="relative h-24 w-24 shrink-0 sm:h-24 sm:w-24">
+              <div className="absolute inset-3 rounded-full bg-primary-light blur-xl dark:bg-primary/20" aria-hidden="true" />
+              <div className="absolute -bottom-1 left-1/2 h-3 w-16 -translate-x-1/2 rounded-full bg-border/70 blur-sm" aria-hidden="true" />
+              <Image
+                src="/mascot/mascot_greeting.png"
+                alt=""
+                width={124}
+                height={124}
+                className="relative h-24 w-24 object-contain animate-bounce-subtle"
+                aria-hidden="true"
+                priority
+              />
+            </div>
             <div className="min-w-0">
               <h1 className="font-display text-3xl font-black leading-tight text-headline">
                 Hai, <span className="text-primary">{session.user.name || 'Pejuang'}</span>!
               </h1>
-              <p className="mt-3 text-sm leading-6 text-body">
-                Markas belajarmu sudah siap. Fokus hari ini ke langkah kecil yang paling berdampak buat target CPNS Kamu.
+              <p className="mt-2 text-sm leading-6 text-body">
+                Fokus ke langkah kecil paling berdampak hari ini.
               </p>
               <Link
                 href="#daily-missions"
