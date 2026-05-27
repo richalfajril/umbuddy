@@ -485,7 +485,7 @@ export default async function DashboardPage() {
 
         <aside className="grid gap-4 xl:col-span-3 xl:row-span-2">
           <Card padding="sm" className={dashboardCardGlow}>
-            <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-primary">
+            <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-primary text-center">
               Leaderboard
             </p>
             <div className="grid grid-cols-2 gap-2 text-sm font-black">
