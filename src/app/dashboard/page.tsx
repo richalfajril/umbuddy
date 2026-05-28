@@ -393,7 +393,7 @@ export default async function DashboardPage() {
     redirect("/onboarding");
   }
 
-  const [profile, progression, latestDiagnostic] = await Promise.all([
+  const [profile, progression, latestDiagnostic, practiceAttempts] = await Promise.all([
     prisma.userProfile.findUnique({
       where: { user_id: session.user.id },
       select: {
@@ -423,6 +423,25 @@ export default async function DashboardPage() {
         total_score: true,
       },
     }),
+    prisma.practiceAttempt.findMany({
+      where: {
+        session: {
+          user_id: session.user.id,
+          status: "SUBMITTED",
+          mode: { not: "DIAGNOSTIC" },
+        },
+      },
+      orderBy: { created_at: "desc" },
+      take: 100,
+      select: {
+        score: true,
+        question: {
+          select: {
+            category: true,
+          },
+        },
+      },
+    }),
   ]);
 
   const totalXp = progression?.total_xp ?? 0;
@@ -436,20 +455,30 @@ export default async function DashboardPage() {
   const targetLocation = [profile?.city, profile?.province]
     .filter(Boolean)
     .join(", ");
+  const practiceAnalytics = (["TWK", "TIU", "TKP"] as const).map((category) => {
+    const categoryAttempts = practiceAttempts.filter((attempt) => attempt.question.category === category);
+    if (categoryAttempts.length === 0) return null;
+
+    const averageScore = categoryAttempts.reduce((total, attempt) => total + (attempt.score ?? 0), 0) / categoryAttempts.length;
+    return {
+      category,
+      percent: Math.max(0, Math.min(Math.round(averageScore), 100)),
+    };
+  });
   const analytics = [
     {
       label: "TWK",
-      percent: getScorePercent(latestDiagnostic?.score_twk, 150),
+      percent: practiceAnalytics[0]?.percent ?? getScorePercent(latestDiagnostic?.score_twk, 150),
       tone: "primary" as const,
     },
     {
       label: "TIU",
-      percent: getScorePercent(latestDiagnostic?.score_tiu, 175),
+      percent: practiceAnalytics[1]?.percent ?? getScorePercent(latestDiagnostic?.score_tiu, 175),
       tone: "xp" as const,
     },
     {
       label: "TKP",
-      percent: getScorePercent(latestDiagnostic?.score_tkp, 225),
+      percent: practiceAnalytics[2]?.percent ?? getScorePercent(latestDiagnostic?.score_tkp, 225),
       tone: "primary" as const,
     },
   ];
@@ -467,7 +496,8 @@ export default async function DashboardPage() {
       highlight: true,
     },
   ];
-  const weakestArea = latestDiagnostic ? getWeakestArea(analytics) : null;
+  const hasPerformanceData = Boolean(latestDiagnostic) || practiceAttempts.length > 0;
+  const weakestArea = hasPerformanceData ? getWeakestArea(analytics) : null;
 
   return (
     <>
@@ -532,7 +562,7 @@ export default async function DashboardPage() {
                   Fokus ke langkah kecil paling berdampak hari ini.
                 </p>
                 <Link
-                  href="#daily-missions"
+                  href="/practice"
                   className="btn-primary mt-4 inline-flex min-h-[44px] items-center justify-center gap-2 px-5 py-2.5 text-sm"
                 >
                   Mulai Daily Practice
