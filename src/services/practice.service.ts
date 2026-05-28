@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma'
 import type { Prisma } from '@prisma/client'
 
 const PRACTICE_DURATION_SECONDS = 5 * 60
+const PRACTICE_SUBMIT_GRACE_SECONDS = 30
 const DEFAULT_QUESTION_COUNT = 5
 const MAX_QUESTION_COUNT = 10
 const ANSWER_OPTIONS = ['A', 'B', 'C', 'D', 'E'] as const
@@ -136,6 +137,12 @@ function getPracticeQuestionsFromMetadata(metadata: unknown): PrivatePracticeQue
 function getPracticeResultFromMetadata(metadata: unknown): PracticeResultPayload | null {
   const practiceMetadata = metadata as PracticeMetadata | null
   return practiceMetadata?.practice_result ?? null
+}
+
+function getDurationSeconds(metadata: unknown): number {
+  const practiceMetadata = metadata as PracticeMetadata | null
+  const duration = practiceMetadata?.practice?.duration_seconds
+  return Number.isFinite(duration) && duration ? Number(duration) : PRACTICE_DURATION_SECONDS
 }
 
 function mergeMetadata(metadata: unknown, patch: Partial<PracticeMetadata>): Prisma.InputJsonValue {
@@ -331,6 +338,7 @@ export class PracticeService {
 
   static async autosaveAnswers(userId: string, sessionId: string, answers: PracticeAnswerInput[]) {
     const session = await this.getOwnedInProgressSession(userId, sessionId)
+    await this.ensureSessionCanAcceptAnswers(session)
     const questions = getPracticeQuestionsFromMetadata(session.metadata)
     this.validateAnswersForSession(questions, answers)
 
@@ -369,6 +377,8 @@ export class PracticeService {
     if (existing.status !== 'IN_PROGRESS') {
       throw new PracticeError('INVALID_SESSION_STATUS', 'Sesi latihan ini sudah tidak aktif.', 409)
     }
+
+    await this.ensureSessionCanAcceptAnswers(existing)
 
     const questions = getPracticeQuestionsFromMetadata(existing.metadata)
     if (questions.length === 0) {
@@ -498,6 +508,32 @@ export class PracticeService {
     }
 
     return session
+  }
+
+  private static async ensureSessionCanAcceptAnswers(session: {
+    id: string
+    started_at: Date
+    metadata: Prisma.JsonValue | null
+  }) {
+    const durationSeconds = getDurationSeconds(session.metadata)
+    const startedAt = session.started_at instanceof Date ? session.started_at : new Date(session.started_at)
+    const expiresAt = new Date(startedAt.getTime() + (durationSeconds + PRACTICE_SUBMIT_GRACE_SECONDS) * 1000)
+
+    if (Date.now() <= expiresAt.getTime()) return
+
+    await prisma.practiceSession.update({
+      where: { id: session.id },
+      data: {
+        status: 'EXPIRED',
+        completed_at: new Date(),
+      },
+    })
+
+    throw new PracticeError(
+      'PRACTICE_EXPIRED',
+      'Waktu latihan sudah habis. Mulai latihan baru ya.',
+      410
+    )
   }
 
   private static async selectQuestions(category: PracticeCategory, difficulty: PracticeDifficulty, count: number): Promise<PrivatePracticeQuestion[]> {

@@ -90,6 +90,7 @@ export function PracticeFlow() {
   const currentQuestion = questions[currentIndex]
   const answeredCount = Object.keys(answers).length
   const allAnswered = questions.length > 0 && answeredCount === questions.length
+  const timeExpired = step === 'practice' && remainingSeconds === 0
 
   React.useEffect(() => {
     if (step !== 'practice') return
@@ -190,6 +191,8 @@ export function PracticeFlow() {
   }
 
   function selectAnswer(questionId: string, option: string) {
+    if (timeExpired) return
+
     setAnswers((current) => ({ ...current, [questionId]: option }))
     setTimeSpent((current) => ({
       ...current,
@@ -244,9 +247,9 @@ export function PracticeFlow() {
               <h1 className="font-display text-2xl font-black text-headline">
                 {currentQuestion.text}
               </h1>
-              {message && (
+              {(message || timeExpired) && (
                 <p role="status" aria-live="polite" className="rounded-xl bg-xp-light px-3 py-2 text-xs font-bold text-headline">
-                  {message}
+                  {timeExpired ? 'Waktu habis. Kunci jawaban yang sudah Kamu pilih untuk melihat review.' : message}
                 </p>
               )}
             </Card>
@@ -261,12 +264,13 @@ export function PracticeFlow() {
                   <button
                     key={key}
                     type="button"
+                    disabled={timeExpired}
                     onClick={() => selectAnswer(currentQuestion.id, key)}
                     className={[
                       'flex min-h-[52px] w-full items-start gap-3 rounded-2xl border-2 px-4 py-3 text-left text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
                       selected
                         ? 'border-primary bg-primary-light text-primary-dark'
-                        : 'border-border bg-background text-headline hover:border-primary hover:bg-primary-light/50 dark:bg-surface',
+                        : 'border-border bg-background text-headline hover:border-primary hover:bg-primary-light/50 disabled:opacity-70 dark:bg-surface',
                     ].join(' ')}
                   >
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-current text-xs font-black">
@@ -286,7 +290,7 @@ export function PracticeFlow() {
               variant="secondary"
               className="shrink-0"
               onClick={() => goToQuestion(currentIndex - 1)}
-              disabled={currentIndex === 0 || isSubmitting}
+              disabled={currentIndex === 0 || isSubmitting || timeExpired}
               aria-label="Soal sebelumnya"
             >
               <ArrowLeft className="h-5 w-5" aria-hidden="true" />
@@ -303,7 +307,7 @@ export function PracticeFlow() {
             >
               <Flag className={['h-5 w-5', currentQuestion && flagged[currentQuestion.id] ? 'fill-xp text-xp' : ''].join(' ')} aria-hidden="true" />
             </Button>
-            {currentIndex < questions.length - 1 ? (
+            {currentIndex < questions.length - 1 && !timeExpired ? (
               <Button
                 type="button"
                 className="flex-1"
@@ -318,7 +322,7 @@ export function PracticeFlow() {
                 type="button"
                 className="flex-1"
                 onClick={() => void submitPractice()}
-                disabled={!allAnswered || isSubmitting}
+                disabled={(!allAnswered && !timeExpired) || answeredCount === 0 || isSubmitting}
                 isLoading={isSubmitting}
                 loadingLabel="Mengunci..."
               >

@@ -84,7 +84,7 @@ describe('U2 PracticeService', () => {
       user_id: 'user-1',
       mode: 'QUICK',
       status: 'IN_PROGRESS',
-      started_at: new Date('2026-01-01'),
+      started_at: new Date(),
       metadata: {
         practice: {
           questions: privateQuestions,
@@ -146,5 +146,35 @@ describe('U2 PracticeService', () => {
     expect(result.score).toBe(80)
     expect(prisma.userXpEvent.create).not.toHaveBeenCalled()
     expect(prisma.userProgression.upsert).not.toHaveBeenCalled()
+  })
+
+  it('expires stale practice sessions server-side before scoring', async () => {
+    vi.mocked(prisma.practiceSession.findFirst).mockResolvedValue({
+      id: 'practice-expired',
+      user_id: 'user-1',
+      mode: 'QUICK',
+      status: 'IN_PROGRESS',
+      started_at: new Date(Date.now() - 331_000),
+      metadata: {
+        practice: {
+          duration_seconds: 300,
+          questions: privateQuestions,
+        },
+      },
+    } as unknown as PracticeSession)
+
+    await expect(PracticeService.submitSession('user-1', 'practice-expired', [
+      { question_id: 'q-twk-1', selected_option: 'A', time_spent: 20 },
+    ])).rejects.toMatchObject({
+      code: 'PRACTICE_EXPIRED',
+    })
+
+    expect(prisma.practiceSession.update).toHaveBeenCalledWith({
+      where: { id: 'practice-expired' },
+      data: expect.objectContaining({
+        status: 'EXPIRED',
+      }),
+    })
+    expect(prisma.userXpEvent.create).not.toHaveBeenCalled()
   })
 })
