@@ -86,6 +86,7 @@ export function PracticeFlow() {
   const [message, setMessage] = React.useState('')
   const [result, setResult] = React.useState<PracticeResult | null>(null)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [mobileNavigatorOpen, setMobileNavigatorOpen] = React.useState(false)
 
   const currentQuestion = questions[currentIndex]
   const answeredCount = Object.keys(answers).length
@@ -203,6 +204,7 @@ export function PracticeFlow() {
   function goToQuestion(nextIndex: number) {
     void autosave()
     setCurrentIndex(Math.max(0, Math.min(nextIndex, questions.length - 1)))
+    setMobileNavigatorOpen(false)
   }
 
   if (step === 'loading') {
@@ -222,15 +224,24 @@ export function PracticeFlow() {
     return (
       <FocusExamLayout
         topBar={
-          <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3">
+          <div className="mx-auto max-w-3xl px-4 py-5">
             <div>
-              <p className="text-xs font-black uppercase text-primary">Quick Practice</p>
-              <p className="text-sm font-bold text-headline">
-                Soal {currentIndex + 1} dari {questions.length}
-              </p>
+              <p className="font-display text-3xl font-black leading-tight">Quick Practice CPNS</p>
+              <p className="mt-1 text-sm font-bold text-white/85">Peserta: Kamu</p>
             </div>
-            <div className="flex items-center gap-2 rounded-xl border border-border px-3 py-2 text-sm font-black text-headline">
-              <Clock className="h-4 w-4 text-xp" aria-hidden="true" />
+            <div className="mt-3 rounded-3xl bg-white/20 px-5 py-3 shadow-inner">
+              <div className="mb-2 text-right text-base font-black">
+                {answeredCount} / {questions.length}
+              </div>
+              <div className="h-2.5 rounded-full bg-white/35">
+                <div
+                  className="h-full rounded-full bg-white transition-[width] duration-300"
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
+            </div>
+            <div className="mt-1 flex min-h-[72px] items-center justify-center gap-3 rounded-full bg-white/20 font-display text-4xl font-black shadow-inner">
+              <Clock className="h-8 w-8" aria-hidden="true" />
               {formatTimer(remainingSeconds)}
             </div>
           </div>
@@ -304,6 +315,8 @@ export function PracticeFlow() {
             </div>
           </div>
         }
+        mobileNavigatorOpen={mobileNavigatorOpen}
+        onMobileNavigatorToggle={() => setMobileNavigatorOpen((current) => !current)}
         question={
           currentQuestion ? (
             <Card padding="lg" className="space-y-4">

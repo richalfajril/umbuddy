@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 
 /**
@@ -26,6 +28,10 @@ interface FocusExamLayoutProps {
   desktopTopBar?: React.ReactNode
   /** Navigator nomor soal khusus desktop */
   questionNavigator?: React.ReactNode
+  /** Status panel navigator nomor soal di mobile */
+  mobileNavigatorOpen?: boolean
+  /** Toggle panel navigator nomor soal di mobile */
+  onMobileNavigatorToggle?: () => void
   /** Konten soal utama */
   question: React.ReactNode
   /** Pilihan jawaban */
@@ -42,6 +48,8 @@ export function FocusExamLayout({
   topBar,
   desktopTopBar,
   questionNavigator,
+  mobileNavigatorOpen = false,
+  onMobileNavigatorToggle,
   question,
   answerOptions,
   actionFooter,
@@ -50,7 +58,7 @@ export function FocusExamLayout({
     <div className="flex min-h-screen flex-col bg-surface dark:bg-background">
       {/* ExamTopBar — mobile minimalis, desktop CAT-style */}
       <header className="sticky top-0 z-50 w-full">
-        <div className="border-b border-border bg-background lg:hidden">
+        <div className="bg-[linear-gradient(110deg,var(--color-primary-dark)_0%,var(--color-primary)_62%,var(--color-xp)_130%)] text-white lg:hidden">
           {topBar}
         </div>
         <div className="hidden bg-[linear-gradient(110deg,var(--color-primary-dark)_0%,var(--color-primary)_58%,var(--color-xp)_125%)] text-white shadow-sm lg:block">
@@ -58,8 +66,34 @@ export function FocusExamLayout({
         </div>
       </header>
 
+      {questionNavigator && onMobileNavigatorToggle && (
+        <div className="mx-auto flex w-full max-w-2xl justify-end px-4 py-4 lg:hidden">
+          <button
+            type="button"
+            onClick={onMobileNavigatorToggle}
+            aria-expanded={mobileNavigatorOpen}
+            className="flex min-h-[44px] items-center gap-2 rounded-lg border-2 border-primary bg-background px-4 text-base font-black text-primary shadow-sm transition hover:bg-primary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            <span className="grid gap-1" aria-hidden="true">
+              <span className="h-0.5 w-5 rounded-full bg-current" />
+              <span className="h-0.5 w-5 rounded-full bg-current" />
+              <span className="h-0.5 w-5 rounded-full bg-current" />
+            </span>
+            Navigasi Soal
+          </button>
+        </div>
+      )}
+
       {/* Konten soal + jawaban — scrollable di mobile */}
       <main className="flex-1 overflow-y-auto lg:p-6">
+        {questionNavigator && mobileNavigatorOpen && (
+          <div className="mx-auto w-full max-w-2xl px-4 pb-4 lg:hidden">
+            <div className="max-h-[58vh] overflow-y-auto rounded-2xl border border-border bg-background p-5 shadow-card">
+              {questionNavigator}
+            </div>
+          </div>
+        )}
+
         <div
           className={[
             'mx-auto w-full',
