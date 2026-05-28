@@ -538,16 +538,16 @@ export default async function DashboardPage() {
 
           <Card
             padding="none"
-            className={`relative min-h-[244px] overflow-hidden border-primary/40 bg-[linear-gradient(135deg,#9fd56d_0%,#74c332_48%,#4f9e35_100%)] p-5 text-white shadow-[0_7px_0_0_rgba(21,93,39,0.35)] dark:border-primary/35 dark:bg-[linear-gradient(135deg,#4f8f35_0%,#2f7d2d_52%,#155d27_100%)] ${dashboardCardGlow}`}
+            className={`relative min-h-[244px] overflow-hidden border-primary/40 bg-[linear-gradient(135deg,#b7ee72_0%,#74c332_52%,#5fb72b_100%)] p-5 text-white shadow-[0_7px_0_0_rgba(21,93,39,0.35)] dark:border-primary/35 dark:bg-[linear-gradient(135deg,#82c95a_0%,#4f9e35_52%,#155d27_100%)] ${dashboardCardGlow}`}
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_10%,rgba(255,255,255,0.34),transparent_28%),radial-gradient(circle_at_12%_92%,rgba(244,202,106,0.34),transparent_36%)]" />
             <div className="absolute -right-7 -top-7 h-32 w-32 rounded-full bg-white/18 blur-xl" aria-hidden="true" />
             <Image
-              src="/mascot/mascot_donation.png"
+              src="/mascot/mascot_support.png"
               alt=""
               width={148}
               height={148}
-              className="absolute -right-3 -top-4 h-28 w-28 object-contain drop-shadow-[0_10px_18px_rgba(21,93,39,0.28)] sm:h-32 sm:w-32 xl:h-28 xl:w-28"
+              className="absolute -right-3 -top-7 h-28 w-28 object-contain drop-shadow-[0_10px_18px_rgba(21,93,39,0.28)] sm:-top-8 sm:h-32 sm:w-32 xl:-top-7 xl:h-28 xl:w-28"
               aria-hidden="true"
             />
             <div className="relative z-10 pr-16 sm:pr-24 xl:pr-16">
