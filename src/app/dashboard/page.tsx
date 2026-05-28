@@ -606,25 +606,24 @@ export default async function DashboardPage() {
 
           <Card
             padding="lg"
-            className={`relative min-h-[220px] overflow-hidden border-primary/40 bg-[linear-gradient(135deg,#b7ee72_0%,#74c332_52%,#5fb72b_100%)] text-white shadow-[0_7px_0_0_rgba(21,93,39,0.35)] dark:border-primary/35 dark:bg-[linear-gradient(135deg,#82c95a_0%,#4f9e35_52%,#155d27_100%)] xl:col-span-5 ${dashboardCardGlow}`}
+            className={`relative min-h-[220px] overflow-hidden xl:col-span-5 ${dashboardCardGlow}`}
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(255,255,255,0.28),transparent_30%),radial-gradient(circle_at_92%_96%,rgba(244,202,106,0.28),transparent_36%)]" />
             <Swords
-              className="absolute -right-8 bottom-4 h-40 w-40 rotate-[-18deg] text-white/24"
+              className="absolute -right-8 bottom-4 h-40 w-40 rotate-[-18deg] text-border/60 dark:text-border/30"
               aria-hidden="true"
             />
             <div className="relative z-10 max-w-sm">
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-white/80">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
                 Competitive Mode
               </p>
-              <h2 className="mt-3 font-display text-5xl font-black uppercase leading-[0.9] text-white drop-shadow-sm">
+              <h2 className="mt-3 font-display text-5xl font-black uppercase italic leading-[0.9] text-headline">
                 Battle Arena
               </h2>
-              <p className="mt-4 text-sm font-bold leading-6 text-white/92">
+              <p className="mt-4 text-sm leading-6 text-body">
                 Tantang temanmu dalam simulasi CAT real-time. Pemenang
                 mendapatkan bonus XP saat mode battle aktif.
               </p>
-              <span className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-2xl border-2 border-[#c47a12] bg-[linear-gradient(180deg,#ffbd45_0%,#f59e0b_100%)] px-5 py-2.5 text-sm font-black text-[#1f1300] shadow-[0_5px_0_0_#b9650b] opacity-90">
+              <span className="btn-primary mt-5 inline-flex min-h-[44px] items-center justify-center px-5 py-2.5 text-sm opacity-70">
                 Tantang Dia!
               </span>
             </div>
@@ -632,27 +631,26 @@ export default async function DashboardPage() {
 
           <Card
             padding="lg"
-            className={`relative min-h-[220px] overflow-hidden border-primary/40 bg-[linear-gradient(135deg,#b7ee72_0%,#74c332_52%,#5fb72b_100%)] text-white shadow-[0_7px_0_0_rgba(21,93,39,0.35)] dark:border-primary/35 dark:bg-[linear-gradient(135deg,#82c95a_0%,#4f9e35_52%,#155d27_100%)] xl:col-span-4 ${dashboardCardGlow}`}
+            className={`relative min-h-[220px] overflow-hidden xl:col-span-4 ${dashboardCardGlow}`}
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,rgba(255,255,255,0.28),transparent_30%),radial-gradient(circle_at_92%_96%,rgba(244,202,106,0.28),transparent_36%)]" />
             <div
-              className="absolute bottom-1 right-4 font-display text-8xl font-black uppercase text-white/20"
+              className="absolute bottom-1 right-4 font-display text-8xl font-black uppercase text-border/35 dark:text-border/20"
               aria-hidden="true"
             >
               CAT
             </div>
             <div className="relative z-10 max-w-sm">
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-white/80">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-muted">
                 Main Simulation
               </p>
-              <h2 className="mt-3 font-display text-5xl font-black uppercase leading-[0.9] text-white drop-shadow-sm">
+              <h2 className="mt-3 font-display text-5xl font-black uppercase leading-[0.9] text-headline">
                 Simulasi CAT
               </h2>
-              <p className="mt-4 text-sm font-bold leading-6 text-white/92">
+              <p className="mt-4 text-sm leading-6 text-body">
                 Practice with 110 real exam questions. Siap dipakai setelah core
                 practice aktif.
               </p>
-              <span className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-2xl border-2 border-white/45 bg-white px-5 py-2.5 text-sm font-black text-primary-dark shadow-[0_5px_0_0_rgba(21,93,39,0.35)] opacity-90">
+              <span className="btn-primary mt-5 inline-flex min-h-[44px] items-center justify-center px-5 py-2.5 text-sm opacity-70">
                 Ayo Lanjut!
               </span>
             </div>
