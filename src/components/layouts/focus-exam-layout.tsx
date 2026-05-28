@@ -53,7 +53,7 @@ export function FocusExamLayout({
         <div className="border-b border-border bg-background lg:hidden">
           {topBar}
         </div>
-        <div className="hidden bg-gradient-to-r from-[#6684ef] via-[#7167d8] to-[#8654a7] text-white shadow-sm lg:block">
+        <div className="hidden bg-[linear-gradient(110deg,var(--color-primary-dark)_0%,var(--color-primary)_58%,var(--color-xp)_125%)] text-white shadow-sm lg:block">
           {desktopTopBar ?? topBar}
         </div>
       </header>
