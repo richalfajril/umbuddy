@@ -87,6 +87,7 @@ export function PracticeFlow() {
   const [result, setResult] = React.useState<PracticeResult | null>(null)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [mobileNavigatorOpen, setMobileNavigatorOpen] = React.useState(false)
+  const didAutoSubmitRef = React.useRef(false)
 
   const currentQuestion = questions[currentIndex]
   const answeredCount = Object.keys(answers).length
@@ -147,6 +148,14 @@ export function PracticeFlow() {
     }
   }, [buildPayloadAnswers, isSubmitting, questions.length, sessionId])
 
+  React.useEffect(() => {
+    if (step !== 'practice' || remainingSeconds > 0 || didAutoSubmitRef.current) return
+
+    didAutoSubmitRef.current = true
+    setMessage('Waktu habis. Umbuddy sedang mengunci jawaban Kamu...')
+    void submitPractice()
+  }, [remainingSeconds, step, submitPractice])
+
   async function startPractice(nextCategory = category) {
     setStep('loading')
     setMessage('')
@@ -181,6 +190,7 @@ export function PracticeFlow() {
       setAnswers({})
       setFlagged({})
       setTimeSpent({})
+      didAutoSubmitRef.current = false
       if (data.fallback_used) {
         setMessage('Bank soal published belum lengkap, jadi Umbuddy pakai soal latihan aman sementara.')
       }
