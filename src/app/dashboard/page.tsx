@@ -342,7 +342,7 @@ function MissionRow({
           {status}
         </p>
       </div>
-      <div className="ml-9 h-2 rounded-full bg-surface dark:bg-background">
+      <div className="ml-9 h-2 rounded-full bg-border/70 shadow-inner ring-1 ring-border/70 dark:bg-border/60 dark:ring-border/80">
         <div
           className="h-full rounded-full bg-primary"
           style={{ width: `${progress}%` }}
@@ -373,7 +373,7 @@ function AnalyticsBar({
         <p className="text-sm font-black text-headline">{label}</p>
         <p className="text-sm font-black text-headline">{percent}%</p>
       </div>
-      <div className="h-3 rounded-full bg-surface dark:bg-background">
+      <div className="h-3 rounded-full bg-border/70 shadow-inner ring-1 ring-border/70 dark:bg-border/60 dark:ring-border/80">
         <div
           className={["h-full rounded-full", toneClass].join(" ")}
           style={{ width: `${percent}%` }}
@@ -616,7 +616,7 @@ export default async function DashboardPage() {
               <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
                 Competitive Mode
               </p>
-              <h2 className="mt-3 font-display text-5xl font-black uppercase italic leading-[0.9] text-headline">
+              <h2 className="mt-3 font-display text-5xl font-black uppercase leading-[0.9] text-headline">
                 Battle Arena
               </h2>
               <p className="mt-4 text-sm leading-6 text-body">
