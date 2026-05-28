@@ -63,6 +63,12 @@ const categoryCards: Array<{
   },
 ]
 
+const categoryFullLabel: Record<PracticeCategory, string> = {
+  TWK: 'Tes Wawasan Kebangsaan (TWK)',
+  TIU: 'Tes Inteligensia Umum (TIU)',
+  TKP: 'Tes Karakteristik Pribadi (TKP)',
+}
+
 async function readApiError(response: Response) {
   const data = (await response.json().catch(() => null)) as { error?: { message?: string } } | null
   return data?.error?.message ?? 'Duh, latihan belum bisa diproses. Coba lagi ya.'
@@ -87,6 +93,7 @@ export function PracticeFlow() {
   const [result, setResult] = React.useState<PracticeResult | null>(null)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [mobileNavigatorOpen, setMobileNavigatorOpen] = React.useState(false)
+  const [examFontSize, setExamFontSize] = React.useState(16)
   const didAutoSubmitRef = React.useRef(false)
 
   const currentQuestion = questions[currentIndex]
@@ -190,6 +197,7 @@ export function PracticeFlow() {
       setAnswers({})
       setFlagged({})
       setTimeSpent({})
+      setExamFontSize(16)
       didAutoSubmitRef.current = false
       if (data.fallback_used) {
         setMessage('Bank soal published belum lengkap, jadi Umbuddy pakai soal latihan aman sementara.')
@@ -230,6 +238,27 @@ export function PracticeFlow() {
 
   if (step === 'practice') {
     const progressPercent = questions.length > 0 ? (answeredCount / questions.length) * 100 : 0
+    const fontSizeControl = (
+      <div className="flex min-h-[36px] items-center rounded-full border border-border bg-surface p-1 text-sm font-black text-headline dark:bg-background">
+        <button
+          type="button"
+          onClick={() => setExamFontSize((size) => Math.max(14, size - 1))}
+          className="flex h-7 w-7 items-center justify-center rounded-full transition hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:hover:bg-surface"
+          aria-label="Perkecil ukuran font soal"
+        >
+          −
+        </button>
+        <span className="min-w-8 text-center">{examFontSize}</span>
+        <button
+          type="button"
+          onClick={() => setExamFontSize((size) => Math.min(22, size + 1))}
+          className="flex h-7 w-7 items-center justify-center rounded-full transition hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:hover:bg-surface"
+          aria-label="Perbesar ukuran font soal"
+        >
+          +
+        </button>
+      </div>
+    )
 
     return (
       <FocusExamLayout
@@ -330,17 +359,20 @@ export function PracticeFlow() {
         question={
           currentQuestion ? (
             <Card padding="lg" className="space-y-4">
-              <div className="flex items-center justify-between gap-3">
-                <span className="rounded-full border border-primary/30 bg-primary-light px-3 py-1 text-xs font-black text-primary-dark">
-                  {currentQuestion.category}
-                </span>
-                <span className="text-xs font-bold text-muted">
-                  Terjawab {answeredCount}/{questions.length}
-                </span>
+              <div className="flex items-start justify-between gap-3">
+                <div className="space-y-2">
+                  <p className="text-sm font-black text-headline">
+                    Soal {currentIndex + 1} dari {questions.length}
+                  </p>
+                  <span className="inline-flex rounded-lg border border-primary/30 bg-primary-light px-3 py-1 text-xs font-black text-primary-dark">
+                    {categoryFullLabel[currentQuestion.category]}
+                  </span>
+                </div>
+                {fontSizeControl}
               </div>
-              <h1 className="font-display text-2xl font-black text-headline">
+              <p className="font-sans font-normal leading-7 text-headline" style={{ fontSize: examFontSize }}>
                 {currentQuestion.text}
-              </h1>
+              </p>
               {(message || timeExpired) && (
                 <p role="status" aria-live="polite" className="rounded-xl bg-xp-light px-3 py-2 text-xs font-bold text-headline">
                   {timeExpired ? 'Waktu habis. Kunci jawaban yang sudah Kamu pilih untuk melihat review.' : message}
@@ -361,11 +393,12 @@ export function PracticeFlow() {
                     disabled={timeExpired}
                     onClick={() => selectAnswer(currentQuestion.id, key)}
                     className={[
-                      'flex min-h-[52px] w-full items-start gap-3 rounded-2xl border-2 px-4 py-3 text-left text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                      'flex min-h-[52px] w-full items-start gap-3 rounded-2xl border-2 px-4 py-3 text-left font-normal leading-7 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
                       selected
                         ? 'border-primary bg-primary-light text-primary-dark'
                         : 'border-border bg-background text-headline hover:border-primary hover:bg-primary-light/50 disabled:opacity-70 dark:bg-surface',
                     ].join(' ')}
+                    style={{ fontSize: examFontSize }}
                   >
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-current text-xs font-black">
                       {key}
@@ -476,7 +509,7 @@ export function PracticeFlow() {
                     {item.correct ? 'Benar' : 'Perlu review'}
                   </span>
                 </div>
-                <h3 className="font-display text-lg font-black text-headline">{item.text}</h3>
+                <p className="text-base font-normal leading-7 text-headline">{item.text}</p>
                 <div className="grid gap-2">
                   {Object.entries(item.options).map(([key, value]) => {
                     const isSelected = item.selected_option === key
@@ -485,7 +518,7 @@ export function PracticeFlow() {
                       <div
                         key={key}
                         className={[
-                          'rounded-xl border px-3 py-2 text-sm font-bold',
+                          'rounded-xl border px-3 py-2 text-base font-normal leading-7',
                           isAnswer
                             ? 'border-primary bg-primary-light text-primary-dark'
                             : isSelected
@@ -499,7 +532,7 @@ export function PracticeFlow() {
                   })}
                 </div>
                 {item.explanation && (
-                  <p className="rounded-xl bg-surface px-3 py-2 text-sm leading-6 text-body dark:bg-background">
+                  <p className="rounded-xl bg-surface px-3 py-2 text-base font-normal leading-7 text-body dark:bg-background">
                     {item.explanation}
                   </p>
                 )}

@@ -84,16 +84,26 @@ export function FocusExamLayout({
         </div>
       )}
 
+      {questionNavigator && mobileNavigatorOpen && onMobileNavigatorToggle && (
+        <div className="fixed inset-0 z-[70] bg-black/35 p-4 pt-24 lg:hidden" role="dialog" aria-modal="true" aria-label="Navigasi soal">
+          <div className="mx-auto max-h-[78vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-border bg-background p-5 shadow-elevated dark:bg-surface">
+            <div className="mb-3 flex justify-end">
+              <button
+                type="button"
+                onClick={onMobileNavigatorToggle}
+                aria-label="Tutup navigasi soal"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface text-lg font-black text-headline transition hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:bg-background"
+              >
+                ×
+              </button>
+            </div>
+            {questionNavigator}
+          </div>
+        </div>
+      )}
+
       {/* Konten soal + jawaban — scrollable di mobile */}
       <main className="flex-1 overflow-y-auto lg:p-6">
-        {questionNavigator && mobileNavigatorOpen && (
-          <div className="mx-auto w-full max-w-2xl px-4 pb-4 lg:hidden">
-            <div className="max-h-[58vh] overflow-y-auto rounded-2xl border border-border bg-background p-5 shadow-card">
-              {questionNavigator}
-            </div>
-          </div>
-        )}
-
         <div
           className={[
             'mx-auto w-full',

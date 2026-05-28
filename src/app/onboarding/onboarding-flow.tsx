@@ -65,9 +65,9 @@ const initialProfile: ProfileForm = {
 }
 
 const categoryLabel = {
-  TWK: 'TWK',
-  TIU: 'TIU',
-  TKP: 'TKP',
+  TWK: 'Tes Wawasan Kebangsaan (TWK)',
+  TIU: 'Tes Inteligensia Umum (TIU)',
+  TKP: 'Tes Karakteristik Pribadi (TKP)',
 }
 
 const onboardingLogoHeader = (
@@ -120,6 +120,7 @@ export function OnboardingFlow() {
   const [result, setResult] = React.useState<DiagnosticResult | null>(null)
   const [recommendation, setRecommendation] = React.useState<Recommendation | null>(null)
   const [mobileNavigatorOpen, setMobileNavigatorOpen] = React.useState(false)
+  const [examFontSize, setExamFontSize] = React.useState(16)
   const didAutoSubmitRef = React.useRef(false)
 
   React.useEffect(() => {
@@ -245,6 +246,7 @@ export function OnboardingFlow() {
       setCurrentIndex(0)
       setAnswers({})
       setTimeSpent({})
+      setExamFontSize(16)
       didAutoSubmitRef.current = false
       if (data.fallback_used) {
         setMessage('Bank soal published belum lengkap, jadi Umbuddy pakai soal mini aman sementara.')
@@ -319,6 +321,27 @@ export function OnboardingFlow() {
   if (step === 'diagnostic') {
     const progressPercent = questions.length > 0 ? (answeredCount / questions.length) * 100 : 0
     const timerLabel = `${Math.floor(remainingSeconds / 60)}:${String(remainingSeconds % 60).padStart(2, '0')}`
+    const fontSizeControl = (
+      <div className="flex min-h-[36px] items-center rounded-full border border-border bg-surface p-1 text-sm font-black text-headline dark:bg-background">
+        <button
+          type="button"
+          onClick={() => setExamFontSize((size) => Math.max(14, size - 1))}
+          className="flex h-7 w-7 items-center justify-center rounded-full transition hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:hover:bg-surface"
+          aria-label="Perkecil ukuran font soal"
+        >
+          −
+        </button>
+        <span className="min-w-8 text-center">{examFontSize}</span>
+        <button
+          type="button"
+          onClick={() => setExamFontSize((size) => Math.min(22, size + 1))}
+          className="flex h-7 w-7 items-center justify-center rounded-full transition hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:hover:bg-surface"
+          aria-label="Perbesar ukuran font soal"
+        >
+          +
+        </button>
+      </div>
+    )
 
     return (
       <FocusExamLayout
@@ -415,17 +438,20 @@ export function OnboardingFlow() {
         question={
           currentQuestion ? (
             <Card padding="lg" className="space-y-4">
-              <div className="flex items-center justify-between gap-3">
-                <span className="rounded-full border border-primary/30 bg-primary-light px-3 py-1 text-xs font-black text-primary-dark">
-                  {categoryLabel[currentQuestion.category]}
-                </span>
-                <span className="text-xs font-bold text-muted">
-                  Terjawab {answeredCount}/{questions.length}
-                </span>
+              <div className="flex items-start justify-between gap-3">
+                <div className="space-y-2">
+                  <p className="text-sm font-black text-headline">
+                    Soal {currentIndex + 1} dari {questions.length}
+                  </p>
+                  <span className="inline-flex rounded-lg border border-primary/30 bg-primary-light px-3 py-1 text-xs font-black text-primary-dark">
+                    {categoryLabel[currentQuestion.category]}
+                  </span>
+                </div>
+                {fontSizeControl}
               </div>
-              <h2 className="font-display text-2xl font-black text-headline">
+              <p className="font-sans font-normal leading-7 text-headline" style={{ fontSize: examFontSize }}>
                 {currentQuestion.text}
-              </h2>
+              </p>
               {message && (
                 <p role="status" aria-live="polite" className="rounded-xl bg-xp-light px-3 py-2 text-xs font-bold text-headline">
                   {message}
@@ -445,11 +471,12 @@ export function OnboardingFlow() {
                     type="button"
                     onClick={() => handleSelectAnswer(currentQuestion.id, key)}
                     className={[
-                      'flex min-h-[52px] w-full items-start gap-3 rounded-2xl border-2 px-4 py-3 text-left text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                      'flex min-h-[52px] w-full items-start gap-3 rounded-2xl border-2 px-4 py-3 text-left font-normal leading-7 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
                       selected
                         ? 'border-primary bg-primary-light text-primary-dark'
                         : 'border-border bg-background text-headline hover:border-primary hover:bg-primary-light/50',
                     ].join(' ')}
+                    style={{ fontSize: examFontSize }}
                   >
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-current text-xs font-black">
                       {key}
