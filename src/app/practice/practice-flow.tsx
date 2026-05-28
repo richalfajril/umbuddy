@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Flag, Home, RotateCcw, Trophy } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Flag, Home, ListChecks, RotateCcw, Trophy } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
 import { FocusExamLayout } from '@/components/layouts/focus-exam-layout'
 
@@ -217,6 +217,8 @@ export function PracticeFlow() {
   }
 
   if (step === 'practice') {
+    const progressPercent = questions.length > 0 ? (answeredCount / questions.length) * 100 : 0
+
     return (
       <FocusExamLayout
         topBar={
@@ -230,6 +232,75 @@ export function PracticeFlow() {
             <div className="flex items-center gap-2 rounded-xl border border-border px-3 py-2 text-sm font-black text-headline">
               <Clock className="h-4 w-4 text-xp" aria-hidden="true" />
               {formatTimer(remainingSeconds)}
+            </div>
+          </div>
+        }
+        desktopTopBar={
+          <div className="mx-auto grid max-w-[1680px] grid-cols-[280px_minmax(0,1fr)_220px] items-center gap-6 px-6 py-4">
+            <div>
+              <p className="font-display text-2xl font-black leading-tight">Quick Practice CPNS</p>
+              <p className="mt-1 text-sm font-bold text-white/85">
+                Kategori {category} • Peserta: Kamu
+              </p>
+            </div>
+            <div className="rounded-2xl bg-white/20 px-5 py-3 shadow-inner">
+              <div className="mb-2 flex items-center justify-between gap-3 text-sm font-black">
+                <span className="text-white/80">Progress Jawaban</span>
+                <span>{answeredCount} / {questions.length}</span>
+              </div>
+              <div className="h-3 rounded-full bg-white/35">
+                <div
+                  className="h-full rounded-full bg-white transition-[width] duration-300"
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
+            </div>
+            <div className="flex min-h-[64px] items-center justify-center gap-3 rounded-full bg-white/20 px-6 font-display text-3xl font-black">
+              <Clock className="h-7 w-7" aria-hidden="true" />
+              {formatTimer(remainingSeconds)}
+            </div>
+          </div>
+        }
+        questionNavigator={
+          <div>
+            <p className="mb-4 flex items-center gap-2 text-lg font-black text-headline">
+              <ListChecks className="h-5 w-5" aria-hidden="true" />
+              Navigasi Soal
+            </p>
+            <div className="grid grid-cols-5 gap-2">
+              {questions.map((question, index) => {
+                const isCurrent = index === currentIndex
+                const isAnswered = answers[question.id] != null
+                const isFlagged = flagged[question.id] === true
+                return (
+                  <button
+                    key={question.id}
+                    type="button"
+                    onClick={() => goToQuestion(index)}
+                    disabled={isSubmitting}
+                    aria-label={`Buka soal ${index + 1}`}
+                    aria-current={isCurrent ? 'step' : undefined}
+                    className={[
+                      'relative flex min-h-[44px] items-center justify-center rounded-xl border-2 border-b-[5px] text-sm font-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                      isCurrent
+                        ? 'border-[#c99a05] bg-xp text-headline shadow-sm'
+                        : isAnswered
+                          ? 'border-primary-dark bg-primary text-white'
+                          : 'border-error-dark bg-error text-white hover:brightness-105',
+                    ].join(' ')}
+                  >
+                    {index + 1}
+                    {isFlagged && (
+                      <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full border-2 border-background bg-xp" />
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+            <div className="mt-5 grid gap-2 text-xs font-bold text-muted">
+              <span className="flex items-center gap-2"><span className="h-3 w-3 rounded bg-xp" /> Soal aktif</span>
+              <span className="flex items-center gap-2"><span className="h-3 w-3 rounded bg-primary" /> Sudah dijawab</span>
+              <span className="flex items-center gap-2"><span className="h-3 w-3 rounded bg-error" /> Belum dijawab</span>
             </div>
           </div>
         }

@@ -22,6 +22,10 @@ import * as React from 'react'
 interface FocusExamLayoutProps {
   /** ExamTopBar minimalis: progress bar, timer, nomor soal, tombol keluar */
   topBar: React.ReactNode
+  /** Top bar khusus desktop untuk layout CAT-style */
+  desktopTopBar?: React.ReactNode
+  /** Navigator nomor soal khusus desktop */
+  questionNavigator?: React.ReactNode
   /** Konten soal utama */
   question: React.ReactNode
   /** Pilihan jawaban */
@@ -36,34 +40,64 @@ interface FocusExamLayoutProps {
  */
 export function FocusExamLayout({
   topBar,
+  desktopTopBar,
+  questionNavigator,
   question,
   answerOptions,
   actionFooter,
 }: FocusExamLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      {/* ExamTopBar — sticky, minimalis */}
-      <header className="sticky top-0 z-50 w-full bg-background border-b border-border">
-        {topBar}
+    <div className="flex min-h-screen flex-col bg-surface dark:bg-background">
+      {/* ExamTopBar — mobile minimalis, desktop CAT-style */}
+      <header className="sticky top-0 z-50 w-full">
+        <div className="border-b border-border bg-background lg:hidden">
+          {topBar}
+        </div>
+        <div className="hidden bg-gradient-to-r from-[#6684ef] via-[#7167d8] to-[#8654a7] text-white shadow-sm lg:block">
+          {desktopTopBar ?? topBar}
+        </div>
       </header>
 
       {/* Konten soal + jawaban — scrollable di mobile */}
-      <main className="flex-1 flex flex-col overflow-y-auto">
-        {/* Area soal */}
-        <div className="w-full max-w-2xl mx-auto px-4 pt-6 pb-2">
-          {question}
-        </div>
+      <main className="flex-1 overflow-y-auto lg:p-6">
+        <div
+          className={[
+            'mx-auto w-full',
+            questionNavigator
+              ? 'grid max-w-[1680px] gap-6 lg:grid-cols-[280px_minmax(0,1fr)]'
+              : 'max-w-5xl',
+          ].join(' ')}
+        >
+          {questionNavigator && (
+            <aside className="hidden max-h-[calc(100vh-150px)] overflow-y-auto rounded-2xl border border-border bg-background p-5 shadow-card dark:bg-surface lg:block">
+              {questionNavigator}
+            </aside>
+          )}
 
-        {/* Pilihan jawaban */}
-        <div className="w-full max-w-2xl mx-auto px-4 pb-4 space-y-2">
-          {answerOptions}
+          <section className="min-w-0">
+            {/* Area soal */}
+            <div className="mx-auto w-full max-w-2xl px-4 pb-2 pt-6 lg:max-w-none lg:px-0 lg:pt-0">
+              {question}
+            </div>
+
+            {/* Pilihan jawaban */}
+            <div className="mx-auto w-full max-w-2xl space-y-2 px-4 pb-4 lg:max-w-none lg:space-y-4 lg:px-0 lg:pb-0 lg:pt-4">
+              {answerOptions}
+            </div>
+
+            {actionFooter && (
+              <div className="mt-6 hidden border-t border-border pt-5 lg:block">
+                {actionFooter}
+              </div>
+            )}
+          </section>
         </div>
       </main>
 
-      {/* Footer aksi — sticky di bawah */}
+      {/* Footer aksi — sticky di bawah hanya mobile */}
       {actionFooter && (
-        <footer className="sticky bottom-0 z-10 w-full bg-background border-t border-border px-4 py-3 safe-area-bottom">
-          <div className="max-w-2xl mx-auto">
+        <footer className="safe-area-bottom sticky bottom-0 z-10 w-full border-t border-border bg-background px-4 py-3 lg:hidden">
+          <div className="mx-auto max-w-2xl">
             {actionFooter}
           </div>
         </footer>
