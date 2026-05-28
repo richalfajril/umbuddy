@@ -722,7 +722,7 @@ export default async function DashboardPage() {
 
           <Card
             padding="none"
-            className={`relative min-h-[244px] overflow-visible border-primary/40 bg-[linear-gradient(135deg,#b7ee72_0%,#74c332_52%,#5fb72b_100%)] p-5 text-white shadow-[0_7px_0_0_rgba(21,93,39,0.35)] dark:border-primary/35 dark:bg-[linear-gradient(135deg,#82c95a_0%,#4f9e35_52%,#155d27_100%)] ${dashboardCardGlow}`}
+            className={`relative min-h-[214px] overflow-visible border-primary/40 bg-[linear-gradient(135deg,#b7ee72_0%,#74c332_52%,#5fb72b_100%)] p-5 text-white shadow-[0_7px_0_0_rgba(21,93,39,0.35)] dark:border-primary/35 dark:bg-[linear-gradient(135deg,#82c95a_0%,#4f9e35_52%,#155d27_100%)] ${dashboardCardGlow}`}
           >
             <div className="absolute inset-0 overflow-hidden rounded-[inherit]" aria-hidden="true">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_10%,rgba(255,255,255,0.34),transparent_28%),radial-gradient(circle_at_12%_92%,rgba(244,202,106,0.34),transparent_36%)]" />
@@ -737,12 +737,9 @@ export default async function DashboardPage() {
               aria-hidden="true"
             />
               <div className="relative z-10 pr-16 sm:pr-24 xl:pr-16">
-                <h2 className="font-display text-4xl font-black leading-none text-white drop-shadow-sm xl:text-3xl">
-                  Donasi
-                </h2>
-                <p className="mt-1 font-display text-2xl font-black leading-tight text-white drop-shadow-sm xl:text-xl">
+                <h2 className="font-display text-3xl font-black leading-tight text-white drop-shadow-sm xl:text-2xl">
                   Dukung Umbuddy!
-                </p>
+                </h2>
                 <p className="mt-3 max-w-[270px] text-sm font-extrabold leading-5 text-white/95 drop-shadow-sm xl:max-w-[220px] xl:text-xs">
                   Satu dukungan hangat sangat berarti agar Umbuddy terus online
                   melayani puluhan ribu Cambies.
