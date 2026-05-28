@@ -3,6 +3,7 @@ import Link from 'next/link'
 import {
   Check,
   ChevronRight,
+  Heart,
   Home,
   PencilLine,
   Swords,
@@ -535,28 +536,37 @@ export default async function DashboardPage() {
             </div>
           </Card>
 
-          <Card padding="lg" className={`relative overflow-hidden border-primary bg-gradient-to-br from-primary via-[#64b82c] to-primary-dark text-white ${dashboardCardGlow}`}>
+          <Card
+            padding="none"
+            className={`relative min-h-[244px] overflow-hidden border-primary/40 bg-[linear-gradient(135deg,#9fd56d_0%,#74c332_48%,#4f9e35_100%)] p-5 text-white shadow-[0_7px_0_0_rgba(21,93,39,0.35)] dark:border-primary/35 dark:bg-[linear-gradient(135deg,#4f8f35_0%,#2f7d2d_52%,#155d27_100%)] ${dashboardCardGlow}`}
+          >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_10%,rgba(255,255,255,0.34),transparent_28%),radial-gradient(circle_at_12%_92%,rgba(244,202,106,0.34),transparent_36%)]" />
+            <div className="absolute -right-7 -top-7 h-32 w-32 rounded-full bg-white/18 blur-xl" aria-hidden="true" />
             <Image
               src="/mascot/mascot_donation.png"
               alt=""
-              width={120}
-              height={120}
-              className="absolute -right-3 -top-3 h-24 w-24 object-contain opacity-90"
+              width={148}
+              height={148}
+              className="absolute -right-3 -top-4 h-28 w-28 object-contain drop-shadow-[0_10px_18px_rgba(21,93,39,0.28)] sm:h-32 sm:w-32 xl:h-28 xl:w-28"
               aria-hidden="true"
             />
-            <div className="relative z-10 max-w-[240px]">
-              <h2 className="font-display text-3xl font-black leading-none">
+            <div className="relative z-10 pr-16 sm:pr-24 xl:pr-16">
+              <h2 className="font-display text-4xl font-black leading-none text-white drop-shadow-sm xl:text-3xl">
                 Donasi
               </h2>
-              <p className="mt-3 text-sm font-bold leading-6 text-white/90">
-                Dukung pengembang lewat Saweria agar Umbuddy terus online melayani puluhan ribu Cambies!
+              <p className="mt-1 font-display text-2xl font-black leading-tight text-white drop-shadow-sm xl:text-xl">
+                Dukung Umbuddy!
+              </p>
+              <p className="mt-3 max-w-[270px] text-sm font-extrabold leading-5 text-white/95 drop-shadow-sm xl:max-w-[220px] xl:text-xs">
+                Satu dukungan hangat sangat berarti agar Umbuddy terus online melayani puluhan ribu Cambies.
               </p>
               <Link
                 href="https://saweria.co"
                 target="_blank"
                 rel="noreferrer"
-                className="mt-5 inline-flex min-h-[44px] items-center justify-center rounded-2xl bg-xp px-4 text-sm font-black text-headline shadow-[0_4px_0_0_#b38b08]"
+                className="mt-5 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl border-2 border-[#c47a12] bg-[linear-gradient(180deg,#ffbd45_0%,#f59e0b_100%)] px-4 text-sm font-black text-[#1f1300] shadow-[0_6px_0_0_#b9650b] transition-transform hover:-translate-y-0.5 active:translate-y-1 active:shadow-[0_2px_0_0_#b9650b]"
               >
+                <Heart className="h-5 w-5" aria-hidden="true" />
                 Dukung via Saweria
               </Link>
             </div>
