@@ -414,30 +414,12 @@ export class OnboardingService {
         id: sessionId,
         user_id: userId,
         mode: DIAGNOSTIC_MODE,
-        status: 'IN_PROGRESS',
+        status: { in: ['IN_PROGRESS', 'EXPIRED'] },
       },
     })
 
     if (!session) {
       throw new OnboardingError('NOT_FOUND', 'Sesi diagnostic tidak ditemukan.', 404)
-    }
-
-    const startedAt = session.started_at instanceof Date ? session.started_at : new Date()
-    const expiresAt = new Date(startedAt.getTime() + DIAGNOSTIC_DURATION_SECONDS * 1000)
-    if (Date.now() > expiresAt.getTime()) {
-      await prisma.practiceSession.update({
-        where: { id: sessionId },
-        data: {
-          status: 'EXPIRED',
-          completed_at: new Date(),
-        },
-      })
-
-      throw new OnboardingError(
-        'DIAGNOSTIC_EXPIRED',
-        'Waktu tes mini sudah habis. Mulai ulang diagnostic dari onboarding ya.',
-        410
-      )
     }
 
     const questions = getDiagnosticQuestionsFromMetadata(session.metadata)

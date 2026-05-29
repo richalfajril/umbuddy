@@ -374,11 +374,9 @@ export class PracticeService {
       return existingResult
     }
 
-    if (existing.status !== 'IN_PROGRESS') {
+    if (existing.status !== 'IN_PROGRESS' && existing.status !== 'EXPIRED') {
       throw new PracticeError('INVALID_SESSION_STATUS', 'Sesi latihan ini sudah tidak aktif.', 409)
     }
-
-    await this.ensureSessionCanAcceptAnswers(existing)
 
     const questions = getPracticeQuestionsFromMetadata(existing.metadata)
     if (questions.length === 0) {

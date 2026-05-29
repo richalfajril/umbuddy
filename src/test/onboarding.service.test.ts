@@ -220,7 +220,7 @@ describe('U18 OnboardingService', () => {
     expect(prisma.userProgression.upsert).not.toHaveBeenCalled()
   })
 
-  it('expires diagnostic sessions that exceed the server-side time limit', async () => {
+  it('submits diagnostic sessions when the timer has ended', async () => {
     vi.mocked(prisma.diagnosticAttempt.findFirst).mockResolvedValue(null)
     vi.mocked(prisma.onboardingState.findUnique).mockResolvedValue(null)
     vi.mocked(prisma.practiceSession.findFirst).mockResolvedValue({
@@ -236,17 +236,17 @@ describe('U18 OnboardingService', () => {
       },
     } as unknown as PracticeSession)
 
-    await expect(OnboardingService.submitDiagnostic('user-1', 'session-expired', [
+    const result = await OnboardingService.submitDiagnostic('user-1', 'session-expired', [
       { question_id: 'q-twk-1', selected_option: 'A', time_spent: 10 },
-    ])).rejects.toMatchObject({
-      code: 'DIAGNOSTIC_EXPIRED',
-    })
+    ])
 
     expect(prisma.practiceSession.update).toHaveBeenCalledWith({
       where: { id: 'session-expired' },
       data: expect.objectContaining({
-        status: 'EXPIRED',
+        status: 'SUBMITTED',
       }),
     })
+    expect(result.result.total_score).toBeGreaterThan(0)
+    expect(result.reward.already_claimed).toBe(false)
   })
 })

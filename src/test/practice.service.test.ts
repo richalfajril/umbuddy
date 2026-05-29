@@ -148,7 +148,7 @@ describe('U2 PracticeService', () => {
     expect(prisma.userProgression.upsert).not.toHaveBeenCalled()
   })
 
-  it('expires stale practice sessions server-side before scoring', async () => {
+  it('submits stale practice sessions when timer has ended', async () => {
     vi.mocked(prisma.practiceSession.findFirst).mockResolvedValue({
       id: 'practice-expired',
       user_id: 'user-1',
@@ -163,18 +163,17 @@ describe('U2 PracticeService', () => {
       },
     } as unknown as PracticeSession)
 
-    await expect(PracticeService.submitSession('user-1', 'practice-expired', [
+    const result = await PracticeService.submitSession('user-1', 'practice-expired', [
       { question_id: 'q-twk-1', selected_option: 'A', time_spent: 20 },
-    ])).rejects.toMatchObject({
-      code: 'PRACTICE_EXPIRED',
-    })
+    ])
 
     expect(prisma.practiceSession.update).toHaveBeenCalledWith({
       where: { id: 'practice-expired' },
       data: expect.objectContaining({
-        status: 'EXPIRED',
+        status: 'SUBMITTED',
       }),
     })
-    expect(prisma.userXpEvent.create).not.toHaveBeenCalled()
+    expect(result.score).toBe(50)
+    expect(prisma.userXpEvent.create).toHaveBeenCalled()
   })
 })

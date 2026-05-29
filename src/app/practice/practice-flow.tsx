@@ -375,7 +375,7 @@ export function PracticeFlow() {
               </p>
               {(message || timeExpired) && (
                 <p role="status" aria-live="polite" className="rounded-xl bg-xp-light px-3 py-2 text-xs font-bold text-headline">
-                  {timeExpired ? 'Waktu habis. Kunci jawaban yang sudah Kamu pilih untuk melihat review.' : message}
+                  {message || 'Waktu habis. Umbuddy sedang mengunci jawaban Kamu...'}
                 </p>
               )}
             </Card>
@@ -449,7 +449,7 @@ export function PracticeFlow() {
                 type="button"
                 className="flex-1"
                 onClick={() => void submitPractice()}
-                disabled={(!allAnswered && !timeExpired) || answeredCount === 0 || isSubmitting}
+                disabled={(!allAnswered && !timeExpired) || isSubmitting}
                 isLoading={isSubmitting}
                 loadingLabel="Mengunci..."
               >

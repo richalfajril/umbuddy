@@ -298,6 +298,7 @@ export function OnboardingFlow() {
     if (step !== 'diagnostic' || remainingSeconds > 0 || didAutoSubmitRef.current) return
 
     didAutoSubmitRef.current = true
+    setMessage('Waktu habis. Umbuddy sedang mengunci jawaban Kamu...')
     void submitDiagnostic()
   }, [remainingSeconds, step, submitDiagnostic])
 
