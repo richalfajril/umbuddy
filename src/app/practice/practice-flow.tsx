@@ -92,6 +92,7 @@ export function PracticeFlow() {
   const [message, setMessage] = React.useState('')
   const [result, setResult] = React.useState<PracticeResult | null>(null)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [isAutoSubmitting, setIsAutoSubmitting] = React.useState(false)
   const [mobileNavigatorOpen, setMobileNavigatorOpen] = React.useState(false)
   const [examFontSize, setExamFontSize] = React.useState(16)
   const didAutoSubmitRef = React.useRef(false)
@@ -130,10 +131,12 @@ export function PracticeFlow() {
     }).catch(() => null)
   }, [answers, buildPayloadAnswers, sessionId])
 
-  const submitPractice = React.useCallback(async () => {
+  const submitPractice = React.useCallback(async (options?: { auto?: boolean }) => {
     if (!sessionId || questions.length === 0 || isSubmitting) return
 
+    const isAuto = options?.auto === true
     setIsSubmitting(true)
+    if (isAuto) setIsAutoSubmitting(true)
     setMessage('')
 
     try {
@@ -152,6 +155,7 @@ export function PracticeFlow() {
       setMessage(error instanceof Error ? error.message : 'Jawaban belum bisa dikunci.')
     } finally {
       setIsSubmitting(false)
+      if (isAuto) setIsAutoSubmitting(false)
     }
   }, [buildPayloadAnswers, isSubmitting, questions.length, sessionId])
 
@@ -160,7 +164,7 @@ export function PracticeFlow() {
 
     didAutoSubmitRef.current = true
     setMessage('Waktu habis. Umbuddy sedang mengunci jawaban Kamu...')
-    void submitPractice()
+    void submitPractice({ auto: true })
   }, [remainingSeconds, step, submitPractice])
 
   async function startPractice(nextCategory = category) {
@@ -198,6 +202,7 @@ export function PracticeFlow() {
       setFlagged({})
       setTimeSpent({})
       setExamFontSize(16)
+      setIsAutoSubmitting(false)
       didAutoSubmitRef.current = false
       if (data.fallback_used) {
         setMessage('Bank soal published belum lengkap, jadi Umbuddy pakai soal latihan aman sementara.')
@@ -356,6 +361,19 @@ export function PracticeFlow() {
         }
         mobileNavigatorOpen={mobileNavigatorOpen}
         onMobileNavigatorToggle={() => setMobileNavigatorOpen((current) => !current)}
+        statusOverlay={
+          isAutoSubmitting ? (
+            <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/45 px-4" role="alertdialog" aria-modal="true" aria-label="Waktu habis">
+              <div className="w-full max-w-sm rounded-3xl border border-border bg-background p-6 text-center shadow-elevated dark:bg-surface">
+                <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+                <p className="mt-5 font-display text-2xl font-black text-headline">Waktu Habis</p>
+                <p className="mt-2 text-sm font-bold leading-6 text-body">
+                  Jawaban Kamu sedang dikunci dan nilainya sedang dihitung.
+                </p>
+              </div>
+            </div>
+          ) : null
+        }
         question={
           currentQuestion ? (
             <Card padding="lg" className="space-y-4">

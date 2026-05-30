@@ -38,6 +38,8 @@ interface FocusExamLayoutProps {
   answerOptions: React.ReactNode
   /** Footer aksi: tombol Next/Submit/Skip */
   actionFooter?: React.ReactNode
+  /** Overlay status blocking, misalnya saat timer habis dan jawaban diproses */
+  statusOverlay?: React.ReactNode
 }
 
 /**
@@ -53,6 +55,7 @@ export function FocusExamLayout({
   question,
   answerOptions,
   actionFooter,
+  statusOverlay,
 }: FocusExamLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col bg-surface dark:bg-background">
@@ -146,6 +149,8 @@ export function FocusExamLayout({
           </div>
         </footer>
       )}
+
+      {statusOverlay}
     </div>
   )
 }
