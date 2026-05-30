@@ -7,7 +7,7 @@ import { Button, Card } from '@/components/ui'
 import { FocusExamLayout } from '@/components/layouts/focus-exam-layout'
 
 type PracticeCategory = 'TWK' | 'TIU' | 'TKP'
-type PracticeStep = 'setup' | 'loading' | 'practice' | 'result'
+type PracticeStep = 'setup' | 'loading' | 'practice' | 'result' | 'review'
 
 type PublicPracticeQuestion = {
   id: string
@@ -98,6 +98,7 @@ export function PracticeFlow() {
   const didAutoSubmitRef = React.useRef(false)
 
   const currentQuestion = questions[currentIndex]
+  const currentReviewItem = result?.review[currentIndex]
   const answeredCount = Object.keys(answers).length
   const allAnswered = questions.length > 0 && answeredCount === questions.length
   const timeExpired = step === 'practice' && remainingSeconds === 0
@@ -150,6 +151,7 @@ export function PracticeFlow() {
 
       const data = (await response.json()) as PracticeResult
       setResult(data)
+      setCurrentIndex(0)
       setStep('result')
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Jawaban belum bisa dikunci.')
@@ -516,49 +518,18 @@ export function PracticeFlow() {
             </Card>
           )}
 
-          <div className="grid gap-3">
-            {result.review.map((item, index) => (
-              <Card key={item.question_id} padding="md" className="space-y-3">
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-xs font-black uppercase text-primary">
-                    {item.category} #{index + 1}
-                  </span>
-                  <span className={['text-xs font-black', item.correct ? 'text-primary' : 'text-error'].join(' ')}>
-                    {item.correct ? 'Benar' : 'Perlu review'}
-                  </span>
-                </div>
-                <p className="text-base font-normal leading-7 text-headline">{item.text}</p>
-                <div className="grid gap-2">
-                  {Object.entries(item.options).map(([key, value]) => {
-                    const isSelected = item.selected_option === key
-                    const isAnswer = item.answer_key === key
-                    return (
-                      <div
-                        key={key}
-                        className={[
-                          'rounded-xl border px-3 py-2 text-base font-normal leading-7',
-                          isAnswer
-                            ? 'border-primary bg-primary-light text-primary-dark'
-                            : isSelected
-                              ? 'border-error bg-error/10 text-headline'
-                              : 'border-border text-body',
-                        ].join(' ')}
-                      >
-                        {key}. {value}
-                      </div>
-                    )
-                  })}
-                </div>
-                {item.explanation && (
-                  <p className="rounded-xl bg-surface px-3 py-2 text-base font-normal leading-7 text-body dark:bg-background">
-                    {item.explanation}
-                  </p>
-                )}
-              </Card>
-            ))}
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => {
+                setCurrentIndex(0)
+                setMobileNavigatorOpen(false)
+                setStep('review')
+              }}
+            >
+              Lihat Pembahasan
+            </Button>
             <Button type="button" onClick={() => void startPractice(category)} leftIcon={<RotateCcw className="h-5 w-5" aria-hidden="true" />}>
               Latihan Lagi
             </Button>
@@ -569,6 +540,191 @@ export function PracticeFlow() {
           </div>
         </main>
       </div>
+    )
+  }
+
+  if (step === 'review' && result && currentReviewItem) {
+    const reviewProgressPercent = result.review.length > 0 ? ((currentIndex + 1) / result.review.length) * 100 : 0
+    const goToReviewQuestion = (nextIndex: number) => {
+      setCurrentIndex(Math.max(0, Math.min(nextIndex, result.review.length - 1)))
+      setMobileNavigatorOpen(false)
+    }
+
+    return (
+      <FocusExamLayout
+        topBar={
+          <div className="mx-auto max-w-3xl px-4 py-5">
+            <div>
+              <p className="font-display text-3xl font-black leading-tight">Pembahasan Practice</p>
+              <p className="mt-1 text-sm font-bold text-white/85">Review jawaban Kamu</p>
+            </div>
+            <div className="mt-3 rounded-3xl bg-white/20 px-5 py-3 shadow-inner">
+              <div className="mb-2 text-right text-base font-black">
+                {currentIndex + 1} / {result.review.length}
+              </div>
+              <div className="h-2.5 rounded-full bg-white/35">
+                <div
+                  className="h-full rounded-full bg-white transition-[width] duration-300"
+                  style={{ width: `${reviewProgressPercent}%` }}
+                />
+              </div>
+            </div>
+            <div className="mt-1 flex min-h-[72px] items-center justify-center rounded-full bg-white/20 font-display text-3xl font-black shadow-inner">
+              Review Mode
+            </div>
+          </div>
+        }
+        desktopTopBar={
+          <div className="mx-auto grid max-w-[1680px] grid-cols-[280px_minmax(0,1fr)_220px] items-center gap-6 px-6 py-4">
+            <div>
+              <p className="font-display text-2xl font-black leading-tight">Pembahasan Practice</p>
+              <p className="mt-1 text-sm font-bold text-white/85">Review jawaban Kamu</p>
+            </div>
+            <div className="rounded-2xl bg-white/20 px-5 py-3 shadow-inner">
+              <div className="mb-2 flex items-center justify-between gap-3 text-sm font-black">
+                <span className="text-white/80">Progress Pembahasan</span>
+                <span>{currentIndex + 1} / {result.review.length}</span>
+              </div>
+              <div className="h-3 rounded-full bg-white/35">
+                <div
+                  className="h-full rounded-full bg-white transition-[width] duration-300"
+                  style={{ width: `${reviewProgressPercent}%` }}
+                />
+              </div>
+            </div>
+            <div className="flex min-h-[64px] items-center justify-center rounded-full bg-white/20 px-6 font-display text-2xl font-black">
+              Review Mode
+            </div>
+          </div>
+        }
+        questionNavigator={
+          <div>
+            <p className="mb-4 flex items-center gap-2 text-lg font-black text-headline">
+              <ListChecks className="h-5 w-5" aria-hidden="true" />
+              Navigasi Soal
+            </p>
+            <div className="grid grid-cols-5 gap-2">
+              {result.review.map((item, index) => {
+                const isCurrent = index === currentIndex
+                const isCorrect = item.correct === true
+                return (
+                  <button
+                    key={item.question_id}
+                    type="button"
+                    onClick={() => goToReviewQuestion(index)}
+                    aria-label={`Buka pembahasan soal ${index + 1}`}
+                    aria-current={isCurrent ? 'step' : undefined}
+                    className={[
+                      'flex min-h-[44px] items-center justify-center rounded-xl border-2 border-b-[5px] text-sm font-black text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                      isCorrect ? 'border-primary-dark bg-primary' : 'border-error-dark bg-error',
+                      isCurrent ? 'ring-2 ring-xp ring-offset-2 ring-offset-background' : '',
+                    ].join(' ')}
+                  >
+                    {index + 1}
+                  </button>
+                )
+              })}
+            </div>
+            <div className="mt-5 grid gap-2 text-xs font-bold text-muted">
+              <span className="flex items-center gap-2"><span className="h-3 w-3 rounded bg-primary" /> Benar</span>
+              <span className="flex items-center gap-2"><span className="h-3 w-3 rounded bg-error" /> Salah / kosong</span>
+            </div>
+          </div>
+        }
+        mobileNavigatorOpen={mobileNavigatorOpen}
+        onMobileNavigatorToggle={() => setMobileNavigatorOpen((current) => !current)}
+        question={
+          <Card padding="lg" className="space-y-4">
+            <div className="space-y-2">
+              <p className="text-sm font-black text-headline">
+                Soal {currentIndex + 1} dari {result.review.length}
+              </p>
+              <span className="inline-flex rounded-lg border border-primary/30 bg-primary-light px-3 py-1 text-xs font-black text-primary-dark">
+                {categoryFullLabel[currentReviewItem.category]}
+              </span>
+            </div>
+            <p className="font-sans text-base font-normal leading-7 text-headline">
+              {currentReviewItem.text}
+            </p>
+          </Card>
+        }
+        answerOptions={
+          <div className="space-y-3">
+            {Object.entries(currentReviewItem.options).map(([key, value]) => {
+              const isSelected = currentReviewItem.selected_option === key
+              const isAnswer = currentReviewItem.answer_key === key
+              const label = isSelected && isAnswer
+                ? 'Kunci & Jawaban Kamu'
+                : isAnswer
+                  ? 'Kunci Jawaban'
+                  : isSelected
+                    ? 'Jawaban Kamu'
+                    : null
+
+              return (
+                <div
+                  key={key}
+                  className={[
+                    'flex min-h-[52px] w-full items-start gap-3 rounded-2xl border-2 px-4 py-3 text-left text-base font-normal leading-7',
+                    isAnswer
+                      ? 'border-primary bg-primary-light text-primary-dark'
+                      : isSelected
+                        ? 'border-error bg-error/10 text-headline'
+                        : 'border-border bg-background text-headline dark:bg-surface',
+                  ].join(' ')}
+                >
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-current text-xs font-black">
+                    {key}
+                  </span>
+                  <span className="grid gap-1">
+                    <span>{value}</span>
+                    {label && (
+                      <span className={['text-xs font-black', isAnswer ? 'text-primary-dark' : 'text-error'].join(' ')}>
+                        {label}
+                      </span>
+                    )}
+                  </span>
+                </div>
+              )
+            })}
+
+            <Card padding="md" className="space-y-2">
+              <p className="text-xs font-black uppercase text-primary">Pembahasan</p>
+              <p className="text-base font-normal leading-7 text-body">
+                {currentReviewItem.explanation ?? 'Pembahasan untuk soal ini belum tersedia.'}
+              </p>
+            </Card>
+          </div>
+        }
+        actionFooter={
+          <div className="flex items-center gap-3">
+            <Button
+              type="button"
+              variant="secondary"
+              className="shrink-0"
+              onClick={() => goToReviewQuestion(currentIndex - 1)}
+              disabled={currentIndex === 0}
+              aria-label="Pembahasan sebelumnya"
+            >
+              <ArrowLeft className="h-5 w-5" aria-hidden="true" />
+            </Button>
+            {currentIndex < result.review.length - 1 ? (
+              <Button
+                type="button"
+                className="flex-1"
+                onClick={() => goToReviewQuestion(currentIndex + 1)}
+                rightIcon={<ArrowRight className="h-5 w-5" aria-hidden="true" />}
+              >
+                Lanjut Pembahasan
+              </Button>
+            ) : (
+              <Button type="button" className="flex-1" onClick={() => setStep('result')}>
+                Balik ke Nilai
+              </Button>
+            )}
+          </div>
+        }
+      />
     )
   }
 
