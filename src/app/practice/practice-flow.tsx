@@ -4,7 +4,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Flag, Home, ListChecks, RotateCcw, Trophy } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
-import { FocusExamLayout } from '@/components/layouts/focus-exam-layout'
+import { FocusExamLayout, FocusExamSubmitModal } from '@/components/layouts/focus-exam-layout'
 
 type PracticeCategory = 'TWK' | 'TIU' | 'TKP'
 type PracticeStep = 'setup' | 'loading' | 'practice' | 'result' | 'review'
@@ -88,13 +88,13 @@ export function PracticeFlow() {
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [isAutoSubmitting, setIsAutoSubmitting] = React.useState(false)
   const [mobileNavigatorOpen, setMobileNavigatorOpen] = React.useState(false)
+  const [submitModalOpen, setSubmitModalOpen] = React.useState(false)
   const [examFontSize, setExamFontSize] = React.useState(16)
   const didAutoSubmitRef = React.useRef(false)
 
   const currentQuestion = questions[currentIndex]
   const currentReviewItem = result?.review[currentIndex]
   const answeredCount = Object.keys(answers).length
-  const allAnswered = questions.length > 0 && answeredCount === questions.length
   const timeExpired = step === 'practice' && remainingSeconds === 0
 
   React.useEffect(() => {
@@ -159,6 +159,7 @@ export function PracticeFlow() {
     if (step !== 'practice' || remainingSeconds > 0 || didAutoSubmitRef.current) return
 
     didAutoSubmitRef.current = true
+    setSubmitModalOpen(false)
     setMessage('Waktu habis. Umbuddy sedang mengunci jawaban Kamu...')
     void submitPractice({ auto: true })
   }, [remainingSeconds, step, submitPractice])
@@ -199,6 +200,7 @@ export function PracticeFlow() {
       setTimeSpent({})
       setExamFontSize(16)
       setIsAutoSubmitting(false)
+      setSubmitModalOpen(false)
       didAutoSubmitRef.current = false
       if (data.fallback_used) {
         setMessage('Bank soal published belum lengkap, jadi Umbuddy pakai soal latihan aman sementara.')
@@ -239,6 +241,18 @@ export function PracticeFlow() {
 
   if (step === 'practice') {
     const progressPercent = questions.length > 0 ? (answeredCount / questions.length) * 100 : 0
+    const emptyCount = Math.max(questions.length - answeredCount, 0)
+    const flaggedCount = questions.reduce((total, question) => total + (flagged[question.id] ? 1 : 0), 0)
+    const renderFinishButton = () => (
+      <button
+        type="button"
+        onClick={() => setSubmitModalOpen(true)}
+        disabled={isSubmitting || isAutoSubmitting}
+        className="min-h-[56px] rounded-full border-2 border-white/80 bg-white px-4 text-sm font-black text-primary-dark shadow-[0_5px_0_rgba(21,93,39,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_7px_0_rgba(21,93,39,0.22)] disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        Selesai
+      </button>
+    )
     const fontSizeControl = (
       <div className="flex min-h-[36px] items-center rounded-full border border-border bg-surface p-1 text-sm font-black text-headline dark:bg-background">
         <button
@@ -280,14 +294,17 @@ export function PracticeFlow() {
                 />
               </div>
             </div>
-            <div className="mt-1 flex min-h-[72px] items-center justify-center gap-3 rounded-full bg-white/20 font-display text-4xl font-black shadow-inner">
-              <Clock className="h-8 w-8" aria-hidden="true" />
-              {formatTimer(remainingSeconds)}
+            <div className="mt-1 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+              <div className="flex min-h-[72px] items-center justify-center gap-3 rounded-full bg-white/20 font-display text-4xl font-black shadow-inner">
+                <Clock className="h-8 w-8" aria-hidden="true" />
+                {formatTimer(remainingSeconds)}
+              </div>
+              {renderFinishButton()}
             </div>
           </div>
         }
         desktopTopBar={
-          <div className="mx-auto grid max-w-[1680px] grid-cols-[280px_minmax(0,1fr)_220px] items-center gap-6 px-6 py-4">
+          <div className="mx-auto grid max-w-[1680px] grid-cols-[280px_minmax(0,1fr)_340px] items-center gap-6 px-6 py-4">
             <div>
               <p className="font-display text-2xl font-black leading-tight">Quick Practice CPNS</p>
               <p className="mt-1 text-sm font-bold text-white/85">
@@ -306,9 +323,12 @@ export function PracticeFlow() {
                 />
               </div>
             </div>
-            <div className="flex min-h-[64px] items-center justify-center gap-3 rounded-full bg-white/20 px-6 font-display text-3xl font-black">
-              <Clock className="h-7 w-7" aria-hidden="true" />
-              {formatTimer(remainingSeconds)}
+            <div className="flex items-center gap-3">
+              <div className="flex min-h-[64px] flex-1 items-center justify-center gap-3 rounded-full bg-white/20 px-6 font-display text-3xl font-black">
+                <Clock className="h-7 w-7" aria-hidden="true" />
+                {formatTimer(remainingSeconds)}
+              </div>
+              {renderFinishButton()}
             </div>
           </div>
         }
@@ -358,17 +378,31 @@ export function PracticeFlow() {
         mobileNavigatorOpen={mobileNavigatorOpen}
         onMobileNavigatorToggle={() => setMobileNavigatorOpen((current) => !current)}
         statusOverlay={
-          isAutoSubmitting ? (
-            <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/45 px-4" role="alertdialog" aria-modal="true" aria-label="Waktu habis">
-              <div className="w-full max-w-sm rounded-3xl border border-border bg-background p-6 text-center shadow-elevated dark:bg-surface">
-                <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-                <p className="mt-5 font-display text-2xl font-black text-headline">Waktu Habis</p>
-                <p className="mt-2 text-sm font-bold leading-6 text-body">
-                  Jawaban Kamu sedang dikunci dan nilainya sedang dihitung.
-                </p>
+          <>
+            {isAutoSubmitting ? (
+              <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/45 px-4" role="alertdialog" aria-modal="true" aria-label="Waktu habis">
+                <div className="w-full max-w-sm rounded-3xl border border-border bg-background p-6 text-center shadow-elevated dark:bg-surface">
+                  <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+                  <p className="mt-5 font-display text-2xl font-black text-headline">Waktu Habis</p>
+                  <p className="mt-2 text-sm font-bold leading-6 text-body">
+                    Jawaban Kamu sedang dikunci dan nilainya sedang dihitung.
+                  </p>
+                </div>
               </div>
-            </div>
-          ) : null
+            ) : null}
+            <FocusExamSubmitModal
+              isOpen={submitModalOpen}
+              emptyCount={emptyCount}
+              flaggedCount={flaggedCount}
+              answeredCount={answeredCount}
+              isSubmitting={isSubmitting}
+              onClose={() => setSubmitModalOpen(false)}
+              onSubmit={() => {
+                setSubmitModalOpen(false)
+                void submitPractice()
+              }}
+            />
+          </>
         }
         question={
           currentQuestion ? (
@@ -463,8 +497,8 @@ export function PracticeFlow() {
               <Button
                 type="button"
                 className="flex-1"
-                onClick={() => void submitPractice()}
-                disabled={(!allAnswered && !timeExpired) || isSubmitting}
+                onClick={() => setSubmitModalOpen(true)}
+                disabled={isSubmitting}
                 isLoading={isSubmitting}
                 loadingLabel="Mengunci..."
               >

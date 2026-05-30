@@ -1,6 +1,8 @@
 'use client'
 
 import * as React from 'react'
+import { Button } from '@/components/ui/Button'
+import { Card } from '@/components/ui/Card'
 
 /**
  * FocusExamLayout — Layout zero-distraksi untuk mode ujian/latihan.
@@ -40,6 +42,117 @@ interface FocusExamLayoutProps {
   actionFooter?: React.ReactNode
   /** Overlay status blocking, misalnya saat timer habis dan jawaban diproses */
   statusOverlay?: React.ReactNode
+}
+
+interface FocusExamSubmitModalProps {
+  isOpen: boolean
+  emptyCount: number
+  flaggedCount: number
+  answeredCount: number
+  isSubmitting?: boolean
+  onClose: () => void
+  onSubmit: () => void
+}
+
+function getSubmitHeadline(emptyCount: number, flaggedCount: number) {
+  if (emptyCount > 0 && flaggedCount > 0) {
+    return 'Masih ada soal kosong dan ragu-ragu, kumpulkan sekarang?'
+  }
+
+  if (emptyCount > 0) {
+    return 'Masih ada soal kosong, kumpulkan sekarang?'
+  }
+
+  if (flaggedCount > 0) {
+    return 'Masih ada soal ragu-ragu, kumpulkan sekarang?'
+  }
+
+  return 'Semua jawaban sudah siap dikumpulkan?'
+}
+
+function getSubmitMicrocopy(emptyCount: number, flaggedCount: number) {
+  const baseCopy = 'Pastikan semua soal telah terjawab. Jawaban yang sudah dikumpulkan tidak dapat diubah lagi.'
+
+  if (emptyCount > 0 && flaggedCount > 0) {
+    return `Kamu masih punya soal kosong dan ragu-ragu. Cek kembali kalau ingin menuntaskannya dulu. ${baseCopy}`
+  }
+
+  if (emptyCount > 0) {
+    return `Kamu masih punya soal kosong. Soal kosong akan dihitung salah. ${baseCopy}`
+  }
+
+  if (flaggedCount > 0) {
+    return `Kamu masih menandai beberapa soal ragu-ragu. ${baseCopy}`
+  }
+
+  return baseCopy
+}
+
+export function FocusExamSubmitModal({
+  isOpen,
+  emptyCount,
+  flaggedCount,
+  answeredCount,
+  isSubmitting = false,
+  onClose,
+  onSubmit,
+}: FocusExamSubmitModalProps) {
+  if (!isOpen) return null
+
+  return (
+    <div
+      className="fixed inset-0 z-[95] flex items-center justify-center bg-black/45 px-4"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="submit-exam-title"
+      aria-describedby="submit-exam-description"
+    >
+      <Card padding="lg" className="w-full max-w-lg space-y-5 text-center shadow-elevated">
+        <div>
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-primary">Konfirmasi</p>
+          <h2 id="submit-exam-title" className="mt-2 font-display text-2xl font-black leading-tight text-headline">
+            {getSubmitHeadline(emptyCount, flaggedCount)}
+          </h2>
+          <p id="submit-exam-description" className="mt-3 text-sm font-bold leading-6 text-body">
+            {getSubmitMicrocopy(emptyCount, flaggedCount)}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 text-left">
+          <div className="rounded-2xl border-2 border-border bg-background p-3 dark:bg-surface">
+            <div className="flex items-center gap-2 text-xs font-black text-muted">
+              <span className="h-3 w-3 rounded border border-border bg-background dark:bg-surface" />
+              Kosong
+            </div>
+            <p className="mt-2 font-display text-2xl font-black text-headline">{emptyCount}</p>
+          </div>
+          <div className="rounded-2xl border-2 border-xp/60 bg-xp-light p-3">
+            <div className="flex items-center gap-2 text-xs font-black text-headline">
+              <span className="h-3 w-3 rounded bg-xp" />
+              Ragu-Ragu
+            </div>
+            <p className="mt-2 font-display text-2xl font-black text-headline">{flaggedCount}</p>
+          </div>
+          <div className="rounded-2xl border-2 border-primary/50 bg-primary-light p-3">
+            <div className="flex items-center gap-2 text-xs font-black text-primary-dark">
+              <span className="h-3 w-3 rounded bg-primary" />
+              Terjawab
+            </div>
+            <p className="mt-2 font-display text-2xl font-black text-primary-dark">{answeredCount}</p>
+          </div>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Button type="button" variant="secondary" onClick={onClose} disabled={isSubmitting}>
+            Cek Kembali
+          </Button>
+          <Button type="button" onClick={onSubmit} isLoading={isSubmitting} loadingLabel="Mengumpulkan...">
+            Kumpulkan
+          </Button>
+        </div>
+      </Card>
+    </div>
+  )
 }
 
 /**
