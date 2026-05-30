@@ -1,7 +1,8 @@
 import * as React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { LogOut, Settings } from 'lucide-react'
+import { Settings } from 'lucide-react'
+import { LogoutButton } from '@/components/auth/logout-button'
 import type { AppNavItem } from './BottomNav'
 
 interface SidebarProps {
@@ -87,13 +88,7 @@ export function Sidebar({
           <Settings className="h-5 w-5" aria-hidden="true" />
           Set
         </span>
-        <span
-          className="flex min-h-[52px] flex-col items-center justify-center gap-1 rounded-2xl bg-surface text-[11px] font-bold text-body opacity-60"
-          aria-disabled="true"
-        >
-          <LogOut className="h-5 w-5" aria-hidden="true" />
-          Keluar
-        </span>
+        <LogoutButton />
       </div>
     </div>
   )
