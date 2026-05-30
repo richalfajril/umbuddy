@@ -546,6 +546,27 @@ export function PracticeFlow() {
 
   if (step === 'review' && result && currentReviewItem) {
     const reviewProgressPercent = result.review.length > 0 ? ((currentIndex + 1) / result.review.length) * 100 : 0
+    const fontSizeControl = (
+      <div className="flex min-h-[36px] items-center rounded-full border border-border bg-surface p-1 text-sm font-black text-headline dark:bg-background">
+        <button
+          type="button"
+          onClick={() => setExamFontSize((size) => Math.max(14, size - 1))}
+          className="flex h-7 w-7 items-center justify-center rounded-full transition hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:hover:bg-surface"
+          aria-label="Perkecil ukuran font pembahasan"
+        >
+          −
+        </button>
+        <span className="min-w-8 text-center">{examFontSize}</span>
+        <button
+          type="button"
+          onClick={() => setExamFontSize((size) => Math.min(22, size + 1))}
+          className="flex h-7 w-7 items-center justify-center rounded-full transition hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:hover:bg-surface"
+          aria-label="Perbesar ukuran font pembahasan"
+        >
+          +
+        </button>
+      </div>
+    )
     const goToReviewQuestion = (nextIndex: number) => {
       setCurrentIndex(Math.max(0, Math.min(nextIndex, result.review.length - 1)))
       setMobileNavigatorOpen(false)
@@ -608,6 +629,7 @@ export function PracticeFlow() {
               {result.review.map((item, index) => {
                 const isCurrent = index === currentIndex
                 const isCorrect = item.correct === true
+                const isUnanswered = item.selected_option === null
                 return (
                   <button
                     key={item.question_id}
@@ -616,8 +638,12 @@ export function PracticeFlow() {
                     aria-label={`Buka pembahasan soal ${index + 1}`}
                     aria-current={isCurrent ? 'step' : undefined}
                     className={[
-                      'flex min-h-[44px] items-center justify-center rounded-xl border-2 border-b-[5px] text-sm font-black text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
-                      isCorrect ? 'border-primary-dark bg-primary' : 'border-error-dark bg-error',
+                      'flex min-h-[44px] items-center justify-center rounded-xl border-2 border-b-[5px] text-sm font-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                      isCorrect
+                        ? 'border-primary-dark bg-primary text-white'
+                        : isUnanswered
+                          ? 'border-border bg-background text-headline dark:bg-surface'
+                          : 'border-error-dark bg-error text-white',
                       isCurrent ? 'ring-2 ring-xp ring-offset-2 ring-offset-background' : '',
                     ].join(' ')}
                   >
@@ -628,7 +654,8 @@ export function PracticeFlow() {
             </div>
             <div className="mt-5 grid gap-2 text-xs font-bold text-muted">
               <span className="flex items-center gap-2"><span className="h-3 w-3 rounded bg-primary" /> Benar</span>
-              <span className="flex items-center gap-2"><span className="h-3 w-3 rounded bg-error" /> Salah / kosong</span>
+              <span className="flex items-center gap-2"><span className="h-3 w-3 rounded bg-error" /> Salah</span>
+              <span className="flex items-center gap-2"><span className="h-3 w-3 rounded border border-border bg-background dark:bg-surface" /> Kosong</span>
             </div>
           </div>
         }
@@ -636,16 +663,19 @@ export function PracticeFlow() {
         onMobileNavigatorToggle={() => setMobileNavigatorOpen((current) => !current)}
         question={
           <Card padding="lg" className="space-y-4">
-            <div className="flex min-w-0 flex-wrap items-center gap-2">
-              <span className="inline-flex rounded-lg border border-primary/30 bg-primary-light px-3 py-1 text-xs font-black text-primary-dark">
-                {currentReviewItem.category}
-              </span>
-              <p className="text-sm font-normal text-body">
-                Soal <span className="font-black text-headline">{currentIndex + 1}</span> dari{' '}
-                <span className="font-black text-headline">{result.review.length}</span>
-              </p>
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex min-w-0 flex-wrap items-center gap-2">
+                <span className="inline-flex rounded-lg border border-primary/30 bg-primary-light px-3 py-1 text-xs font-black text-primary-dark">
+                  {currentReviewItem.category}
+                </span>
+                <p className="text-sm font-normal text-body">
+                  Soal <span className="font-black text-headline">{currentIndex + 1}</span> dari{' '}
+                  <span className="font-black text-headline">{result.review.length}</span>
+                </p>
+              </div>
+              {fontSizeControl}
             </div>
-            <p className="font-sans text-base font-normal leading-7 text-headline">
+            <p className="font-sans font-normal leading-7 text-headline" style={{ fontSize: examFontSize }}>
               {currentReviewItem.text}
             </p>
           </Card>
@@ -667,13 +697,14 @@ export function PracticeFlow() {
                 <div
                   key={key}
                   className={[
-                    'flex min-h-[52px] w-full items-start gap-3 rounded-2xl border-2 px-4 py-3 text-left text-base font-normal leading-7',
+                    'flex min-h-[52px] w-full items-start gap-3 rounded-2xl border-2 px-4 py-3 text-left font-normal leading-7',
                     isAnswer
                       ? 'border-primary bg-primary-light text-primary-dark'
                       : isSelected
                         ? 'border-error bg-error/10 text-headline'
                         : 'border-border bg-background text-headline dark:bg-surface',
                   ].join(' ')}
+                  style={{ fontSize: examFontSize }}
                 >
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-current text-xs font-black">
                     {key}
@@ -692,7 +723,7 @@ export function PracticeFlow() {
 
             <Card padding="md" className="space-y-2">
               <p className="text-xs font-black uppercase text-primary">Pembahasan</p>
-              <p className="text-base font-normal leading-7 text-body">
+              <p className="font-normal leading-7 text-body" style={{ fontSize: examFontSize }}>
                 {currentReviewItem.explanation ?? 'Pembahasan untuk soal ini belum tersedia.'}
               </p>
             </Card>
