@@ -497,9 +497,15 @@ export function PracticeFlow() {
             <p className="mt-2 text-sm leading-6 text-body">
               Benar {result.correct_count}/{result.total_questions} soal. Rata-rata waktu {result.average_time} detik.
             </p>
-            <div className="mt-4 rounded-2xl border border-xp/40 bg-xp-light px-4 py-3 text-sm font-black text-headline">
-              +{result.xp_award.xp} XP {result.xp_award.already_claimed ? 'sudah pernah diklaim dari sesi ini.' : 'masuk kantong.'}
-            </div>
+            {result.xp_award.xp > 0 ? (
+              <div className="mt-4 rounded-2xl border border-xp/40 bg-xp-light px-4 py-3 text-sm font-black text-headline">
+                +{result.xp_award.xp} XP {result.xp_award.already_claimed ? 'sudah pernah diklaim dari sesi ini.' : 'masuk kantong.'}
+              </div>
+            ) : (
+              <div className="mt-4 rounded-2xl border border-border bg-surface px-4 py-3 text-sm font-black text-body">
+                Belum dapat XP karena skor masih 0. Santai, ulangi latihan dan kejar jawaban benar pertama Kamu.
+              </div>
+            )}
           </Card>
 
           {result.recommendations[0] && (

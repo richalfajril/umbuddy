@@ -210,6 +210,9 @@ describe('U18 OnboardingService', () => {
       total_score: 60,
       completed_at: new Date('2026-01-01'),
     } as DiagnosticAttempt)
+    vi.mocked(prisma.userXpEvent.findUnique).mockResolvedValue({
+      total_xp: 50,
+    } as Awaited<ReturnType<typeof prisma.userXpEvent.findUnique>>)
 
     const result = await OnboardingService.submitDiagnostic('user-1', 'session-1', [
       { question_id: 'q-twk-1', selected_option: 'A', time_spent: 10 },
@@ -235,6 +238,7 @@ describe('U18 OnboardingService', () => {
         },
       },
     } as unknown as PracticeSession)
+    vi.mocked(prisma.userXpEvent.findUnique).mockResolvedValue(null)
 
     const result = await OnboardingService.submitDiagnostic('user-1', 'session-expired', [
       { question_id: 'q-twk-1', selected_option: 'A', time_spent: 10 },
@@ -248,5 +252,40 @@ describe('U18 OnboardingService', () => {
     })
     expect(result.result.total_score).toBeGreaterThan(0)
     expect(result.reward.already_claimed).toBe(false)
+  })
+
+  it('submits unanswered timed-out diagnostic with zero score and no XP reward', async () => {
+    vi.mocked(prisma.diagnosticAttempt.findFirst).mockResolvedValue(null)
+    vi.mocked(prisma.onboardingState.findUnique).mockResolvedValue(null)
+    vi.mocked(prisma.practiceSession.findFirst).mockResolvedValue({
+      id: 'session-empty',
+      user_id: 'user-1',
+      mode: 'DIAGNOSTIC',
+      status: 'IN_PROGRESS',
+      started_at: new Date(Date.now() - 901_000),
+      metadata: {
+        diagnostic: {
+          questions: privateQuestions,
+        },
+      },
+    } as unknown as PracticeSession)
+    vi.mocked(prisma.diagnosticAttempt.create).mockResolvedValue({
+      id: 'attempt-empty',
+      user_id: 'user-1',
+      source_session_id: 'session-empty',
+      score_twk: 0,
+      score_tiu: 0,
+      score_tkp: 0,
+      total_score: 0,
+      completed_at: new Date('2026-01-01'),
+    } as DiagnosticAttempt)
+    vi.mocked(prisma.userXpEvent.findUnique).mockResolvedValue(null)
+
+    const result = await OnboardingService.submitDiagnostic('user-1', 'session-empty', [])
+
+    expect(result.result.total_score).toBe(0)
+    expect(result.reward).toEqual({ xp: 0, already_claimed: false })
+    expect(prisma.userXpEvent.create).not.toHaveBeenCalled()
+    expect(prisma.userProgression.upsert).not.toHaveBeenCalled()
   })
 })

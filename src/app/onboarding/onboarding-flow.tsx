@@ -36,6 +36,11 @@ type Recommendation = {
   message: string
 }
 
+type RewardResult = {
+  xp: number
+  already_claimed: boolean
+}
+
 type StatusResponse = {
   current_step: 'profile' | 'diagnostic' | 'completed'
   profile?: Partial<ProfileForm> | null
@@ -120,6 +125,7 @@ export function OnboardingFlow() {
   const [timeSpent, setTimeSpent] = React.useState<Record<string, number>>({})
   const [result, setResult] = React.useState<DiagnosticResult | null>(null)
   const [recommendation, setRecommendation] = React.useState<Recommendation | null>(null)
+  const [reward, setReward] = React.useState<RewardResult | null>(null)
   const [mobileNavigatorOpen, setMobileNavigatorOpen] = React.useState(false)
   const [examFontSize, setExamFontSize] = React.useState(16)
   const didAutoSubmitRef = React.useRef(false)
@@ -287,9 +293,11 @@ export function OnboardingFlow() {
       const data = (await response.json()) as {
         result: DiagnosticResult
         recommendations: Recommendation
+        reward: RewardResult
       }
       setResult(data.result)
       setRecommendation(data.recommendations)
+      setReward(data.reward)
       setStep('result')
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Jawaban belum bisa dikunci.')
@@ -595,9 +603,15 @@ export function OnboardingFlow() {
             </div>
           </Card>
 
-          <div className="rounded-2xl border border-xp/40 bg-xp-light px-4 py-3 text-sm font-black text-headline">
-            +50 XP masuk kantong karena kamu menyelesaikan onboarding.
-          </div>
+          {reward === null || reward.xp > 0 ? (
+            <div className="rounded-2xl border border-xp/40 bg-xp-light px-4 py-3 text-sm font-black text-headline">
+              +{reward?.xp ?? 50} XP {reward?.already_claimed ? 'sudah pernah diklaim.' : 'masuk kantong karena kamu menyelesaikan onboarding.'}
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-border bg-surface px-4 py-3 text-sm font-black text-body">
+              Belum dapat XP karena skor awal masih 0. Kamu tetap bisa masuk markas dan mulai latihan dari nol.
+            </div>
+          )}
 
           <Button
             type="button"

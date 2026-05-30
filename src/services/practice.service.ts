@@ -428,7 +428,7 @@ export class PracticeService {
         },
       })
 
-      if (!existingReward) {
+      if (!existingReward && xpAward > 0) {
         await tx.userXpEvent.create({
           data: {
             user_id: userId,
@@ -678,6 +678,7 @@ export class PracticeService {
 
   private static calculateXpAward(score: number, totalQuestions: number) {
     if (totalQuestions === 0) return 0
+    if (score <= 0) return 0
     return 10 + Math.round(score / 10)
   }
 }

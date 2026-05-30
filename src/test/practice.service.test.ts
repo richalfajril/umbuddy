@@ -176,4 +176,30 @@ describe('U2 PracticeService', () => {
     expect(result.score).toBe(50)
     expect(prisma.userXpEvent.create).toHaveBeenCalled()
   })
+
+  it('submits unanswered timed-out sessions with zero score and no XP', async () => {
+    vi.mocked(prisma.practiceSession.findFirst).mockResolvedValue({
+      id: 'practice-empty',
+      user_id: 'user-1',
+      mode: 'QUICK',
+      status: 'IN_PROGRESS',
+      started_at: new Date(Date.now() - 331_000),
+      metadata: {
+        practice: {
+          duration_seconds: 300,
+          questions: privateQuestions,
+        },
+      },
+    } as unknown as PracticeSession)
+    vi.mocked(prisma.userXpEvent.findUnique).mockResolvedValue(null)
+
+    const result = await PracticeService.submitSession('user-1', 'practice-empty', [])
+
+    expect(result.score).toBe(0)
+    expect(result.correct_count).toBe(0)
+    expect(result.xp_award.xp).toBe(0)
+    expect(result.review.every((item) => item.selected_option === null && item.score === 0)).toBe(true)
+    expect(prisma.userXpEvent.create).not.toHaveBeenCalled()
+    expect(prisma.userProgression.upsert).not.toHaveBeenCalled()
+  })
 })

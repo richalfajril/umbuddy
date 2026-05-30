@@ -400,10 +400,16 @@ export class OnboardingService {
     })
 
     if (existingAttempt) {
+      const existingReward = await prisma.userXpEvent.findUnique({
+        where: { idempotency_key: `onboarding:${userId}:diagnostic` },
+      })
       return {
         result: this.toResultPayload(existingAttempt),
         recommendations: this.toRecommendationPayload(existingAttempt),
-        reward: { xp: ONBOARDING_REWARD_XP, already_claimed: true },
+        reward: {
+          xp: existingReward?.total_xp ?? 0,
+          already_claimed: Boolean(existingReward),
+        },
       }
     }
 
@@ -545,16 +551,17 @@ export class OnboardingService {
       const existingReward = await tx.userXpEvent.findUnique({
         where: { idempotency_key: idempotencyKey },
       })
+      const rewardXp = totalScore > 0 ? ONBOARDING_REWARD_XP : 0
 
-      if (!existingReward) {
+      if (!existingReward && rewardXp > 0) {
         await tx.userXpEvent.create({
           data: {
             user_id: userId,
             source_type: 'ONBOARDING_DIAGNOSTIC',
             source_id: diagnosticAttempt.id,
             idempotency_key: idempotencyKey,
-            base_xp: ONBOARDING_REWARD_XP,
-            total_xp: ONBOARDING_REWARD_XP,
+            base_xp: rewardXp,
+            total_xp: rewardXp,
             reason: 'Selesai onboarding diagnostic test',
           },
         })
@@ -563,13 +570,13 @@ export class OnboardingService {
           where: { user_id: userId },
           update: {
             total_xp: {
-              increment: ONBOARDING_REWARD_XP,
+              increment: rewardXp,
             },
             last_xp_earned_at: new Date(),
           },
           create: {
             user_id: userId,
-            total_xp: ONBOARDING_REWARD_XP,
+            total_xp: rewardXp,
             level: 1,
             last_xp_earned_at: new Date(),
           },
@@ -579,7 +586,7 @@ export class OnboardingService {
       return {
         result: this.toResultPayload(diagnosticAttempt),
         recommendations: this.toRecommendationPayload(diagnosticAttempt),
-        reward: { xp: ONBOARDING_REWARD_XP, already_claimed: Boolean(existingReward) },
+        reward: { xp: existingReward?.total_xp ?? rewardXp, already_claimed: Boolean(existingReward) },
       }
     })
   }
