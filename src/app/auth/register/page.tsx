@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { Eye, EyeOff } from 'lucide-react'
 import * as React from 'react'
 
-import { useToastStore } from '@/store/useToastStore'
+import { useToastStore } from '@/stores/useToastStore'
 
 type ApiErrorResponse = {
   error?: {

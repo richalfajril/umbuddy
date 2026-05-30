@@ -6,7 +6,7 @@ import { signOut } from 'next-auth/react'
 import { createPortal } from 'react-dom'
 import { LogOut } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
-import { useToastStore } from '@/store/useToastStore'
+import { useToastStore } from '@/stores/useToastStore'
 
 interface LogoutButtonProps {
   className?: string

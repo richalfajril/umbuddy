@@ -29,7 +29,7 @@ import {
   Star,
   X,
 } from 'lucide-react'
-import { useToastStore, Toast as ToastType } from '@/store/useToastStore'
+import { useToastStore, Toast as ToastType } from '@/stores/useToastStore'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // cn — tiny class merger, no dependency needed
