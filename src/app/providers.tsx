@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { SessionProvider } from 'next-auth/react'
 import { ThemeProvider } from 'next-themes'
-import { SessionConflictGuard } from '@/components/auth/session-conflict-guard'
+import { SessionConflictGuard } from '@/features/user-auth/_components/session-conflict-guard'
 import { ToastContainer } from '@/components/ui'
 
 // Suppress the React 19 script warning for next-themes in development

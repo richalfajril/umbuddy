@@ -2,7 +2,7 @@ import * as React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Settings } from 'lucide-react'
-import { LogoutButton } from '@/components/auth/logout-button'
+import { LogoutButton } from '@/features/user-auth/_components/logout-button'
 import type { AppNavItem } from './BottomNav'
 
 interface SidebarProps {
