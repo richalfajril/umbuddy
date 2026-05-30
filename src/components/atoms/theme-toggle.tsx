@@ -61,7 +61,7 @@ export function ThemeToggle({ variant = 'floating' }: ThemeToggleProps) {
     <button
       onClick={handleThemeChange}
       className={[
-        variant === 'floating' ? 'fixed bottom-6 right-6 z-50 h-14 w-14' : 'h-11 w-11',
+        variant === 'floating' ? 'fixed bottom-24 right-5 z-50 h-14 w-14 sm:bottom-6 sm:right-6' : 'h-11 w-11',
         'flex items-center justify-center rounded-full bg-background border-2 border-border shadow-[0_4px_0_0_var(--color-border)] transition-all hover:translate-y-[2px] hover:shadow-[0_2px_0_0_var(--color-border)] active:translate-y-[4px] active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary group',
       ].join(' ')}
       aria-label={`Ubah ke mode ${nextTheme === 'dark' ? 'gelap' : 'terang'}`}
