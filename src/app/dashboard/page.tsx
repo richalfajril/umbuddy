@@ -1,5 +1,5 @@
 import { ThemeToggle } from "@/components/atoms/theme-toggle";
-import { BentoDashboardLayout } from "@/components/layouts/bento-dashboard-layout";
+import { BentoDashboardLayout } from "@/components/templates/bento-dashboard-layout";
 import {
   Badge,
   BottomNav,

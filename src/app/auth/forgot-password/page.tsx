@@ -4,7 +4,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft, Mail } from 'lucide-react'
-import { FormSettingsLayout } from '@/components/layouts/form-settings-layout'
+import { FormSettingsLayout } from '@/components/templates/form-settings-layout'
 import { Button, Input, Label } from '@/components/ui'
 
 export default function ForgotPasswordPage() {

@@ -1,6 +1,6 @@
 'use client'
 
-import { FormSettingsLayout } from '@/components/layouts/form-settings-layout'
+import { FormSettingsLayout } from '@/components/templates/form-settings-layout'
 import { Button, Input, Label } from '@/components/ui'
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'

@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Flag, ListChecks, ShieldCheck, Target, Trophy } from 'lucide-react'
 import { Button, Card, Input, Label } from '@/components/ui'
-import { FormSettingsLayout } from '@/components/layouts/form-settings-layout'
-import { FocusExamLayout, FocusExamSubmitModal } from '@/components/layouts/focus-exam-layout'
+import { FormSettingsLayout } from '@/components/templates/form-settings-layout'
+import { FocusExamLayout, FocusExamSubmitModal } from '@/components/templates/focus-exam-layout'
 
 type Step = 'loading' | 'profile' | 'diagnostic-intro' | 'diagnostic' | 'result'
 

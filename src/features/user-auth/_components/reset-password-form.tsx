@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { ArrowLeft, KeyRound } from 'lucide-react'
 import { Button, Input, Label } from '@/components/ui'
-import { FormSettingsLayout } from '@/components/layouts/form-settings-layout'
+import { FormSettingsLayout } from '@/components/templates/form-settings-layout'
 
 export function ResetPasswordForm() {
   const searchParams = useSearchParams()

@@ -1,6 +1,6 @@
 /**
  * Barrel export untuk semua layout templates Umbuddy.
- * Import: import { HeroLayout } from '@/components/layouts'
+ * Import: import { HeroLayout } from '@/components/templates'
  */
 export { HeroLayout } from './hero-layout'
 export { FormSettingsLayout } from './form-settings-layout'

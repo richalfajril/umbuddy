@@ -4,7 +4,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Flag, Home, ListChecks, RotateCcw, Trophy } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
-import { FocusExamLayout, FocusExamSubmitModal } from '@/components/layouts/focus-exam-layout'
+import { FocusExamLayout, FocusExamSubmitModal } from '@/components/templates/focus-exam-layout'
 
 type PracticeCategory = 'TWK' | 'TIU' | 'TKP'
 type PracticeStep = 'setup' | 'loading' | 'practice' | 'result' | 'review'

@@ -1,4 +1,4 @@
-import { HeroLayout } from '@/components/layouts/hero-layout'
+import { HeroLayout } from '@/components/templates/hero-layout'
 import { ThemeToggle } from '@/components/atoms/theme-toggle'
 import { 
   LandingNavbar, 
@@ -37,4 +37,3 @@ export default function LandingPage() {
     </HeroLayout>
   )
 }
-
