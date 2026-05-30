@@ -92,15 +92,16 @@ providers.push(
         email: emailKey,
         ip,
       })
+      const sessionState = await AuthService.rotateUserSession(user.id)
 
       return {
         id: user.id,
         name: user.name,
         email: user.email,
-        role: user.role,
-        status: user.status,
-        sessionVersion: user.session_version,
-        onboardingRequired: user.onboarding?.completed_at === null || !user.onboarding,
+        role: sessionState.role,
+        status: sessionState.status,
+        sessionVersion: sessionState.sessionVersion,
+        onboardingRequired: sessionState.onboardingRequired,
       }
     }
   })
@@ -145,8 +146,7 @@ export const authConfig: NextAuthOptions = {
           throw new Error(canonicalUser.status)
         }
 
-        const sessionState = await AuthService.getUserSessionState(canonicalUser.id)
-        if (!sessionState) return false
+        const sessionState = await AuthService.rotateUserSession(canonicalUser.id)
 
         user.id = canonicalUser.id
         user.name = canonicalUser.name

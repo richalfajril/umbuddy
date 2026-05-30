@@ -128,6 +128,37 @@ export class AuthService {
     }
   }
 
+  /**
+   * Rotates the server-side session version after a successful login.
+   * JWT sessions are stateless, so this is the lightweight V1 mechanism that
+   * makes older devices detect a revoked session on their next session refresh.
+   */
+  static async rotateUserSession(userId: string) {
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: { session_version: { increment: 1 } },
+      select: {
+        id: true,
+        role: true,
+        status: true,
+        session_version: true,
+        onboarding: {
+          select: {
+            completed_at: true,
+          },
+        },
+      },
+    })
+
+    return {
+      id: user.id,
+      role: user.role,
+      status: user.status,
+      sessionVersion: user.session_version,
+      onboardingRequired: user.onboarding?.completed_at === null || !user.onboarding,
+    }
+  }
+
   static async registerUser({ name, email, password }: RegisterData) {
     const normalizedEmail = email.trim().toLowerCase()
     const safeName = sanitizeDisplayName(name)

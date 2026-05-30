@@ -3,6 +3,8 @@
 import * as React from 'react'
 import { SessionProvider } from 'next-auth/react'
 import { ThemeProvider } from 'next-themes'
+import { SessionConflictGuard } from '@/components/auth/session-conflict-guard'
+import { ToastContainer } from '@/components/ui'
 
 // Suppress the React 19 script warning for next-themes in development
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
@@ -15,8 +17,6 @@ if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
   }
 }
 
-import { ToastContainer } from '@/components/ui'
-
 /**
  * Global client providers wrapper.
  * Menyediakan konteks:
@@ -26,12 +26,12 @@ import { ToastContainer } from '@/components/ui'
  */
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <SessionProvider>
+    <SessionProvider refetchInterval={30} refetchOnWindowFocus>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         {children}
+        <SessionConflictGuard />
         <ToastContainer />
       </ThemeProvider>
     </SessionProvider>
   )
 }
-

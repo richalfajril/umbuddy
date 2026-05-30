@@ -173,6 +173,45 @@ describe('U1 Auth — AuthService Unit Tests', () => {
     })
   })
 
+  describe('Single Active Session', () => {
+    it('should rotate session version after successful login', async () => {
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: 'user-uuid',
+        role: 'USER',
+        status: 'ACTIVE',
+        session_version: 4,
+        onboarding: {
+          completed_at: null,
+        },
+      } as unknown as User)
+
+      const result = await AuthService.rotateUserSession('user-uuid')
+
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { id: 'user-uuid' },
+        data: { session_version: { increment: 1 } },
+        select: {
+          id: true,
+          role: true,
+          status: true,
+          session_version: true,
+          onboarding: {
+            select: {
+              completed_at: true,
+            },
+          },
+        },
+      })
+      expect(result).toEqual({
+        id: 'user-uuid',
+        role: 'USER',
+        status: 'ACTIVE',
+        sessionVersion: 4,
+        onboardingRequired: true,
+      })
+    })
+  })
+
   describe('Secure Password Reset Flow', () => {
     it('should generate secure token and return email if user is active', async () => {
       const email = 'active@umbuddy.com'
