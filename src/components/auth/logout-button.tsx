@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
+import { createPortal } from 'react-dom'
 import { LogOut } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
 import { useToastStore } from '@/store/useToastStore'
@@ -47,6 +48,51 @@ export function LogoutButton({ className = '' }: LogoutButtonProps) {
     }
   }
 
+  const modal =
+    isOpen && typeof document !== 'undefined'
+      ? createPortal(
+          <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/65 px-4 backdrop-blur-sm"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="logout-title"
+            aria-describedby="logout-description"
+          >
+            <Card className="w-full max-w-sm border-error/30 bg-background p-6 text-center shadow-2xl shadow-error/10 dark:bg-surface">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-error/12 text-error">
+                <LogOut className="h-7 w-7" aria-hidden="true" />
+              </div>
+              <h2 id="logout-title" className="font-display text-2xl font-black text-heading">
+                Yakin mau keluar?
+              </h2>
+              <p id="logout-description" className="mt-3 text-sm leading-6 text-body">
+                Sesi belajar Kamu akan ditutup di perangkat ini.
+              </p>
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => setIsOpen(false)}
+                  disabled={isSigningOut}
+                >
+                  Batal
+                </Button>
+                <Button
+                  type="button"
+                  variant="danger"
+                  isLoading={isSigningOut}
+                  loadingLabel="Keluar..."
+                  onClick={handleLogout}
+                >
+                  Ya, Keluar
+                </Button>
+              </div>
+            </Card>
+          </div>,
+          document.body
+        )
+      : null
+
   return (
     <>
       <button
@@ -61,47 +107,7 @@ export function LogoutButton({ className = '' }: LogoutButtonProps) {
         <LogOut className="h-5 w-5" aria-hidden="true" />
         Keluar
       </button>
-
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/65 px-4 backdrop-blur-sm"
-          role="alertdialog"
-          aria-modal="true"
-          aria-labelledby="logout-title"
-          aria-describedby="logout-description"
-        >
-          <Card className="w-full max-w-sm border-error/30 bg-background p-6 text-center shadow-2xl shadow-error/10 dark:bg-surface">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-error/12 text-error">
-              <LogOut className="h-7 w-7" aria-hidden="true" />
-            </div>
-            <h2 id="logout-title" className="font-display text-2xl font-black text-heading">
-              Yakin mau keluar?
-            </h2>
-            <p id="logout-description" className="mt-3 text-sm leading-6 text-body">
-              Sesi belajar Kamu akan ditutup di perangkat ini.
-            </p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={() => setIsOpen(false)}
-                disabled={isSigningOut}
-              >
-                Batal
-              </Button>
-              <Button
-                type="button"
-                variant="danger"
-                isLoading={isSigningOut}
-                loadingLabel="Keluar..."
-                onClick={handleLogout}
-              >
-                Ya, Keluar
-              </Button>
-            </div>
-          </Card>
-        </div>
-      )}
+      {modal}
     </>
   )
 }
