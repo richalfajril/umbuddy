@@ -69,12 +69,6 @@ const initialProfile: ProfileForm = {
   phone: '',
 }
 
-const categoryLabel = {
-  TWK: 'Tes Wawasan Kebangsaan (TWK)',
-  TIU: 'Tes Inteligensia Umum (TIU)',
-  TKP: 'Tes Karakteristik Pribadi (TKP)',
-}
-
 const onboardingLogoHeader = (
   <Link href="/" className="flex flex-col items-center gap-0 transition-transform duration-300 hover:scale-105 active:scale-95">
     <Image
@@ -465,14 +459,15 @@ export function OnboardingFlow() {
         question={
           currentQuestion ? (
             <Card padding="lg" className="space-y-4">
-              <div className="flex items-start justify-between gap-3">
-                <div className="space-y-2">
-                  <p className="text-sm font-black text-headline">
-                    Soal {currentIndex + 1} dari {questions.length}
-                  </p>
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
                   <span className="inline-flex rounded-lg border border-primary/30 bg-primary-light px-3 py-1 text-xs font-black text-primary-dark">
-                    {categoryLabel[currentQuestion.category]}
+                    {currentQuestion.category}
                   </span>
+                  <p className="text-sm font-normal text-body">
+                    Soal <span className="font-black text-headline">{currentIndex + 1}</span> dari{' '}
+                    <span className="font-black text-headline">{questions.length}</span>
+                  </p>
                 </div>
                 {fontSizeControl}
               </div>

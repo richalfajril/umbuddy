@@ -63,12 +63,6 @@ const categoryCards: Array<{
   },
 ]
 
-const categoryFullLabel: Record<PracticeCategory, string> = {
-  TWK: 'Tes Wawasan Kebangsaan (TWK)',
-  TIU: 'Tes Inteligensia Umum (TIU)',
-  TKP: 'Tes Karakteristik Pribadi (TKP)',
-}
-
 async function readApiError(response: Response) {
   const data = (await response.json().catch(() => null)) as { error?: { message?: string } } | null
   return data?.error?.message ?? 'Duh, latihan belum bisa diproses. Coba lagi ya.'
@@ -379,14 +373,15 @@ export function PracticeFlow() {
         question={
           currentQuestion ? (
             <Card padding="lg" className="space-y-4">
-              <div className="flex items-start justify-between gap-3">
-                <div className="space-y-2">
-                  <p className="text-sm font-black text-headline">
-                    Soal {currentIndex + 1} dari {questions.length}
-                  </p>
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
                   <span className="inline-flex rounded-lg border border-primary/30 bg-primary-light px-3 py-1 text-xs font-black text-primary-dark">
-                    {categoryFullLabel[currentQuestion.category]}
+                    {currentQuestion.category}
                   </span>
+                  <p className="text-sm font-normal text-body">
+                    Soal <span className="font-black text-headline">{currentIndex + 1}</span> dari{' '}
+                    <span className="font-black text-headline">{questions.length}</span>
+                  </p>
                 </div>
                 {fontSizeControl}
               </div>
@@ -641,13 +636,14 @@ export function PracticeFlow() {
         onMobileNavigatorToggle={() => setMobileNavigatorOpen((current) => !current)}
         question={
           <Card padding="lg" className="space-y-4">
-            <div className="space-y-2">
-              <p className="text-sm font-black text-headline">
-                Soal {currentIndex + 1} dari {result.review.length}
-              </p>
+            <div className="flex min-w-0 flex-wrap items-center gap-2">
               <span className="inline-flex rounded-lg border border-primary/30 bg-primary-light px-3 py-1 text-xs font-black text-primary-dark">
-                {categoryFullLabel[currentReviewItem.category]}
+                {currentReviewItem.category}
               </span>
+              <p className="text-sm font-normal text-body">
+                Soal <span className="font-black text-headline">{currentIndex + 1}</span> dari{' '}
+                <span className="font-black text-headline">{result.review.length}</span>
+              </p>
             </div>
             <p className="font-sans text-base font-normal leading-7 text-headline">
               {currentReviewItem.text}
