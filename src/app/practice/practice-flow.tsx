@@ -621,10 +621,15 @@ export function PracticeFlow() {
         }
         questionNavigator={
           <div>
-            <p className="mb-4 flex items-center gap-2 text-lg font-black text-headline">
+            <p className="mb-2 flex items-center gap-2 text-lg font-black text-headline">
               <ListChecks className="h-5 w-5" aria-hidden="true" />
               Navigasi Soal
             </p>
+            <div className="mb-4 flex flex-nowrap items-center gap-2 overflow-hidden text-[10px] font-bold text-muted sm:gap-3 sm:text-xs">
+              <span className="flex min-w-0 shrink items-center gap-1.5"><span className="h-2.5 w-2.5 shrink-0 rounded bg-primary" /> Benar</span>
+              <span className="flex min-w-0 shrink items-center gap-1.5"><span className="h-2.5 w-2.5 shrink-0 rounded bg-error" /> Salah</span>
+              <span className="flex min-w-0 shrink items-center gap-1.5"><span className="h-2.5 w-2.5 shrink-0 rounded border border-border bg-background dark:bg-surface" /> Kosong</span>
+            </div>
             <div className="grid grid-cols-5 gap-2">
               {result.review.map((item, index) => {
                 const isCurrent = index === currentIndex
@@ -651,11 +656,6 @@ export function PracticeFlow() {
                   </button>
                 )
               })}
-            </div>
-            <div className="mt-5 grid gap-2 text-xs font-bold text-muted">
-              <span className="flex items-center gap-2"><span className="h-3 w-3 rounded bg-primary" /> Benar</span>
-              <span className="flex items-center gap-2"><span className="h-3 w-3 rounded bg-error" /> Salah</span>
-              <span className="flex items-center gap-2"><span className="h-3 w-3 rounded border border-border bg-background dark:bg-surface" /> Kosong</span>
             </div>
           </div>
         }
