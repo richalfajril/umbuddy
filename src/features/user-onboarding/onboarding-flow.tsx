@@ -23,6 +23,7 @@ import type {
 } from '@/features/user-onboarding/_types/onboarding.types'
 import { readApiError, toDateInputValue } from '@/features/user-onboarding/_utils/onboarding.utils'
 
+// Client orchestration untuk profile setup, diagnostic test, auto-submit, dan redirect onboarding.
 export function OnboardingFlow() {
   const router = useRouter()
   const { update } = useSession()

@@ -1,3 +1,4 @@
+// Tipe data client-side untuk flow onboarding dan diagnostic mini.
 export type Step = 'loading' | 'profile' | 'diagnostic-intro' | 'diagnostic' | 'result'
 
 export type PublicQuestion = {

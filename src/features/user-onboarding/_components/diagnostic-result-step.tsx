@@ -4,6 +4,7 @@ import type { DiagnosticResult, Recommendation, RewardResult } from '@/features/
 import { Target, Trophy } from 'lucide-react'
 import type { ReactNode } from 'react'
 
+// Step hasil diagnostic yang menampilkan skor awal, rekomendasi, dan reward onboarding.
 export function DiagnosticResultStep({
   header,
   result,

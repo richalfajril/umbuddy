@@ -1,3 +1,4 @@
+// Barrel export komponen khusus user onboarding agar import flow tetap pendek.
 export { DiagnosticIntroStep } from './diagnostic-intro-step'
 export { DiagnosticExamStep } from './diagnostic-exam-step'
 export { DiagnosticFontSizeControl } from './diagnostic-font-size-control'

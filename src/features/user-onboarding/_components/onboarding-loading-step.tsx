@@ -1,6 +1,7 @@
 import { FormSettingsLayout } from '@/components/templates/form-settings-layout'
 import type { ReactNode } from 'react'
 
+// Step loading singkat saat onboarding status user sedang dimuat.
 export function OnboardingLoadingStep({ header }: { header: ReactNode }) {
   return (
     <FormSettingsLayout maxWidth="md" header={header}>

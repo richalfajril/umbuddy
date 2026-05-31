@@ -6,6 +6,7 @@ import { FormSettingsLayout } from '@/components/templates/form-settings-layout'
 import type { ProfileForm } from '@/features/user-onboarding/_types/onboarding.types'
 import { CheckCircle2 } from 'lucide-react'
 
+// Form profile awal untuk menyimpan target belajar sebelum diagnostic dimulai.
 export function OnboardingProfileStep({
   header,
   profile,

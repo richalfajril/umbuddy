@@ -7,6 +7,7 @@ import { FocusExamLayout, FocusExamSubmitModal } from '@/components/templates/fo
 import type { PublicQuestion } from '@/features/user-onboarding/_types/onboarding.types'
 import { DiagnosticFontSizeControl } from './diagnostic-font-size-control'
 
+// Tampilan ujian diagnostic yang menerima state/callback dari onboarding flow.
 export function DiagnosticExamStep({
   questions,
   currentIndex,

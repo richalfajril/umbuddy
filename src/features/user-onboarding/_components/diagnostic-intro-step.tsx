@@ -3,6 +3,7 @@ import { FormSettingsLayout } from '@/components/templates/form-settings-layout'
 import { Clock, Flag, ShieldCheck, Target } from 'lucide-react'
 import type { ReactNode } from 'react'
 
+// Step pengantar sebelum user memulai diagnostic mini onboarding.
 export function DiagnosticIntroStep({
   header,
   message,

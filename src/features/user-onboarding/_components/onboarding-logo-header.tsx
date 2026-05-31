@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+// Header logo konsisten untuk semua step onboarding.
 export function OnboardingLogoHeader() {
   return (
     <Link href="/" className="flex flex-col items-center gap-0 transition-transform duration-300 hover:scale-105 active:scale-95">

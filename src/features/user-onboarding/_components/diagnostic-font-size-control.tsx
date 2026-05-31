@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 
+// Kontrol ukuran font soal yang berlaku selama sesi diagnostic berjalan.
 export function DiagnosticFontSizeControl({
   examFontSize,
   onFontSizeChange,
