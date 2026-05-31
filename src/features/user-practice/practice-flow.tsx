@@ -6,19 +6,18 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Flag, Home, ListChecks, Rot
 import { Button, Card } from '@/components/ui'
 import { FocusExamLayout, FocusExamSubmitModal } from '@/components/templates/focus-exam-layout'
 
-// Practice Domain Types
+// Tipe data domain latihan.
 import type {
   PracticeCategory,
   PracticeStep,
   PublicPracticeQuestion,
-  PracticeReviewItem,
   PracticeResult,
 } from './_types/practice.types'
 
-// Practice Config Constants
+// Konfigurasi statis untuk UI pilihan kategori.
 import { categoryCards } from './_constants/practice.constants'
 
-// Practice Utilities
+// Helper fungsi untuk baca error dan formatting waktu.
 import { readApiError, formatTimer } from './_utils/practice.utils'
 
 

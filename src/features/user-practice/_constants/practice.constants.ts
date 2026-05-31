@@ -1,10 +1,8 @@
 import type { PracticeCategory } from '../_types/practice.types'
 
-/**
- * Static content and configuration for the practice module
- */
+// Konten statis dan konfigurasi UI untuk modul latihan.
 
-/** Defines the static cards for practice category selection */
+// Kartu pilihan kategori latihan yang ditampilkan pada layar awal (setup).
 export const categoryCards: Array<{
   category: PracticeCategory
   title: string

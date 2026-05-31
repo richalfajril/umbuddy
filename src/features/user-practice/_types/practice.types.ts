@@ -1,14 +1,12 @@
-/**
- * Core practice domain types
- */
+// Tipe data utama untuk domain latihan (practice).
 
-/** Defines the categories available for practice */
+// Kategori latihan yang tersedia untuk pengguna.
 export type PracticeCategory = 'TWK' | 'TIU' | 'TKP'
 
-/** Defines the current stage of the practice flow */
+// State machine sederhana untuk menentukan tahapan saat ini dalam alur latihan.
 export type PracticeStep = 'setup' | 'loading' | 'practice' | 'result' | 'review'
 
-/** Defines the structure of a practice question fetched from the server */
+// Soal latihan publik yang diambil dari server (tanpa answer key).
 export type PublicPracticeQuestion = {
   id: string
   category: PracticeCategory
@@ -17,7 +15,7 @@ export type PublicPracticeQuestion = {
   source: 'db' | 'fallback'
 }
 
-/** Defines the structure of a single item in the practice review */
+// Data detail satu item soal yang digunakan pada mode pembahasan (review).
 export type PracticeReviewItem = {
   question_id: string
   category: PracticeCategory
@@ -31,7 +29,7 @@ export type PracticeReviewItem = {
   explanation: string | null
 }
 
-/** Defines the complete result payload returned after practice submission */
+// Payload hasil akhir yang didapatkan setelah jawaban latihan dikunci.
 export type PracticeResult = {
   session_id: string
   score: number
