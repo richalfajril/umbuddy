@@ -7,239 +7,26 @@ import {
   Sidebar,
   StreakIndicator,
   XPBar,
-  type AppNavItem,
 } from "@/components/ui";
+import {
+  DASHBOARD_NAV_ITEMS,
+  dashboardCardGlow,
+  friendsPreview,
+  rankingPreview,
+} from "@/features/user-dashboard/_constants/dashboard.constants";
+import {
+  formatCompactXp,
+  getScorePercent,
+  getWeakestArea,
+  resolveProgression,
+} from "@/features/user-dashboard/_utils/dashboard.utils";
 import { authConfig } from "@/lib/auth/config";
 import { prisma } from "@/lib/prisma/client";
-import {
-  Check,
-  ChevronRight,
-  Heart,
-  Home,
-  PencilLine,
-  Swords,
-  Target,
-  Trophy,
-  UserRound,
-} from "lucide-react";
+import { Check, ChevronRight, Heart, Swords, Target } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-
-const DASHBOARD_NAV_ITEMS: AppNavItem[] = [
-  { label: "Home", href: "/dashboard", icon: Home },
-  { label: "Practice", href: "/practice", icon: PencilLine, disabled: true },
-  { label: "Battle", href: "/battle", icon: Swords, disabled: true },
-  { label: "Rank", href: "/leaderboard", icon: Trophy, disabled: true },
-  { label: "Profile", href: "/profile", icon: UserRound, disabled: true },
-];
-
-const friendsPreview = [
-  { name: "Siska Amelia", initial: "S", online: true },
-  { name: "Dimas P.", initial: "D", online: true },
-  { name: "Arya Wijaya", initial: "A", online: true },
-  { name: "Budi S.", initial: "B", online: false },
-];
-
-const rankingPreview = [
-  {
-    rank: "1",
-    initial: "R",
-    name: "Rani",
-    title: "Esmelon III",
-    xp: "18.4k XP",
-    tone: "bg-xp",
-    rankTone: "from-xp to-[#f59e0b]",
-    badge: "/badge/esmelon_III_d.png",
-  },
-  {
-    rank: "2",
-    initial: "B",
-    name: "Bima",
-    title: "Umbies Senior",
-    xp: "17.9k XP",
-    tone: "bg-primary",
-    rankTone: "from-slate-200 to-slate-400",
-    badge: "/badge/umbies_senior_III_a.png",
-  },
-  {
-    rank: "3",
-    initial: "A",
-    name: "Alya",
-    title: "Umbies I",
-    xp: "17.0k XP",
-    tone: "bg-error",
-    rankTone: "from-[#f4b183] to-[#c07635]",
-    badge: "/badge/umbies_I_a.png",
-  },
-];
-
-const dashboardCardGlow =
-  "hover:shadow-[0_0_0_4px_rgba(116,195,50,0.18),0_18px_36px_-24px_rgba(116,195,50,0.55)]";
-
-const progressionRanks = [
-  {
-    golongan: "I/a",
-    requiredXp: 0,
-    jabatan: "Umbies",
-    badge: "umbies_I_a.png",
-  },
-  {
-    golongan: "I/b",
-    requiredXp: 300,
-    jabatan: "Umbies",
-    badge: "umbies_I_b.png",
-  },
-  {
-    golongan: "I/c",
-    requiredXp: 800,
-    jabatan: "Umbies",
-    badge: "umbies_I_c.png",
-  },
-  {
-    golongan: "I/d",
-    requiredXp: 1500,
-    jabatan: "Umbies",
-    badge: "umbies_I_d.png",
-  },
-  {
-    golongan: "II/a",
-    requiredXp: 2500,
-    jabatan: "Umbies Senior",
-    badge: "umbies_senior_II_a.png",
-  },
-  {
-    golongan: "II/b",
-    requiredXp: 4000,
-    jabatan: "Umbies Senior",
-    badge: "umbies_senior_II_b.png",
-  },
-  {
-    golongan: "II/c",
-    requiredXp: 6000,
-    jabatan: "Umbies Senior",
-    badge: "umbies_senior_II_c.png",
-  },
-  {
-    golongan: "II/d",
-    requiredXp: 8500,
-    jabatan: "Umbies Senior",
-    badge: "umbies_senior_II_d.png",
-  },
-  {
-    golongan: "III/a",
-    requiredXp: 12000,
-    jabatan: "Umbies Senior",
-    badge: "umbies_senior_III_a.png",
-  },
-  {
-    golongan: "III/b",
-    requiredXp: 16000,
-    jabatan: "Esmelon IV",
-    badge: "esmelon_III_b.png",
-  },
-  {
-    golongan: "III/c",
-    requiredXp: 21000,
-    jabatan: "Esmelon IV",
-    badge: "esmelon_III_c.png",
-  },
-  {
-    golongan: "III/d",
-    requiredXp: 27000,
-    jabatan: "Esmelon III",
-    badge: "esmelon_III_d.png",
-  },
-  {
-    golongan: "IV/a",
-    requiredXp: 34000,
-    jabatan: "Esmelon III",
-    badge: "esmelon_IV_a.png",
-  },
-  {
-    golongan: "IV/b",
-    requiredXp: 42000,
-    jabatan: "Esmelon II",
-    badge: "esmelon_IV_b.png",
-  },
-  {
-    golongan: "IV/c",
-    requiredXp: 51000,
-    jabatan: "Esmelon II",
-    badge: "esmelon_IV_c.png",
-  },
-  {
-    golongan: "IV/d",
-    requiredXp: 61000,
-    jabatan: "Esmelon I",
-    badge: "esmelon_IV_d.png",
-  },
-  {
-    golongan: "IV/e",
-    requiredXp: 72000,
-    jabatan: "Esmelon I",
-    badge: "esmelon_IV_e.png",
-  },
-  {
-    golongan: "MAX",
-    requiredXp: 85000,
-    jabatan: "Menteri",
-    badge: "menteri.png",
-  },
-] as const;
-
-function resolveProgression(totalXp: number) {
-  let currentIndex = 0;
-  for (let index = progressionRanks.length - 1; index >= 0; index -= 1) {
-    if (progressionRanks[index].requiredXp <= totalXp) {
-      currentIndex = index;
-      break;
-    }
-  }
-  const current = progressionRanks[Math.max(currentIndex, 0)];
-  const next =
-    progressionRanks[
-      Math.min(Math.max(currentIndex, 0) + 1, progressionRanks.length - 1)
-    ];
-  const rankSpan = Math.max(next.requiredXp - current.requiredXp, 1);
-  const currentRankXp = Math.max(totalXp - current.requiredXp, 0);
-  const nextRankXp =
-    next.golongan === current.golongan ? current.requiredXp : rankSpan;
-  const progressPercentage =
-    next.golongan === current.golongan
-      ? 100
-      : Math.max(
-          0,
-          Math.min(Math.round((currentRankXp / rankSpan) * 100), 100),
-        );
-
-  return {
-    currentJabatan: current.jabatan,
-    currentGolongan: current.golongan,
-    currentBadge: `/badge/${current.badge}`,
-    currentRankXp,
-    nextRankXp,
-    progressPercentage,
-  };
-}
-
-function getScorePercent(score: number | null | undefined, maxScore: number) {
-  if (!score) return 0;
-  return Math.max(0, Math.min(Math.round((score / maxScore) * 100), 100));
-}
-
-function formatCompactXp(xp: number) {
-  if (xp >= 1000) {
-    return `${(xp / 1000).toFixed(1)}k XP`;
-  }
-
-  return `${xp} XP`;
-}
-
-function getWeakestArea(scores: Array<{ label: string; percent: number }>) {
-  return [...scores].sort((a, b) => a.percent - b.percent)[0];
-}
 
 function DashboardTopBar({
   streakDays,
