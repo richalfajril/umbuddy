@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { LucideIcon } from 'lucide-react'
-import { MascotState } from './MascotState'
+import { MascotState } from './mascot-state'
 
 interface EmptyStateProps {
   title: React.ReactNode
