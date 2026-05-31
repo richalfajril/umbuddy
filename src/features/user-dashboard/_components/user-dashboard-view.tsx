@@ -47,6 +47,7 @@ export function UserDashboardView({
 }) {
   return (
     <>
+      {/* Layout utama menyatukan top bar, sidebar desktop, bottom nav mobile, dan grid dashboard. */}
       <BentoDashboardLayout
         topBar={
           <DashboardTopBar
@@ -72,6 +73,7 @@ export function UserDashboardView({
         }
       >
         <div className="grid w-full gap-4 xl:grid-cols-12">
+          {/* Greeting card menjadi entry point latihan harian paling cepat. */}
           <Card
             padding="md"
             className={`overflow-hidden xl:col-span-5 ${dashboardCardGlow}`}
@@ -116,6 +118,7 @@ export function UserDashboardView({
             </div>
           </Card>
 
+          {/* Score card menampilkan baseline diagnostic dan target score dari onboarding. */}
           <Card padding="lg" className={`xl:col-span-3 ${dashboardCardGlow}`}>
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
               <div className="flex items-center justify-between gap-3">
@@ -147,6 +150,7 @@ export function UserDashboardView({
             </div>
           </Card>
 
+          {/* Friends preview masih statis sampai fitur social/realtime aktif. */}
           <Card padding="lg" className={`xl:col-span-4 ${dashboardCardGlow}`}>
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-lg font-black text-headline">Teman Online</h2>
@@ -178,6 +182,7 @@ export function UserDashboardView({
             </div>
           </Card>
 
+          {/* Battle card adalah teaser mode kompetitif yang belum aktif di MVP dashboard. */}
           <Card
             padding="lg"
             className={`relative min-h-[220px] overflow-hidden xl:col-span-5 ${dashboardCardGlow}`}
@@ -203,6 +208,7 @@ export function UserDashboardView({
             </div>
           </Card>
 
+          {/* CAT simulation card adalah placeholder menuju fase simulasi penuh. */}
           <Card
             padding="lg"
             className={`relative min-h-[220px] overflow-hidden xl:col-span-4 ${dashboardCardGlow}`}
@@ -230,7 +236,9 @@ export function UserDashboardView({
             </div>
           </Card>
 
+          {/* Aside mengelompokkan leaderboard dan donation agar kolom kanan tetap mudah dipindai. */}
           <aside className="grid gap-4 xl:col-span-3 xl:row-span-2">
+            {/* Leaderboard menampilkan top preview dan posisi YOU dari data progression user. */}
             <Card padding="sm" className={dashboardCardGlow}>
               <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-primary text-center">
                 Leaderboard
@@ -294,6 +302,7 @@ export function UserDashboardView({
               </div>
             </Card>
 
+            {/* Donation card menjaga CTA support tetap visual tanpa mengganggu workflow utama. */}
             <Card
               padding="none"
               className={`relative min-h-[214px] overflow-visible border-primary/40 bg-[linear-gradient(135deg,#b7ee72_0%,#74c332_52%,#5fb72b_100%)] p-5 text-white shadow-[0_7px_0_0_rgba(21,93,39,0.35)] dark:border-primary/35 dark:bg-[linear-gradient(135deg,#82c95a_0%,#4f9e35_52%,#155d27_100%)] ${dashboardCardGlow}`}
@@ -334,6 +343,7 @@ export function UserDashboardView({
             </Card>
           </aside>
 
+          {/* Daily missions memberi target pendek untuk retention harian. */}
           <Card
             id="daily-missions"
             padding="lg"
@@ -365,6 +375,7 @@ export function UserDashboardView({
             </div>
           </Card>
 
+          {/* Tactical analytics membaca area lemah dan narasi coach dari diagnostic/practice. */}
           <Card padding="lg" className={`xl:col-span-6 ${dashboardCardGlow}`}>
             <h2 className="font-display text-xl font-black uppercase text-headline">
               Tactical Analytics
@@ -410,6 +421,7 @@ export function UserDashboardView({
           </Card>
         </div>
       </BentoDashboardLayout>
+      {/* Theme toggle dibuat floating agar tetap tersedia di dashboard tanpa memenuhi top bar. */}
       <ThemeToggle />
     </>
   );

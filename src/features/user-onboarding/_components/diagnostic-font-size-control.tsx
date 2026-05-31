@@ -12,6 +12,7 @@ export function DiagnosticFontSizeControl({
 }) {
   return (
     <div className="flex min-h-[36px] items-center rounded-full border border-border bg-surface p-1 text-sm font-black text-headline dark:bg-background">
+      {/* Minus dibatasi minimum 14px agar soal tetap terbaca. */}
       <button
         type="button"
         onClick={() => onFontSizeChange((size) => Math.max(14, size - 1))}
@@ -21,6 +22,7 @@ export function DiagnosticFontSizeControl({
         −
       </button>
       <span className="min-w-8 text-center">{examFontSize}</span>
+      {/* Plus dibatasi maksimum 22px agar layout opsi tidak mudah pecah. */}
       <button
         type="button"
         onClick={() => onFontSizeChange((size) => Math.min(22, size + 1))}

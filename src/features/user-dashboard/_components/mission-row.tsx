@@ -14,6 +14,7 @@ export function MissionRow({
 }) {
   return (
     <div className="space-y-2">
+      {/* Baris utama menampilkan status misi dan indikator selesai. */}
       <div className="flex min-h-[44px] items-center gap-3">
         <div
           className={[
@@ -35,6 +36,7 @@ export function MissionRow({
           {status}
         </p>
       </div>
+      {/* Progress track tetap tampak saat nilai 0 supaya misi belum mulai jelas. */}
       <div className="ml-9 h-2 rounded-full bg-border/70 shadow-inner ring-1 ring-border/70 dark:bg-border/60 dark:ring-border/80">
         <div
           className="h-full rounded-full bg-primary"

@@ -20,6 +20,7 @@ export function DiagnosticResultStep({
   isLoading: boolean
   onEnterDashboard: () => void | Promise<void>
 }) {
+  // Jika API belum memberi recommendation eksplisit, gunakan fallback berbasis weakest category.
   const resultRecommendation = recommendation ?? {
     title: `Mulai dari ${result.weakest_category}`,
     message: 'Umbuddy sudah membaca titik start kamu. Lanjut ke markas untuk mulai latihan pertama.',
@@ -29,9 +30,11 @@ export function DiagnosticResultStep({
   return (
     <FormSettingsLayout maxWidth="lg" header={header}>
       <div className="space-y-6 text-center">
+        {/* Trophy memberi reward moment setelah user menyelesaikan onboarding diagnostic. */}
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-light text-primary-dark">
           <Trophy className="h-9 w-9" aria-hidden="true" />
         </div>
+        {/* Header hasil menampilkan total skor sebagai baseline awal, bukan nilai final. */}
         <div>
           <p className="text-sm font-black uppercase text-primary">Baseline Kamu Siap</p>
           <h1 className="mt-2 font-display text-3xl font-black text-headline">
@@ -42,6 +45,7 @@ export function DiagnosticResultStep({
           </p>
         </div>
 
+        {/* Skor per subtes membantu user melihat area TWK, TIU, dan TKP secara cepat. */}
         <div className="grid gap-3 sm:grid-cols-3">
           {(['TWK', 'TIU', 'TKP'] as const).map((category) => (
             <Card key={category} padding="sm" className="text-center">
@@ -53,6 +57,7 @@ export function DiagnosticResultStep({
           ))}
         </div>
 
+        {/* Card rekomendasi menjadi arahan belajar pertama setelah diagnostic. */}
         <Card padding="md" className="text-left">
           <div className="flex gap-3">
             <Target className="mt-1 h-6 w-6 shrink-0 text-primary" aria-hidden="true" />
@@ -67,6 +72,7 @@ export function DiagnosticResultStep({
           </div>
         </Card>
 
+        {/* Reward XP hanya ditampilkan positif jika user layak mendapat reward onboarding. */}
         {reward === null || reward.xp > 0 ? (
           <div className="rounded-2xl border border-xp/40 bg-xp-light px-4 py-3 text-sm font-black text-headline">
             +{reward?.xp ?? 50} XP {reward?.already_claimed ? 'sudah pernah diklaim.' : 'masuk kantong karena kamu menyelesaikan onboarding.'}
@@ -77,6 +83,7 @@ export function DiagnosticResultStep({
           </div>
         )}
 
+        {/* CTA masuk dashboard memanggil update session di parent sebelum redirect. */}
         <Button
           type="button"
           className="w-full h-14 text-lg"

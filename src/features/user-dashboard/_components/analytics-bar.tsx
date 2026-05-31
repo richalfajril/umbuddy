@@ -8,6 +8,7 @@ export function AnalyticsBar({
   percent: number;
   tone?: "primary" | "xp" | "error";
 }) {
+  // Tone menentukan warna bar per kategori tanpa menyebar conditional class di JSX.
   const toneClass = {
     primary: "bg-primary",
     xp: "bg-xp",
@@ -16,10 +17,12 @@ export function AnalyticsBar({
 
   return (
     <div className="space-y-2">
+      {/* Header bar menjaga label kategori dan persentase terbaca sejajar. */}
       <div className="flex items-center justify-between gap-3">
         <p className="text-sm font-black text-headline">{label}</p>
         <p className="text-sm font-black text-headline">{percent}%</p>
       </div>
+      {/* Track tetap terlihat meskipun progress 0 agar user memahami ruang progresnya. */}
       <div className="h-3 rounded-full bg-border/70 shadow-inner ring-1 ring-border/70 dark:bg-border/60 dark:ring-border/80">
         <div
           className={["h-full rounded-full", toneClass].join(" ")}

@@ -2,6 +2,7 @@ import type { AppNavItem } from "@/components/ui";
 import { Home, PencilLine, Swords, Trophy, UserRound } from "lucide-react";
 
 // Konstanta tampilan dashboard sementara sampai data real-time/social siap.
+// Navigasi dashboard memakai disabled flag untuk fitur yang belum masuk fase aktif.
 export const DASHBOARD_NAV_ITEMS: AppNavItem[] = [
   { label: "Home", href: "/dashboard", icon: Home },
   { label: "Practice", href: "/practice", icon: PencilLine, disabled: true },
@@ -10,6 +11,7 @@ export const DASHBOARD_NAV_ITEMS: AppNavItem[] = [
   { label: "Profile", href: "/profile", icon: UserRound, disabled: true },
 ];
 
+// Preview teman memberi bentuk UI social sebelum endpoint friend system tersedia.
 export const friendsPreview = [
   { name: "Siska Amelia", initial: "S", online: true },
   { name: "Dimas P.", initial: "D", online: true },
@@ -17,6 +19,7 @@ export const friendsPreview = [
   { name: "Budi S.", initial: "B", online: false },
 ];
 
+// Preview ranking memberi contoh visual leaderboard sampai snapshot real siap.
 export const rankingPreview = [
   {
     rank: "1",
@@ -50,9 +53,11 @@ export const rankingPreview = [
   },
 ];
 
+// Glow card dipusatkan di konstanta agar seluruh card dashboard konsisten.
 export const dashboardCardGlow =
   "hover:shadow-[0_0_0_4px_rgba(116,195,50,0.18),0_18px_36px_-24px_rgba(116,195,50,0.55)]";
 
+// Rank progression mengikuti badge asset dan ambang XP U14 versi MVP.
 export const progressionRanks = [
   {
     golongan: "I/a",

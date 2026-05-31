@@ -29,6 +29,7 @@ export function OnboardingProfileStep({
       header={header}
     >
       <form onSubmit={onSubmit} className="space-y-5">
+        {/* Header form menjelaskan bahwa data dipakai untuk personalisasi belajar. */}
         <div className="space-y-2 text-center">
           <p className="text-sm font-black uppercase text-primary">Profil Belajar</p>
           <h1 className="font-display text-3xl font-black text-headline">
@@ -39,12 +40,14 @@ export function OnboardingProfileStep({
           </p>
         </div>
 
+        {/* Alert global menampilkan error submit profile tanpa field-level noise berlebihan. */}
         {message && (
           <p role="alert" aria-live="assertive" className="rounded-xl border border-error/30 bg-error-light px-4 py-3 text-sm font-bold text-error-dark">
             {message}
           </p>
         )}
 
+        {/* Field profile mengikuti data model onboarding tanpa menambah field baru. */}
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2 sm:col-span-2">
             <Label htmlFor="target_instansi">Target Instansi</Label>
@@ -128,6 +131,7 @@ export function OnboardingProfileStep({
           </div>
         </div>
 
+        {/* Submit tetap disabled/loading melalui Button agar double submit tercegah. */}
         <Button
           type="submit"
           className="w-full h-14 text-lg"

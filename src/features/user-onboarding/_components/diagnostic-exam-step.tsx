@@ -43,11 +43,16 @@ export function DiagnosticExamStep({
   onSubmitModalOpenChange: React.Dispatch<React.SetStateAction<boolean>>
   onSubmitDiagnostic: () => void | Promise<void>
 }) {
+  // Soal aktif diturunkan dari index agar parent hanya menyimpan posisi saat ini.
   const currentQuestion = questions[currentIndex]
+
+  // Ringkasan progres dipakai oleh top bar dan modal konfirmasi submit.
   const answeredCount = Object.keys(answers).length
   const progressPercent = questions.length > 0 ? (answeredCount / questions.length) * 100 : 0
   const emptyCount = Math.max(questions.length - answeredCount, 0)
   const timerLabel = `${Math.floor(remainingSeconds / 60)}:${String(remainingSeconds % 60).padStart(2, '0')}`
+
+  // Tombol selesai dipakai ulang di top bar mobile dan desktop.
   const renderFinishButton = () => (
     <button
       type="button"
@@ -58,6 +63,8 @@ export function DiagnosticExamStep({
       Selesai
     </button>
   )
+
+  // Kontrol font dipisah agar header soal tetap ringkas.
   const fontSizeControl = (
     <DiagnosticFontSizeControl
       examFontSize={examFontSize}
@@ -65,10 +72,12 @@ export function DiagnosticExamStep({
     />
   )
 
+  // FocusExamLayout menerima slot UI untuk top bar, navigator, soal, opsi, dan footer aksi.
   return (
     <FocusExamLayout
       topBar={
         <div className="mx-auto max-w-3xl px-4 py-5">
+          {/* Top bar mobile dibuat stacked agar timer dan tombol selesai tetap mudah ditekan. */}
           <div>
             <p className="font-display text-3xl font-black leading-tight">Diagnostic CPNS</p>
             <p className="mt-1 text-sm font-bold text-white/85">Peserta: Kamu</p>
@@ -95,6 +104,7 @@ export function DiagnosticExamStep({
       }
       desktopTopBar={
         <div className="mx-auto grid max-w-[1680px] grid-cols-[280px_minmax(0,1fr)_340px] items-center gap-6 px-6 py-4">
+          {/* Top bar desktop mengikuti pola CAT dengan title, progress, timer, dan tombol selesai sejajar. */}
           <div>
             <p className="font-display text-2xl font-black leading-tight">Diagnostic CPNS</p>
             <p className="mt-1 text-sm font-bold text-white/85">
@@ -124,6 +134,7 @@ export function DiagnosticExamStep({
       }
       questionNavigator={
         <div>
+          {/* Navigator soal memberi status aktif/terjawab/kosong tanpa membuka jawaban benar. */}
           <p className="mb-2 flex items-center gap-2 text-lg font-black text-headline">
             <ListChecks className="h-5 w-5" aria-hidden="true" />
             Navigasi Soal
@@ -165,6 +176,7 @@ export function DiagnosticExamStep({
       onMobileNavigatorToggle={onMobileNavigatorToggle}
       statusOverlay={
         <>
+          {/* Overlay auto-submit muncul saat timer habis dan jawaban sedang diproses. */}
           {isAutoSubmitting ? (
             <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/45 px-4" role="alertdialog" aria-modal="true" aria-label="Waktu habis">
               <div className="w-full max-w-sm rounded-3xl border border-border bg-background p-6 text-center shadow-elevated dark:bg-surface">
@@ -176,6 +188,7 @@ export function DiagnosticExamStep({
               </div>
             </div>
           ) : null}
+          {/* Modal submit manual merangkum kosong/ragu-ragu/terjawab sebelum dikumpulkan. */}
           <FocusExamSubmitModal
             isOpen={submitModalOpen}
             emptyCount={emptyCount}
@@ -193,6 +206,7 @@ export function DiagnosticExamStep({
       question={
         currentQuestion ? (
           <Card padding="lg" className="space-y-4">
+            {/* Header soal menampilkan kategori, nomor, dan kontrol ukuran font. */}
             <div className="flex items-center justify-between gap-3">
               <div className="flex min-w-0 flex-wrap items-center gap-2">
                 <span className="inline-flex rounded-lg border border-primary/30 bg-primary-light px-3 py-1 text-xs font-black text-primary-dark">
@@ -208,6 +222,7 @@ export function DiagnosticExamStep({
             <p className="font-sans font-normal leading-7 text-headline" style={{ fontSize: examFontSize }}>
               {currentQuestion.text}
             </p>
+            {/* Pesan status dipakai untuk fallback soal atau auto-submit notice. */}
             {message && (
               <p role="status" aria-live="polite" className="rounded-xl bg-xp-light px-3 py-2 text-xs font-bold text-headline">
                 {message}
@@ -219,6 +234,7 @@ export function DiagnosticExamStep({
       answerOptions={
         currentQuestion ? (
           <div className="space-y-3">
+            {/* Opsi jawaban hanya mengubah selected option di parent flow. */}
             {Object.entries(currentQuestion.options).map(([key, value]) => {
               const selected = answers[currentQuestion.id] === key
               return (
@@ -246,6 +262,7 @@ export function DiagnosticExamStep({
       }
       actionFooter={
         <div className="flex items-center gap-3">
+          {/* Footer menjaga tombol previous/next/kunci tetap konsisten di semua soal. */}
           <Button
             type="button"
             variant="secondary"

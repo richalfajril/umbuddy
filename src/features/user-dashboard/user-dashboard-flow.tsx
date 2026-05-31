@@ -13,15 +13,18 @@ import { redirect } from "next/navigation";
 
 // Server composition untuk guard session, ambil data dashboard, lalu render view.
 export async function UserDashboardFlow() {
+  // Session server menjaga dashboard tetap hanya untuk user login yang belum revoked.
   const session = await getServerSession(authConfig);
   if (!session || session.user.revoked) {
     redirect("/auth/login");
   }
 
+  // User baru yang belum onboarding tidak boleh masuk dashboard.
   if (session.user.onboardingRequired) {
     redirect("/onboarding");
   }
 
+  // Query dashboard dibuat paralel karena tiap data tidak saling bergantung.
   const [profile, progression, latestDiagnostic, practiceAttempts] = await Promise.all([
     prisma.userProfile.findUnique({
       where: { user_id: session.user.id },
@@ -73,17 +76,24 @@ export async function UserDashboardFlow() {
     }),
   ]);
 
+  // Progression menentukan badge, jabatan, golongan, dan XP bar top bar.
   const totalXp = progression?.total_xp ?? 0;
   const currentProgression = resolveProgression(totalXp);
   const streakDays = progression?.current_streak ?? 0;
+
+  // Diagnostic terakhir menjadi baseline score sampai practice analytics cukup banyak.
   const diagnosticScore = latestDiagnostic?.total_score
     ? Math.round(latestDiagnostic.total_score)
     : 0;
+
+  // Profile target ditampilkan sebagai ringkasan personalisasi dashboard.
   const targetScoreDisplay =
     profile?.target_score?.toLocaleString("id-ID") ?? "-";
   const targetLocation = [profile?.city, profile?.province]
     .filter(Boolean)
     .join(", ");
+
+  // Practice analytics menghitung rata-rata score per kategori dari attempt terbaru.
   const practiceAnalytics = (["TWK", "TIU", "TKP"] as const).map((category) => {
     const categoryAttempts = practiceAttempts.filter((attempt) => attempt.question.category === category);
     if (categoryAttempts.length === 0) return null;
@@ -94,6 +104,8 @@ export async function UserDashboardFlow() {
       percent: Math.max(0, Math.min(Math.round(averageScore), 100)),
     };
   });
+
+  // Analytics fallback ke diagnostic jika user belum punya data practice.
   const analytics = [
     {
       label: "TWK",
@@ -111,6 +123,8 @@ export async function UserDashboardFlow() {
       tone: "primary" as const,
     },
   ];
+
+  // Leaderboard masih memakai preview plus row YOU dari progression user saat ini.
   const leaderboardRows = [
     ...rankingPreview,
     {
@@ -125,9 +139,12 @@ export async function UserDashboardFlow() {
       highlight: true,
     },
   ];
+
+  // Weakest area hanya ditampilkan kalau user sudah punya data performa awal.
   const hasPerformanceData = Boolean(latestDiagnostic) || practiceAttempts.length > 0;
   const weakestArea = hasPerformanceData ? getWeakestArea(analytics) : null;
 
+  // View menerima data siap-render agar komponen UI tidak melakukan query server.
   return (
     <UserDashboardView
       userName={session.user.name}

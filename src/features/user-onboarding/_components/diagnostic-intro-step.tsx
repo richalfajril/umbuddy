@@ -21,9 +21,11 @@ export function DiagnosticIntroStep({
       header={header}
     >
       <div className="space-y-6 text-center">
+        {/* Icon flag memberi sinyal bahwa user akan mulai tes mini. */}
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-xp-light text-xp">
           <Flag className="h-8 w-8" aria-hidden="true" />
         </div>
+        {/* Copy intro menjelaskan komposisi dan menurunkan tekanan user sebelum mulai. */}
         <div>
           <p className="text-sm font-black uppercase text-primary">Tes Mini 15 Soal</p>
           <h1 className="mt-2 font-display text-3xl font-black text-headline">
@@ -34,12 +36,14 @@ export function DiagnosticIntroStep({
           </p>
         </div>
 
+        {/* Message dipakai untuk info fallback soal atau error ringan dari API. */}
         {message && (
           <p role="status" aria-live="polite" className="rounded-xl bg-xp-light px-4 py-3 text-sm font-bold text-headline">
             {message}
           </p>
         )}
 
+        {/* Ringkasan aturan memastikan durasi, keamanan skor, dan komposisi soal terbaca jelas. */}
         <div className="grid gap-3 text-left">
           <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-3">
             <Clock className="h-5 w-5 text-primary" aria-hidden="true" />
@@ -55,6 +59,7 @@ export function DiagnosticIntroStep({
           </div>
         </div>
 
+        {/* CTA memanggil startDiagnostic dari parent flow agar logic tetap terpusat. */}
         <Button
           type="button"
           className="w-full h-14 text-lg"

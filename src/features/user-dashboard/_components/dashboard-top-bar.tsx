@@ -21,6 +21,7 @@ export function DashboardTopBar({
 }) {
   return (
     <div className="flex min-h-[68px] items-center justify-between gap-1.5 px-2 sm:min-h-[82px] sm:gap-4 sm:px-4 md:px-8">
+      {/* Kiri top bar berisi badge dan progres pangkat user. */}
       <div className="flex min-w-0 flex-1 items-center gap-1.5 sm:gap-3 md:gap-4">
         <Image
           src={currentBadge}
@@ -49,6 +50,7 @@ export function DashboardTopBar({
         </div>
       </div>
 
+      {/* Kanan top bar memuat streak dan estimasi online user. */}
       <div className="flex shrink-0 items-center gap-1.5 sm:gap-4">
         <StreakIndicator
           streakDays={streakDays}

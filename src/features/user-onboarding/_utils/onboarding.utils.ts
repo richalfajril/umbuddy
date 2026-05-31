@@ -1,9 +1,11 @@
 // Helper kecil untuk parsing error API onboarding dan format value input tanggal.
+// readApiError menjaga pesan error API tetap ramah jika response body tidak valid JSON.
 export async function readApiError(response: Response) {
   const data = (await response.json().catch(() => null)) as { error?: { message?: string } } | null
   return data?.error?.message ?? 'Duh, onboarding belum bisa diproses. Coba lagi ya.'
 }
 
+// Input date HTML membutuhkan format YYYY-MM-DD dari ISO string database.
 export function toDateInputValue(value?: string | null) {
   if (!value) return ''
   return value.slice(0, 10)
