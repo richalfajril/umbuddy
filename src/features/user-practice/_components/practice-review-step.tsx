@@ -2,7 +2,7 @@ import * as React from 'react'
 import { ArrowLeft, ArrowRight, ListChecks } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
 import { FocusExamLayout } from '@/components/templates/focus-exam-layout'
-import { FontSizeControl } from '@/features/shared/_components'
+import { FontSizeControl } from '@/components/molecules'
 import type { PracticeResult } from '../_types/practice.types'
 
 // Props untuk menerima seluruh state aktif dari hasil review dan callback navigasi.

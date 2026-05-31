@@ -16,7 +16,7 @@ import { categoryCards } from './_constants/practice.constants'
 import { readApiError } from '@/features/shared/_utils/api.utils'
 
 // Komponen UI Shared
-import { FullScreenLoader } from '@/features/shared/_components'
+import { FullScreenLoader } from '@/components/molecules'
 
 // Komponen UI Latihan
 import {

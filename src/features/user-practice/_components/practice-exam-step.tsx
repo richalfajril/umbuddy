@@ -2,7 +2,7 @@ import * as React from 'react'
 import { ArrowLeft, ArrowRight, Clock, Flag, ListChecks } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
 import { FocusExamLayout, FocusExamSubmitModal } from '@/components/templates/focus-exam-layout'
-import { FontSizeControl } from '@/features/shared/_components'
+import { FontSizeControl } from '@/components/molecules'
 import { formatTimer } from '@/features/shared/_utils/time.utils'
 import type { PracticeCategory, PublicPracticeQuestion } from '../_types/practice.types'
 
