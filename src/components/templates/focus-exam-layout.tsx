@@ -182,7 +182,7 @@ export function FocusExamLayout({
       </header>
 
       {questionNavigator && onMobileNavigatorToggle && (
-        <div className="mx-auto flex w-full max-w-2xl justify-end px-4 py-4 lg:hidden">
+        <div className="mx-auto flex w-full max-w-2xl justify-end px-4 pt-4 pb-0 lg:hidden">
           <button
             type="button"
             onClick={onMobileNavigatorToggle}
@@ -234,8 +234,7 @@ export function FocusExamLayout({
           )}
 
           <section className="min-w-0">
-            {/* Area soal */}
-            <div className="mx-auto w-full max-w-2xl px-4 pb-2 pt-6 lg:max-w-none lg:px-0 lg:pt-0">
+            <div className="mx-auto w-full max-w-2xl px-4 pb-2 pt-4 lg:max-w-none lg:px-0 lg:pt-0">
               {question}
             </div>
 
