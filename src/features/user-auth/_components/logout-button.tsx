@@ -17,11 +17,14 @@ interface LogoutButtonProps {
  * Kept as a small client boundary so app shell components can remain reusable.
  */
 export function LogoutButton({ className = '' }: LogoutButtonProps) {
+  // Router dipakai untuk mengarahkan user setelah signOut tanpa full page reload berlebih.
   const router = useRouter()
   const addToast = useToastStore((state) => state.addToast)
+  // Modal confirmation mencegah logout tidak sengaja dari sidebar/bottom nav.
   const [isOpen, setIsOpen] = React.useState(false)
   const [isSigningOut, setIsSigningOut] = React.useState(false)
 
+  // Logout memakai redirect false agar toast sukses sempat tampil sebelum route diganti.
   const handleLogout = async () => {
     try {
       setIsSigningOut(true)
@@ -48,6 +51,7 @@ export function LogoutButton({ className = '' }: LogoutButtonProps) {
     }
   }
 
+  // Portal memastikan modal logout berada di atas dashboard meski tombol ada di sidebar.
   const modal =
     isOpen && typeof document !== 'undefined'
       ? createPortal(
@@ -68,6 +72,7 @@ export function LogoutButton({ className = '' }: LogoutButtonProps) {
               <p id="logout-description" className="mt-3 text-sm leading-6 text-body">
                 Sesi belajar Kamu akan ditutup di perangkat ini.
               </p>
+              {/* Dua aksi dibuat eksplisit agar user bisa membatalkan tanpa side effect. */}
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
                 <Button
                   type="button"
@@ -95,6 +100,7 @@ export function LogoutButton({ className = '' }: LogoutButtonProps) {
 
   return (
     <>
+      {/* Trigger logout tetap sederhana agar bisa dipakai di Sidebar dan navigasi lain. */}
       <button
         type="button"
         className={[

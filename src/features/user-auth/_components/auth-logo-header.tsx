@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 // Header logo konsisten untuk halaman auth user.
 export function AuthLogoHeader() {
+  // Dua asset logo dipisah agar ukuran maskot dan wordmark bisa dikontrol responsif.
   return (
     <Link href="/" className="flex flex-col items-center gap-0 group transition-transform duration-300 hover:scale-105 active:scale-95">
       <Image 

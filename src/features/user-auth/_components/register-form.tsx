@@ -92,6 +92,7 @@ export function RegisterForm() {
   return (
     <FormSettingsLayout staticCard header={<AuthLogoHeader />}>
       <div className="space-y-6">
+        {/* Header copy menekankan benefit mulai belajar tanpa menjanjikan akses sebelum verifikasi. */}
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-black text-headline">
             Daftar Akun <span className="text-primary">Baru</span>
@@ -101,8 +102,10 @@ export function RegisterForm() {
           </p>
         </div>
 
+        {/* Google OAuth menjadi jalur utama karena email user sudah diverifikasi oleh Google. */}
         <GoogleAuthButton googleOAuthStatus={googleOAuthStatus} onClick={handleGoogleLogin} />
 
+        {/* Divider menjaga pilihan manual tetap jelas tanpa mengalahkan CTA Google. */}
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t border-border" />
@@ -114,7 +117,9 @@ export function RegisterForm() {
           </div>
         </div>
 
+        {/* Form manual membuat akun pending verification lewat endpoint register v1. */}
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Success message generic supaya duplicate email tidak mudah dienumerasi. */}
           {successMessage && (
             <div
               role="status"
@@ -125,6 +130,7 @@ export function RegisterForm() {
             </div>
           )}
 
+          {/* Error message global cukup satu blok agar form tidak terasa ramai. */}
           {errorMessage && (
             <div
               role="alert"
@@ -135,6 +141,7 @@ export function RegisterForm() {
             </div>
           )}
 
+          {/* Nama lengkap dipakai sebagai identitas awal sebelum onboarding melengkapi profil. */}
           <div className="space-y-2">
             <Label htmlFor="name">Nama Lengkap</Label>
             <Input 
@@ -145,6 +152,7 @@ export function RegisterForm() {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
+          {/* Email memakai validasi native dan akan diverifikasi server-side sebelum aktif. */}
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input 
@@ -156,6 +164,7 @@ export function RegisterForm() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+          {/* Password minimum 8 karakter mengikuti aturan validasi register saat ini. */}
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <div className="relative">
@@ -182,11 +191,13 @@ export function RegisterForm() {
                 )}
               </button>
             </div>
+            {/* Hint password dibuat ringkas agar tidak mengganggu form mobile. */}
             <p className="text-[10px] text-body">
               Gunakan kombinasi huruf, angka, dan simbol agar lebih aman.
             </p>
           </div>
 
+          {/* Loading state mencegah user mengirim request register berkali-kali. */}
           <Button 
             type="submit" 
             variant="primary" 
@@ -198,6 +209,7 @@ export function RegisterForm() {
           </Button>
         </form>
 
+        {/* Link balik login menjaga user existing tidak perlu keluar dari flow auth. */}
         <div className="text-center pt-4">
           <p className="text-sm text-body">
             Sudah punya akun?{' '}
@@ -207,6 +219,7 @@ export function RegisterForm() {
           </p>
         </div>
 
+        {/* Legal copy tetap kecil karena belum ada consent flow terpisah di auth V1. */}
         <p className="text-[10px] text-center text-body leading-tight">
           Dengan mendaftar, kamu menyetujui <Link href="/terms" className="underline">Syarat & Ketentuan</Link> serta <Link href="/privacy" className="underline">Kebijakan Privasi</Link> Umbuddy.
         </p>

@@ -2,6 +2,7 @@ import type { AuthErrorCopy } from '@/features/user-auth/_types/user-auth.types'
 
 // Mapping error credentials NextAuth ke copy aman dan ramah user.
 export function getLoginErrorMessage(error?: string | null) {
+  // Error code internal diterjemahkan tanpa membuka detail validasi credential.
   switch (error) {
     case 'PENDING_VERIFICATION':
       return 'Akunmu belum diverifikasi. Silakan cek email verifikasi dulu.'
@@ -18,6 +19,7 @@ export function getLoginErrorMessage(error?: string | null) {
 
 // Mapping error page NextAuth ke title dan description tanpa expose detail internal.
 export function getAuthErrorCopy(error?: string): AuthErrorCopy {
+  // Copy halaman error dibuat deterministik agar callback OAuth/credentials punya UX seragam.
   switch (error) {
     case 'CredentialsSignin':
       return {

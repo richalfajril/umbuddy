@@ -9,6 +9,7 @@ export function GoogleAuthButton({
   googleOAuthStatus: GoogleOAuthStatus
   onClick: () => void
 }) {
+  // Label disabled dibuat eksplisit agar env OAuth kosong tidak tampak seperti bug UI.
   return (
     <Button 
       type="button"

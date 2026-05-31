@@ -9,6 +9,7 @@ import { AuthLogoHeader } from '@/features/user-auth/_components/auth-logo-heade
 
 // Form request reset password dengan response generic anti user-enumeration.
 export function ForgotPasswordForm() {
+  // State form reset dipertahankan lokal karena endpoint selalu memberi response publik generik.
   const [email, setEmail] = React.useState('')
   const [isSubmitted, setIsSubmitted] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
@@ -32,6 +33,7 @@ export function ForgotPasswordForm() {
   return (
     <FormSettingsLayout staticCard header={<AuthLogoHeader />}>
       <div className="space-y-6">
+        {/* Intro reset menjelaskan masa berlaku link tanpa membuka status akun. */}
         <div className="text-center">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-light text-primary-dark">
             <Mail className="h-7 w-7" aria-hidden="true" />
@@ -44,6 +46,7 @@ export function ForgotPasswordForm() {
           </p>
         </div>
 
+        {/* Pesan sukses tetap generic agar email terdaftar/tidak terdaftar terlihat sama. */}
         {isSubmitted ? (
           <div
             role="status"
@@ -54,6 +57,7 @@ export function ForgotPasswordForm() {
           </div>
         ) : null}
 
+        {/* Form hanya mengirim email; token dan validasi akun diproses di server. */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
@@ -67,6 +71,7 @@ export function ForgotPasswordForm() {
             />
           </div>
 
+          {/* Button loading memberi feedback ketika request reset sedang dikirim. */}
           <Button
             type="submit"
             variant="primary"
@@ -78,6 +83,7 @@ export function ForgotPasswordForm() {
           </Button>
         </form>
 
+        {/* Link kembali membantu user yang masih ingat password tanpa mengulang route manual. */}
         <Link
           href="/auth/login"
           className="flex min-h-[44px] items-center justify-center gap-2 text-sm font-black text-primary hover:underline"

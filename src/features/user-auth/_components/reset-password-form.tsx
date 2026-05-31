@@ -8,14 +8,18 @@ import { ArrowLeft, KeyRound } from 'lucide-react'
 import { Button, Input, Label } from '@/components/ui'
 import { FormSettingsLayout } from '@/components/templates/form-settings-layout'
 
+// Form konfirmasi reset password berbasis token query dari email.
 export function ResetPasswordForm() {
+  // Token diambil dari URL karena link email mengarah langsung ke halaman ini.
   const searchParams = useSearchParams()
   const token = searchParams.get('token') ?? ''
+  // State lokal memisahkan pesan sukses, error, dan loading agar copy aman tetap jelas.
   const [password, setPassword] = React.useState('')
   const [message, setMessage] = React.useState('')
   const [error, setError] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
 
+  // Submit confirm menyerahkan token dan password baru ke endpoint server-side.
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     setMessage('')
@@ -47,6 +51,7 @@ export function ResetPasswordForm() {
     <FormSettingsLayout
       staticCard
       header={
+        // Header logo disamakan dengan auth lain sambil menjaga route reset tetap mandiri.
         <Link href="/" className="flex flex-col items-center gap-0 transition-transform hover:scale-105 active:scale-95">
           <Image
             src="/logo/logo_only.png"
@@ -70,6 +75,7 @@ export function ResetPasswordForm() {
       }
     >
       <div className="space-y-6">
+        {/* Intro reset memberi ekspektasi bahwa sesi lama akan dicabut setelah berhasil. */}
         <div className="text-center">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-light text-primary-dark">
             <KeyRound className="h-7 w-7" aria-hidden="true" />
@@ -82,6 +88,7 @@ export function ResetPasswordForm() {
           </p>
         </div>
 
+        {/* Status sukses membuat form terkunci agar token tidak dipakai ulang dari UI. */}
         {message && (
           <div
             role="status"
@@ -92,6 +99,7 @@ export function ResetPasswordForm() {
           </div>
         )}
 
+        {/* Error global mengikuti pola auth agar tidak ada banyak pesan per field. */}
         {error && (
           <div
             role="alert"
@@ -102,6 +110,7 @@ export function ResetPasswordForm() {
           </div>
         )}
 
+        {/* Password baru divalidasi minimal di client dan tetap divalidasi lagi di server. */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="password">Password Baru</Label>
@@ -117,6 +126,7 @@ export function ResetPasswordForm() {
             />
           </div>
 
+          {/* Tombol disabled saat token tidak tersedia atau reset sudah sukses. */}
           <Button
             type="submit"
             variant="primary"
@@ -129,6 +139,7 @@ export function ResetPasswordForm() {
           </Button>
         </form>
 
+        {/* Link login menjadi langkah berikutnya setelah password berhasil diubah. */}
         <Link
           href="/auth/login"
           className="flex min-h-[44px] items-center justify-center gap-2 text-sm font-black text-primary hover:underline"

@@ -140,6 +140,7 @@ export function LoginForm() {
   return (
     <FormSettingsLayout staticCard header={<AuthLogoHeader />}>
       <div className="space-y-6">
+        {/* Header copy menjaga tone auth tetap ringan dan tidak birokratis. */}
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-black text-headline">
             Selamat Datang <span className="text-primary">Kembali!</span>
@@ -149,8 +150,10 @@ export function LoginForm() {
           </p>
         </div>
 
+        {/* Jalur Google dibuat paling cepat, tetapi tetap mengikuti status konfigurasi server. */}
         <GoogleAuthButton googleOAuthStatus={googleOAuthStatus} onClick={handleGoogleLogin} />
 
+        {/* Divider memisahkan OAuth dan credentials tanpa menambah layout route. */}
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t border-border" />
@@ -162,7 +165,9 @@ export function LoginForm() {
           </div>
         </div>
 
+        {/* Form credentials tetap client-side karena NextAuth signIn butuh interaksi browser. */}
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Input email memakai validasi native browser sebagai lapisan UX awal. */}
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input 
@@ -174,6 +179,7 @@ export function LoginForm() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+          {/* Input password menyediakan toggle visibility dengan aria-label yang eksplisit. */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">Password</Label>
@@ -209,6 +215,7 @@ export function LoginForm() {
             </div>
           </div>
 
+          {/* Submit button mengunci double-submit lewat isLoading dari komponen Button. */}
           <Button 
             type="submit" 
             variant="primary" 
@@ -220,6 +227,7 @@ export function LoginForm() {
           </Button>
         </form>
 
+        {/* Link register menjaga user baru tetap berada dalam alur auth publik. */}
         <div className="text-center pt-4">
           <p className="text-sm text-body">
             Belum punya akun?{' '}
