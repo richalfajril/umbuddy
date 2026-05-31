@@ -64,15 +64,14 @@ export function PracticeResultStep({
 
         {/* Baris aksi untuk lanjut, ulang, atau kembali ke halaman utama. */}
         <div className="grid gap-3 sm:grid-cols-3">
+          <Button type="button" variant="secondary" onClick={() => onRetry(category)} leftIcon={<RotateCcw className="h-5 w-5" aria-hidden="true" />}>
+            Latihan Lagi
+          </Button>
           <Button
             type="button"
-            variant="secondary"
             onClick={onReview}
           >
             Lihat Pembahasan
-          </Button>
-          <Button type="button" onClick={() => onRetry(category)} leftIcon={<RotateCcw className="h-5 w-5" aria-hidden="true" />}>
-            Latihan Lagi
           </Button>
           <Link href="/dashboard" className="btn-secondary min-h-[44px] justify-center">
             <Home className="h-5 w-5" aria-hidden="true" />
