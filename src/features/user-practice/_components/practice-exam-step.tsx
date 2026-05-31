@@ -302,7 +302,7 @@ export function PracticeExamStep({
               disabled={!currentQuestion || !answers[currentQuestion.id] || isSubmitting}
               rightIcon={<ArrowRight className="h-5 w-5" aria-hidden="true" />}
             >
-              Ayo Lanjut!
+              Lanjut
             </Button>
           ) : (
             <Button
