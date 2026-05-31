@@ -1,6 +1,7 @@
 import { ThemeToggle } from "@/components/atoms/theme-toggle";
 import { BentoDashboardLayout } from "@/components/templates/bento-dashboard-layout";
-import { Badge, BottomNav, Card, Sidebar } from "@/components/ui";
+import { Badge, Card, Sidebar } from "@/components/ui";
+import { BottomNav } from "@/components/organisms";
 import {
   DASHBOARD_NAV_ITEMS,
   dashboardCardGlow,

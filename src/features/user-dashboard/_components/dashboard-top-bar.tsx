@@ -1,4 +1,4 @@
-import { StreakIndicator, XPBar } from "@/components/ui";
+import { StreakIndicator, XPBar } from "@/components/molecules";
 import Image from "next/image";
 
 // Top bar ringkas untuk progres jabatan, XP, streak, dan online indicator user.

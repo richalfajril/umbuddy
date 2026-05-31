@@ -1,4 +1,4 @@
-import type { AppNavItem } from "@/components/ui";
+import type { AppNavItem } from "@/components/organisms";
 import { Home, PencilLine, Swords, Trophy, UserRound } from "lucide-react";
 
 // Konstanta tampilan dashboard sementara sampai data real-time/social siap.

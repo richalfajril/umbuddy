@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Settings } from 'lucide-react'
 import { LogoutButton } from '@/features/user-auth/_components/logout-button'
-import type { AppNavItem } from './BottomNav'
+import type { AppNavItem } from '@/components/organisms'
 
 interface SidebarProps {
   items: AppNavItem[]

@@ -1,2 +1,6 @@
 export { FontSizeControl } from './font-size-control'
 export { FullScreenLoader } from './full-screen-loader'
+export { XPBar } from './XPBar'
+export { StreakIndicator } from './StreakIndicator'
+export { MascotState } from './MascotState'
+export { EmptyState } from './EmptyState'
