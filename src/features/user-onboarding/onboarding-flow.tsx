@@ -1,106 +1,24 @@
 'use client'
 
 import * as React from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Flag, ListChecks, ShieldCheck, Target, Trophy } from 'lucide-react'
 import { Button, Card, Input, Label } from '@/components/ui'
 import { FormSettingsLayout } from '@/components/templates/form-settings-layout'
 import { FocusExamLayout, FocusExamSubmitModal } from '@/components/templates/focus-exam-layout'
-
-type Step = 'loading' | 'profile' | 'diagnostic-intro' | 'diagnostic' | 'result'
-
-type PublicQuestion = {
-  id: string
-  category: 'TWK' | 'TIU' | 'TKP'
-  text: string
-  options: Record<string, string>
-  source: 'db' | 'fallback'
-}
-
-type DiagnosticResult = {
-  diagnostic_attempt_id: string
-  score_twk: number
-  score_tiu: number
-  score_tkp: number
-  total_score: number
-  weakest_category: 'TWK' | 'TIU' | 'TKP'
-  readiness: string
-}
-
-type Recommendation = {
-  primary_category: 'TWK' | 'TIU' | 'TKP'
-  title: string
-  message: string
-}
-
-type RewardResult = {
-  xp: number
-  already_claimed: boolean
-}
-
-type StatusResponse = {
-  current_step: 'profile' | 'diagnostic' | 'completed'
-  profile?: Partial<ProfileForm> | null
-  result?: DiagnosticResult | null
-}
-
-type ProfileForm = {
-  target_instansi: string
-  target_score: string
-  exam_date: string
-  province: string
-  city: string
-  institution: string
-  major: string
-  phone: string
-}
-
-const initialProfile: ProfileForm = {
-  target_instansi: '',
-  target_score: '400',
-  exam_date: '',
-  province: '',
-  city: '',
-  institution: '',
-  major: '',
-  phone: '',
-}
-
-const onboardingLogoHeader = (
-  <Link href="/" className="flex flex-col items-center gap-0 transition-transform duration-300 hover:scale-105 active:scale-95">
-    <Image
-      src="/logo/logo_only.png"
-      alt="Umbuddy Mascot"
-      width={120}
-      height={120}
-      className="h-20 w-auto sm:h-28 animate-bounce-subtle"
-      style={{ width: 'auto' }}
-      priority
-    />
-    <Image
-      src="/logo/logo_text.png"
-      alt="Umbuddy"
-      width={224}
-      height={56}
-      className="w-48 h-auto -mt-3 sm:w-56 sm:-mt-4"
-      style={{ height: 'auto' }}
-      priority
-    />
-  </Link>
-)
-
-async function readApiError(response: Response) {
-  const data = (await response.json().catch(() => null)) as { error?: { message?: string } } | null
-  return data?.error?.message ?? 'Duh, onboarding belum bisa diproses. Coba lagi ya.'
-}
-
-function toDateInputValue(value?: string | null) {
-  if (!value) return ''
-  return value.slice(0, 10)
-}
+import { OnboardingLogoHeader } from '@/features/user-onboarding/_components/onboarding-logo-header'
+import { initialProfile } from '@/features/user-onboarding/_constants/onboarding.constants'
+import type {
+  DiagnosticResult,
+  ProfileForm,
+  PublicQuestion,
+  Recommendation,
+  RewardResult,
+  StatusResponse,
+  Step,
+} from '@/features/user-onboarding/_types/onboarding.types'
+import { readApiError, toDateInputValue } from '@/features/user-onboarding/_utils/onboarding.utils'
 
 export function OnboardingFlow() {
   const router = useRouter()
@@ -319,7 +237,7 @@ export function OnboardingFlow() {
 
   if (step === 'loading') {
     return (
-      <FormSettingsLayout maxWidth="md" header={onboardingLogoHeader}>
+      <FormSettingsLayout maxWidth="md" header={<OnboardingLogoHeader />}>
         <div className="space-y-4 text-center">
           <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
           <p className="font-bold text-body">Menyiapkan onboarding kamu...</p>
@@ -591,7 +509,7 @@ export function OnboardingFlow() {
     }
 
     return (
-      <FormSettingsLayout maxWidth="lg" header={onboardingLogoHeader}>
+      <FormSettingsLayout maxWidth="lg" header={<OnboardingLogoHeader />}>
         <div className="space-y-6 text-center">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-light text-primary-dark">
             <Trophy className="h-9 w-9" aria-hidden="true" />
@@ -659,7 +577,7 @@ export function OnboardingFlow() {
     return (
       <FormSettingsLayout
         maxWidth="md"
-        header={onboardingLogoHeader}
+        header={<OnboardingLogoHeader />}
       >
         <div className="space-y-6 text-center">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-xp-light text-xp">
@@ -714,7 +632,7 @@ export function OnboardingFlow() {
     <FormSettingsLayout
       staticCard
       maxWidth="md"
-      header={onboardingLogoHeader}
+      header={<OnboardingLogoHeader />}
     >
       <form onSubmit={submitProfile} className="space-y-5">
         <div className="space-y-2 text-center">
