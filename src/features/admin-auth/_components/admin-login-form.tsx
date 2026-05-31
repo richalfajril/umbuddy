@@ -1,16 +1,20 @@
 'use client'
 
 import * as React from 'react'
-import { ShieldCheck } from 'lucide-react'
+import { Eye, EyeOff } from 'lucide-react'
+import { AuthLogoHeader } from '@/components/molecules/auth-logo-header'
+import { FormSettingsLayout } from '@/components/templates/form-settings-layout'
 import { Button, Input, Label } from '@/components/ui'
+import { useToastStore } from '@/stores/useToastStore'
 import type { AdminAuthApiError, AdminLoginFormState } from '../_types/admin-auth.types'
 
-// Form login admin dipisah dari user-auth agar backoffice tidak memakai NextAuth user session.
+// Form login admin memakai visual auth user, tetapi tetap memakai endpoint dan cookie admin.
 export function AdminLoginForm() {
   // State credential admin sengaja lokal karena endpoint login mengatur cookie httpOnly.
   const [form, setForm] = React.useState<AdminLoginFormState>({ email: '', password: '' })
-  const [message, setMessage] = React.useState('')
+  const [showPassword, setShowPassword] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
+  const { addToast } = useToastStore()
 
   // Helper update field menjaga controlled input tetap ringkas.
   const updateField = (field: keyof AdminLoginFormState, value: string) => {
@@ -20,7 +24,6 @@ export function AdminLoginForm() {
   // Submit login admin membuat session lewat API khusus admin dan redirect ke backoffice.
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    setMessage('')
     setIsLoading(true)
 
     try {
@@ -35,48 +38,43 @@ export function AdminLoginForm() {
         throw new Error(data.error?.message ?? 'Login admin belum berhasil.')
       }
 
+      addToast({
+        type: 'success',
+        title: 'Admin Terverifikasi',
+        message: 'Akses backoffice sedang disiapkan.',
+      })
       window.location.href = '/admin'
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Login admin belum berhasil.')
+      addToast({
+        type: 'error',
+        title: 'Login Admin Gagal',
+        message: error instanceof Error ? error.message : 'Login admin belum berhasil.',
+      })
     } finally {
       setIsLoading(false)
     }
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-950 px-4 py-10 text-white">
-      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-white/[0.06] p-6 shadow-2xl shadow-black/30 backdrop-blur">
-        {/* Header backoffice dibuat lebih profesional dan berbeda dari user auth. */}
-        <div className="text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-[0_4px_0_var(--color-primary-dark)]">
-            <ShieldCheck className="h-8 w-8" aria-hidden="true" />
-          </div>
-          <p className="mt-5 text-xs font-black uppercase tracking-[0.22em] text-primary">
+    <FormSettingsLayout staticCard header={<AuthLogoHeader />}>
+      <div className="space-y-6">
+        {/* Header copy admin dibuat seirama dengan login user, dengan highlight akses admin. */}
+        <div className="space-y-2 text-center">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
             Umbuddy Backoffice
           </p>
-          <h1 className="mt-2 font-display text-3xl font-black">
-            Akses <span className="text-primary">Admin</span>
+          <h1 className="text-2xl font-black text-headline">
+            Masuk sebagai <span className="text-primary">Admin</span>
           </h1>
-          <p className="mt-2 text-sm leading-6 text-slate-300">
-            Masuk dengan email dan password admin untuk mengelola operasional Umbuddy.
+          <p className="text-sm text-body">
+            Gunakan akun admin yang sudah diberi role untuk mengelola operasional Umbuddy.
           </p>
         </div>
 
-        {/* Pesan error global menjaga detail credential tetap tidak bocor. */}
-        {message && (
-          <div
-            role="alert"
-            aria-live="assertive"
-            className="mt-5 rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm font-bold text-red-100"
-          >
-            {message}
-          </div>
-        )}
-
         {/* Form credential admin memakai field minimal sesuai A1. */}
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="admin-email" className="text-white">
+            <Label htmlFor="admin-email">
               Email Admin
             </Label>
             <Input
@@ -87,24 +85,37 @@ export function AdminLoginForm() {
               value={form.email}
               onChange={(event) => updateField('email', event.target.value)}
               required
-              className="border-white/15 bg-white/10 text-white placeholder:text-slate-400"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="admin-password" className="text-white">
+            <Label htmlFor="admin-password">
               Password
             </Label>
-            <Input
-              id="admin-password"
-              type="password"
-              autoComplete="current-password"
-              placeholder="Password admin"
-              value={form.password}
-              onChange={(event) => updateField('password', event.target.value)}
-              required
-              className="border-white/15 bg-white/10 text-white placeholder:text-slate-400"
-            />
+            <div className="relative">
+              <Input
+                id="admin-password"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                placeholder="Password admin"
+                value={form.password}
+                onChange={(event) => updateField('password', event.target.value)}
+                required
+                className="pr-14"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((current) => !current)}
+                className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-xl text-muted transition-colors hover:text-headline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
+              >
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5" aria-hidden="true" />
+                ) : (
+                  <Eye className="h-5 w-5" aria-hidden="true" />
+                )}
+              </button>
+            </div>
           </div>
 
           {/* Loading state mencegah percobaan login ganda saat request berjalan. */}
@@ -114,10 +125,10 @@ export function AdminLoginForm() {
             isLoading={isLoading}
             loadingLabel="Memverifikasi..."
           >
-            Verifikasi Keamanan
+            Masuk Admin
           </Button>
         </form>
       </div>
-    </main>
+    </FormSettingsLayout>
   )
 }
