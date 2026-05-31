@@ -3,11 +3,16 @@
 import * as React from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Flag, ListChecks, ShieldCheck, Target, Trophy } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CheckCircle2, Clock, ListChecks } from 'lucide-react'
 import { Button, Card, Input, Label } from '@/components/ui'
 import { FormSettingsLayout } from '@/components/templates/form-settings-layout'
 import { FocusExamLayout, FocusExamSubmitModal } from '@/components/templates/focus-exam-layout'
-import { OnboardingLogoHeader } from '@/features/user-onboarding/_components/onboarding-logo-header'
+import {
+  DiagnosticIntroStep,
+  DiagnosticResultStep,
+  OnboardingLoadingStep,
+  OnboardingLogoHeader,
+} from '@/features/user-onboarding/_components'
 import { initialProfile } from '@/features/user-onboarding/_constants/onboarding.constants'
 import type {
   DiagnosticResult,
@@ -237,12 +242,7 @@ export function OnboardingFlow() {
 
   if (step === 'loading') {
     return (
-      <FormSettingsLayout maxWidth="md" header={<OnboardingLogoHeader />}>
-        <div className="space-y-4 text-center">
-          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-          <p className="font-bold text-body">Menyiapkan onboarding kamu...</p>
-        </div>
-      </FormSettingsLayout>
+      <OnboardingLoadingStep header={<OnboardingLogoHeader />} />
     )
   }
 
@@ -502,129 +502,26 @@ export function OnboardingFlow() {
   }
 
   if (step === 'result' && result) {
-    const resultRecommendation = recommendation ?? {
-      title: `Mulai dari ${result.weakest_category}`,
-      message: 'Umbuddy sudah membaca titik start kamu. Lanjut ke markas untuk mulai latihan pertama.',
-      primary_category: result.weakest_category,
-    }
-
     return (
-      <FormSettingsLayout maxWidth="lg" header={<OnboardingLogoHeader />}>
-        <div className="space-y-6 text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-light text-primary-dark">
-            <Trophy className="h-9 w-9" aria-hidden="true" />
-          </div>
-          <div>
-            <p className="text-sm font-black uppercase text-primary">Baseline Kamu Siap</p>
-            <h1 className="mt-2 font-display text-3xl font-black text-headline">
-              Skor <span className="text-primary">Awal:</span> {result.total_score}/550
-            </h1>
-            <p className="mt-2 text-sm leading-6 text-body">
-              Ini bukan nilai akhir, ini titik start biar latihanmu lebih tepat sasaran.
-            </p>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            {(['TWK', 'TIU', 'TKP'] as const).map((category) => (
-              <Card key={category} padding="sm" className="text-center">
-                <p className="text-xs font-black text-muted">{category}</p>
-                <p className="font-display text-2xl font-black text-headline">
-                  {category === 'TWK' ? result.score_twk : category === 'TIU' ? result.score_tiu : result.score_tkp}
-                </p>
-              </Card>
-            ))}
-          </div>
-
-          <Card padding="md" className="text-left">
-            <div className="flex gap-3">
-              <Target className="mt-1 h-6 w-6 shrink-0 text-primary" aria-hidden="true" />
-              <div>
-                <h2 className="font-display text-lg font-black text-headline">
-                  {resultRecommendation.title}
-                </h2>
-                <p className="mt-1 text-sm leading-6 text-body">
-                  {resultRecommendation.message}
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          {reward === null || reward.xp > 0 ? (
-            <div className="rounded-2xl border border-xp/40 bg-xp-light px-4 py-3 text-sm font-black text-headline">
-              +{reward?.xp ?? 50} XP {reward?.already_claimed ? 'sudah pernah diklaim.' : 'masuk kantong karena kamu menyelesaikan onboarding.'}
-            </div>
-          ) : (
-            <div className="rounded-2xl border border-border bg-surface px-4 py-3 text-sm font-black text-body">
-              Belum dapat XP karena skor awal masih 0. Kamu tetap bisa masuk markas dan mulai latihan dari nol.
-            </div>
-          )}
-
-          <Button
-            type="button"
-            className="w-full h-14 text-lg"
-            onClick={() => void enterDashboard()}
-            isLoading={isLoading}
-            loadingLabel="Membuka markas..."
-          >
-            Masuk ke Markas
-          </Button>
-        </div>
-      </FormSettingsLayout>
+      <DiagnosticResultStep
+        header={<OnboardingLogoHeader />}
+        result={result}
+        recommendation={recommendation}
+        reward={reward}
+        isLoading={isLoading}
+        onEnterDashboard={enterDashboard}
+      />
     )
   }
 
   if (step === 'diagnostic-intro') {
     return (
-      <FormSettingsLayout
-        maxWidth="md"
+      <DiagnosticIntroStep
         header={<OnboardingLogoHeader />}
-      >
-        <div className="space-y-6 text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-xp-light text-xp">
-            <Flag className="h-8 w-8" aria-hidden="true" />
-          </div>
-          <div>
-            <p className="text-sm font-black uppercase text-primary">Tes Mini 15 Soal</p>
-            <h1 className="mt-2 font-display text-3xl font-black text-headline">
-              Yuk cari <span className="text-primary">titik start</span> Kamu
-            </h1>
-            <p className="mt-3 text-sm leading-6 text-body">
-              Tes ini berisi 5 TWK, 5 TIU, dan 5 TKP. Jangan takut salah, ini bukan ujian sungguhan.
-            </p>
-          </div>
-
-          {message && (
-            <p role="status" aria-live="polite" className="rounded-xl bg-xp-light px-4 py-3 text-sm font-bold text-headline">
-              {message}
-            </p>
-          )}
-
-          <div className="grid gap-3 text-left">
-            <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-3">
-              <Clock className="h-5 w-5 text-primary" aria-hidden="true" />
-              <span className="text-sm font-bold text-headline">Durasi 15 menit</span>
-            </div>
-            <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-3">
-              <ShieldCheck className="h-5 w-5 text-primary" aria-hidden="true" />
-              <span className="text-sm font-bold text-headline">Skor dihitung server, aman dari manipulasi</span>
-            </div>
-            <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-3">
-              <Target className="h-5 w-5 text-primary" aria-hidden="true" />
-              <span className="text-sm font-bold text-headline">Komposisi 5 TWK, 5 TIU, 5 TKP</span>
-            </div>
-          </div>
-
-          <Button
-            type="button"
-            className="w-full h-14 text-lg"
-            onClick={() => void startDiagnostic()}
-            isLoading={isLoading}
-            loadingLabel="Menyiapkan..."
-          >
-            Lanjut Tes Mini
-          </Button>
-        </div>
-      </FormSettingsLayout>
+        message={message}
+        isLoading={isLoading}
+        onStartDiagnostic={startDiagnostic}
+      />
     )
   }
 
