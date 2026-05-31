@@ -187,6 +187,16 @@ export function DiagnosticExamStep({
                 </p>
               </div>
             </div>
+          ) : isLoading ? (
+            <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/45 px-4" role="alertdialog" aria-modal="true" aria-label="Memproses jawaban">
+              <div className="w-full max-w-sm rounded-3xl border border-border bg-background p-6 text-center shadow-elevated dark:bg-surface">
+                <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+                <p className="mt-5 font-display text-2xl font-black text-headline">Memproses Jawaban</p>
+                <p className="mt-2 text-sm font-bold leading-6 text-body">
+                  Mohon tunggu sebentar, nilai Kamu sedang dihitung.
+                </p>
+              </div>
+            </div>
           ) : null}
           {/* Modal submit manual merangkum kosong/ragu-ragu/terjawab sebelum dikumpulkan. */}
           <FocusExamSubmitModal
