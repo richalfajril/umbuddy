@@ -53,12 +53,15 @@ export function DiagnosticExamStep({
   const timerLabel = `${Math.floor(remainingSeconds / 60)}:${String(remainingSeconds % 60).padStart(2, '0')}`
 
   // Tombol selesai dipakai ulang di top bar mobile dan desktop.
-  const renderFinishButton = () => (
+  const renderFinishButton = (isMobile = false) => (
     <button
       type="button"
       onClick={() => onSubmitModalOpenChange(true)}
       disabled={isLoading || isAutoSubmitting}
-      className="min-h-[56px] rounded-full border-2 border-white/80 bg-white px-4 text-sm font-black text-primary-dark shadow-[0_5px_0_rgba(21,93,39,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_7px_0_rgba(21,93,39,0.22)] disabled:cursor-not-allowed disabled:opacity-60"
+      className={[
+        'rounded-full border-2 border-white/80 bg-white font-black text-primary-dark shadow-[0_5px_0_rgba(21,93,39,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_7px_0_rgba(21,93,39,0.22)] disabled:cursor-not-allowed disabled:opacity-60',
+        isMobile ? 'min-h-[44px] px-4 text-xs' : 'min-h-[56px] px-4 text-sm',
+      ].join(' ')}
     >
       Selesai
     </button>
@@ -76,29 +79,30 @@ export function DiagnosticExamStep({
   return (
     <FocusExamLayout
       topBar={
-        <div className="mx-auto max-w-3xl px-4 py-5">
-          {/* Top bar mobile dibuat stacked agar timer dan tombol selesai tetap mudah ditekan. */}
-          <div>
-            <p className="font-display text-3xl font-black leading-tight">Diagnostic CPNS</p>
-            <p className="mt-1 text-sm font-bold text-white/85">Peserta: Kamu</p>
-          </div>
-          <div className="mt-3 rounded-3xl bg-white/20 px-5 py-3 shadow-inner">
-            <div className="mb-2 text-right text-base font-black">
-              {answeredCount} / {questions.length}
+        <div className="mx-auto max-w-3xl px-4 py-3">
+          <div className="flex items-center justify-between gap-3">
+            <div className="min-w-0 flex-1">
+              <p className="truncate font-display text-xl font-black leading-tight">Diagnostic CPNS</p>
+              <div className="mt-1 flex items-center gap-2">
+                <div className="flex shrink-0 items-center gap-1.5 rounded-full bg-white/20 px-2.5 py-0.5 font-display text-sm font-black shadow-inner">
+                  <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+                  {timerLabel}
+                </div>
+                <p className="truncate text-[11px] font-bold text-white/85">Peserta: Kamu</p>
+              </div>
             </div>
-            <div className="h-2.5 rounded-full bg-white/35">
+            {renderFinishButton(true)}
+          </div>
+          <div className="mt-4 flex items-center gap-3">
+            <div className="h-2 flex-1 rounded-full bg-white/35">
               <div
                 className="h-full rounded-full bg-white transition-[width] duration-300"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
-          </div>
-          <div className="mt-1 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
-            <div className="flex min-h-[72px] items-center justify-center gap-3 rounded-full bg-white/20 font-display text-4xl font-black shadow-inner">
-              <Clock className="h-8 w-8" aria-hidden="true" />
-              {timerLabel}
-            </div>
-            {renderFinishButton()}
+            <span className="shrink-0 text-xs font-black">
+              {answeredCount} / {questions.length}
+            </span>
           </div>
         </div>
       }
