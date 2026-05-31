@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { ArrowLeft, ArrowRight, Clock, Flag, ListChecks } from 'lucide-react'
+import { Clock, Flag, ListChecks } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
 import { FocusExamLayout, FocusExamSubmitModal } from '@/components/templates/focus-exam-layout'
-import { ExamTopBar, ExamDesktopTopBar } from '@/components/organisms'
+import { ExamTopBar, ExamDesktopTopBar, ExamActionFooter } from '@/components/organisms'
 import { FontSizeControl } from '@/components/molecules'
 import { formatTimer } from '@/features/shared/_utils/time.utils'
 import type { PracticeCategory, PublicPracticeQuestion } from '../_types/practice.types'
@@ -259,64 +259,18 @@ export function PracticeExamStep({
         ) : null
       }
       actionFooter={
-        <div className="flex items-center gap-3">
-          {/* Tombol Kembali (Previous Question) */}
-          <Button
-            type="button"
-            variant="secondary"
-            className="shrink-0"
-            onClick={() => onGoToQuestion(currentIndex - 1)}
-            disabled={currentIndex === 0 || isSubmitting || timeExpired}
-            aria-label="Soal sebelumnya"
-          >
-            <ArrowLeft className="h-5 w-5" aria-hidden="true" />
-          </Button>
-          <Button
-            type="button"
-            variant="secondary"
-            className="shrink-0"
-            onClick={() => {
-              if (!currentQuestion) return
-              onToggleFlag(currentQuestion.id)
-            }}
-            aria-label="Tandai soal"
-          >
-            <Flag className={['h-5 w-5', currentQuestion && flagged[currentQuestion.id] ? 'fill-xp text-xp' : ''].join(' ')} aria-hidden="true" />
-          </Button>
-          <Button
-            type="button"
-            variant="secondary"
-            className="shrink-0 font-bold"
-            onClick={() => onGoToQuestion(currentIndex + 1)}
-            disabled={currentIndex === questions.length - 1 || isSubmitting || timeExpired}
-            aria-label="Skip soal"
-          >
-            Skip
-          </Button>
-          {/* Aksi utama: jika bukan pertanyaan terakhir lanjut, jika terakhir tampilkan modal Kunci Jawaban. */}
-          {currentIndex < questions.length - 1 && !timeExpired ? (
-            <Button
-              type="button"
-              className="flex-1"
-              onClick={() => onGoToQuestion(currentIndex + 1)}
-              disabled={!currentQuestion || !answers[currentQuestion.id] || isSubmitting}
-              rightIcon={<ArrowRight className="h-5 w-5" aria-hidden="true" />}
-            >
-              Lanjut
-            </Button>
-          ) : (
-            <Button
-              type="button"
-              className="flex-1"
-              onClick={() => onSubmitModalOpenChange(true)}
-              disabled={isSubmitting || isAutoSubmitting}
-              isLoading={isSubmitting || isAutoSubmitting}
-              loadingLabel="Menyubmit..."
-            >
-              Submit!
-            </Button>
-          )}
-        </div>
+        <ExamActionFooter
+          currentIndex={currentIndex}
+          totalQuestions={questions.length}
+          currentAnswer={currentQuestion ? answers[currentQuestion.id] : undefined}
+          timeExpired={timeExpired}
+          isSubmitting={isSubmitting}
+          isAutoSubmitting={isAutoSubmitting}
+          isFlagged={!!(currentQuestion && flagged[currentQuestion.id])}
+          onGoToQuestion={onGoToQuestion}
+          onToggleFlag={() => currentQuestion && onToggleFlag(currentQuestion.id)}
+          onSubmitModalOpen={() => onSubmitModalOpenChange(true)}
+        />
       }
     />
   )

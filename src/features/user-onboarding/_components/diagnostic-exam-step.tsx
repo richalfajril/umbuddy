@@ -1,10 +1,10 @@
 'use client'
 
 import * as React from 'react'
-import { ArrowLeft, ArrowRight, Clock, ListChecks } from 'lucide-react'
+import { Clock, ListChecks } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
 import { FocusExamLayout, FocusExamSubmitModal } from '@/components/templates/focus-exam-layout'
-import { ExamTopBar, ExamDesktopTopBar } from '@/components/organisms'
+import { ExamTopBar, ExamDesktopTopBar, ExamActionFooter } from '@/components/organisms'
 import type { PublicQuestion } from '@/features/user-onboarding/_types/onboarding.types'
 import { DiagnosticFontSizeControl } from './diagnostic-font-size-control'
 
@@ -249,41 +249,15 @@ export function DiagnosticExamStep({
         ) : null
       }
       actionFooter={
-        <div className="flex items-center gap-3">
-          {/* Footer menjaga tombol previous/next/kunci tetap konsisten di semua soal. */}
-          <Button
-            type="button"
-            variant="secondary"
-            className="shrink-0"
-            onClick={() => onGoToQuestion(currentIndex - 1)}
-            disabled={currentIndex === 0 || isLoading}
-            aria-label="Soal sebelumnya"
-          >
-            <ArrowLeft className="h-5 w-5" aria-hidden="true" />
-          </Button>
-          {currentIndex < questions.length - 1 ? (
-            <Button
-              type="button"
-              className="flex-1"
-              onClick={() => onGoToQuestion(currentIndex + 1)}
-              disabled={!currentQuestion || !answers[currentQuestion.id] || isLoading}
-              rightIcon={<ArrowRight className="h-5 w-5" aria-hidden="true" />}
-            >
-              Lanjut
-            </Button>
-          ) : (
-            <Button
-              type="button"
-              className="flex-1"
-              onClick={() => onSubmitModalOpenChange(true)}
-              disabled={isLoading}
-              isLoading={isLoading}
-              loadingLabel="Menyubmit..."
-            >
-              Submit!
-            </Button>
-          )}
-        </div>
+        <ExamActionFooter
+          currentIndex={currentIndex}
+          totalQuestions={questions.length}
+          currentAnswer={currentQuestion ? answers[currentQuestion.id] : undefined}
+          isSubmitting={isLoading}
+          isAutoSubmitting={isAutoSubmitting}
+          onGoToQuestion={onGoToQuestion}
+          onSubmitModalOpen={() => onSubmitModalOpenChange(true)}
+        />
       }
     />
   )
