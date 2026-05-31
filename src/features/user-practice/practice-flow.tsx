@@ -9,8 +9,6 @@ import type {
   PracticeResult,
 } from './_types/practice.types'
 
-// Konfigurasi statis untuk UI pilihan kategori.
-import { categoryCards } from './_constants/practice.constants'
 
 // Utilitas Latihan
 import { readApiError } from '@/features/shared/_utils/api.utils'
