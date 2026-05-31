@@ -1,4 +1,5 @@
 import * as React from 'react'
+import Link from 'next/link'
 import { ArrowLeft, ArrowRight, ListChecks } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
 import { FocusExamLayout } from '@/components/templates/focus-exam-layout'
@@ -48,32 +49,50 @@ export function PracticeReviewStep({
     onGoToReviewQuestion(Math.max(0, Math.min(nextIndex, result.review.length - 1)))
   }
 
+  // Tombol untuk kembali ke Dashboard (Markas)
+  const renderDashboardButton = (isMobile = false) => (
+    <Link
+      href="/dashboard"
+      className={[
+        'inline-flex items-center justify-center rounded-full border-2 border-white/80 bg-white font-black text-primary-dark shadow-[0_5px_0_rgba(21,93,39,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_7px_0_rgba(21,93,39,0.22)]',
+        isMobile ? 'min-h-[44px] px-4 text-xs' : 'min-h-[56px] px-4 text-sm',
+      ].join(' ')}
+    >
+      Markas
+    </Link>
+  )
+
   return (
     <FocusExamLayout
       topBar={
-        <div className="mx-auto max-w-3xl px-4 py-5">
-          <div>
-            <p className="font-display text-3xl font-black leading-tight">Pembahasan Practice</p>
-            <p className="mt-1 text-sm font-bold text-white/85">Review jawaban Kamu</p>
-          </div>
-          <div className="mt-3 rounded-3xl bg-white/20 px-5 py-3 shadow-inner">
-            <div className="mb-2 text-right text-base font-black">
-              {currentIndex + 1} / {result.review.length}
+        <div className="mx-auto max-w-3xl px-4 py-3">
+          <div className="flex items-center justify-between gap-3">
+            <div className="min-w-0 flex-1">
+              <p className="truncate font-display text-xl font-black leading-tight">Pembahasan Practice</p>
+              <div className="mt-1 flex items-center gap-2">
+                <div className="flex shrink-0 items-center gap-1.5 rounded-full bg-white/20 px-2.5 py-0.5 font-display text-sm font-black shadow-inner">
+                  Review Mode
+                </div>
+                <p className="truncate text-[11px] font-bold text-white/85">Review jawaban Kamu</p>
+              </div>
             </div>
-            <div className="h-2.5 rounded-full bg-white/35">
+            {renderDashboardButton(true)}
+          </div>
+          <div className="mt-4 flex items-center gap-3">
+            <div className="h-2 flex-1 rounded-full bg-white/35">
               <div
                 className="h-full rounded-full bg-white transition-[width] duration-300"
                 style={{ width: `${reviewProgressPercent}%` }}
               />
             </div>
-          </div>
-          <div className="mt-1 flex min-h-[72px] items-center justify-center rounded-full bg-white/20 font-display text-3xl font-black shadow-inner">
-            Review Mode
+            <span className="shrink-0 text-xs font-black">
+              {currentIndex + 1}/{result.review.length}
+            </span>
           </div>
         </div>
       }
       desktopTopBar={
-        <div className="mx-auto grid max-w-[1680px] grid-cols-[280px_minmax(0,1fr)_220px] items-center gap-6 px-6 py-4">
+        <div className="mx-auto grid max-w-[1680px] grid-cols-[280px_minmax(0,1fr)_auto] items-center gap-6 px-6 py-4">
           <div>
             <p className="font-display text-2xl font-black leading-tight">Pembahasan Practice</p>
             <p className="mt-1 text-sm font-bold text-white/85">Review jawaban Kamu</p>
@@ -90,8 +109,11 @@ export function PracticeReviewStep({
               />
             </div>
           </div>
-          <div className="flex min-h-[64px] items-center justify-center rounded-full bg-white/20 px-6 font-display text-2xl font-black">
-            Review Mode
+          <div className="flex items-center gap-3">
+            <div className="flex min-h-[56px] items-center justify-center rounded-full bg-white/20 px-6 font-display text-xl font-black">
+              Review Mode
+            </div>
+            {renderDashboardButton()}
           </div>
         </div>
       }
