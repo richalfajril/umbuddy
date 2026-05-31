@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Clock, Flag, ListChecks } from 'lucide-react'
-import { Button, Card } from '@/components/ui'
+import { Clock, ListChecks } from 'lucide-react'
+import { Card } from '@/components/ui'
 import { FocusExamLayout, FocusExamSubmitModal } from '@/components/templates/focus-exam-layout'
 import { ExamTopBar, ExamDesktopTopBar, ExamActionFooter } from '@/components/organisms'
 import { FontSizeControl } from '@/components/molecules'

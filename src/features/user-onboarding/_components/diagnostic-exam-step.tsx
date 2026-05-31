@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { Clock, ListChecks } from 'lucide-react'
-import { Button, Card } from '@/components/ui'
+import { Card } from '@/components/ui'
 import { FocusExamLayout, FocusExamSubmitModal } from '@/components/templates/focus-exam-layout'
 import { ExamTopBar, ExamDesktopTopBar, ExamActionFooter } from '@/components/organisms'
 import type { PublicQuestion } from '@/features/user-onboarding/_types/onboarding.types'
