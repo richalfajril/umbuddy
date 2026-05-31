@@ -1,7 +1,7 @@
 import { ThemeToggle } from "@/components/atoms/theme-toggle";
 import { BentoDashboardLayout } from "@/components/templates/bento-dashboard-layout";
-import { Badge, Card, Sidebar } from "@/components/ui";
-import { BottomNav } from "@/components/organisms";
+import { Badge, Card } from "@/components/ui";
+import { BottomNav, Sidebar } from "@/components/organisms";
 import {
   DASHBOARD_NAV_ITEMS,
   dashboardCardGlow,
@@ -19,6 +19,7 @@ import Link from "next/link";
 import { AnalyticsBar } from "./analytics-bar";
 import { DashboardTopBar } from "./dashboard-top-bar";
 import { MissionRow } from "./mission-row";
+import { LogoutButton } from "@/features/user-auth/_components/logout-button";
 
 // Presentational dashboard MVP yang menerima data siap-render dari server flow.
 export function UserDashboardView({
@@ -70,6 +71,7 @@ export function UserDashboardView({
             activeHref="/dashboard"
             userName={userName}
             userEmail={userEmail}
+            logoutButton={<LogoutButton />}
           />
         }
       >

@@ -2,7 +2,7 @@ import * as React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Settings } from 'lucide-react'
-import { LogoutButton } from '@/features/user-auth/_components/logout-button'
+
 import type { AppNavItem } from '@/components/organisms'
 
 interface SidebarProps {
@@ -11,6 +11,7 @@ interface SidebarProps {
   userName?: string | null
   userEmail?: string | null
   footer?: React.ReactNode
+  logoutButton?: React.ReactNode
   className?: string
 }
 
@@ -22,6 +23,7 @@ export function Sidebar({
   items,
   activeHref,
   footer,
+  logoutButton,
   className = '',
 }: SidebarProps) {
   return (
@@ -88,7 +90,7 @@ export function Sidebar({
           <Settings className="h-5 w-5" aria-hidden="true" />
           Set
         </span>
-        <LogoutButton />
+        {logoutButton}
       </div>
     </div>
   )
