@@ -2,6 +2,7 @@ import * as React from 'react'
 import { ArrowLeft, ArrowRight, Clock, Flag, ListChecks } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
 import { FocusExamLayout, FocusExamSubmitModal } from '@/components/templates/focus-exam-layout'
+import { ExamTopBar, ExamDesktopTopBar } from '@/components/organisms'
 import { FontSizeControl } from '@/components/molecules'
 import { formatTimer } from '@/features/shared/_utils/time.utils'
 import type { PracticeCategory, PublicPracticeQuestion } from '../_types/practice.types'
@@ -86,61 +87,35 @@ export function PracticeExamStep({
   return (
     <FocusExamLayout
       topBar={
-        <div className="mx-auto max-w-3xl px-4 py-3">
-          <div className="flex items-center justify-between gap-3">
-            <div className="min-w-0 flex-1">
-              <p className="truncate font-display text-xl font-black leading-tight">Quick Practice CPNS</p>
-              <div className="mt-1 flex items-center gap-2">
-                <div className="flex shrink-0 items-center gap-1.5 rounded-full bg-white/20 px-2.5 py-0.5 font-display text-sm font-black shadow-inner">
-                  <Clock className="h-3.5 w-3.5" aria-hidden="true" />
-                  {formatTimer(remainingSeconds)}
-                </div>
-                <p className="truncate text-[11px] font-bold text-white/85">Peserta: Kamu</p>
-              </div>
-            </div>
-            {renderFinishButton(true)}
-          </div>
-          <div className="mt-4 flex items-center gap-3">
-            <div className="h-2 flex-1 rounded-full bg-white/35">
-              <div
-                className="h-full rounded-full bg-white transition-[width] duration-300"
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
-            <span className="shrink-0 text-xs font-black">
-              {answeredCount}/{questions.length}
-            </span>
-          </div>
-        </div>
+        <ExamTopBar
+          title="Quick Practice CPNS"
+          subtitle="Peserta: Kamu"
+          badge={
+            <>
+              <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+              {formatTimer(remainingSeconds)}
+            </>
+          }
+          actionButton={renderFinishButton(true)}
+          progressPercent={progressPercent}
+          progressLabel={`${answeredCount}/${questions.length}`}
+        />
       }
       desktopTopBar={
-        <div className="mx-auto grid max-w-[1680px] grid-cols-[280px_minmax(0,1fr)_340px] items-center gap-6 px-6 py-4">
-          <div>
-            <p className="font-display text-2xl font-black leading-tight">Quick Practice CPNS</p>
-            <p className="mt-1 text-sm font-bold text-white/85">
-              Kategori {category} • Peserta: Kamu
-            </p>
-          </div>
-          <div className="rounded-2xl bg-white/20 px-5 py-3 shadow-inner">
-            <div className="mb-2 flex items-center justify-between gap-3 text-sm font-black">
-              <span className="text-white/80">Progress Jawaban</span>
-              <span>{answeredCount} / {questions.length}</span>
-            </div>
-            <div className="h-3 rounded-full bg-white/35">
-              <div
-                className="h-full rounded-full bg-white transition-[width] duration-300"
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex min-h-[64px] flex-1 items-center justify-center gap-3 rounded-full bg-white/20 px-6 font-display text-3xl font-black">
+        <ExamDesktopTopBar
+          title="Quick Practice CPNS"
+          subtitle={`Kategori ${category} • Peserta: Kamu`}
+          badge={
+            <>
               <Clock className="h-7 w-7" aria-hidden="true" />
               {formatTimer(remainingSeconds)}
-            </div>
-            {renderFinishButton()}
-          </div>
-        </div>
+            </>
+          }
+          actionButton={renderFinishButton()}
+          progressPercent={progressPercent}
+          progressLabel={`${answeredCount} / ${questions.length}`}
+          progressTitle="Progress Jawaban"
+        />
       }
       questionNavigator={
         <div>

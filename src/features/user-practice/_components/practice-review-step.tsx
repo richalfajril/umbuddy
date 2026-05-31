@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ArrowLeft, ArrowRight, ListChecks } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
 import { FocusExamLayout } from '@/components/templates/focus-exam-layout'
+import { ExamTopBar, ExamDesktopTopBar } from '@/components/organisms'
 import { FontSizeControl } from '@/components/molecules'
 import type { PracticeResult } from '../_types/practice.types'
 
@@ -65,57 +66,25 @@ export function PracticeReviewStep({
   return (
     <FocusExamLayout
       topBar={
-        <div className="mx-auto max-w-3xl px-4 py-3">
-          <div className="flex items-center justify-between gap-3">
-            <div className="min-w-0 flex-1">
-              <p className="truncate font-display text-xl font-black leading-tight">Pembahasan Practice</p>
-              <div className="mt-1 flex items-center gap-2">
-                <div className="flex shrink-0 items-center gap-1.5 rounded-full bg-white/20 px-2.5 py-0.5 font-display text-sm font-black shadow-inner">
-                  Review Mode
-                </div>
-                <p className="truncate text-[11px] font-bold text-white/85">Review jawaban Kamu</p>
-              </div>
-            </div>
-            {renderDashboardButton(true)}
-          </div>
-          <div className="mt-4 flex items-center gap-3">
-            <div className="h-2 flex-1 rounded-full bg-white/35">
-              <div
-                className="h-full rounded-full bg-white transition-[width] duration-300"
-                style={{ width: `${reviewProgressPercent}%` }}
-              />
-            </div>
-            <span className="shrink-0 text-xs font-black">
-              {currentIndex + 1}/{result.review.length}
-            </span>
-          </div>
-        </div>
+        <ExamTopBar
+          title="Pembahasan Practice"
+          subtitle="Review jawaban Kamu"
+          badge="Review Mode"
+          actionButton={renderDashboardButton(true)}
+          progressPercent={reviewProgressPercent}
+          progressLabel={`${currentIndex + 1}/${result.review.length}`}
+        />
       }
       desktopTopBar={
-        <div className="mx-auto grid max-w-[1680px] grid-cols-[280px_minmax(0,1fr)_auto] items-center gap-6 px-6 py-4">
-          <div>
-            <p className="font-display text-2xl font-black leading-tight">Pembahasan Practice</p>
-            <p className="mt-1 text-sm font-bold text-white/85">Review jawaban Kamu</p>
-          </div>
-          <div className="rounded-2xl bg-white/20 px-5 py-3 shadow-inner">
-            <div className="mb-2 flex items-center justify-between gap-3 text-sm font-black">
-              <span className="text-white/80">Progress Pembahasan</span>
-              <span>{currentIndex + 1} / {result.review.length}</span>
-            </div>
-            <div className="h-3 rounded-full bg-white/35">
-              <div
-                className="h-full rounded-full bg-white transition-[width] duration-300"
-                style={{ width: `${reviewProgressPercent}%` }}
-              />
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex min-h-[56px] items-center justify-center rounded-full bg-white/20 px-6 font-display text-xl font-black">
-              Review Mode
-            </div>
-            {renderDashboardButton()}
-          </div>
-        </div>
+        <ExamDesktopTopBar
+          title="Pembahasan Practice"
+          subtitle="Review jawaban Kamu"
+          badge="Review Mode"
+          actionButton={renderDashboardButton()}
+          progressPercent={reviewProgressPercent}
+          progressLabel={`${currentIndex + 1} / ${result.review.length}`}
+          progressTitle="Progress Pembahasan"
+        />
       }
       questionNavigator={
         <div>
