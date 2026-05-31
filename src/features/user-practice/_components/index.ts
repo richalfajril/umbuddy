@@ -1,3 +1,5 @@
 export { PracticeLoadingStep } from './practice-loading-step'
 export { PracticeSetupStep } from './practice-setup-step'
 export { PracticeResultStep } from './practice-result-step'
+export { PracticeExamStep } from './practice-exam-step'
+export { PracticeFontSizeControl } from './practice-font-size-control'
