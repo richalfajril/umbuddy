@@ -19,6 +19,7 @@ export function LoginForm() {
   const [password, setPassword] = React.useState('')
   const [showPassword, setShowPassword] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
+  const [isGoogleLoading, setIsGoogleLoading] = React.useState(false)
   const [googleOAuthStatus, setGoogleOAuthStatus] = React.useState<GoogleOAuthStatus>('NOT_VERIFIED')
   const { addToast } = useToastStore()
 
@@ -134,6 +135,7 @@ export function LoginForm() {
       return
     }
 
+    setIsGoogleLoading(true)
     signIn('google', { callbackUrl: '/dashboard' })
   }
 
@@ -151,7 +153,7 @@ export function LoginForm() {
         </div>
 
         {/* Jalur Google dibuat paling cepat, tetapi tetap mengikuti status konfigurasi server. */}
-        <GoogleAuthButton googleOAuthStatus={googleOAuthStatus} onClick={handleGoogleLogin} />
+        <GoogleAuthButton googleOAuthStatus={googleOAuthStatus} onClick={handleGoogleLogin} isLoading={isGoogleLoading} />
 
         {/* Divider memisahkan OAuth dan credentials tanpa menambah layout route. */}
         <div className="relative">

@@ -19,6 +19,7 @@ export function RegisterForm() {
   const [password, setPassword] = React.useState('')
   const [showPassword, setShowPassword] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
+  const [isGoogleLoading, setIsGoogleLoading] = React.useState(false)
   const [successMessage, setSuccessMessage] = React.useState('')
   const [errorMessage, setErrorMessage] = React.useState('')
   const [googleOAuthStatus, setGoogleOAuthStatus] = React.useState<GoogleOAuthStatus>('NOT_VERIFIED')
@@ -86,6 +87,7 @@ export function RegisterForm() {
       return
     }
 
+    setIsGoogleLoading(true)
     signIn('google', { callbackUrl: '/dashboard' })
   }
 
@@ -103,7 +105,7 @@ export function RegisterForm() {
         </div>
 
         {/* Google OAuth menjadi jalur utama karena email user sudah diverifikasi oleh Google. */}
-        <GoogleAuthButton googleOAuthStatus={googleOAuthStatus} onClick={handleGoogleLogin} />
+        <GoogleAuthButton googleOAuthStatus={googleOAuthStatus} onClick={handleGoogleLogin} isLoading={isGoogleLoading} />
 
         {/* Divider menjaga pilihan manual tetap jelas tanpa mengalahkan CTA Google. */}
         <div className="relative">

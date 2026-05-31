@@ -5,9 +5,11 @@ import type { GoogleOAuthStatus } from '@/features/user-auth/_types/user-auth.ty
 export function GoogleAuthButton({
   googleOAuthStatus,
   onClick,
+  isLoading,
 }: {
   googleOAuthStatus: GoogleOAuthStatus
   onClick: () => void
+  isLoading?: boolean
 }) {
   // Label disabled dibuat eksplisit agar env OAuth kosong tidak tampak seperti bug UI.
   return (
@@ -16,7 +18,9 @@ export function GoogleAuthButton({
       variant="secondary" 
       className="w-full h-14 bg-background border-border hover:bg-surface flex items-center justify-center gap-3"
       onClick={onClick}
-      disabled={googleOAuthStatus !== 'PASS'}
+      disabled={googleOAuthStatus !== 'PASS' || isLoading}
+      isLoading={isLoading}
+      loadingLabel="Menghubungkan..."
     >
       <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
         <path
@@ -36,7 +40,7 @@ export function GoogleAuthButton({
           d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.89-2.99c-1.08.72-2.47 1.17-4.07 1.17-3.6 0-6.12-1.8-7.02-4.49L1.13 16.7C3.2 20.59 7.24 23 12 23z"
         />
       </svg>
-      <span className="text-headline font-bold">
+      <span className={['text-headline font-bold', isLoading && 'opacity-0'].filter(Boolean).join(' ')}>
         {googleOAuthStatus === 'PASS' ? 'Lanjut dengan Google' : 'Google Login Belum Aktif'}
       </span>
     </Button>
