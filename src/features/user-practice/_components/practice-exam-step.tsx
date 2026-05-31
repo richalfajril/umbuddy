@@ -283,6 +283,16 @@ export function PracticeExamStep({
           >
             <Flag className={['h-5 w-5', currentQuestion && flagged[currentQuestion.id] ? 'fill-xp text-xp' : ''].join(' ')} aria-hidden="true" />
           </Button>
+          <Button
+            type="button"
+            variant="secondary"
+            className="shrink-0 font-bold"
+            onClick={() => onGoToQuestion(currentIndex + 1)}
+            disabled={currentIndex === questions.length - 1 || isSubmitting || timeExpired}
+            aria-label="Skip soal"
+          >
+            Skip
+          </Button>
           {/* Aksi utama: jika bukan pertanyaan terakhir lanjut, jika terakhir tampilkan modal Kunci Jawaban. */}
           {currentIndex < questions.length - 1 && !timeExpired ? (
             <Button
