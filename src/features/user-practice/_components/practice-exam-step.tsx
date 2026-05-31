@@ -2,8 +2,8 @@ import * as React from 'react'
 import { ArrowLeft, ArrowRight, Clock, Flag, ListChecks } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
 import { FocusExamLayout, FocusExamSubmitModal } from '@/components/templates/focus-exam-layout'
-import { PracticeFontSizeControl } from './practice-font-size-control'
-import { formatTimer } from '../_utils/practice.utils'
+import { FontSizeControl } from '@/features/shared/_components'
+import { formatTimer } from '@/features/shared/_utils/time.utils'
 import type { PracticeCategory, PublicPracticeQuestion } from '../_types/practice.types'
 
 // Props untuk menerima seluruh state aktif dari exam (pertanyaan, jawaban, sisa waktu, dll) dan callback fungsi.
@@ -72,7 +72,7 @@ export function PracticeExamStep({
 
   // Komponen kendali ukuran font yang akan disematkan di UI soal.
   const fontSizeControl = (
-    <PracticeFontSizeControl 
+    <FontSizeControl 
       fontSize={examFontSize} 
       onChange={onFontSizeChange} 
       ariaLabelDecrease="Perkecil ukuran font soal"

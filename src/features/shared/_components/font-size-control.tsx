@@ -1,20 +1,20 @@
 import * as React from 'react'
 
 // Props untuk mengatur ukuran font yang akan dikirim ke komponen induk.
-type PracticeFontSizeControlProps = {
+type FontSizeControlProps = {
   fontSize: number
   onChange: (updater: number | ((current: number) => number)) => void
   ariaLabelDecrease?: string
   ariaLabelIncrease?: string
 }
 
-// Render UI pengatur ukuran font untuk mempermudah user membaca teks.
-export function PracticeFontSizeControl({
+// Render UI pengatur ukuran font generik untuk mempermudah user membaca teks.
+export function FontSizeControl({
   fontSize,
   onChange,
   ariaLabelDecrease = 'Perkecil ukuran font',
   ariaLabelIncrease = 'Perbesar ukuran font',
-}: PracticeFontSizeControlProps) {
+}: FontSizeControlProps) {
   return (
     <div className="flex min-h-[36px] items-center rounded-full border border-border bg-surface p-1 text-sm font-black text-headline dark:bg-background">
       <button

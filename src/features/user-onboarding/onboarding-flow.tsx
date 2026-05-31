@@ -21,7 +21,8 @@ import type {
   StatusResponse,
   Step,
 } from '@/features/user-onboarding/_types/onboarding.types'
-import { readApiError, toDateInputValue } from '@/features/user-onboarding/_utils/onboarding.utils'
+import { toDateInputValue } from '@/features/user-onboarding/_utils/onboarding.utils'
+import { readApiError } from '@/features/shared/_utils/api.utils'
 
 // Client orchestration untuk profile setup, diagnostic test, auto-submit, dan redirect onboarding.
 export function OnboardingFlow() {

@@ -13,11 +13,13 @@ import type {
 import { categoryCards } from './_constants/practice.constants'
 
 // Utilitas Latihan
-import { readApiError } from './_utils/practice.utils'
+import { readApiError } from '@/features/shared/_utils/api.utils'
+
+// Komponen UI Shared
+import { FullScreenLoader } from '@/features/shared/_components'
 
 // Komponen UI Latihan
 import {
-  PracticeLoadingStep,
   PracticeSetupStep,
   PracticeResultStep,
   PracticeExamStep,
@@ -205,7 +207,7 @@ export function PracticeFlow() {
 
   // Render tampilan jika dalam kondisi sedang loading request API.
   if (step === 'loading') {
-    return <PracticeLoadingStep />
+    return <FullScreenLoader message="Menyiapkan latihan Kamu..." />
   }
 
   // Render tampilan utama latihan ujian (exam screen).

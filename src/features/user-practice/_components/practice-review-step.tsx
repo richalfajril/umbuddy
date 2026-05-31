@@ -2,7 +2,7 @@ import * as React from 'react'
 import { ArrowLeft, ArrowRight, ListChecks } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
 import { FocusExamLayout } from '@/components/templates/focus-exam-layout'
-import { PracticeFontSizeControl } from './practice-font-size-control'
+import { FontSizeControl } from '@/features/shared/_components'
 import type { PracticeResult } from '../_types/practice.types'
 
 // Props untuk menerima seluruh state aktif dari hasil review dan callback navigasi.
@@ -35,7 +35,7 @@ export function PracticeReviewStep({
 
   // Komponen kendali ukuran font yang akan disematkan di UI pembahasan.
   const fontSizeControl = (
-    <PracticeFontSizeControl 
+    <FontSizeControl 
       fontSize={examFontSize} 
       onChange={onFontSizeChange} 
       ariaLabelDecrease="Perkecil ukuran font pembahasan"
