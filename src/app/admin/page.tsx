@@ -1,5 +1,6 @@
-import { AdminDashboardFlow } from '@/features/admin-dashboard/admin-dashboard-flow'
+import { redirect } from 'next/navigation'
 
+// Route admin root diarahkan ke dashboard eksplisit agar URL backoffice konsisten.
 export default function AdminPage() {
-  return <AdminDashboardFlow />
+  redirect('/admin/dashboard')
 }

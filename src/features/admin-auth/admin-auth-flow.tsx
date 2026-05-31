@@ -7,7 +7,7 @@ export async function AdminAuthFlow() {
   const session = await AdminAuthService.getCurrentAdmin()
 
   if (session) {
-    redirect('/admin')
+    redirect('/admin/dashboard')
   }
 
   return <AdminLoginForm />

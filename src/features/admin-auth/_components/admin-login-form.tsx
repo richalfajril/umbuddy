@@ -43,7 +43,7 @@ export function AdminLoginForm() {
         title: 'Admin Terverifikasi',
         message: 'Akses backoffice sedang disiapkan.',
       })
-      window.location.href = '/admin'
+      window.location.href = '/admin/dashboard'
     } catch (error) {
       addToast({
         type: 'error',
