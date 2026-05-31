@@ -278,9 +278,9 @@ export function DiagnosticExamStep({
               onClick={() => onSubmitModalOpenChange(true)}
               disabled={isLoading}
               isLoading={isLoading}
-              loadingLabel="Mengunci..."
+              loadingLabel="Menyubmit..."
             >
-              Kunci Jawaban!
+              Submit!
             </Button>
           )}
         </div>

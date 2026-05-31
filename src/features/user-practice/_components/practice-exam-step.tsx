@@ -309,11 +309,11 @@ export function PracticeExamStep({
               type="button"
               className="flex-1"
               onClick={() => onSubmitModalOpenChange(true)}
-              disabled={isSubmitting}
-              isLoading={isSubmitting}
-              loadingLabel="Mengunci..."
+              disabled={isSubmitting || isAutoSubmitting}
+              isLoading={isSubmitting || isAutoSubmitting}
+              loadingLabel="Menyubmit..."
             >
-              Kunci Jawaban!
+              Submit!
             </Button>
           )}
         </div>
