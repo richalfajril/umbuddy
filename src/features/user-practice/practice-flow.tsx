@@ -6,71 +6,22 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Flag, Home, ListChecks, Rot
 import { Button, Card } from '@/components/ui'
 import { FocusExamLayout, FocusExamSubmitModal } from '@/components/templates/focus-exam-layout'
 
-type PracticeCategory = 'TWK' | 'TIU' | 'TKP'
-type PracticeStep = 'setup' | 'loading' | 'practice' | 'result' | 'review'
+// Practice Domain Types
+import type {
+  PracticeCategory,
+  PracticeStep,
+  PublicPracticeQuestion,
+  PracticeReviewItem,
+  PracticeResult,
+} from './_types/practice.types'
 
-type PublicPracticeQuestion = {
-  id: string
-  category: PracticeCategory
-  text: string
-  options: Record<string, string>
-  source: 'db' | 'fallback'
-}
+// Practice Config Constants
+import { categoryCards } from './_constants/practice.constants'
 
-type PracticeReviewItem = {
-  question_id: string
-  category: PracticeCategory
-  text: string
-  options: Record<string, string>
-  selected_option: string | null
-  answer_key: string | null
-  correct: boolean | null
-  score: number
-  time_spent: number
-  explanation: string | null
-}
+// Practice Utilities
+import { readApiError, formatTimer } from './_utils/practice.utils'
 
-type PracticeResult = {
-  session_id: string
-  score: number
-  correct_count: number
-  total_questions: number
-  average_time: number
-  review: PracticeReviewItem[]
-  recommendations: Array<{ category: PracticeCategory; message: string }>
-  xp_award: { xp: number; already_claimed: boolean }
-}
 
-const categoryCards: Array<{
-  category: PracticeCategory
-  title: string
-  description: string
-}> = [
-  {
-    category: 'TWK',
-    title: 'TWK',
-    description: 'Pancasila, UUD 1945, nasionalisme, dan bela negara.',
-  },
-  {
-    category: 'TIU',
-    title: 'TIU',
-    description: 'Logika, numerik, analogi, deret, dan silogisme.',
-  },
-  {
-    category: 'TKP',
-    title: 'TKP',
-    description: 'Pelayanan publik, integritas, adaptasi, dan kerja sama.',
-  },
-]
-
-async function readApiError(response: Response) {
-  const data = (await response.json().catch(() => null)) as { error?: { message?: string } } | null
-  return data?.error?.message ?? 'Duh, latihan belum bisa diproses. Coba lagi ya.'
-}
-
-function formatTimer(seconds: number) {
-  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`
-}
 
 export function PracticeFlow() {
   const [step, setStep] = React.useState<PracticeStep>('setup')
