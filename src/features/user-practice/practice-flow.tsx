@@ -177,9 +177,6 @@ export function PracticeFlow() {
       setIsAutoSubmitting(false)
       setSubmitModalOpen(false)
       didAutoSubmitRef.current = false
-      if (data.fallback_used) {
-        setMessage('Bank soal published belum lengkap, jadi Umbuddy pakai soal latihan aman sementara.')
-      }
       setStep('practice')
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Latihan belum bisa dimulai.')

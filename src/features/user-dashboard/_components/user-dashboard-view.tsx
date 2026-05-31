@@ -1,7 +1,8 @@
 import { ThemeToggle } from "@/components/atoms/theme-toggle";
+import { BottomNav, Sidebar } from "@/components/organisms";
 import { BentoDashboardLayout } from "@/components/templates/bento-dashboard-layout";
 import { Badge, Card } from "@/components/ui";
-import { BottomNav, Sidebar } from "@/components/organisms";
+import { LogoutButton } from "@/features/user-auth/_components/logout-button";
 import {
   DASHBOARD_NAV_ITEMS,
   dashboardCardGlow,
@@ -19,7 +20,6 @@ import Link from "next/link";
 import { AnalyticsBar } from "./analytics-bar";
 import { DashboardTopBar } from "./dashboard-top-bar";
 import { MissionRow } from "./mission-row";
-import { LogoutButton } from "@/features/user-auth/_components/logout-button";
 
 // Presentational dashboard MVP yang menerima data siap-render dari server flow.
 export function UserDashboardView({
@@ -104,8 +104,7 @@ export function UserDashboardView({
               <div className="min-w-0">
                 <h1 className="font-display text-3xl font-black leading-tight text-headline">
                   Hai,{" "}
-                  <span className="text-primary">{userName || "Pejuang"}</span>
-                  !
+                  <span className="text-primary">{userName || "Pejuang"}</span>!
                 </h1>
                 <p className="mt-2 text-sm leading-6 text-body">
                   Fokus ke langkah kecil paling berdampak hari ini.
@@ -114,7 +113,7 @@ export function UserDashboardView({
                   href="/practice"
                   className="btn-primary mt-4 inline-flex min-h-[44px] items-center justify-center gap-2 px-5 py-2.5 text-sm"
                 >
-                  Mulai Daily Practice
+                  Mulai Quick Practice
                   <ChevronRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
               </div>

@@ -196,10 +196,6 @@ export function OnboardingFlow() {
       setIsAutoSubmitting(false)
       setSubmitModalOpen(false)
       didAutoSubmitRef.current = false
-      if (data.fallback_used) {
-        // Fallback hanya diinformasikan sebagai UX note, bukan error blocking.
-        setMessage('Bank soal published belum lengkap, jadi Umbuddy pakai soal mini aman sementara.')
-      }
       setStep('diagnostic')
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Tes mini belum bisa dimulai.')
