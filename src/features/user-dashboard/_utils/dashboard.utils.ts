@@ -4,6 +4,7 @@ import type {
   ResolvedProgression,
 } from "../_types/dashboard.types";
 
+// Resolve total XP menjadi jabatan, golongan, badge, dan progres pangkat dashboard.
 export function resolveProgression(totalXp: number): ResolvedProgression {
   let currentIndex = 0;
   for (let index = progressionRanks.length - 1; index >= 0; index -= 1) {

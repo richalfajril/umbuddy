@@ -1,3 +1,4 @@
+// Tipe data siap-render untuk user dashboard feature.
 export type DashboardScore = {
   label: string;
   percent: number;

@@ -11,6 +11,7 @@ import { prisma } from "@/lib/prisma/client";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
+// Server composition untuk guard session, ambil data dashboard, lalu render view.
 export async function UserDashboardFlow() {
   const session = await getServerSession(authConfig);
   if (!session || session.user.revoked) {

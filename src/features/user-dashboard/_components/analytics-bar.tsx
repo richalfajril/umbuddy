@@ -1,3 +1,4 @@
+// Bar statistik kecil untuk membaca progres per subtes dashboard.
 export function AnalyticsBar({
   label,
   percent,

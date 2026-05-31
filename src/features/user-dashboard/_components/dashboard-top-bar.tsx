@@ -1,6 +1,7 @@
 import { StreakIndicator, XPBar } from "@/components/ui";
 import Image from "next/image";
 
+// Top bar ringkas untuk progres jabatan, XP, streak, dan online indicator user.
 export function DashboardTopBar({
   streakDays,
   currentJabatan,

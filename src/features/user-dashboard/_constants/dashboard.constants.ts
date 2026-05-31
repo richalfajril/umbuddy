@@ -1,6 +1,7 @@
 import type { AppNavItem } from "@/components/ui";
 import { Home, PencilLine, Swords, Trophy, UserRound } from "lucide-react";
 
+// Konstanta tampilan dashboard sementara sampai data real-time/social siap.
 export const DASHBOARD_NAV_ITEMS: AppNavItem[] = [
   { label: "Home", href: "/dashboard", icon: Home },
   { label: "Practice", href: "/practice", icon: PencilLine, disabled: true },

@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 
+// Row misi harian dengan status, checkbox visual, dan progress bar.
 export function MissionRow({
   title,
   status,

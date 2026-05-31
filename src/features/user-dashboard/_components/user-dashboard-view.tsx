@@ -19,6 +19,7 @@ import { AnalyticsBar } from "./analytics-bar";
 import { DashboardTopBar } from "./dashboard-top-bar";
 import { MissionRow } from "./mission-row";
 
+// Presentational dashboard MVP yang menerima data siap-render dari server flow.
 export function UserDashboardView({
   userName,
   userEmail,
