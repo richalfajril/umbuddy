@@ -20,7 +20,7 @@ import { FullScreenLoader } from '@/components/molecules'
 
 // Komponen UI Latihan
 import {
-  PracticeSetupStep,
+  PracticePageView,
   PracticeResultStep,
   PracticeExamStep,
   PracticeReviewStep,
@@ -28,8 +28,14 @@ import {
 
 
 
+// Props dari server untuk identitas user (dipakai di sidebar).
+type PracticeFlowProps = {
+  userName?: string | null
+  userEmail?: string | null
+}
+
 // Komponen utama orchestrator untuk alur latihan pengguna.
-export function PracticeFlow() {
+export function PracticeFlow({ userName, userEmail }: PracticeFlowProps = {}) {
   // State dasar alur dan pengaturan latihan.
   const [step, setStep] = React.useState<PracticeStep>('setup')
   const [category, setCategory] = React.useState<PracticeCategory>('TWK')
@@ -56,6 +62,8 @@ export function PracticeFlow() {
   const [mobileNavigatorOpen, setMobileNavigatorOpen] = React.useState(false)
   const [submitModalOpen, setSubmitModalOpen] = React.useState(false)
   const [examFontSize, setExamFontSize] = React.useState(16)
+  // State khusus untuk loading awal ketika user klik 'Mulai Latihan' di halaman setup.
+  const [isStarting, setIsStarting] = React.useState(false)
   
   // Ref untuk menghindari pengiriman (submit) otomatis yang duplikat.
   const didAutoSubmitRef = React.useRef(false)
@@ -140,6 +148,7 @@ export function PracticeFlow() {
 
   // Memulai sesi latihan baru dengan mengirim request ke server.
   async function startPractice(nextCategory = category) {
+    setIsStarting(true)
     setStep('loading')
     setMessage('')
     setResult(null)
@@ -181,6 +190,8 @@ export function PracticeFlow() {
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Latihan belum bisa dimulai.')
       setStep('setup')
+    } finally {
+      setIsStarting(false)
     }
   }
 
@@ -269,12 +280,14 @@ export function PracticeFlow() {
     )
   }
 
-  // Fallback utama adalah setup screen untuk user memilih kategori.
+  // Fallback utama adalah halaman landing Practice dengan shell navigasi.
   return (
-    <PracticeSetupStep
+    <PracticePageView
+      userName={userName}
+      userEmail={userEmail}
       category={category}
       message={message}
-      categoryCards={categoryCards}
+      isStarting={isStarting}
       onCategoryChange={setCategory}
       onStartPractice={() => void startPractice()}
     />

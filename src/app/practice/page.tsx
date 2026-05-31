@@ -13,5 +13,10 @@ export default async function PracticePage() {
     redirect('/onboarding')
   }
 
-  return <PracticeFlow />
+  return (
+    <PracticeFlow
+      userName={session.user.name}
+      userEmail={session.user.email}
+    />
+  )
 }
