@@ -5,6 +5,7 @@ import { FocusExamLayout } from '@/components/templates/focus-exam-layout'
 import { PracticeFontSizeControl } from './practice-font-size-control'
 import type { PracticeResult } from '../_types/practice.types'
 
+// Props untuk menerima seluruh state aktif dari hasil review dan callback navigasi.
 type PracticeReviewStepProps = {
   result: PracticeResult
   currentIndex: number
@@ -32,6 +33,7 @@ export function PracticeReviewStep({
   
   if (!currentReviewItem) return null
 
+  // Komponen kendali ukuran font yang akan disematkan di UI pembahasan.
   const fontSizeControl = (
     <PracticeFontSizeControl 
       fontSize={examFontSize} 
@@ -41,6 +43,7 @@ export function PracticeReviewStep({
     />
   )
 
+  // Handler untuk memastikan index pindah pembahasan tidak melampaui batas array.
   const goToReviewQuestion = (nextIndex: number) => {
     onGoToReviewQuestion(Math.max(0, Math.min(nextIndex, result.review.length - 1)))
   }
@@ -103,6 +106,7 @@ export function PracticeReviewStep({
             <span className="flex min-w-0 shrink items-center gap-1.5"><span className="h-2.5 w-2.5 shrink-0 rounded bg-error" /> Salah</span>
             <span className="flex min-w-0 shrink items-center gap-1.5"><span className="h-2.5 w-2.5 shrink-0 rounded border border-border bg-background dark:bg-surface" /> Kosong</span>
           </div>
+          {/* Iterasi setiap soal untuk membuat tombol navigasi cepat review (ditandai dengan benar/salah/kosong). */}
           <div className="grid grid-cols-5 gap-2">
             {result.review.map((item, index) => {
               const isCurrent = index === currentIndex
@@ -155,6 +159,7 @@ export function PracticeReviewStep({
       }
       answerOptions={
         <div className="space-y-3">
+          {/* Menampilkan seluruh opsi jawaban beserta indikator kunci dan jawaban user. */}
           {Object.entries(currentReviewItem.options).map(([key, value]) => {
             const isSelected = currentReviewItem.selected_option === key
             const isAnswer = currentReviewItem.answer_key === key
@@ -194,6 +199,7 @@ export function PracticeReviewStep({
             )
           })}
 
+          {/* Kotak penjelasan/pembahasan mendetail mengapa jawaban tersebut benar. */}
           <Card padding="md" className="space-y-2">
             <p className="text-xs font-black uppercase text-primary">Pembahasan</p>
             <p className="font-normal leading-7 text-body" style={{ fontSize: examFontSize }}>
@@ -204,6 +210,7 @@ export function PracticeReviewStep({
       }
       actionFooter={
         <div className="flex items-center gap-3">
+          {/* Tombol kembali ke pembahasan sebelumnya */}
           <Button
             type="button"
             variant="secondary"
@@ -214,6 +221,7 @@ export function PracticeReviewStep({
           >
             <ArrowLeft className="h-5 w-5" aria-hidden="true" />
           </Button>
+          {/* Aksi utama: jika bukan pembahasan terakhir lanjut, jika terakhir kembali ke ringkasan nilai. */}
           {currentIndex < result.review.length - 1 ? (
             <Button
               type="button"

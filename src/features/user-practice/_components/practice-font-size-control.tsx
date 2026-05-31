@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+// Props untuk mengatur ukuran font yang akan dikirim ke komponen induk.
 type PracticeFontSizeControlProps = {
   fontSize: number
   onChange: (updater: number | ((current: number) => number)) => void

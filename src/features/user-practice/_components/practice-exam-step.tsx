@@ -6,6 +6,7 @@ import { PracticeFontSizeControl } from './practice-font-size-control'
 import { formatTimer } from '../_utils/practice.utils'
 import type { PracticeCategory, PublicPracticeQuestion } from '../_types/practice.types'
 
+// Props untuk menerima seluruh state aktif dari exam (pertanyaan, jawaban, sisa waktu, dll) dan callback fungsi.
 type PracticeExamStepProps = {
   category: PracticeCategory
   questions: PublicPracticeQuestion[]
@@ -57,6 +58,7 @@ export function PracticeExamStep({
   const timeExpired = remainingSeconds <= 0
   const currentQuestion = questions[currentIndex]
 
+  // Render tombol selesaikan latihan (terdapat di header baik desktop maupun mobile).
   const renderFinishButton = () => (
     <button
       type="button"
@@ -68,6 +70,7 @@ export function PracticeExamStep({
     </button>
   )
 
+  // Komponen kendali ukuran font yang akan disematkan di UI soal.
   const fontSizeControl = (
     <PracticeFontSizeControl 
       fontSize={examFontSize} 
@@ -145,6 +148,7 @@ export function PracticeExamStep({
             <span className="flex min-w-0 shrink items-center gap-1.5"><span className="h-2.5 w-2.5 shrink-0 rounded bg-primary" /> Terjawab</span>
             <span className="flex min-w-0 shrink items-center gap-1.5"><span className="h-2.5 w-2.5 shrink-0 rounded border border-border bg-background dark:bg-surface" /> Kosong</span>
           </div>
+          {/* Iterasi setiap soal untuk membuat tombol navigasi cepat (ditandai dengan warna sesuai statusnya). */}
           <div className="grid grid-cols-5 gap-2">
             {questions.map((question, index) => {
               const isCurrent = index === currentIndex
@@ -181,6 +185,7 @@ export function PracticeExamStep({
       onMobileNavigatorToggle={onMobileNavigatorToggle}
       statusOverlay={
         <>
+          {/* Menampilkan overlay khusus ketika waktu habis dan jawaban sedang disubmit otomatis. */}
           {isAutoSubmitting ? (
             <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/45 px-4" role="alertdialog" aria-modal="true" aria-label="Waktu habis">
               <div className="w-full max-w-sm rounded-3xl border border-border bg-background p-6 text-center shadow-elevated dark:bg-surface">
@@ -192,6 +197,7 @@ export function PracticeExamStep({
               </div>
             </div>
           ) : null}
+          {/* Modal konfirmasi ketika user menekan tombol 'Selesai' / 'Kunci Jawaban'. */}
           <FocusExamSubmitModal
             isOpen={submitModalOpen}
             emptyCount={emptyCount}
@@ -235,6 +241,7 @@ export function PracticeExamStep({
       answerOptions={
         currentQuestion ? (
           <div className="space-y-3">
+            {/* Iterasi semua pilihan ganda dari pertanyaan yang aktif. */}
             {Object.entries(currentQuestion.options).map(([key, value]) => {
               const selected = answers[currentQuestion.id] === key
               return (
@@ -263,6 +270,7 @@ export function PracticeExamStep({
       }
       actionFooter={
         <div className="flex items-center gap-3">
+          {/* Tombol Kembali (Previous Question) */}
           <Button
             type="button"
             variant="secondary"
@@ -285,6 +293,7 @@ export function PracticeExamStep({
           >
             <Flag className={['h-5 w-5', currentQuestion && flagged[currentQuestion.id] ? 'fill-xp text-xp' : ''].join(' ')} aria-hidden="true" />
           </Button>
+          {/* Aksi utama: jika bukan pertanyaan terakhir lanjut, jika terakhir tampilkan modal Kunci Jawaban. */}
           {currentIndex < questions.length - 1 && !timeExpired ? (
             <Button
               type="button"

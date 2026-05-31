@@ -26,17 +26,27 @@ import {
 
 
 
+// Komponen utama orchestrator untuk alur latihan pengguna.
 export function PracticeFlow() {
+  // State dasar alur dan pengaturan latihan.
   const [step, setStep] = React.useState<PracticeStep>('setup')
   const [category, setCategory] = React.useState<PracticeCategory>('TWK')
   const [sessionId, setSessionId] = React.useState('')
+  
+  // State data ujian dan navigasi.
   const [questions, setQuestions] = React.useState<PublicPracticeQuestion[]>([])
   const [currentIndex, setCurrentIndex] = React.useState(0)
+  
+  // State pengaturan waktu.
   const [durationSeconds, setDurationSeconds] = React.useState(5 * 60)
   const [remainingSeconds, setRemainingSeconds] = React.useState(5 * 60)
+  
+  // State pencatatan jawaban dan metrik ujian pengguna.
   const [answers, setAnswers] = React.useState<Record<string, string>>({})
   const [flagged, setFlagged] = React.useState<Record<string, boolean>>({})
   const [timeSpent, setTimeSpent] = React.useState<Record<string, number>>({})
+  
+  // State manajemen UI, status, dan respon server.
   const [message, setMessage] = React.useState('')
   const [result, setResult] = React.useState<PracticeResult | null>(null)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
@@ -44,11 +54,17 @@ export function PracticeFlow() {
   const [mobileNavigatorOpen, setMobileNavigatorOpen] = React.useState(false)
   const [submitModalOpen, setSubmitModalOpen] = React.useState(false)
   const [examFontSize, setExamFontSize] = React.useState(16)
+  
+  // Ref untuk menghindari pengiriman (submit) otomatis yang duplikat.
   const didAutoSubmitRef = React.useRef(false)
 
+  // Mengambil item pembahasan saat ini untuk langkah review.
   const currentReviewItem = result?.review[currentIndex]
+  
+  // Mengecek apakah waktu ujian telah habis (berlaku di langkah practice).
   const timeExpired = step === 'practice' && remainingSeconds === 0
 
+  // Efek samping untuk menjalankan timer penghitung mundur saat ujian berlangsung.
   React.useEffect(() => {
     if (step !== 'practice') return
 
@@ -59,6 +75,7 @@ export function PracticeFlow() {
     return () => window.clearInterval(timer)
   }, [step])
 
+  // Helper untuk membentuk struktur payload jawaban yang dikirim ke server.
   const buildPayloadAnswers = React.useCallback(() => (
     Object.entries(answers).map(([questionId, selectedOption]) => ({
       question_id: questionId,
@@ -68,6 +85,7 @@ export function PracticeFlow() {
     }))
   ), [answers, durationSeconds, flagged, timeSpent])
 
+  // Fungsi penyimpan otomatis (autosave) jawaban ke server secara berkala/saat pindah soal.
   const autosave = React.useCallback(async () => {
     if (!sessionId || Object.keys(answers).length === 0) return
 
@@ -78,6 +96,7 @@ export function PracticeFlow() {
     }).catch(() => null)
   }, [answers, buildPayloadAnswers, sessionId])
 
+  // Fungsi pengunci (submit) semua jawaban latihan untuk mendapatkan nilai akhir.
   const submitPractice = React.useCallback(async (options?: { auto?: boolean }) => {
     if (!sessionId || questions.length === 0 || isSubmitting) return
 
@@ -107,6 +126,7 @@ export function PracticeFlow() {
     }
   }, [buildPayloadAnswers, isSubmitting, questions.length, sessionId])
 
+  // Efek samping pengunci jawaban otomatis jika waktu habis.
   React.useEffect(() => {
     if (step !== 'practice' || remainingSeconds > 0 || didAutoSubmitRef.current) return
 
@@ -116,6 +136,7 @@ export function PracticeFlow() {
     void submitPractice({ auto: true })
   }, [remainingSeconds, step, submitPractice])
 
+  // Memulai sesi latihan baru dengan mengirim request ke server.
   async function startPractice(nextCategory = category) {
     setStep('loading')
     setMessage('')
@@ -164,6 +185,7 @@ export function PracticeFlow() {
     }
   }
 
+  // Handler untuk mencatat jawaban user dan lama pengerjaan soal saat itu.
   function selectAnswer(questionId: string, option: string) {
     if (timeExpired) return
 
@@ -174,16 +196,19 @@ export function PracticeFlow() {
     }))
   }
 
+  // Handler pindah soal dan melakukan penyimpanan otomatis (autosave) sebelumnya.
   function goToQuestion(nextIndex: number) {
     void autosave()
     setCurrentIndex(Math.max(0, Math.min(nextIndex, questions.length - 1)))
     setMobileNavigatorOpen(false)
   }
 
+  // Render tampilan jika dalam kondisi sedang loading request API.
   if (step === 'loading') {
     return <PracticeLoadingStep />
   }
 
+  // Render tampilan utama latihan ujian (exam screen).
   if (step === 'practice') {
     return (
       <PracticeExamStep
@@ -210,6 +235,7 @@ export function PracticeFlow() {
     )
   }
 
+  // Render tampilan hasil ujian yang sudah dikunci nilainya.
   if (step === 'result' && result) {
     return (
       <PracticeResultStep
@@ -225,6 +251,7 @@ export function PracticeFlow() {
     )
   }
 
+  // Render tampilan pembahasan tiap soal setelah melihat hasil nilai (review mode).
   if (step === 'review' && result && currentReviewItem) {
     return (
       <PracticeReviewStep

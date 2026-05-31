@@ -4,6 +4,7 @@ import { Home } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
 import type { PracticeCategory } from '../_types/practice.types'
 
+// Props untuk menerima state kategori dan handler aksi awal latihan.
 type PracticeSetupStepProps = {
   category: PracticeCategory
   message: string
@@ -42,6 +43,7 @@ export function PracticeSetupStep({
           )}
         </Card>
 
+        {/* Daftar pilihan kategori latihan berupa kartu yang bisa diklik. */}
         <div className="grid gap-4 md:grid-cols-3">
           {categoryCards.map((item) => {
             const selected = category === item.category
@@ -64,6 +66,7 @@ export function PracticeSetupStep({
           })}
         </div>
 
+        {/* Aksi utama untuk memulai latihan atau kembali ke dashboard. */}
         <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
           <Link href="/dashboard" className="btn-secondary min-h-[44px] justify-center">
             <Home className="h-5 w-5" aria-hidden="true" />

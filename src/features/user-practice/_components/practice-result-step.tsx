@@ -4,6 +4,7 @@ import { CheckCircle2, Home, RotateCcw, Trophy } from 'lucide-react'
 import { Button, Card } from '@/components/ui'
 import type { PracticeCategory, PracticeResult } from '../_types/practice.types'
 
+// Props untuk menerima hasil ujian yang telah diproses server dan navigasi ke langkah berikutnya.
 type PracticeResultStepProps = {
   result: PracticeResult
   category: PracticeCategory
@@ -21,6 +22,7 @@ export function PracticeResultStep({
   return (
     <div className="min-h-screen bg-background px-4 py-8">
       <main className="mx-auto grid max-w-4xl gap-5">
+        {/* Kartu ringkasan hasil latihan: skor, metrik waktu, dan jumlah XP yang didapatkan. */}
         <Card padding="lg" className="text-center">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-light text-primary-dark">
             <Trophy className="h-9 w-9" aria-hidden="true" />
@@ -43,6 +45,7 @@ export function PracticeResultStep({
           )}
         </Card>
 
+        {/* Kartu rekomendasi materi belajar dari server berdasarkan jawaban yang salah. */}
         {result.recommendations[0] && (
           <Card padding="md">
             <div className="flex gap-3">
@@ -59,6 +62,7 @@ export function PracticeResultStep({
           </Card>
         )}
 
+        {/* Baris aksi untuk lanjut, ulang, atau kembali ke halaman utama. */}
         <div className="grid gap-3 sm:grid-cols-3">
           <Button
             type="button"
