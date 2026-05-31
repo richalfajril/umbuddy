@@ -168,7 +168,7 @@ export function PracticeExamStep({
                   aria-label={`Buka soal ${index + 1}`}
                   aria-current={isCurrent ? 'step' : undefined}
                   className={[
-                    'relative flex min-h-[44px] items-center justify-center rounded-xl border-2 border-b-[5px] text-sm font-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                    'relative flex min-h-[44px] items-center justify-center rounded-md border-2 border-b-[5px] text-sm font-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
                     isCurrent
                       ? 'border-[#c99a05] bg-xp text-headline shadow-sm'
                       : isAnswered

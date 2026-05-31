@@ -142,7 +142,7 @@ export function PracticeReviewStep({
                   aria-label={`Buka pembahasan soal ${index + 1}`}
                   aria-current={isCurrent ? 'step' : undefined}
                   className={[
-                    'flex min-h-[44px] items-center justify-center rounded-xl border-2 border-b-[5px] text-sm font-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                    'flex min-h-[44px] items-center justify-center rounded-md border-2 border-b-[5px] text-sm font-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
                     isCorrect
                       ? 'border-primary-dark bg-primary text-white'
                       : isUnanswered
