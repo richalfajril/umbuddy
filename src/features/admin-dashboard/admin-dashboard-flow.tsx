@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import { AdminAuthService } from '@/server/admin-auth'
 import { AdminLogoutButton } from '@/features/admin-auth/_components/admin-logout-button'
 
@@ -32,6 +33,24 @@ export async function AdminDashboardFlow() {
         {/* Placeholder eksplisit agar scope A1 tidak melebar ke dashboard admin penuh. */}
         <div className="mt-8 rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm font-bold text-primary">
           Admin auth aktif. Modul admin dashboard, users, dan questions bisa dibangun setelah guard ini stabil.
+        </div>
+
+        {/* Entry point A2 agar admin bisa mulai mengelola draft soal dari dashboard. */}
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <Link
+            href="/admin/questions"
+            className="rounded-2xl border border-primary/30 bg-primary px-5 py-4 font-bold text-primary-foreground shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/25 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
+          >
+            <span className="block text-xs uppercase tracking-[0.18em] opacity-80">
+              A2 Question Management
+            </span>
+            <span className="mt-2 block text-xl font-black">
+              Kelola Soal
+            </span>
+            <span className="mt-1 block text-sm opacity-90">
+              Buat draft, publish, arsipkan, dan pulihkan soal CPNS.
+            </span>
+          </Link>
         </div>
       </section>
     </main>
