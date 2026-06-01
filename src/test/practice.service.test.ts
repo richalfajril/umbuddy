@@ -202,4 +202,36 @@ describe('U2 PracticeService', () => {
     expect(prisma.userXpEvent.create).not.toHaveBeenCalled()
     expect(prisma.userProgression.upsert).not.toHaveBeenCalled()
   })
+
+  it('rejects practice submit when the session is far beyond the server grace window', async () => {
+    vi.mocked(prisma.practiceSession.findFirst).mockResolvedValue({
+      id: 'practice-too-old',
+      user_id: 'user-1',
+      mode: 'QUICK',
+      status: 'IN_PROGRESS',
+      started_at: new Date(Date.now() - 701_000),
+      metadata: {
+        practice: {
+          duration_seconds: 300,
+          questions: privateQuestions,
+        },
+      },
+    } as unknown as PracticeSession)
+
+    await expect(PracticeService.submitSession('user-1', 'practice-too-old', [
+      { question_id: 'q-twk-1', selected_option: 'A', time_spent: 20 },
+    ])).rejects.toMatchObject({
+      code: 'PRACTICE_EXPIRED',
+      status: 410,
+    })
+
+    expect(prisma.practiceSession.update).toHaveBeenCalledWith({
+      where: { id: 'practice-too-old' },
+      data: expect.objectContaining({
+        status: 'EXPIRED',
+      }),
+    })
+    expect(prisma.userXpEvent.create).not.toHaveBeenCalled()
+    expect(prisma.userProgression.upsert).not.toHaveBeenCalled()
+  })
 })

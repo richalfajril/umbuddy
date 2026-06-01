@@ -2,7 +2,10 @@ import { prisma } from '@/lib/prisma'
 import type { Prisma } from '@prisma/client'
 
 const PRACTICE_DURATION_SECONDS = 5 * 60
-const PRACTICE_SUBMIT_GRACE_SECONDS = 30
+// Grace autosave dibuat pendek karena penyimpanan jawaban tidak boleh berlanjut lama setelah timer habis.
+const PRACTICE_AUTOSAVE_GRACE_SECONDS = 30
+// Grace submit dibuat lebih longgar agar auto-submit/browser lambat masih bisa mengunci nilai secara aman.
+const PRACTICE_SUBMIT_GRACE_SECONDS = 5 * 60
 const DEFAULT_QUESTION_COUNT = 5
 const MAX_QUESTION_COUNT = 10
 const ANSWER_OPTIONS = ['A', 'B', 'C', 'D', 'E'] as const
@@ -378,6 +381,8 @@ export class PracticeService {
       throw new PracticeError('INVALID_SESSION_STATUS', 'Sesi latihan ini sudah tidak aktif.', 409)
     }
 
+    await this.ensureSessionCanSubmit(existing)
+
     const questions = getPracticeQuestionsFromMetadata(existing.metadata)
     if (questions.length === 0) {
       throw new PracticeError('INVALID_SESSION', 'Sesi latihan tidak memiliki daftar soal valid.', 400)
@@ -515,7 +520,7 @@ export class PracticeService {
   }) {
     const durationSeconds = getDurationSeconds(session.metadata)
     const startedAt = session.started_at instanceof Date ? session.started_at : new Date(session.started_at)
-    const expiresAt = new Date(startedAt.getTime() + (durationSeconds + PRACTICE_SUBMIT_GRACE_SECONDS) * 1000)
+    const expiresAt = new Date(startedAt.getTime() + (durationSeconds + PRACTICE_AUTOSAVE_GRACE_SECONDS) * 1000)
 
     if (Date.now() <= expiresAt.getTime()) return
 
@@ -530,6 +535,36 @@ export class PracticeService {
     throw new PracticeError(
       'PRACTICE_EXPIRED',
       'Waktu latihan sudah habis. Mulai latihan baru ya.',
+      410
+    )
+  }
+
+  // Guard submit server-side mencegah sesi lama dipakai ulang untuk farming XP setelah timer lewat jauh.
+  private static async ensureSessionCanSubmit(session: {
+    id: string
+    status: string
+    started_at: Date
+    metadata: Prisma.JsonValue | null
+  }) {
+    const durationSeconds = getDurationSeconds(session.metadata)
+    const startedAt = session.started_at instanceof Date ? session.started_at : new Date(session.started_at)
+    const submitExpiresAt = new Date(startedAt.getTime() + (durationSeconds + PRACTICE_SUBMIT_GRACE_SECONDS) * 1000)
+
+    if (Date.now() <= submitExpiresAt.getTime()) return
+
+    if (session.status !== 'EXPIRED') {
+      await prisma.practiceSession.update({
+        where: { id: session.id },
+        data: {
+          status: 'EXPIRED',
+          completed_at: new Date(),
+        },
+      })
+    }
+
+    throw new PracticeError(
+      'PRACTICE_EXPIRED',
+      'Sesi latihan sudah terlalu lama berakhir. Mulai latihan baru ya.',
       410
     )
   }
