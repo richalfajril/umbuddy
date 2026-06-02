@@ -56,7 +56,14 @@ export function BottomNav({ items, activeHref, className = '' }: BottomNavProps)
         }
 
         return (
-          <Link key={item.label} href={item.href} className={classes} aria-current={isActive ? 'page' : undefined}>
+          <Link
+            key={item.label}
+            href={item.href}
+            prefetch
+            transitionTypes={['app-nav']}
+            className={classes}
+            aria-current={isActive ? 'page' : undefined}
+          >
             {content}
           </Link>
         )

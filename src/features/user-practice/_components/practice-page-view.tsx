@@ -75,6 +75,8 @@ export function PracticePageView({
           <div className="flex items-center gap-3">
             <Link
               href="/dashboard"
+              prefetch
+              transitionTypes={['app-nav']}
               className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-[0_3px_0_var(--color-primary-dark)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               aria-label="Ke dashboard"
             >

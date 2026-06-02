@@ -17,6 +17,66 @@
 /* ── 1. Tailwind v4 Core Import ─────────────────────────────── */
 @import "tailwindcss";
 
+/* ── Route View Transitions ───────────────────────────────────
+ * Dipakai untuk navigasi app shell agar dashboard/practice berpindah halus.
+ * ─────────────────────────────────────────────────────────── */
+@keyframes route-fade {
+  from {
+    filter: blur(3px);
+    opacity: 0;
+  }
+  to {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+::view-transition-old(.fade-out) {
+  animation: 110ms ease-in route-fade reverse;
+}
+
+::view-transition-new(.fade-in) {
+  animation: 170ms ease-out 80ms both route-fade;
+}
+
+::view-transition-group(persistent-sidebar),
+::view-transition-group(persistent-bottom-nav),
+::view-transition-group(persistent-topbar-mobile),
+::view-transition-group(persistent-topbar-desktop) {
+  animation: none;
+  z-index: 100;
+}
+
+::view-transition-old(persistent-sidebar),
+::view-transition-old(persistent-bottom-nav),
+::view-transition-old(persistent-topbar-mobile),
+::view-transition-old(persistent-topbar-desktop) {
+  display: none;
+}
+
+.vt-persistent-sidebar {
+  view-transition-name: persistent-sidebar;
+}
+
+.vt-persistent-bottom-nav {
+  view-transition-name: persistent-bottom-nav;
+}
+
+.vt-persistent-topbar-mobile {
+  view-transition-name: persistent-topbar-mobile;
+}
+
+.vt-persistent-topbar-desktop {
+  view-transition-name: persistent-topbar-desktop;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 1ms !important;
+  }
+}
+
 /* ── 2. Design Tokens via @theme ──────────────────────────────
  * Sumber: UI_UX.md — "Clean White & Gamified Green" palette
  * Menggunakan CSS Variables agar dark mode bisa di-toggle otomatis.

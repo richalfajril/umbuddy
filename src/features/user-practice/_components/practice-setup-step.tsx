@@ -68,7 +68,7 @@ export function PracticeSetupStep({
 
         {/* Aksi utama untuk memulai latihan atau kembali ke dashboard. */}
         <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
-          <Link href="/dashboard" className="btn-secondary min-h-[44px] justify-center">
+          <Link href="/dashboard" prefetch transitionTypes={['app-nav']} className="btn-secondary min-h-[44px] justify-center">
             <Home className="h-5 w-5" aria-hidden="true" />
             Balik ke Markas
           </Link>

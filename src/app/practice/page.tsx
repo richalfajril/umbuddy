@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authConfig } from '@/lib/auth/config'
+import { RouteTransition } from '@/components/templates'
 import { PracticeFlow } from '@/features/user-practice/practice-flow'
 
 export default async function PracticePage() {
@@ -14,9 +15,11 @@ export default async function PracticePage() {
   }
 
   return (
-    <PracticeFlow
-      userName={session.user.name}
-      userEmail={session.user.email}
-    />
+    <RouteTransition>
+      <PracticeFlow
+        userName={session.user.name}
+        userEmail={session.user.email}
+      />
+    </RouteTransition>
   )
 }

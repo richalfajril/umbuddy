@@ -48,7 +48,7 @@ export function BentoDashboardLayout({
       {/* ── MOBILE LAYOUT ── */}
       <div className="flex flex-col min-h-screen md:hidden">
         {/* TopBar sticky */}
-        <header className="sticky top-0 z-40 w-full bg-background border-b border-border">
+        <header className="vt-persistent-topbar-mobile sticky top-0 z-40 w-full bg-background border-b border-border">
           {topBar}
         </header>
 
@@ -58,7 +58,7 @@ export function BentoDashboardLayout({
         </main>
 
         {/* BottomNav sticky */}
-        <nav className="fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border safe-area-bottom">
+        <nav className="vt-persistent-bottom-nav fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border safe-area-bottom">
           {bottomNav}
         </nav>
       </div>
@@ -67,14 +67,14 @@ export function BentoDashboardLayout({
       <div className="hidden md:flex min-h-screen">
         {/* Sidebar tetap */}
         {sidebar && (
-          <aside className="sticky top-0 h-screen w-24 shrink-0 border-r border-border bg-background overflow-y-auto dark:bg-background">
+          <aside className="vt-persistent-sidebar sticky top-0 h-screen w-24 shrink-0 border-r border-border bg-background overflow-y-auto dark:bg-background">
             {sidebar}
           </aside>
         )}
 
         {/* Konten utama */}
         <div className="flex-1 flex flex-col">
-          <header className="sticky top-0 z-40 bg-background border-b border-border">
+          <header className="vt-persistent-topbar-desktop sticky top-0 z-40 bg-background border-b border-border">
             {topBar}
           </header>
           <main className="flex-1 p-6 overflow-y-auto">

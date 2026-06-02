@@ -25,8 +25,13 @@ const nextConfig: NextConfig = {
    *
    * NOTE: PWA service worker di-generate oleh next-pwa saat `next build`.
    * Di dev mode, next-pwa sudah di-disable, jadi tidak ada konflik nyata.
-   */
+  */
   turbopack: {},
+
+  // View Transition Next.js menghaluskan perpindahan route app shell tanpa library animasi tambahan.
+  experimental: {
+    viewTransition: true,
+  },
 
   // Compiler optimizations
   compiler: {

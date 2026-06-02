@@ -54,6 +54,8 @@ export function PracticeReviewStep({
   const renderDashboardButton = (isMobile = false) => (
     <Link
       href="/dashboard"
+      prefetch
+      transitionTypes={['app-nav']}
       className={[
         'inline-flex items-center justify-center rounded-full border-2 border-white/80 bg-white font-black text-primary-dark shadow-[0_5px_0_rgba(21,93,39,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_7px_0_rgba(21,93,39,0.22)]',
         isMobile ? 'min-h-[44px] px-4 text-xs' : 'min-h-[56px] px-4 text-sm',

@@ -111,6 +111,8 @@ export function UserDashboardView({
                 </p>
                 <Link
                   href="/practice"
+                  prefetch
+                  transitionTypes={['app-nav']}
                   className="btn-primary mt-4 inline-flex min-h-[44px] items-center justify-center gap-2 px-5 py-2.5 text-sm"
                 >
                   Mulai Quick Practice

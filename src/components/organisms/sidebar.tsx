@@ -30,6 +30,8 @@ export function Sidebar({
     <div className={['flex h-full flex-col items-center gap-5 px-3 py-5', className].join(' ')}>
       <Link
         href="/dashboard"
+        prefetch
+        transitionTypes={['app-nav']}
         className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-white shadow-[0_4px_0_0_var(--color-primary-dark)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         aria-label="Ke dashboard Umbuddy"
       >
@@ -73,7 +75,14 @@ export function Sidebar({
           }
 
           return (
-            <Link key={item.label} href={item.href} className={classes} aria-current={isActive ? 'page' : undefined}>
+            <Link
+              key={item.label}
+              href={item.href}
+              prefetch
+              transitionTypes={['app-nav']}
+              className={classes}
+              aria-current={isActive ? 'page' : undefined}
+            >
               {content}
             </Link>
           )
