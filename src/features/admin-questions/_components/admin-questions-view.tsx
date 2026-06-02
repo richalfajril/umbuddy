@@ -4,6 +4,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Archive, CheckCircle2, RotateCcw, Save, Search } from 'lucide-react'
 import { Button, Input, Label } from '@/components/ui'
+import { AdminDashboardShell } from '@/features/admin-dashboard/_components'
 import { useToastStore } from '@/stores/useToastStore'
 import {
   adminQuestionCategoryFilters,
@@ -130,7 +131,8 @@ export function AdminQuestionsView({
   }
 
   return (
-    <main className="min-h-screen bg-background px-4 py-6 text-headline sm:px-6 lg:px-8">
+    <AdminDashboardShell adminEmail={adminEmail} adminRole={adminRole}>
+      <section className="min-h-screen bg-background px-4 py-6 text-headline sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-6">
         {/* Header halaman admin questions menjaga konteks backoffice dan akses balik. */}
         <header className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
@@ -364,7 +366,7 @@ export function AdminQuestionsView({
           </form>
         </div>
       </div>
-    </main>
+      </section>
+    </AdminDashboardShell>
   )
 }
-
