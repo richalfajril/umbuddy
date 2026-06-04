@@ -1,5 +1,7 @@
 export { BottomNav } from './bottom-nav'
 export type { AppNavItem } from './bottom-nav'
 export { Sidebar } from './sidebar'
+export { AppProgressTopBar } from './app-progress-top-bar'
+export type { AppProgressTopBarProps } from './app-progress-top-bar'
 export { ExamTopBar, ExamDesktopTopBar } from './exam-top-bar'
 export { ExamActionFooter } from './exam-action-footer'

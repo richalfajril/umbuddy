@@ -1,17 +1,17 @@
 'use client'
 
 import * as React from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
 import { BookOpen, Clock, PencilLine, Zap } from 'lucide-react'
 import { BentoDashboardLayout } from '@/components/templates/bento-dashboard-layout'
-import { BottomNav, Sidebar } from '@/components/organisms'
+import { AppProgressTopBar, BottomNav, Sidebar } from '@/components/organisms'
 import { Button, Card } from '@/components/ui'
 import { LogoutButton } from '@/features/user-auth/_components/logout-button'
 import {
   DASHBOARD_NAV_ITEMS,
   dashboardCardGlow,
 } from '@/features/user-dashboard/_constants/dashboard.constants'
+import type { ResolvedProgression } from '@/features/user-dashboard/_types/dashboard.types'
 import type { PracticeCategory } from '../_types/practice.types'
 
 // Kartu kategori dengan ikon dan deskripsi untuk halaman landing Practice.
@@ -48,6 +48,8 @@ const categoryCards: Array<{
 interface PracticePageViewProps {
   userName?: string | null
   userEmail?: string | null
+  streakDays: number
+  currentProgression: ResolvedProgression
   category: PracticeCategory
   message: string
   isStarting: boolean
@@ -62,6 +64,8 @@ interface PracticePageViewProps {
 export function PracticePageView({
   userName,
   userEmail,
+  streakDays,
+  currentProgression,
   category,
   message,
   isStarting,
@@ -71,34 +75,15 @@ export function PracticePageView({
   return (
     <BentoDashboardLayout
       topBar={
-        <div className="flex min-h-[68px] items-center justify-between gap-4 px-4 sm:min-h-[82px] md:px-8">
-          <div className="flex items-center gap-3">
-            <Link
-              href="/dashboard"
-              prefetch
-              transitionTypes={['app-nav']}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-[0_3px_0_var(--color-primary-dark)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              aria-label="Ke dashboard"
-            >
-              <Image
-                src="/logo/logo_only.png"
-                alt=""
-                width={32}
-                height={32}
-                className="h-8 w-8 rounded-lg object-contain"
-                aria-hidden="true"
-                priority
-              />
-            </Link>
-            <div>
-              <p className="font-display text-lg font-black leading-none text-headline">Quick Practice</p>
-              <p className="text-xs font-bold text-muted">5 soal · 5 menit</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <LogoutButton />
-          </div>
-        </div>
+        <AppProgressTopBar
+          streakDays={streakDays}
+          currentJabatan={currentProgression.currentJabatan}
+          currentGolongan={currentProgression.currentGolongan}
+          currentBadge={currentProgression.currentBadge}
+          currentRankXp={currentProgression.currentRankXp}
+          nextRankXp={currentProgression.nextRankXp}
+          progressPercentage={currentProgression.progressPercentage}
+        />
       }
       bottomNav={
         <BottomNav items={DASHBOARD_NAV_ITEMS} activeHref="/practice" />

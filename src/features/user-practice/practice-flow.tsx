@@ -8,6 +8,7 @@ import type {
   PublicPracticeQuestion,
   PracticeResult,
 } from './_types/practice.types'
+import type { ResolvedProgression } from '@/features/user-dashboard/_types/dashboard.types'
 
 
 // Utilitas Latihan
@@ -30,10 +31,17 @@ import {
 type PracticeFlowProps = {
   userName?: string | null
   userEmail?: string | null
+  streakDays: number
+  currentProgression: ResolvedProgression
 }
 
 // Komponen utama orchestrator untuk alur latihan pengguna.
-export function PracticeFlow({ userName, userEmail }: PracticeFlowProps = {}) {
+export function PracticeFlow({
+  userName,
+  userEmail,
+  streakDays,
+  currentProgression,
+}: PracticeFlowProps) {
   // State dasar alur dan pengaturan latihan.
   const [step, setStep] = React.useState<PracticeStep>('setup')
   const [category, setCategory] = React.useState<PracticeCategory>('TWK')
@@ -290,6 +298,8 @@ export function PracticeFlow({ userName, userEmail }: PracticeFlowProps = {}) {
     <PracticePageView
       userName={userName}
       userEmail={userEmail}
+      streakDays={streakDays}
+      currentProgression={currentProgression}
       category={category}
       message={message}
       isStarting={isStarting}
