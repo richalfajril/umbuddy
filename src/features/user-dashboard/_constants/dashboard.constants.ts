@@ -4,8 +4,8 @@ import { Home, PencilLine, Swords, Trophy, UserRound } from "lucide-react";
 // Konstanta tampilan dashboard sementara sampai data real-time/social siap.
 // Navigasi dashboard memakai disabled flag untuk fitur yang belum masuk fase aktif.
 export const DASHBOARD_NAV_ITEMS: AppNavItem[] = [
-  { label: "Home", href: "/dashboard", icon: Home },
-  { label: "Practice", href: "/practice", icon: PencilLine },
+  { label: "Home", href: "/dashboard", icon: Home, prefetch: true },
+  { label: "Practice", href: "/practice", icon: PencilLine, prefetch: true },
   { label: "Battle", href: "/battle", icon: Swords, disabled: true },
   { label: "Rank", href: "/leaderboard", icon: Trophy, disabled: true },
   { label: "Profile", href: "/profile", icon: UserRound, disabled: true },

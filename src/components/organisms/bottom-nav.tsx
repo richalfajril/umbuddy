@@ -7,6 +7,7 @@ export interface AppNavItem {
   href: string
   icon: LucideIcon
   disabled?: boolean
+  prefetch?: boolean
 }
 
 interface BottomNavProps {
@@ -59,7 +60,7 @@ export function BottomNav({ items, activeHref, className = '' }: BottomNavProps)
           <Link
             key={item.label}
             href={item.href}
-            prefetch
+            prefetch={item.prefetch === true}
             transitionTypes={['app-nav']}
             className={classes}
             aria-current={isActive ? 'page' : undefined}

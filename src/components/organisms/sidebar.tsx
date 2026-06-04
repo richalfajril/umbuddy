@@ -78,7 +78,7 @@ export function Sidebar({
             <Link
               key={item.label}
               href={item.href}
-              prefetch
+              prefetch={item.prefetch === true}
               transitionTypes={['app-nav']}
               className={classes}
               aria-current={isActive ? 'page' : undefined}
