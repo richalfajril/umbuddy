@@ -72,6 +72,13 @@ export function PracticeFlow({ userName, userEmail }: PracticeFlowProps = {}) {
   // Mengecek apakah waktu ujian telah habis (berlaku di langkah practice).
   const timeExpired = step === 'practice' && remainingSeconds === 0
 
+  // Membungkus pergantian step dengan animasi ringan tanpa mengubah state/timer.
+  const renderStep = (content: React.ReactNode) => (
+    <div key={step} className="step-transition-enter">
+      {content}
+    </div>
+  )
+
   // Efek samping untuk menjalankan timer penghitung mundur saat ujian berlangsung.
   React.useEffect(() => {
     if (step !== 'practice') return
@@ -213,12 +220,12 @@ export function PracticeFlow({ userName, userEmail }: PracticeFlowProps = {}) {
 
   // Render tampilan jika dalam kondisi sedang loading request API.
   if (step === 'loading') {
-    return <FullScreenLoader message="Menyiapkan latihan Kamu..." />
+    return renderStep(<FullScreenLoader message="Menyiapkan latihan Kamu..." />)
   }
 
   // Render tampilan utama latihan ujian (exam screen).
   if (step === 'practice') {
-    return (
+    return renderStep(
       <PracticeExamStep
         category={category}
         questions={questions}
@@ -245,7 +252,7 @@ export function PracticeFlow({ userName, userEmail }: PracticeFlowProps = {}) {
 
   // Render tampilan hasil ujian yang sudah dikunci nilainya.
   if (step === 'result' && result) {
-    return (
+    return renderStep(
       <PracticeResultStep
         result={result}
         category={category}
@@ -261,7 +268,7 @@ export function PracticeFlow({ userName, userEmail }: PracticeFlowProps = {}) {
 
   // Render tampilan pembahasan tiap soal setelah melihat hasil nilai (review mode).
   if (step === 'review' && result && currentReviewItem) {
-    return (
+    return renderStep(
       <PracticeReviewStep
         result={result}
         currentIndex={currentIndex}
@@ -279,7 +286,7 @@ export function PracticeFlow({ userName, userEmail }: PracticeFlowProps = {}) {
   }
 
   // Fallback utama adalah halaman landing Practice dengan shell navigasi.
-  return (
+  return renderStep(
     <PracticePageView
       userName={userName}
       userEmail={userEmail}

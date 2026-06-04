@@ -268,16 +268,23 @@ export function OnboardingFlow() {
     router.replace('/dashboard')
   }
 
+  // Membungkus pergantian step onboarding dengan animasi ringan tanpa mengubah alur submit.
+  const renderStep = (content: React.ReactNode) => (
+    <div key={step} className="step-transition-enter">
+      {content}
+    </div>
+  )
+
   // Render skeleton/loading selama status onboarding awal belum diketahui.
   if (step === 'loading') {
-    return (
+    return renderStep(
       <OnboardingLoadingStep header={<OnboardingLogoHeader />} />
     )
   }
 
   // Render mode ujian diagnostic dengan state tetap dikontrol oleh OnboardingFlow.
   if (step === 'diagnostic') {
-    return (
+    return renderStep(
       <DiagnosticExamStep
         questions={questions}
         currentIndex={currentIndex}
@@ -301,7 +308,7 @@ export function OnboardingFlow() {
 
   // Render hasil jika server sudah mengembalikan diagnostic result.
   if (step === 'result' && result) {
-    return (
+    return renderStep(
       <DiagnosticResultStep
         header={<OnboardingLogoHeader />}
         result={result}
@@ -315,7 +322,7 @@ export function OnboardingFlow() {
 
   // Render intro diagnostic setelah profile berhasil disimpan.
   if (step === 'diagnostic-intro') {
-    return (
+    return renderStep(
       <DiagnosticIntroStep
         header={<OnboardingLogoHeader />}
         message={message}
@@ -326,7 +333,7 @@ export function OnboardingFlow() {
   }
 
   // Fallback utama adalah profile setup untuk user baru atau status yang belum lengkap.
-  return (
+  return renderStep(
     <OnboardingProfileStep
       header={<OnboardingLogoHeader />}
       profile={profile}

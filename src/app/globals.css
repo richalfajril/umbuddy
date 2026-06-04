@@ -22,7 +22,7 @@
  * ─────────────────────────────────────────────────────────── */
 @keyframes route-fade {
   from {
-    filter: blur(3px);
+    filter: blur(2px);
     opacity: 0;
   }
   to {
@@ -32,11 +32,11 @@
 }
 
 ::view-transition-old(.fade-out) {
-  animation: 110ms ease-in route-fade reverse;
+  animation: 100ms ease-in route-fade reverse;
 }
 
 ::view-transition-new(.fade-in) {
-  animation: 170ms ease-out 80ms both route-fade;
+  animation: 160ms ease-out 70ms both route-fade;
 }
 
 ::view-transition-group(persistent-sidebar),
@@ -70,9 +70,28 @@
   view-transition-name: persistent-topbar-desktop;
 }
 
+.step-transition-enter {
+  animation: step-content-enter 180ms ease-out both;
+}
+
+@keyframes step-content-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(*),
   ::view-transition-new(*) {
+    animation-duration: 1ms !important;
+  }
+
+  .step-transition-enter {
     animation-duration: 1ms !important;
   }
 }

@@ -5,12 +5,12 @@ type RouteTransitionProps = {
   children: React.ReactNode
 }
 
-// Membungkus konten route app utama agar perpindahan dashboard/practice terasa halus.
+// Membungkus konten route agar semua perpindahan halaman memakai fade standar yang ringan.
 export function RouteTransition({ children }: RouteTransitionProps) {
   return (
     <ViewTransition
-      enter={{ 'app-nav': 'fade-in', default: 'none' }}
-      exit={{ 'app-nav': 'fade-out', default: 'none' }}
+      enter={{ 'app-nav': 'fade-in', default: 'fade-in' }}
+      exit={{ 'app-nav': 'fade-out', default: 'fade-out' }}
       default="none"
     >
       {children}

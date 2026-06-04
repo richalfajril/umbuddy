@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { inter, nunito } from '@/lib/fonts'
+import { RouteTransition } from '@/components/templates'
 import './globals.css'
 
 /**
@@ -85,7 +86,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col antialiased bg-background text-body">
         <Providers>
-          {children}
+          <RouteTransition>
+            {children}
+          </RouteTransition>
         </Providers>
       </body>
     </html>
