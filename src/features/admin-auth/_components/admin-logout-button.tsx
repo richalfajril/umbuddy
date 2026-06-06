@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from 'react'
-import { AdminButton } from '@/features/admin-shared/_components/ui'
 
 // Tombol logout admin memakai fetch agar user tetap diarahkan rapi ke halaman login.
 export function AdminLogoutButton() {
@@ -19,14 +18,13 @@ export function AdminLogoutButton() {
   }
 
   return (
-    <AdminButton
+    <button
       type="button"
-      variant="outline"
       onClick={handleLogout}
       disabled={isLoading}
-      className="w-full"
+      className="rounded-xl border border-white/15 px-4 py-3 text-sm font-black text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60"
     >
       {isLoading ? 'Logout...' : 'Logout Admin'}
-    </AdminButton>
+    </button>
   )
 }
