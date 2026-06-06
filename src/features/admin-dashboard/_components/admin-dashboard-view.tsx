@@ -11,7 +11,7 @@ export function AdminDashboardView({ admin }: AdminDashboardViewProps) {
       <section className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
         <div className="mx-auto max-w-7xl">
           {/* Hero backoffice menegaskan area admin dan status guard. */}
-          <div className="rounded-3xl border border-white/10 bg-white/[0.06] p-5 shadow-2xl shadow-black/30 sm:p-7">
+          <div className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-7 dark:bg-surface">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
@@ -20,7 +20,7 @@ export function AdminDashboardView({ admin }: AdminDashboardViewProps) {
                 <h1 className="mt-2 font-display text-3xl font-black leading-tight sm:text-4xl">
                   Markas admin sudah <span className="text-primary">siap</span>
                 </h1>
-                <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-slate-300 sm:text-base">
+                <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-body sm:text-base">
                   Kelola konten, pantau modul operasional, dan jaga kualitas soal CPNS dari satu dashboard.
                 </p>
               </div>
@@ -35,12 +35,12 @@ export function AdminDashboardView({ admin }: AdminDashboardViewProps) {
             {ADMIN_DASHBOARD_SUMMARY_CARDS.map((card) => (
               <div
                 key={card.label}
-                className="rounded-3xl border border-white/10 bg-white/[0.05] p-5 shadow-xl shadow-black/20 transition hover:border-primary/35 hover:shadow-primary/10"
+                className="rounded-3xl border border-border bg-background p-5 shadow-sm transition hover:border-primary/35 hover:shadow-[0_16px_36px_-28px_rgba(116,195,50,0.55)] dark:bg-surface"
               >
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-muted">
                   {card.label}
                 </p>
-                <p className="mt-3 font-display text-3xl font-black text-white">
+                <p className="mt-3 font-display text-3xl font-black text-headline">
                   {card.value}
                 </p>
                 <p className="mt-1 text-sm font-bold text-primary">
@@ -79,21 +79,21 @@ export function AdminDashboardView({ admin }: AdminDashboardViewProps) {
             </Link>
 
             {/* Panel kesiapan memberi feedback bahwa guard admin sudah aktif. */}
-            <div className="rounded-3xl border border-white/10 bg-white/[0.05] p-6 shadow-xl shadow-black/20">
+            <div className="rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
               <div className="flex items-center gap-3">
                 <span className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/20 text-primary">
                   <ShieldCheck className="h-6 w-6" />
                 </span>
                 <div>
                   <p className="font-display text-xl font-black">Guard Aktif</p>
-                  <p className="text-sm font-semibold text-slate-400">Admin session tervalidasi.</p>
+                  <p className="text-sm font-semibold text-muted">Admin session tervalidasi.</p>
                 </div>
               </div>
               <div className="mt-5 space-y-3">
                 {['Route admin protected', 'Logout admin tersedia', 'A2 MVP siap dipakai'].map((item) => (
-                  <div key={item} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-3">
+                  <div key={item} className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-3 py-3">
                     <CheckCircle2 className="h-5 w-5 text-primary" />
-                    <span className="text-sm font-bold text-slate-200">{item}</span>
+                    <span className="text-sm font-bold text-headline">{item}</span>
                   </div>
                 ))}
               </div>

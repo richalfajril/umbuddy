@@ -22,7 +22,7 @@ export function AdminLogoutButton() {
       type="button"
       onClick={handleLogout}
       disabled={isLoading}
-      className="rounded-xl border border-white/15 px-4 py-3 text-sm font-black text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60"
+      className="rounded-xl border border-border bg-background px-4 py-3 text-sm font-black text-headline transition hover:bg-surface disabled:cursor-not-allowed disabled:opacity-60"
     >
       {isLoading ? 'Logout...' : 'Logout Admin'}
     </button>

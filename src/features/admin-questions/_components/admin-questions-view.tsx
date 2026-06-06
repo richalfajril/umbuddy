@@ -135,7 +135,7 @@ export function AdminQuestionsView({
       <section className="min-h-screen bg-background px-4 py-6 text-headline sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-6">
         {/* Header halaman admin questions menjaga konteks backoffice dan akses balik. */}
-        <header className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+        <header className="flex flex-col gap-4 rounded-2xl border border-border bg-background p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
           <div>
             <Link href="/admin/dashboard" className="inline-flex min-h-[44px] items-center gap-2 text-sm font-black text-primary hover:underline">
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
@@ -158,7 +158,7 @@ export function AdminQuestionsView({
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
           {/* Panel list soal berisi filter dan tabel padat untuk admin content. */}
-          <section className="rounded-2xl border border-border bg-card p-4 shadow-sm sm:p-5">
+          <section className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-5 dark:bg-surface">
             <div className="grid gap-3 md:grid-cols-[1fr_180px_180px_auto]">
               <div className="relative">
                 <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden="true" />
@@ -262,7 +262,7 @@ export function AdminQuestionsView({
           </section>
 
           {/* Form create draft berisi field minimum sesuai A2 MVP. */}
-          <form onSubmit={createDraft} className="rounded-2xl border border-border bg-card p-4 shadow-sm sm:p-5">
+          <form onSubmit={createDraft} className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-5 dark:bg-surface">
             <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
               Create Draft
             </p>
