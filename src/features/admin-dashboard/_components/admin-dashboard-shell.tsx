@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { Menu } from 'lucide-react'
 import { AdminSidebar } from './admin-sidebar'
+import { AdminButton } from '@/features/admin-shared/_components/ui'
 
 type AdminDashboardShellProps = {
   adminEmail: string
@@ -19,7 +20,7 @@ export function AdminDashboardShell({
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false)
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-surface/60 text-headline">
       {/* Sidebar khusus fitur admin, responsive menjadi drawer di mobile. */}
       <AdminSidebar
         adminEmail={adminEmail}
@@ -29,18 +30,19 @@ export function AdminDashboardShell({
       />
 
       {/* Header mobile memberi akses hamburger tanpa memenuhi area desktop. */}
-      <header className="sticky top-0 z-20 flex min-h-16 items-center justify-between border-b border-white/10 bg-slate-950/90 px-4 backdrop-blur lg:hidden">
-        <button
+      <header className="sticky top-0 z-20 flex min-h-16 items-center justify-between border-b border-border bg-background/95 px-4 backdrop-blur lg:hidden">
+        <AdminButton
           type="button"
+          variant="outline"
+          size="icon"
           onClick={() => setIsSidebarOpen(true)}
-          className="grid min-h-11 min-w-11 place-items-center rounded-xl border border-white/10 bg-white/[0.04] text-white transition hover:bg-white/10"
           aria-label="Buka menu admin"
         >
           <Menu className="h-5 w-5" />
-        </button>
+        </AdminButton>
         <div className="text-right">
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-primary">Umbuddy</p>
-          <p className="text-sm font-black">Backoffice</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Umbuddy</p>
+          <p className="text-sm font-semibold text-headline">Backoffice</p>
         </div>
       </header>
 

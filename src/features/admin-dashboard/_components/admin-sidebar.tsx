@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { Bell, FileQuestion, LayoutDashboard, Settings, ShieldCheck, Users, X } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { AdminLogoutButton } from '@/features/admin-auth/_components/admin-logout-button'
+import { AdminBadge, AdminButton } from '@/features/admin-shared/_components/ui'
 import { ADMIN_DASHBOARD_NAV_ITEMS } from '../_constants/admin-dashboard.constants'
 import type { AdminNavIconKey } from '../_types/admin-dashboard.types'
 
@@ -35,41 +36,43 @@ export function AdminSidebar({
 
   // Konten sidebar dipakai ulang untuk desktop dan drawer mobile.
   const sidebarContent = (
-    <aside className="flex h-full w-72 flex-col border-r border-white/10 bg-slate-950 text-white">
+    <aside className="flex h-full w-72 flex-col border-r border-border bg-background text-headline">
       {/* Header brand backoffice menjaga konteks area admin. */}
-      <div className="flex min-h-20 items-center justify-between border-b border-white/10 px-5">
+      <div className="flex min-h-20 items-center justify-between border-b border-border px-5">
         <Link href="/admin/dashboard" className="flex items-center gap-3" onClick={onCloseMobile}>
-          <span className="grid h-11 w-11 place-items-center rounded-2xl bg-primary font-display text-xl font-black text-primary-foreground shadow-lg shadow-primary/30">
+          <span className="grid h-10 w-10 place-items-center rounded-lg bg-primary font-semibold text-primary-foreground">
             U
           </span>
           <span>
-            <span className="block text-sm font-black uppercase tracking-[0.18em] text-primary">
+            <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-muted">
               Umbuddy
             </span>
-            <span className="block text-lg font-black leading-tight">
+            <span className="block text-base font-semibold leading-tight">
               Backoffice
             </span>
           </span>
         </Link>
-        <button
+        <AdminButton
           type="button"
+          variant="ghost"
+          size="icon"
           onClick={onCloseMobile}
-          className="grid min-h-11 min-w-11 place-items-center rounded-xl border border-white/10 text-white transition hover:bg-white/10 lg:hidden"
+          className="lg:hidden"
           aria-label="Tutup menu admin"
         >
           <X className="h-5 w-5" />
-        </button>
+        </AdminButton>
       </div>
 
       {/* Identitas admin tampil singkat tanpa token/session internal. */}
-      <div className="mx-4 mt-4 rounded-2xl border border-primary/25 bg-primary/10 p-4">
+      <div className="mx-4 mt-4 rounded-xl border border-border bg-surface p-4">
         <div className="flex items-center gap-3">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground">
+          <span className="grid h-9 w-9 place-items-center rounded-md bg-background text-primary ring-1 ring-border">
             <ShieldCheck className="h-5 w-5" />
           </span>
           <div className="min-w-0">
-            <p className="truncate text-sm font-black">{adminEmail}</p>
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">{adminRole}</p>
+            <p className="truncate text-sm font-semibold">{adminEmail}</p>
+            <p className="text-xs font-medium uppercase tracking-[0.14em] text-muted">{adminRole}</p>
           </div>
         </div>
       </div>
@@ -86,29 +89,29 @@ export function AdminSidebar({
               href={item.isSoon ? '/admin/dashboard' : item.href}
               onClick={onCloseMobile}
               className={[
-                'group flex min-h-14 items-center gap-3 rounded-2xl border px-3 py-3 transition',
+                'group flex min-h-12 items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors',
                 isActive
-                  ? 'border-primary/50 bg-primary text-primary-foreground shadow-lg shadow-primary/20'
-                  : 'border-white/10 bg-white/[0.04] text-slate-200 hover:border-primary/40 hover:bg-white/[0.08]',
+                  ? 'bg-primary-light text-primary-dark dark:bg-primary/15 dark:text-primary'
+                  : 'text-body hover:bg-surface hover:text-headline',
                 item.isSoon ? 'opacity-70' : '',
               ].join(' ')}
             >
               <span className={[
-                'grid h-10 w-10 shrink-0 place-items-center rounded-xl',
-                isActive ? 'bg-white/20' : 'bg-white/10 group-hover:bg-primary/20',
+                'grid h-9 w-9 shrink-0 place-items-center rounded-md',
+                isActive ? 'bg-background/80' : 'bg-surface group-hover:bg-background',
               ].join(' ')}>
                 <Icon className="h-5 w-5" />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="flex items-center gap-2 text-sm font-black">
+                <span className="flex items-center gap-2 font-semibold">
                   {item.label}
                   {item.isSoon && (
-                    <span className="rounded-full border border-white/15 px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.12em]">
+                    <AdminBadge variant="outline" className="px-1.5 py-0 text-[10px] uppercase tracking-[0.12em]">
                       Soon
-                    </span>
+                    </AdminBadge>
                   )}
                 </span>
-                <span className="mt-0.5 block truncate text-xs opacity-75">
+                <span className="mt-0.5 block truncate text-xs text-muted">
                   {item.description}
                 </span>
               </span>
@@ -118,7 +121,7 @@ export function AdminSidebar({
       </nav>
 
       {/* Logout diletakkan di bawah agar mudah ditemukan tanpa mengganggu navigasi utama. */}
-      <div className="border-t border-white/10 p-4">
+      <div className="border-t border-border p-4">
         <AdminLogoutButton />
       </div>
     </aside>
@@ -136,7 +139,7 @@ export function AdminSidebar({
         <button
           type="button"
           aria-label="Tutup overlay menu admin"
-          className="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-slate-950/45 backdrop-blur-sm lg:hidden"
           onClick={onCloseMobile}
         />
       )}
