@@ -8,3 +8,8 @@ export { BentoDashboardLayout } from './bento-dashboard-layout'
 export { FocusExamLayout } from './focus-exam-layout'
 export { DataListLayout } from './data-list-layout'
 export { RouteTransition } from './route-transition'
+export {
+  AdminRouteLoadingSkeleton,
+  OnboardingRouteLoadingSkeleton,
+  UserRouteLoadingSkeleton,
+} from './route-loading-skeleton'
