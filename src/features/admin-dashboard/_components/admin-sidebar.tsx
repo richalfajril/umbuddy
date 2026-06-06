@@ -85,6 +85,8 @@ export function AdminSidebar({
             <Link
               key={item.href}
               href={item.isSoon ? '/admin/dashboard' : item.href}
+              prefetch={item.prefetch === true}
+              transitionTypes={['app-nav']}
               onClick={onCloseMobile}
               className={[
                 'group flex min-h-14 items-center gap-3 rounded-2xl border px-3 py-3 transition',

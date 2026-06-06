@@ -7,12 +7,14 @@ export const ADMIN_DASHBOARD_NAV_ITEMS: AdminNavItem[] = [
     href: '/admin/dashboard',
     icon: 'dashboard',
     description: 'Ringkasan operasional admin.',
+    prefetch: true,
   },
   {
     label: 'Kelola Soal',
     href: '/admin/questions',
     icon: 'questions',
     description: 'Draft, publish, arsip, dan restore soal.',
+    prefetch: true,
   },
   {
     label: 'Users',

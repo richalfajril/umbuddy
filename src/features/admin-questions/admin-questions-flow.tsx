@@ -11,10 +11,10 @@ export async function AdminQuestionsFlow() {
     redirect('/admin/login')
   }
 
-  // Initial data diambil server-side agar halaman langsung berisi tabel saat dibuka.
+  // Initial data dibuat ringan agar navigasi ke Kelola Soal terasa cepat.
   const data = await AdminQuestionService.listQuestions(session.admin, {
     page: 1,
-    page_size: 20,
+    page_size: 10,
   })
 
   return (
@@ -26,4 +26,3 @@ export async function AdminQuestionsFlow() {
     />
   )
 }
-

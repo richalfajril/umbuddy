@@ -54,6 +54,8 @@ export function AdminDashboardView({ admin }: AdminDashboardViewProps) {
           <div className="mt-6 grid gap-4 xl:grid-cols-[1.25fr_0.75fr]">
             <Link
               href="/admin/questions"
+              prefetch
+              transitionTypes={['app-nav']}
               className="group rounded-3xl border border-primary/35 bg-gradient-to-br from-primary via-[#74C332] to-[#155D27] p-6 text-primary-foreground shadow-2xl shadow-primary/20 transition hover:-translate-y-0.5 hover:shadow-primary/30"
             >
               <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">

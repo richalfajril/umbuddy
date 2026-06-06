@@ -10,6 +10,7 @@ export type AdminNavItem = {
   icon: AdminNavIconKey
   description: string
   isSoon?: boolean
+  prefetch?: boolean
 }
 
 // Props view dashboard admin berisi admin publik tanpa token/session rahasia.
