@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { useRouter } from 'next/navigation'
+
 import { signOut } from 'next-auth/react'
 import { createPortal } from 'react-dom'
 import { LogOut } from 'lucide-react'
@@ -17,8 +17,7 @@ interface LogoutButtonProps {
  * Kept as a small client boundary so app shell components can remain reusable.
  */
 export function LogoutButton({ className = '' }: LogoutButtonProps) {
-  // Router dipakai untuk mengarahkan user setelah signOut tanpa full page reload berlebih.
-  const router = useRouter()
+  // Tidak lagi memakai useRouter karena logout menggunakan window.location.href
   const addToast = useToastStore((state) => state.addToast)
   // Modal confirmation mencegah logout tidak sengaja dari sidebar/bottom nav.
   const [isOpen, setIsOpen] = React.useState(false)
@@ -39,8 +38,10 @@ export function LogoutButton({ className = '' }: LogoutButtonProps) {
         message: 'Sesi Kamu sudah ditutup dengan aman.',
       })
 
-      router.replace(result.url || '/auth/login')
-      router.refresh()
+      // Gunakan window.location.href untuk memaksa hard reload.
+      // Ini membersihkan semua client state (seperti isProcessingSuccess)
+      // dan mencegah bug looping animasi dari Next.js Router Cache.
+      window.location.href = result.url || '/auth/login'
     } catch {
       setIsSigningOut(false)
       addToast({

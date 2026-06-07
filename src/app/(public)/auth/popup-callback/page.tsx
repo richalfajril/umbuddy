@@ -13,7 +13,7 @@ export default function PopupCallbackPage() {
     // Kirim pesan ke jendela utama yang membuka popup ini
     if (window.opener) {
       window.opener.postMessage(
-        { type: 'OAUTH_CALLBACK', error },
+        { source: 'umbuddy-oauth', type: 'OAUTH_CALLBACK', error },
         window.location.origin
       )
       // Tutup jendela popup

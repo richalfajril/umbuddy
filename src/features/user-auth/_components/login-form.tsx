@@ -71,7 +71,7 @@ export function LoginForm() {
       if (event.origin !== window.location.origin) return
       
       const data = event.data
-      if (data?.type === 'OAUTH_CALLBACK') {
+      if (data?.source === 'umbuddy-oauth' && data?.type === 'OAUTH_CALLBACK') {
         const errorType = data.error
         
         if (!errorType) {
