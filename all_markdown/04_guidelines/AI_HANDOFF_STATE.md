@@ -64,27 +64,26 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 2.08.30 WIB*
+*Auto-generated pada: 8/6/2026, 2.09.59 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
-- **Unpushed commits:** 1 commit belum di-push
-- **Latest commit:** `9a17efc feat(auth): add loading splash screen during login and google oauth`
+- **Unpushed commits:** 2 commit belum di-push
+- **Latest commit:** `6f6abc3 chore(auth): change wording pejuang to cambies`
 
 **Last 5 Commits:**
 ```text
+6f6abc3 chore(auth): change wording pejuang to cambies
 9a17efc feat(auth): add loading splash screen during login and google oauth
 76db0ef docs: update ai handoff state
 aeed33d fix: optimize google oauth login performance
 1279039 chore: add ai handoff updater
-e3dfeca docs: add ai handoff state document
 ```
 
 **Changed Files:**
 
 ```text
-M src/features/user-auth/_components/login-form.tsx
- M src/features/user-auth/_components/register-form.tsx
+M src/features/admin-auth/_components/admin-login-form.tsx
 ```
 
 **Saran AI:**
