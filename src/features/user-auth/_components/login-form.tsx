@@ -143,7 +143,7 @@ export function LoginForm() {
     return (
       <FormSettingsLayout noCard>
         <div className="flex flex-col items-center justify-center min-h-[400px] animate-in fade-in zoom-in duration-500">
-          <div className="w-48 h-48 mb-8 flex items-center justify-center rounded-full bg-background/50 border-4 border-primary/20 shadow-glow-primary overflow-hidden">
+          <div className="w-64 h-64 mb-8 flex items-center justify-center rounded-full bg-background/50 border-4 border-primary/20 shadow-glow-primary overflow-hidden">
             <video 
               src="/mascot/mascot_running_video.webm" 
               autoPlay 
