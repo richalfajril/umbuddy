@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getClientIp, rateLimitByKey } from '@/lib/redis/rate-limit'
+import { getClientIp, rateLimitByKey } from '@/server/redis/rate-limit'
 import {
   ADMIN_LOGIN_RATE_LIMIT,
   ADMIN_SESSION_COOKIE,

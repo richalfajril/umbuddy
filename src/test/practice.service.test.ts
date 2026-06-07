@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { PracticeService } from '@/services/practice.service'
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/server/db'
 
 type PracticeSession = Awaited<ReturnType<typeof prisma.practiceSession.create>>
 
-vi.mock('@/lib/prisma', () => {
+vi.mock('@/server/db', () => {
   const mockPrisma = {
     practiceSession: {
       create: vi.fn(),

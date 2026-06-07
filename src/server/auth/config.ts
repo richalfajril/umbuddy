@@ -1,5 +1,5 @@
 /**
- * src/lib/auth/config.ts
+ * src/server/auth/config.ts
  * NextAuth v4 configuration — SERVER-ONLY.
  *
  * ⚠️ SERVER-ONLY — secrets tidak boleh exposed ke browser.
@@ -21,7 +21,7 @@ import type { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { AuthService } from '@/services/auth.service'
-import { getClientIp, rateLimitByKey } from '@/lib/redis/rate-limit'
+import { getClientIp, rateLimitByKey } from '@/server/redis/rate-limit'
 
 const ACTIVE_USER_STATUS = 'ACTIVE'
 const GOOGLE_OAUTH_CONFIGURED = Boolean(

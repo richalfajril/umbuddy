@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { AuthService } from '@/services/auth.service'
 import { EmailQuotaService } from '@/services/email-quota.service'
-import { getResendClient } from '@/lib/email/client'
+import { getResendClient } from '@/server/email/client'
 
 vi.mock('@/services/auth.service', () => ({
   AuthService: {
@@ -20,14 +20,14 @@ vi.mock('@/services/email-quota.service', () => ({
 }))
 
 const send = vi.fn()
-vi.mock('@/lib/email/client', () => ({
+vi.mock('@/server/email/client', () => ({
   EMAIL_FROM: 'Umbuddy <no-reply@umbuddy.com>',
   getResendClient: vi.fn(() => ({
     emails: { send },
   })),
 }))
 
-vi.mock('@/lib/redis/rate-limit', () => ({
+vi.mock('@/server/redis/rate-limit', () => ({
   getClientIp: vi.fn(() => '127.0.0.1'),
   rateLimitByKey: vi.fn(() => Promise.resolve({ allowed: true, retryAfterSeconds: 0 })),
 }))

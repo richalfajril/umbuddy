@@ -1,6 +1,6 @@
 import 'server-only'
 import { cookies } from 'next/headers'
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/server/db'
 import { ADMIN_SESSION_COOKIE, ADMIN_SESSION_TTL_SECONDS } from './admin-auth.constants'
 import type { AdminLoginInput, AdminLoginResult, AdminSessionContext, PublicAdmin } from './admin-auth.types'
 import {

@@ -1,5 +1,5 @@
 import { createHash, randomBytes, scryptSync, timingSafeEqual } from 'node:crypto'
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/server/db'
 
 const USER_ROLE = {
   USER: 'USER',

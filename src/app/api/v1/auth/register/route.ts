@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server'
 import { AuthService } from '@/services/auth.service'
 import { EmailQuotaService } from '@/services/email-quota.service'
-import { EMAIL_FROM, getResendClient } from '@/lib/email/client'
-import { getClientIp, rateLimitByKey } from '@/lib/redis/rate-limit'
-import { validateDto } from '@/lib/validation/dto'
+import { EMAIL_FROM, getResendClient } from '@/server/email/client'
+import { getClientIp, rateLimitByKey } from '@/server/redis/rate-limit'
+import { validateDto } from '@/server/validation/dto'
 import { RegisterUserDto } from './register.dto'
 
 function errorResponse(

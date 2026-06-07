@@ -1,13 +1,13 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { AuthService } from '@/services/auth.service'
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/server/db'
 
 type User = Awaited<ReturnType<typeof prisma.user.create>>
 type SecurityEvent = Awaited<ReturnType<typeof prisma.securityEvent.create>>
 
 
 // Mock Prisma client to prevent real database connections during tests
-vi.mock('@/lib/prisma', () => {
+vi.mock('@/server/db', () => {
   const mockPrisma = {
     user: {
       findFirst: vi.fn(),

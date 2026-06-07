@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto'
-import { getRedisClient } from '@/lib/redis/client'
+import { getRedisClient } from '@/server/redis/client'
 
 type AuthEmailType = 'verification' | 'password-reset'
 type BlockReason = 'daily_limit' | 'cooldown' | 'ip_limit'

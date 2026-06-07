@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { OnboardingService } from '@/services/onboarding.service'
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/server/db'
 
 type PracticeSession = Awaited<ReturnType<typeof prisma.practiceSession.create>>
 type DiagnosticAttempt = Awaited<ReturnType<typeof prisma.diagnosticAttempt.create>>
 
-vi.mock('@/lib/prisma', () => {
+vi.mock('@/server/db', () => {
   const mockPrisma = {
     user: {
       update: vi.fn(),

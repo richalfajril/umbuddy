@@ -1,5 +1,5 @@
 /**
- * src/lib/email/client.ts
+ * src/server/email/client.ts
  * Resend email client — SERVER-ONLY.
  *
  * ⚠️ SERVER-ONLY — API key tidak boleh exposed ke browser.

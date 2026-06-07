@@ -1,5 +1,5 @@
 /**
- * src/lib/prisma/client.ts
+ * src/server/db/client.ts
  * Prisma Client singleton — SERVER-ONLY.
  *
  * ⚠️ SERVER-ONLY — database credentials tidak boleh exposed ke browser.
@@ -13,6 +13,7 @@
  * Prisma v7: koneksi dikonfigurasi di prisma.config.ts, bukan di schema.
  */
 
+import 'server-only'
 import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 

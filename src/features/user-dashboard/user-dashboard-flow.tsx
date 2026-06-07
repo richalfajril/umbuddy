@@ -6,8 +6,8 @@ import {
   getScorePercent,
   getWeakestArea,
 } from "@/features/user-dashboard/_utils/dashboard.utils";
-import { authConfig } from "@/lib/auth/config";
-import { prisma } from "@/lib/prisma/client";
+import { authConfig } from "@/server/auth/config";
+import { prisma } from "@/server/db/client";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 

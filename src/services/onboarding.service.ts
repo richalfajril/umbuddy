@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/server/db'
 import type { Prisma } from '@prisma/client'
 
 const DIAGNOSTIC_MODE = 'DIAGNOSTIC'

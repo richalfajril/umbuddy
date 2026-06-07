@@ -1,5 +1,5 @@
 /**
- * src/lib/redis/client.ts
+ * src/server/redis/client.ts
  * Upstash Redis client — SERVER-ONLY.
  *
  * ⚠️ SERVER-ONLY — Upstash REST token tidak boleh exposed ke browser.

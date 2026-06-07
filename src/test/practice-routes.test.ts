@@ -6,7 +6,7 @@ vi.mock('next-auth', () => ({
   getServerSession: vi.fn(),
 }))
 
-vi.mock('@/lib/auth/config', () => ({
+vi.mock('@/server/auth/config', () => ({
   authConfig: {},
 }))
 

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { googleOAuthStatus } from '@/lib/auth/config'
+import { googleOAuthStatus } from '@/server/auth/config'
 
 export async function GET() {
   return NextResponse.json({

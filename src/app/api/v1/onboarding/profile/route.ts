@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { validateDto } from '@/lib/validation/dto'
+import { validateDto } from '@/server/validation/dto'
 import { OnboardingService } from '@/services/onboarding.service'
 import { errorResponse, getRequiredUserId, onboardingErrorResponse, readJson } from '../_utils'
 import { OnboardingProfileDto } from './profile.dto'

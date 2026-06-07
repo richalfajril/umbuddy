@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { EmailQuotaService } from '@/services/email-quota.service'
-import { getRedisClient } from '@/lib/redis/client'
+import { getRedisClient } from '@/server/redis/client'
 
 const redis = {
   ttl: vi.fn(),
@@ -9,7 +9,7 @@ const redis = {
   set: vi.fn(),
 }
 
-vi.mock('@/lib/redis/client', () => ({
+vi.mock('@/server/redis/client', () => ({
   getRedisClient: vi.fn(() => redis),
 }))
 

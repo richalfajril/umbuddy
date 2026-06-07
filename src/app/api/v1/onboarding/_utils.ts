@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
-import { authConfig } from '@/lib/auth/config'
+import { authConfig } from '@/server/auth/config'
 import { OnboardingError } from '@/services/onboarding.service'
 
 export async function getRequiredUserId() {
