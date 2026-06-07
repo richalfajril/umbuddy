@@ -143,7 +143,16 @@ export function LoginForm() {
     return (
       <FormSettingsLayout noCard>
         <div className="flex flex-col items-center justify-center min-h-[400px] animate-in fade-in zoom-in duration-500">
-          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin shadow-glow-primary mb-8" />
+          <div className="w-32 h-32 mb-6 flex items-center justify-center rounded-full bg-background/50 border-4 border-primary/20 shadow-glow-primary overflow-hidden">
+            <video 
+              src="/mascot/mascot_running_video.webm" 
+              autoPlay 
+              loop 
+              muted 
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          </div>
           <h2 className="text-2xl font-black text-headline mb-2 animate-pulse">
             Sedang Memproses...
           </h2>
