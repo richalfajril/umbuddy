@@ -13,6 +13,7 @@ import {
   toAdminQuestionListItem,
   toInputJson,
 } from './admin-questions.utils'
+import { canManageQuestions } from '@/server/admin-auth'
 
 // Service A2 untuk workflow soal admin tanpa mencampur logic ke route handler.
 export class AdminQuestionService {
@@ -183,7 +184,7 @@ export class AdminQuestionService {
   // Guard tulis: support tidak boleh mengubah konten soal.
   private static ensureCanWrite(actor: AdminQuestionActor) {
     this.ensureCanRead(actor)
-    if (actor.role !== 'CONTENT' && actor.role !== 'SUPER_ADMIN') {
+    if (!canManageQuestions(actor.role)) {
       throw new AdminQuestionError('FORBIDDEN', 'Role admin ini belum boleh mengubah soal.', 403)
     }
   }
