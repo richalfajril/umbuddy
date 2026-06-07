@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server'
 import { PracticeService } from '@/server/services/practice.service'
-import { errorResponse, getRequiredUserId, practiceErrorResponse } from '../_utils'
+import { apiErrorResponse, getRequiredUserId } from '@/server/api/route-utils'
+import { practiceErrorResponse } from '@/server/api/practice.route-utils'
 
 export async function GET(req: Request) {
   const userId = await getRequiredUserId()
   if (!userId) {
-    return errorResponse('UNAUTHORIZED', 'Kamu perlu masuk dulu untuk melihat riwayat latihan.', 401)
+    return apiErrorResponse('UNAUTHORIZED', 'Kamu perlu masuk dulu untuk melihat riwayat latihan.', 401)
   }
 
   const url = new URL(req.url)

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getUserSession } from '@/server/auth/session'
-import { PracticeError } from '@/server/services/practice.service'
 
+// Mendapatkan ID user dari session, null jika tidak ada atau di-revoke.
 export async function getRequiredUserId() {
   const session = await getUserSession()
   if (!session?.user?.id || session.user.revoked) {
@@ -11,7 +11,8 @@ export async function getRequiredUserId() {
   return session.user.id
 }
 
-export function errorResponse(
+// Format error API yang konsisten untuk seluruh route.
+export function apiErrorResponse(
   code: string,
   message: string,
   status: number,
@@ -29,22 +30,14 @@ export function errorResponse(
   )
 }
 
-export function practiceErrorResponse(error: unknown) {
-  if (error instanceof PracticeError) {
-    return errorResponse(error.code, error.message, error.status)
-  }
-
-  console.error('Practice API error:', error)
-  return errorResponse('INTERNAL_ERROR', 'Duh, latihan belum bisa diproses. Coba lagi sebentar ya.', 500)
-}
-
-export async function readJson(req: Request) {
+// Helper JSON parser yang aman dengan error response seragam.
+export async function readApiJson(req: Request) {
   try {
     return { payload: await req.json(), error: null }
   } catch {
     return {
       payload: null,
-      error: errorResponse('INVALID_JSON', 'Request body harus JSON valid', 400),
+      error: apiErrorResponse('INVALID_JSON', 'Request body harus JSON valid', 400),
     }
   }
 }
