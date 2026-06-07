@@ -9,6 +9,7 @@ import { useToastStore } from '@/stores/useToastStore'
 import { Eye, EyeOff } from 'lucide-react'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import * as React from 'react'
 
 // Form registrasi email/password + Google OAuth tanpa mengubah kontrak API register.
@@ -26,6 +27,7 @@ export function RegisterForm() {
   const [errorMessage, setErrorMessage] = React.useState('')
   const [googleOAuthStatus, setGoogleOAuthStatus] = React.useState<GoogleOAuthStatus>('NOT_VERIFIED')
   const { addToast } = useToastStore()
+  const router = useRouter()
 
   // Public auth status memastikan tombol Google hanya aktif jika env OAuth verified.
   React.useEffect(() => {
@@ -51,7 +53,7 @@ export function RegisterForm() {
         if (prev >= 98) {
           if (isProcessingSuccess) {
             clearInterval(interval)
-            window.location.href = '/dashboard'
+            router.push('/dashboard')
           }
           return prev
         }
@@ -60,7 +62,7 @@ export function RegisterForm() {
       })
     }, isProcessingSuccess ? 20 : 200)
     return () => clearInterval(interval)
-  }, [isProcessingSuccess, isLoading])
+  }, [isProcessingSuccess, isLoading, router])
 
   // Cek jika user baru kembali dari Google register success
   React.useEffect(() => {

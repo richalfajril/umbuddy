@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { Eye, EyeOff } from 'lucide-react'
 import { AuthLogoHeader } from '@/components/molecules/auth-logo-header'
@@ -17,6 +18,7 @@ export function AdminLoginForm() {
   const [isProcessingSuccess, setIsProcessingSuccess] = React.useState(false)
   const [progress, setProgress] = React.useState(0)
   const { addToast } = useToastStore()
+  const router = useRouter()
 
   // Helper update field menjaga controlled input tetap ringkas.
   const updateField = (field: keyof AdminLoginFormState, value: string) => {
@@ -30,7 +32,7 @@ export function AdminLoginForm() {
         if (prev >= 98) {
           if (isProcessingSuccess) {
             clearInterval(interval)
-            window.location.href = '/admin/dashboard'
+            router.push('/admin/dashboard')
           }
           return prev
         }
@@ -39,7 +41,7 @@ export function AdminLoginForm() {
       })
     }, isProcessingSuccess ? 20 : 200)
     return () => clearInterval(interval)
-  }, [isProcessingSuccess, isLoading])
+  }, [isProcessingSuccess, isLoading, router])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()

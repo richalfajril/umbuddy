@@ -10,6 +10,7 @@ import { useToastStore } from '@/stores/useToastStore'
 import { Eye, EyeOff } from 'lucide-react'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import * as React from 'react'
 
 // Form login credentials + Google OAuth tanpa memindahkan core NextAuth config.
@@ -24,6 +25,7 @@ export function LoginForm() {
   const [progress, setProgress] = React.useState(0)
   const [googleOAuthStatus, setGoogleOAuthStatus] = React.useState<GoogleOAuthStatus>('NOT_VERIFIED')
   const { addToast } = useToastStore()
+  const router = useRouter()
 
   // Status Google OAuth dibaca dari public endpoint agar tombol bisa disabled jika env belum siap.
   React.useEffect(() => {
@@ -49,7 +51,7 @@ export function LoginForm() {
         if (prev >= 98) {
           if (isProcessingSuccess) {
             clearInterval(interval)
-            window.location.href = '/dashboard'
+            router.push('/dashboard')
           }
           return prev
         }
@@ -58,7 +60,7 @@ export function LoginForm() {
       })
     }, isProcessingSuccess ? 20 : 200)
     return () => clearInterval(interval)
-  }, [isLoading, isProcessingSuccess])
+  }, [isLoading, isProcessingSuccess, router])
 
   // Cek jika user baru kembali dari Google login success
   React.useEffect(() => {
