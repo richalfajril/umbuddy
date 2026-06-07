@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { AdminQuestionService, parseAdminQuestionMutationPayload } from '@/server/admin-questions'
-import { adminErrorResponse, adminQuestionErrorResponse, getRequiredAdmin, readAdminJson } from '../../_utils'
+import { apiErrorResponse, readApiJson } from '@/server/api/route-utils'
+import { adminQuestionErrorResponse, getRequiredAdmin } from '@/server/api/admin.route-utils'
 
 type RouteContext = {
   params: Promise<{ id: string }>
@@ -9,7 +10,7 @@ type RouteContext = {
 // Endpoint detail soal untuk preview/edit drawer.
 export async function GET(_req: Request, context: RouteContext) {
   const session = await getRequiredAdmin()
-  if (!session) return adminErrorResponse('UNAUTHORIZED', 'Kamu perlu login sebagai admin.', 401)
+  if (!session) return apiErrorResponse('UNAUTHORIZED', 'Kamu perlu login sebagai admin.', 401)
 
   const { id } = await context.params
 
@@ -24,10 +25,10 @@ export async function GET(_req: Request, context: RouteContext) {
 // Endpoint update hanya mengizinkan perubahan pada soal Draft.
 export async function PUT(req: Request, context: RouteContext) {
   const session = await getRequiredAdmin()
-  if (!session) return adminErrorResponse('UNAUTHORIZED', 'Kamu perlu login sebagai admin.', 401)
+  if (!session) return apiErrorResponse('UNAUTHORIZED', 'Kamu perlu login sebagai admin.', 401)
 
   const { id } = await context.params
-  const { payload, error } = await readAdminJson(req)
+  const { payload, error } = await readApiJson(req)
   if (error) return error
 
   try {

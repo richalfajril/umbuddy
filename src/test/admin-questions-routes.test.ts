@@ -8,6 +8,10 @@ vi.mock('@/server/admin-auth', () => ({
   },
 }))
 
+vi.mock('@/server/auth/config', () => ({
+  authConfig: {},
+}))
+
 vi.mock('@/server/admin-questions', () => {
   class AdminQuestionError extends Error {
     constructor(

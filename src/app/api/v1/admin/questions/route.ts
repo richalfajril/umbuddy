@@ -5,12 +5,13 @@ import {
   isAdminQuestionStatus,
   parseAdminQuestionMutationPayload,
 } from '@/server/admin-questions'
-import { adminErrorResponse, adminQuestionErrorResponse, getRequiredAdmin, readAdminJson } from '../_utils'
+import { apiErrorResponse, readApiJson } from '@/server/api/route-utils'
+import { adminQuestionErrorResponse, getRequiredAdmin } from '@/server/api/admin.route-utils'
 
 // Endpoint list soal admin dengan filter ringan sesuai API spec A2.
 export async function GET(req: Request) {
   const session = await getRequiredAdmin()
-  if (!session) return adminErrorResponse('UNAUTHORIZED', 'Kamu perlu login sebagai admin.', 401)
+  if (!session) return apiErrorResponse('UNAUTHORIZED', 'Kamu perlu login sebagai admin.', 401)
 
   const url = new URL(req.url)
   const status = url.searchParams.get('status')?.toUpperCase()
@@ -37,9 +38,9 @@ export async function GET(req: Request) {
 // Endpoint create soal selalu menyimpan sebagai Draft.
 export async function POST(req: Request) {
   const session = await getRequiredAdmin()
-  if (!session) return adminErrorResponse('UNAUTHORIZED', 'Kamu perlu login sebagai admin.', 401)
+  if (!session) return apiErrorResponse('UNAUTHORIZED', 'Kamu perlu login sebagai admin.', 401)
 
-  const { payload, error } = await readAdminJson(req)
+  const { payload, error } = await readApiJson(req)
   if (error) return error
 
   try {
