@@ -64,26 +64,27 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 5.50.10 WIB*
+*Auto-generated pada: 8/6/2026, 6.07.02 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
 - **Unpushed commits:** 0 commit belum di-push
-- **Latest commit:** `9883a6b fix(auth): bypass safari popup blocker by opening window synchronously`
+- **Latest commit:** `da80c32 refactor: replace next/navigation router with window.location for auth redirects and clean up redundant state management in login and register forms`
 
 **Last 5 Commits:**
 ```text
+da80c32 refactor: replace next/navigation router with window.location for auth redirects and clean up redundant state management in login and register forms
+209716a refactor: add muted attribute to mascot videos and simplify OAuth state handling in auth forms
+a2f1f46 refactor: remove Google OAuth popup flow in favor of direct redirect and update session handling
+4db16f0 fix(auth): revert to simple window.open to avoid cross-origin DOMException on mobile browsers
 9883a6b fix(auth): bypass safari popup blocker by opening window synchronously
-2fc0ff5 fix(auth): clear Next.js client router cache on logout to prevent splash screen loop
-1c51914 feat(auth): implement popup mode for google login to preserve media autoplay permissions
-4f17677 fix(auth): prevent splash screen loop on OAuth error and remove muted attribute
-3a79145 fix(auth): add muted attribute to video for mobile autoplay and smooth out progress bar speed
 ```
 
 **Changed Files:**
 
 ```text
-M src/features/user-auth/_components/login-form.tsx
+M src/features/admin-auth/_components/admin-login-form.tsx
+ M src/features/user-auth/_components/login-form.tsx
  M src/features/user-auth/_components/register-form.tsx
 ```
 

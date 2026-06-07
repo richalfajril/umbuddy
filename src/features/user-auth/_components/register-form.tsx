@@ -122,11 +122,11 @@ export function RegisterForm() {
     signIn('google', { callbackUrl: '/auth/register?google_success=true' })
   }
 
-  if (isLoading || isProcessingSuccess) {
+  if (isProcessingSuccess) {
     return (
       <div className="fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden animate-in fade-in duration-500">
         {/* Video Area (Fullscreen appearance adjusting to available height) */}
-        <div className="flex-1 relative overflow-hidden bg-black/5 dark:bg-black/20">
+        <div className="flex-1 relative overflow-hidden">
           <video 
             src="/mascot/mascot_running_video.webm" 
             autoPlay 
