@@ -64,28 +64,26 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 5.42.44 WIB*
+*Auto-generated pada: 8/6/2026, 5.44.23 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
 - **Unpushed commits:** 0 commit belum di-push
-- **Latest commit:** `1c51914 feat(auth): implement popup mode for google login to preserve media autoplay permissions`
+- **Latest commit:** `2fc0ff5 fix(auth): clear Next.js client router cache on logout to prevent splash screen loop`
 
 **Last 5 Commits:**
 ```text
+2fc0ff5 fix(auth): clear Next.js client router cache on logout to prevent splash screen loop
 1c51914 feat(auth): implement popup mode for google login to preserve media autoplay permissions
 4f17677 fix(auth): prevent splash screen loop on OAuth error and remove muted attribute
 3a79145 fix(auth): add muted attribute to video for mobile autoplay and smooth out progress bar speed
 b5384fa fix(auth): replace window.location.href with router.push to eliminate black flash unload screen during splash redirect
-e7ddb9d fix(auth): trigger splash screen only on confirmed login success
 ```
 
 **Changed Files:**
 
 ```text
-M src/app/(public)/auth/popup-callback/page.tsx
- M src/features/user-auth/_components/login-form.tsx
- M src/features/user-auth/_components/logout-button.tsx
+M src/features/user-auth/_components/login-form.tsx
  M src/features/user-auth/_components/register-form.tsx
 ```
 

@@ -154,27 +154,35 @@ export function RegisterForm() {
 
     setIsGoogleLoading(true)
     
+    // Buka popup KOSONG secara sinkron saat event klik terjadi.
+    // Ini adalah trik wajib agar browser (Safari/Chrome) tidak memblokir window.open
+    // karena pemanggilan asinkron (await signIn) akan menghilangkan konteks "user gesture".
+    const width = 500
+    const height = 600
+    const left = window.screen.width / 2 - width / 2
+    const top = window.screen.height / 2 - height / 2
+    
+    const popup = window.open(
+      'about:blank',
+      'GoogleLoginPopup',
+      `width=${width},height=${height},top=${top},left=${left}`
+    )
+    
     try {
       const result = await signIn('google', { 
         redirect: false, 
         callbackUrl: '/auth/popup-callback' 
       })
       
-      if (result?.url) {
-        const width = 500
-        const height = 600
-        const left = window.screen.width / 2 - width / 2
-        const top = window.screen.height / 2 - height / 2
-        
-        window.open(
-          result.url,
-          'GoogleLoginPopup',
-          `width=${width},height=${height},top=${top},left=${left}`
-        )
+      if (result?.url && popup) {
+        // Setelah mendapat URL otentikasi otorisasi Google, ganti lokasi popup
+        popup.location.href = result.url
       } else {
+        popup?.close()
         throw new Error('Tidak ada URL otentikasi')
       }
     } catch {
+      popup?.close()
       setIsGoogleLoading(false)
       addToast({
         type: 'error',
