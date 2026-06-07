@@ -64,20 +64,20 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 4.02.33 WIB*
+*Auto-generated pada: 8/6/2026, 4.07.57 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
 - **Unpushed commits:** 0 commit belum di-push
-- **Latest commit:** `9a32898 docs: update ai handoff state`
+- **Latest commit:** `e6d3d6a feat: add running mascot video asset to public directory`
 
 **Last 5 Commits:**
 ```text
+e6d3d6a feat: add running mascot video asset to public directory
+009759d feat(auth): replace loading spinner with mascot running video
 9a32898 docs: update ai handoff state
 e4e7d9e chore(dashboard): remove loading skeleton from user dashboard
 51281da docs: update ai handoff state
-2951d43 feat(admin): add loading splash screen during admin login
-6f6abc3 chore(auth): change wording pejuang to cambies
 ```
 
 **Changed Files:**
@@ -86,7 +86,6 @@ e4e7d9e chore(dashboard): remove loading skeleton from user dashboard
 M src/features/admin-auth/_components/admin-login-form.tsx
  M src/features/user-auth/_components/login-form.tsx
  M src/features/user-auth/_components/register-form.tsx
-?? public/mascot/mascot_running_video.webm
 ```
 
 **Saran AI:**
