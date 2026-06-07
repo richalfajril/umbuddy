@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { AuthService } from '@/server/auth/auth.service'
-import { EmailQuotaService } from '@/server/email/email-quota.service'
-import { EMAIL_FROM, getResendClient } from '@/server/email/client'
+import { AuthEmailService } from '@/server/email/auth-email.service'
 import { getClientIp, rateLimitByKey } from '@/server/redis/rate-limit'
 import { validateDto } from '@/server/validation/dto'
 import { RegisterUserDto } from '@/server/validation/auth/register.dto'
@@ -34,42 +33,6 @@ function registrationAcceptedResponse() {
   )
 }
 
-async function sendVerificationEmail(email: string, ip: string) {
-  const canCreateVerification = await AuthService.canCreateEmailVerificationRequest(email)
-  if (!canCreateVerification) return
-
-  const quota = await EmailQuotaService.consumeAuthEmailQuota({
-    type: 'verification',
-    email,
-    ip,
-  })
-  if (!quota.allowed) return
-
-  const verificationRequest = await AuthService.createEmailVerificationRequest(email)
-  if (!verificationRequest) return
-
-  const baseUrl = process.env.NEXTAUTH_URL ?? 'http://localhost:3000'
-  const verifyUrl = new URL('/auth/login', baseUrl)
-  verifyUrl.searchParams.set('verify_token', verificationRequest.token)
-
-  try {
-    await getResendClient().emails.send({
-      from: EMAIL_FROM,
-      to: verificationRequest.email,
-      subject: 'Verifikasi Email Umbuddy',
-      text: [
-        `Halo ${verificationRequest.name},`,
-        '',
-        'Klik link berikut untuk mengaktifkan akun Umbuddy kamu. Link berlaku 24 jam:',
-        verifyUrl.toString(),
-        '',
-        'Kalau kamu tidak membuat akun Umbuddy, abaikan email ini.',
-      ].join('\n'),
-    })
-  } catch (error) {
-    console.error('Email verification send error:', error)
-  }
-}
 
 /**
  * API Route: /api/v1/auth/register
@@ -126,7 +89,11 @@ export async function POST(req: Request) {
       password: validation.data.password,
     })
 
-    await sendVerificationEmail(normalizedEmail, ip)
+    await AuthEmailService.sendVerificationEmail(
+      normalizedEmail,
+      ip,
+      process.env.NEXTAUTH_URL ?? 'http://localhost:3000'
+    )
 
     return registrationAcceptedResponse()
   } catch (error: unknown) {
@@ -144,7 +111,11 @@ export async function POST(req: Request) {
 
     if (message === 'Email sudah terdaftar') {
       if (normalizedEmail) {
-        await sendVerificationEmail(normalizedEmail, ip)
+        await AuthEmailService.sendVerificationEmail(
+          normalizedEmail,
+          ip,
+          process.env.NEXTAUTH_URL ?? 'http://localhost:3000'
+        )
       }
       return registrationAcceptedResponse()
     }
