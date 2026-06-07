@@ -139,6 +139,22 @@ export function LoginForm() {
     signIn('google', { callbackUrl: '/dashboard' })
   }
 
+  if (isLoading || isGoogleLoading) {
+    return (
+      <FormSettingsLayout noCard>
+        <div className="flex flex-col items-center justify-center min-h-[400px] animate-in fade-in zoom-in duration-500">
+          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin shadow-glow-primary mb-8" />
+          <h2 className="text-2xl font-black text-headline mb-2 animate-pulse">
+            Sedang Memproses...
+          </h2>
+          <p className="text-body text-center font-medium px-4">
+            Tunggu sebentar Pejuang, markas CPNS-mu sedang disiapkan!
+          </p>
+        </div>
+      </FormSettingsLayout>
+    )
+  }
+
   return (
     <FormSettingsLayout staticCard header={<AuthLogoHeader />}>
       <div className="space-y-6">

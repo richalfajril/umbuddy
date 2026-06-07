@@ -29,6 +29,8 @@ interface FormSettingsLayoutProps {
   maxWidth?: 'sm' | 'md' | 'lg'
   /** Matikan hover/press pada card form untuk halaman yang murni input. */
   staticCard?: boolean
+  /** Hilangkan pembungkus card putih, berguna untuk loading splash screen */
+  noCard?: boolean
 }
 
 const maxWidthClasses = {
@@ -47,6 +49,7 @@ export function FormSettingsLayout({
   stickyFooter,
   maxWidth = 'md',
   staticCard = false,
+  noCard = false,
 }: FormSettingsLayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-background relative overflow-hidden bg-dot-pattern [&::after]:hidden">
@@ -73,9 +76,13 @@ export function FormSettingsLayout({
           )}
 
           {/* Form content */}
-          <div className={[staticCard ? 'form-card-static' : 'card', 'p-5 sm:p-8'].join(' ')}>
-            {children}
-          </div>
+          {noCard ? (
+            children
+          ) : (
+            <div className={[staticCard ? 'form-card-static' : 'card', 'p-5 sm:p-8'].join(' ')}>
+              {children}
+            </div>
+          )}
         </div>
       </main>
 
