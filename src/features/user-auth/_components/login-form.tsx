@@ -65,12 +65,25 @@ export function LoginForm() {
   // Cek jika user baru kembali dari Google login success
   React.useEffect(() => {
     let timeout: NodeJS.Timeout
-    const isGoogleSuccess = new URLSearchParams(window.location.search).get('google_success') === 'true'
-    if (isGoogleSuccess) {
+    const searchParams = new URLSearchParams(window.location.search)
+    const isGoogleSuccess = searchParams.get('google_success') === 'true'
+    const hasError = searchParams.has('error')
+    const errorType = searchParams.get('error')
+
+    if (isGoogleSuccess && !hasError) {
       timeout = setTimeout(() => setIsProcessingSuccess(true), 0)
     }
+
+    if (hasError && errorType === 'OAuthAccountNotLinked') {
+      addToast({
+        type: 'error',
+        title: 'Akun Bentrok',
+        message: 'Email ini sudah terdaftar dengan metode masuk lain. Silakan gunakan metode masuk aslinya.',
+      })
+    }
+
     return () => clearTimeout(timeout)
-  }, [])
+  }, [addToast])
 
   // Verify token dari query param diproses di login agar user langsung melihat status email.
   React.useEffect(() => {
@@ -185,7 +198,6 @@ export function LoginForm() {
             src="/mascot/mascot_running_video.webm" 
             autoPlay 
             loop 
-            muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
           />
