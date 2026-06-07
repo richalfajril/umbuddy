@@ -1,6 +1,5 @@
-import { redirect } from 'next/navigation'
+import { AdminRootRedirect } from '@/features/admin-dashboard/admin-root-redirect'
 
-// Route admin root diarahkan ke dashboard eksplisit agar URL backoffice konsisten.
 export default function AdminPage() {
-  redirect('/admin/dashboard')
+  return <AdminRootRedirect />
 }

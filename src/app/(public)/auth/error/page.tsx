@@ -1,13 +1,6 @@
-import { AuthErrorCard } from '@/features/user-auth/_components/auth-error-card'
+import { AuthErrorFlow } from '@/features/user-auth/auth-error-flow'
+import type { AuthErrorFlowProps } from '@/features/user-auth/auth-error-flow'
 
-type SearchParams = Promise<{ error?: string }>
-
-interface AuthErrorPageProps {
-  searchParams: SearchParams
-}
-
-export default async function AuthErrorPage({ searchParams }: AuthErrorPageProps) {
-  const params = await searchParams
-
-  return <AuthErrorCard error={params.error} />
+export default async function AuthErrorPage({ searchParams }: AuthErrorFlowProps) {
+  return <AuthErrorFlow searchParams={searchParams} />
 }

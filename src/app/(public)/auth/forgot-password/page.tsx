@@ -1,5 +1,5 @@
-import { ForgotPasswordForm } from '@/features/user-auth/_components/forgot-password-form'
+import { ForgotPasswordFlow } from '@/features/user-auth/forgot-password-flow'
 
 export default function ForgotPasswordPage() {
-  return <ForgotPasswordForm />
+  return <ForgotPasswordFlow />
 }

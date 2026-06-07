@@ -1,38 +1,5 @@
-import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
-import { authConfig } from '@/lib/auth/config'
-import { prisma } from '@/lib/prisma/client'
-import { resolveProgression } from '@/features/user-dashboard/_utils/dashboard.utils'
-import { PracticeFlow } from '@/features/user-practice/practice-flow'
+import { PracticePageFlow } from '@/features/user-practice/practice-page-flow'
 
-export default async function PracticePage() {
-  const session = await getServerSession(authConfig)
-  if (!session || session.user.revoked) {
-    redirect('/auth/login')
-  }
-
-  if (session.user.onboardingRequired) {
-    redirect('/onboarding')
-  }
-
-  // Mengambil progression agar header Practice konsisten dengan Dashboard.
-  const progression = await prisma.userProgression.findUnique({
-    where: { user_id: session.user.id },
-    select: {
-      total_xp: true,
-      current_streak: true,
-    },
-  })
-
-  // Mapping XP ke badge, jabatan, golongan, dan progress bar top bar.
-  const currentProgression = resolveProgression(progression?.total_xp ?? 0)
-
-  return (
-    <PracticeFlow
-      userName={session.user.name}
-      userEmail={session.user.email}
-      streakDays={progression?.current_streak ?? 0}
-      currentProgression={currentProgression}
-    />
-  )
+export default function PracticePage() {
+  return <PracticePageFlow />
 }

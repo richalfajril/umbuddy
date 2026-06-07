@@ -1,5 +1,5 @@
-import { RegisterForm } from '@/features/user-auth/_components/register-form'
+import { RegisterFlow } from '@/features/user-auth/register-flow'
 
 export default function RegisterPage() {
-  return <RegisterForm />
+  return <RegisterFlow />
 }
