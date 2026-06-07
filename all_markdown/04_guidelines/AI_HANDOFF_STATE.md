@@ -64,20 +64,20 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 5.15.38 WIB*
+*Auto-generated pada: 8/6/2026, 5.18.00 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
-- **Unpushed commits:** 0 commit belum di-push
-- **Latest commit:** `e7ddb9d fix(auth): trigger splash screen only on confirmed login success`
+- **Unpushed commits:** 1 commit belum di-push
+- **Latest commit:** `b5384fa fix(auth): replace window.location.href with router.push to eliminate black flash unload screen during splash redirect`
 
 **Last 5 Commits:**
 ```text
+b5384fa fix(auth): replace window.location.href with router.push to eliminate black flash unload screen during splash redirect
 e7ddb9d fix(auth): trigger splash screen only on confirmed login success
 f6c8059 fix(auth): defer splash screen until after Google account selection via query params
 0b4d7a2 fix(auth): revert fake progress bar limit back to 98%
 799976f fix(auth): change fake progress bar limit from 98% to 100%
-ce4a7ec style(auth): ensure splash video adapts to available height as true fullscreen above footer
 ```
 
 **Changed Files:**

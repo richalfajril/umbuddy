@@ -39,7 +39,7 @@ export function AdminLoginForm() {
         const increment = Math.max(1, Math.floor((100 - prev) / 10))
         return prev + increment
       })
-    }, isProcessingSuccess ? 20 : 200)
+    }, isProcessingSuccess ? 80 : 200)
     return () => clearInterval(interval)
   }, [isProcessingSuccess, isLoading, router])
 
@@ -87,6 +87,7 @@ export function AdminLoginForm() {
             src="/mascot/mascot_running_video.webm" 
             autoPlay 
             loop 
+            muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
           />
