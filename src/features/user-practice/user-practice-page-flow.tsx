@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authConfig } from '@/lib/auth/config'
 import { prisma } from '@/lib/prisma/client'
-import { resolveProgression } from '@/features/user-dashboard/_utils/dashboard.utils'
+import { resolveProgression } from '@/features/shared/_utils/user-progression.utils'
 import { PracticeFlow } from '@/features/user-practice/user-practice-flow'
 
 // Flow server practice menjaga auth guard dan mengambil data header sebelum latihan client dimulai.

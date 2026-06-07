@@ -8,7 +8,7 @@ import type {
   PublicPracticeQuestion,
   PracticeResult,
 } from './_types/practice.types'
-import type { ResolvedProgression } from '@/features/user-dashboard/_types/dashboard.types'
+import type { ResolvedProgression } from '@/features/shared/_types/user-progression.types'
 
 
 // Utilitas Latihan

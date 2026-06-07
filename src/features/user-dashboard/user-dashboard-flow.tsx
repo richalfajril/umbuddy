@@ -1,10 +1,10 @@
 import { UserDashboardView } from "@/features/user-dashboard/_components";
 import { rankingPreview } from "@/features/user-dashboard/_constants/dashboard.constants";
+import { resolveProgression } from "@/features/shared/_utils/user-progression.utils";
 import {
   formatCompactXp,
   getScorePercent,
   getWeakestArea,
-  resolveProgression,
 } from "@/features/user-dashboard/_utils/dashboard.utils";
 import { authConfig } from "@/lib/auth/config";
 import { prisma } from "@/lib/prisma/client";

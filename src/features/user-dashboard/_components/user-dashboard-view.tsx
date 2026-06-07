@@ -4,15 +4,17 @@ import { BentoDashboardLayout } from "@/components/templates/bento-dashboard-lay
 import { Badge, Card } from "@/components/ui";
 import { LogoutButton } from "@/features/user-auth/_components/logout-button";
 import {
-  DASHBOARD_NAV_ITEMS,
-  dashboardCardGlow,
+  USER_APP_NAV_ITEMS,
+  userAppCardGlow,
+} from "@/features/shared/_constants/user-app.constants";
+import type { ResolvedProgression } from "@/features/shared/_types/user-progression.types";
+import {
   friendsPreview,
 } from "@/features/user-dashboard/_constants/dashboard.constants";
 import type {
   DashboardAnalyticsItem,
   DashboardLeaderboardRow,
   DashboardScore,
-  ResolvedProgression,
 } from "@/features/user-dashboard/_types/dashboard.types";
 import { ChevronRight, Heart, Swords, Target } from "lucide-react";
 import Image from "next/image";
@@ -63,11 +65,11 @@ export function UserDashboardView({
           />
         }
         bottomNav={
-          <BottomNav items={DASHBOARD_NAV_ITEMS} activeHref="/dashboard" />
+          <BottomNav items={USER_APP_NAV_ITEMS} activeHref="/dashboard" />
         }
         sidebar={
           <Sidebar
-            items={DASHBOARD_NAV_ITEMS}
+            items={USER_APP_NAV_ITEMS}
             activeHref="/dashboard"
             userName={userName}
             userEmail={userEmail}
@@ -79,7 +81,7 @@ export function UserDashboardView({
           {/* Greeting card menjadi entry point latihan harian paling cepat. */}
           <Card
             padding="md"
-            className={`overflow-hidden xl:col-span-5 ${dashboardCardGlow}`}
+            className={`overflow-hidden xl:col-span-5 ${userAppCardGlow}`}
           >
             <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:gap-5 sm:text-left">
               <div className="relative h-24 w-24 shrink-0 sm:h-24 sm:w-24">
@@ -123,7 +125,7 @@ export function UserDashboardView({
           </Card>
 
           {/* Score card menampilkan baseline diagnostic dan target score dari onboarding. */}
-          <Card padding="lg" className={`xl:col-span-3 ${dashboardCardGlow}`}>
+          <Card padding="lg" className={`xl:col-span-3 ${userAppCardGlow}`}>
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
               <div className="flex items-center justify-between gap-3">
                 <div>
@@ -155,7 +157,7 @@ export function UserDashboardView({
           </Card>
 
           {/* Friends preview masih statis sampai fitur social/realtime aktif. */}
-          <Card padding="lg" className={`xl:col-span-4 ${dashboardCardGlow}`}>
+          <Card padding="lg" className={`xl:col-span-4 ${userAppCardGlow}`}>
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-lg font-black text-headline">Teman Online</h2>
               <div className="flex gap-2 text-muted">
@@ -189,7 +191,7 @@ export function UserDashboardView({
           {/* Battle card adalah teaser mode kompetitif yang belum aktif di MVP dashboard. */}
           <Card
             padding="lg"
-            className={`relative min-h-[220px] overflow-hidden xl:col-span-5 ${dashboardCardGlow}`}
+            className={`relative min-h-[220px] overflow-hidden xl:col-span-5 ${userAppCardGlow}`}
           >
             <Swords
               className="absolute -right-8 bottom-4 h-40 w-40 rotate-[-18deg] text-border/60 dark:text-border/30"
@@ -215,7 +217,7 @@ export function UserDashboardView({
           {/* CAT simulation card adalah placeholder menuju fase simulasi penuh. */}
           <Card
             padding="lg"
-            className={`relative min-h-[220px] overflow-hidden xl:col-span-4 ${dashboardCardGlow}`}
+            className={`relative min-h-[220px] overflow-hidden xl:col-span-4 ${userAppCardGlow}`}
           >
             <div
               className="absolute bottom-1 right-4 font-display text-8xl font-black uppercase text-border/35 dark:text-border/20"
@@ -243,7 +245,7 @@ export function UserDashboardView({
           {/* Aside mengelompokkan leaderboard dan donation agar kolom kanan tetap mudah dipindai. */}
           <aside className="grid gap-4 xl:col-span-3 xl:row-span-2">
             {/* Leaderboard menampilkan top preview dan posisi YOU dari data progression user. */}
-            <Card padding="sm" className={dashboardCardGlow}>
+            <Card padding="sm" className={userAppCardGlow}>
               <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-primary text-center">
                 Leaderboard
               </p>
@@ -309,7 +311,7 @@ export function UserDashboardView({
             {/* Donation card menjaga CTA support tetap visual tanpa mengganggu workflow utama. */}
             <Card
               padding="none"
-              className={`relative min-h-[214px] overflow-visible border-primary/40 bg-[linear-gradient(135deg,#b7ee72_0%,#74c332_52%,#5fb72b_100%)] p-5 text-white shadow-[0_7px_0_0_rgba(21,93,39,0.35)] dark:border-primary/35 dark:bg-[linear-gradient(135deg,#82c95a_0%,#4f9e35_52%,#155d27_100%)] ${dashboardCardGlow}`}
+              className={`relative min-h-[214px] overflow-visible border-primary/40 bg-[linear-gradient(135deg,#b7ee72_0%,#74c332_52%,#5fb72b_100%)] p-5 text-white shadow-[0_7px_0_0_rgba(21,93,39,0.35)] dark:border-primary/35 dark:bg-[linear-gradient(135deg,#82c95a_0%,#4f9e35_52%,#155d27_100%)] ${userAppCardGlow}`}
             >
               <div
                 className="absolute inset-0 overflow-hidden rounded-[inherit]"
@@ -351,7 +353,7 @@ export function UserDashboardView({
           <Card
             id="daily-missions"
             padding="lg"
-            className={`xl:col-span-3 ${dashboardCardGlow}`}
+            className={`xl:col-span-3 ${userAppCardGlow}`}
           >
             <div className="mb-4 flex items-center justify-between gap-3">
               <h2 className="font-display text-xl font-black uppercase text-headline">
@@ -380,7 +382,7 @@ export function UserDashboardView({
           </Card>
 
           {/* Tactical analytics membaca area lemah dan narasi coach dari diagnostic/practice. */}
-          <Card padding="lg" className={`xl:col-span-6 ${dashboardCardGlow}`}>
+          <Card padding="lg" className={`xl:col-span-6 ${userAppCardGlow}`}>
             <h2 className="font-display text-xl font-black uppercase text-headline">
               Tactical Analytics
             </h2>

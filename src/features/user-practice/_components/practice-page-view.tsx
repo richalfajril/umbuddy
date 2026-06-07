@@ -8,10 +8,10 @@ import { AppProgressTopBar, BottomNav, Sidebar } from '@/components/organisms'
 import { Button, Card } from '@/components/ui'
 import { LogoutButton } from '@/features/user-auth/_components/logout-button'
 import {
-  DASHBOARD_NAV_ITEMS,
-  dashboardCardGlow,
-} from '@/features/user-dashboard/_constants/dashboard.constants'
-import type { ResolvedProgression } from '@/features/user-dashboard/_types/dashboard.types'
+  USER_APP_NAV_ITEMS,
+  userAppCardGlow,
+} from '@/features/shared/_constants/user-app.constants'
+import type { ResolvedProgression } from '@/features/shared/_types/user-progression.types'
 import type { PracticeCategory } from '../_types/practice.types'
 
 // Kartu kategori dengan ikon dan deskripsi untuk halaman landing Practice.
@@ -86,11 +86,11 @@ export function PracticePageView({
         />
       }
       bottomNav={
-        <BottomNav items={DASHBOARD_NAV_ITEMS} activeHref="/practice" />
+        <BottomNav items={USER_APP_NAV_ITEMS} activeHref="/practice" />
       }
       sidebar={
         <Sidebar
-          items={DASHBOARD_NAV_ITEMS}
+          items={USER_APP_NAV_ITEMS}
           activeHref="/practice"
           userName={userName}
           userEmail={userEmail}
@@ -100,7 +100,7 @@ export function PracticePageView({
     >
       <div className="mx-auto grid max-w-4xl gap-6">
         {/* Hero card */}
-        <Card padding="lg" className={`relative overflow-hidden ${dashboardCardGlow}`}>
+        <Card padding="lg" className={`relative overflow-hidden ${userAppCardGlow}`}>
           <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:gap-6 sm:text-left">
             <div className="relative h-24 w-24 shrink-0">
               <div

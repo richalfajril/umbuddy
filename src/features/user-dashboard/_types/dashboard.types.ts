@@ -22,13 +22,3 @@ export type DashboardLeaderboardRow = {
   badge: string;
   highlight?: boolean;
 };
-
-// ResolvedProgression adalah hasil mapping XP ke visual top bar.
-export type ResolvedProgression = {
-  currentJabatan: string;
-  currentGolongan: string;
-  currentBadge: string;
-  currentRankXp: number;
-  nextRankXp: number;
-  progressPercentage: number;
-};
