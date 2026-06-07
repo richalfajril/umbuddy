@@ -4,7 +4,7 @@ import { EmailQuotaService } from '@/server/email/email-quota.service'
 import { EMAIL_FROM, getResendClient } from '@/server/email/client'
 import { getClientIp, rateLimitByKey } from '@/server/redis/rate-limit'
 import { validateDto } from '@/server/validation/dto'
-import { RegisterUserDto } from './register.dto'
+import { RegisterUserDto } from '@/server/validation/auth/register.dto'
 
 function errorResponse(
   code: string,

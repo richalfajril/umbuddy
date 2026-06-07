@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { AuthService } from '@/server/auth/auth.service'
 import { getClientIp, rateLimitByKey } from '@/server/redis/rate-limit'
 import { validateDto } from '@/server/validation/dto'
-import { PasswordResetConfirmDto } from './confirm.dto'
+import { PasswordResetConfirmDto } from '@/server/validation/auth/password-reset-confirm.dto'
 
 function errorResponse(
   code: string,

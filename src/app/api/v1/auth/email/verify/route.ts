@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { AuthService } from '@/server/auth/auth.service'
 import { getClientIp, rateLimitByKey } from '@/server/redis/rate-limit'
 import { validateDto } from '@/server/validation/dto'
-import { EmailVerifyDto } from './verify.dto'
+import { EmailVerifyDto } from '@/server/validation/auth/email-verify.dto'
 
 function errorResponse(
   code: string,

@@ -4,7 +4,7 @@ import { EmailQuotaService } from '@/server/email/email-quota.service'
 import { EMAIL_FROM, getResendClient } from '@/server/email/client'
 import { getClientIp, rateLimitByKey } from '@/server/redis/rate-limit'
 import { validateDto } from '@/server/validation/dto'
-import { PasswordResetRequestDto } from './request.dto'
+import { PasswordResetRequestDto } from '@/server/validation/auth/password-reset-request.dto'
 
 function successResponse() {
   return NextResponse.json(
