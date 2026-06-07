@@ -14,6 +14,7 @@ export function AdminLoginForm() {
   const [form, setForm] = React.useState<AdminLoginFormState>({ email: '', password: '' })
   const [showPassword, setShowPassword] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
+  const [isProcessingSuccess, setIsProcessingSuccess] = React.useState(false)
   const [progress, setProgress] = React.useState(0)
   const { addToast } = useToastStore()
 
@@ -23,16 +24,22 @@ export function AdminLoginForm() {
   }
 
   React.useEffect(() => {
-    if (!isLoading) return
+    if (!isProcessingSuccess && !isLoading) return
     const interval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 98) return prev
+        if (prev >= 98) {
+          if (isProcessingSuccess) {
+            clearInterval(interval)
+            window.location.href = '/admin/dashboard'
+          }
+          return prev
+        }
         const increment = Math.max(1, Math.floor((100 - prev) / 10))
         return prev + increment
       })
-    }, 200)
+    }, isProcessingSuccess ? 20 : 200)
     return () => clearInterval(interval)
-  }, [isLoading])
+  }, [isProcessingSuccess, isLoading])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -51,12 +58,13 @@ export function AdminLoginForm() {
         throw new Error(data.error?.message ?? 'Login admin belum berhasil.')
       }
 
+      setIsLoading(false)
+      setIsProcessingSuccess(true)
       addToast({
         type: 'success',
         title: 'Admin Terverifikasi',
         message: 'Akses backoffice sedang disiapkan.',
       })
-      window.location.href = '/admin/dashboard'
     } catch (error) {
       addToast({
         type: 'error',
@@ -68,7 +76,7 @@ export function AdminLoginForm() {
     }
   }
 
-  if (isLoading) {
+  if (isProcessingSuccess) {
     return (
       <div className="fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden animate-in fade-in duration-500">
         {/* Video Area (Fullscreen appearance adjusting to available height) */}

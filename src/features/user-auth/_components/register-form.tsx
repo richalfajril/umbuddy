@@ -122,7 +122,7 @@ export function RegisterForm() {
     signIn('google', { callbackUrl: '/auth/register?google_success=true' })
   }
 
-  if (isLoading || isProcessingSuccess) {
+  if (isProcessingSuccess) {
     return (
       <div className="fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden animate-in fade-in duration-500">
         {/* Video Area (Fullscreen appearance adjusting to available height) */}

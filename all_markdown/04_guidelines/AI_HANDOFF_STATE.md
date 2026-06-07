@@ -64,26 +64,27 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 5.02.18 WIB*
+*Auto-generated pada: 8/6/2026, 5.08.43 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
-- **Unpushed commits:** 2 commit belum di-push
-- **Latest commit:** `0b4d7a2 fix(auth): revert fake progress bar limit back to 98%`
+- **Unpushed commits:** 0 commit belum di-push
+- **Latest commit:** `f6c8059 fix(auth): defer splash screen until after Google account selection via query params`
 
 **Last 5 Commits:**
 ```text
+f6c8059 fix(auth): defer splash screen until after Google account selection via query params
 0b4d7a2 fix(auth): revert fake progress bar limit back to 98%
 799976f fix(auth): change fake progress bar limit from 98% to 100%
 ce4a7ec style(auth): ensure splash video adapts to available height as true fullscreen above footer
 2c5d3e6 fix(auth): correct setState in effect lint errors and finalize splash screen progress bar UI
-37d8f91 style(auth): redesign splash screen to use fullscreen video with bottom progress bar
 ```
 
 **Changed Files:**
 
 ```text
-M src/features/user-auth/_components/login-form.tsx
+M src/features/admin-auth/_components/admin-login-form.tsx
+ M src/features/user-auth/_components/login-form.tsx
  M src/features/user-auth/_components/register-form.tsx
 ```
 
