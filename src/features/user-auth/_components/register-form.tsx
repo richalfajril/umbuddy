@@ -9,7 +9,6 @@ import { useToastStore } from '@/stores/useToastStore'
 import { Eye, EyeOff } from 'lucide-react'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import * as React from 'react'
 
 // Form registrasi email/password + Google OAuth tanpa mengubah kontrak API register.
@@ -27,7 +26,6 @@ export function RegisterForm() {
   const [errorMessage, setErrorMessage] = React.useState('')
   const [googleOAuthStatus, setGoogleOAuthStatus] = React.useState<GoogleOAuthStatus>('NOT_VERIFIED')
   const { addToast } = useToastStore()
-  const router = useRouter()
 
   // Public auth status memastikan tombol Google hanya aktif jika env OAuth verified.
   React.useEffect(() => {
@@ -53,16 +51,16 @@ export function RegisterForm() {
         if (prev >= 98) {
           if (isProcessingSuccess) {
             clearInterval(interval)
-            router.push('/dashboard')
+            window.location.href = '/dashboard'
           }
           return prev
         }
         const increment = Math.max(1, Math.floor((100 - prev) / 10))
         return prev + increment
       })
-    }, isProcessingSuccess ? 80 : 200)
+    }, isProcessingSuccess ? 20 : 200)
     return () => clearInterval(interval)
-  }, [isProcessingSuccess, isLoading, router])
+  }, [isProcessingSuccess, isLoading])
 
   // Cek jika user baru kembali dari Google register success
   React.useEffect(() => {
@@ -124,7 +122,7 @@ export function RegisterForm() {
     signIn('google', { callbackUrl: '/auth/register?google_success=true' })
   }
 
-  if (isProcessingSuccess) {
+  if (isLoading || isProcessingSuccess) {
     return (
       <div className="fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden animate-in fade-in duration-500">
         {/* Video Area (Fullscreen appearance adjusting to available height) */}
@@ -133,7 +131,6 @@ export function RegisterForm() {
             src="/mascot/mascot_running_video.webm" 
             autoPlay 
             loop 
-            muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
           />

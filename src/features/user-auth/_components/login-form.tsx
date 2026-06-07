@@ -10,7 +10,6 @@ import { useToastStore } from '@/stores/useToastStore'
 import { Eye, EyeOff } from 'lucide-react'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import * as React from 'react'
 
 // Form login credentials + Google OAuth tanpa memindahkan core NextAuth config.
@@ -25,7 +24,6 @@ export function LoginForm() {
   const [progress, setProgress] = React.useState(0)
   const [googleOAuthStatus, setGoogleOAuthStatus] = React.useState<GoogleOAuthStatus>('NOT_VERIFIED')
   const { addToast } = useToastStore()
-  const router = useRouter()
 
   // Status Google OAuth dibaca dari public endpoint agar tombol bisa disabled jika env belum siap.
   React.useEffect(() => {
@@ -51,16 +49,16 @@ export function LoginForm() {
         if (prev >= 98) {
           if (isProcessingSuccess) {
             clearInterval(interval)
-            router.push('/dashboard')
+            window.location.href = '/dashboard'
           }
           return prev
         }
         const increment = Math.max(1, Math.floor((100 - prev) / 10))
         return prev + increment
       })
-    }, isProcessingSuccess ? 80 : 200)
+    }, isProcessingSuccess ? 20 : 200)
     return () => clearInterval(interval)
-  }, [isLoading, isProcessingSuccess, router])
+  }, [isLoading, isProcessingSuccess])
 
   // Cek jika user baru kembali dari Google login success
   React.useEffect(() => {
@@ -136,18 +134,15 @@ export function LoginForm() {
           title: 'Masuk Gagal ⚠️',
           message: errorMsg,
         })
-        setIsLoading(false)
       } else {
-        setIsLoading(false)
-        setIsProcessingSuccess(true)
         addToast({
           type: 'success',
           title: 'Berhasil Masuk! 🚀',
           message: 'Selamat datang kembali Cambies! Memuat markas...',
         })
+        window.location.href = '/dashboard'
       }
     } catch {
-      setIsLoading(false)
       const errorMsg = 'Terjadi kesalahan saat masuk'
       
       addToast({
@@ -176,7 +171,7 @@ export function LoginForm() {
     signIn('google', { callbackUrl: '/auth/login?google_success=true' })
   }
 
-  if (isProcessingSuccess) {
+  if (isLoading || isProcessingSuccess) {
     return (
       <div className="fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden animate-in fade-in duration-500">
         {/* Video Area (Fullscreen appearance adjusting to available height) */}
@@ -185,7 +180,6 @@ export function LoginForm() {
             src="/mascot/mascot_running_video.webm" 
             autoPlay 
             loop 
-            muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
           />

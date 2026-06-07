@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { Eye, EyeOff } from 'lucide-react'
 import { AuthLogoHeader } from '@/components/molecules/auth-logo-header'
@@ -15,10 +14,8 @@ export function AdminLoginForm() {
   const [form, setForm] = React.useState<AdminLoginFormState>({ email: '', password: '' })
   const [showPassword, setShowPassword] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
-  const [isProcessingSuccess, setIsProcessingSuccess] = React.useState(false)
   const [progress, setProgress] = React.useState(0)
   const { addToast } = useToastStore()
-  const router = useRouter()
 
   // Helper update field menjaga controlled input tetap ringkas.
   const updateField = (field: keyof AdminLoginFormState, value: string) => {
@@ -26,22 +23,16 @@ export function AdminLoginForm() {
   }
 
   React.useEffect(() => {
-    if (!isProcessingSuccess && !isLoading) return
+    if (!isLoading) return
     const interval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 98) {
-          if (isProcessingSuccess) {
-            clearInterval(interval)
-            router.push('/admin/dashboard')
-          }
-          return prev
-        }
+        if (prev >= 98) return prev
         const increment = Math.max(1, Math.floor((100 - prev) / 10))
         return prev + increment
       })
-    }, isProcessingSuccess ? 80 : 200)
+    }, 200)
     return () => clearInterval(interval)
-  }, [isProcessingSuccess, isLoading, router])
+  }, [isLoading])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -60,13 +51,12 @@ export function AdminLoginForm() {
         throw new Error(data.error?.message ?? 'Login admin belum berhasil.')
       }
 
-      setIsLoading(false)
-      setIsProcessingSuccess(true)
       addToast({
         type: 'success',
         title: 'Admin Terverifikasi',
         message: 'Akses backoffice sedang disiapkan.',
       })
+      window.location.href = '/admin/dashboard'
     } catch (error) {
       addToast({
         type: 'error',
@@ -78,7 +68,7 @@ export function AdminLoginForm() {
     }
   }
 
-  if (isProcessingSuccess) {
+  if (isLoading) {
     return (
       <div className="fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden animate-in fade-in duration-500">
         {/* Video Area (Fullscreen appearance adjusting to available height) */}
@@ -87,7 +77,6 @@ export function AdminLoginForm() {
             src="/mascot/mascot_running_video.webm" 
             autoPlay 
             loop 
-            muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
           />
