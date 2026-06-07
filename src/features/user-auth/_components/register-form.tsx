@@ -64,47 +64,27 @@ export function RegisterForm() {
     return () => clearInterval(interval)
   }, [isProcessingSuccess, isLoading, router])
 
-  // Dengarkan pesan dari popup jendela Google OAuth
+  // Cek jika user baru kembali dari Google register success
   React.useEffect(() => {
     let timeout: NodeJS.Timeout
-    
-    const handleMessage = (event: MessageEvent) => {
-      // Pastikan pesan datang dari origin kita sendiri
-      if (event.origin !== window.location.origin) return
-      
-      const data = event.data
-      if (data?.source === 'umbuddy-oauth' && data?.type === 'OAUTH_CALLBACK') {
-        const errorType = data.error
-        
-        if (!errorType) {
-          // Sukses!
-          timeout = setTimeout(() => setIsProcessingSuccess(true), 0)
-        } else if (errorType === 'OAuthAccountNotLinked') {
-          // Bentrok akun
-          addToast({
-            type: 'error',
-            title: 'Akun Bentrok',
-            message: 'Email ini sudah terdaftar. Silakan log masuk dari halaman Login.',
-          })
-          setIsGoogleLoading(false)
-        } else {
-          // Error lain
-          addToast({
-            type: 'error',
-            title: 'Google Daftar Gagal',
-            message: 'Terjadi kesalahan saat memproses daftar via Google.',
-          })
-          setIsGoogleLoading(false)
-        }
-      }
+    const searchParams = new URLSearchParams(window.location.search)
+    const isGoogleSuccess = searchParams.get('google_success') === 'true'
+    const hasError = searchParams.has('error')
+    const errorType = searchParams.get('error')
+
+    if (isGoogleSuccess && !hasError) {
+      timeout = setTimeout(() => setIsProcessingSuccess(true), 0)
     }
 
-    window.addEventListener('message', handleMessage)
-    
-    return () => {
-      window.removeEventListener('message', handleMessage)
-      clearTimeout(timeout)
+    if (hasError && errorType === 'OAuthAccountNotLinked') {
+      addToast({
+        type: 'error',
+        title: 'Akun Bentrok',
+        message: 'Email ini sudah terdaftar. Silakan log masuk dari halaman Login.',
+      })
     }
+
+    return () => clearTimeout(timeout)
   }, [addToast])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -141,8 +121,8 @@ export function RegisterForm() {
     }
   }
 
-  // Google login menggunakan mode popup
-  const handleGoogleLogin = async () => {
+  // Google register/login memakai provider NextAuth yang sama dengan login.
+  const handleGoogleLogin = () => {
     if (googleOAuthStatus !== 'PASS') {
       addToast({
         type: 'warning',
@@ -152,36 +132,9 @@ export function RegisterForm() {
       return
     }
 
+    setProgress(0)
     setIsGoogleLoading(true)
-    
-    try {
-      const result = await signIn('google', { 
-        redirect: false, 
-        callbackUrl: '/auth/popup-callback' 
-      })
-      
-      if (result?.url) {
-        const width = 500
-        const height = 600
-        const left = window.screen.width / 2 - width / 2
-        const top = window.screen.height / 2 - height / 2
-        
-        window.open(
-          result.url,
-          '_blank',
-          `width=${width},height=${height},top=${top},left=${left}`
-        )
-      } else {
-        throw new Error('Tidak ada URL otentikasi')
-      }
-    } catch {
-      setIsGoogleLoading(false)
-      addToast({
-        type: 'error',
-        title: 'Sistem Sibuk',
-        message: 'Gagal membuka jendela Google Login.',
-      })
-    }
+    signIn('google', { callbackUrl: '/auth/register?google_success=true' })
   }
 
   if (isProcessingSuccess) {
