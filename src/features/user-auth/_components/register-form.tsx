@@ -20,6 +20,7 @@ export function RegisterForm() {
   const [showPassword, setShowPassword] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = React.useState(false)
+  const [progress, setProgress] = React.useState(0)
   const [successMessage, setSuccessMessage] = React.useState('')
   const [errorMessage, setErrorMessage] = React.useState('')
   const [googleOAuthStatus, setGoogleOAuthStatus] = React.useState<GoogleOAuthStatus>('NOT_VERIFIED')
@@ -42,9 +43,21 @@ export function RegisterForm() {
     }
   }, [])
 
-  // Submit register tetap generic dan mengikuti response API saat ini.
+  React.useEffect(() => {
+    if (!isGoogleLoading) return
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 98) return prev
+        const increment = Math.max(1, Math.floor((100 - prev) / 10))
+        return prev + increment
+      })
+    }, 200)
+    return () => clearInterval(interval)
+  }, [isGoogleLoading])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setProgress(0)
     setIsLoading(true)
     setSuccessMessage('')
     setErrorMessage('')
@@ -87,6 +100,7 @@ export function RegisterForm() {
       return
     }
 
+    setProgress(0)
     setIsGoogleLoading(true)
     signIn('google', { callbackUrl: '/dashboard' })
   }
@@ -94,25 +108,32 @@ export function RegisterForm() {
   if (isGoogleLoading) {
     return (
       <div className="fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden animate-in fade-in duration-500">
-        {/* Fullscreen Video Area */}
-        <div className="flex-1 relative flex items-center justify-center bg-black/5 dark:bg-black/20">
+        {/* Video Area (object-contain ensures it won't overlap/crop) */}
+        <div className="flex-1 relative bg-black/5 dark:bg-black/20 p-8 sm:p-12">
           <video 
             src="/mascot/mascot_running_video.webm" 
             autoPlay 
             loop 
             playsInline
-            className="absolute inset-0 w-full h-full object-cover"
+            className="w-full h-full object-contain"
           />
         </div>
         
         {/* Footer Progress Bar */}
-        <div className="bg-background border-t border-border p-6 sm:p-8 flex flex-col justify-center space-y-4 shadow-[0_-20px_40px_rgba(0,0,0,0.05)] relative z-10">
-          <div className="flex justify-between items-end max-w-4xl mx-auto w-full">
-            <h2 className="text-2xl font-black text-headline uppercase tracking-widest animate-pulse">Memuat...</h2>
-            <span className="text-sm font-bold text-primary animate-pulse">Menyiapkan markas Cambies</span>
+        <div className="bg-background border-t border-border p-6 sm:p-8 flex flex-col justify-center space-y-4 relative z-10">
+          <div className="text-center mb-1">
+            <span className="text-sm font-bold text-primary animate-pulse">Menyiapkan markas Cambies...</span>
           </div>
-          <div className="h-3 w-full max-w-4xl mx-auto bg-muted/30 rounded-full overflow-hidden relative">
-            <div className="absolute inset-y-0 left-0 bg-primary rounded-full animate-pulse w-full" />
+          <div className="h-14 w-full max-w-4xl mx-auto bg-muted/30 rounded-2xl overflow-hidden relative border border-border/50 shadow-inner">
+            <div 
+              className="absolute inset-y-0 left-0 bg-primary transition-all duration-300 ease-out" 
+              style={{ width: `${progress}%` }} 
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-lg font-black text-white uppercase tracking-widest drop-shadow-md">
+                MEMUAT... {progress}%
+              </span>
+            </div>
           </div>
         </div>
       </div>
