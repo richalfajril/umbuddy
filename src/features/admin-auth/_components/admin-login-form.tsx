@@ -57,25 +57,29 @@ export function AdminLoginForm() {
 
   if (isLoading) {
     return (
-      <FormSettingsLayout noCard>
-        <div className="flex flex-col items-center justify-center min-h-[400px] animate-in fade-in zoom-in duration-500">
-          <div className="w-48 h-48 mb-8 flex items-center justify-center rounded-full bg-background/50 border-4 border-primary/20 shadow-glow-primary overflow-hidden">
-            <video 
-              src="/mascot/mascot_running_video.webm" 
-              autoPlay 
-              loop 
-              playsInline
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <h2 className="text-2xl font-black text-headline mb-2 animate-pulse">
-            Memverifikasi Akses...
-          </h2>
-          <p className="text-body text-center font-medium px-4">
-            Tunggu sebentar, ruang kendali Umbuddy sedang disiapkan.
-          </p>
+      <div className="fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden animate-in fade-in duration-500">
+        {/* Fullscreen Video Area */}
+        <div className="flex-1 relative flex items-center justify-center bg-black/5 dark:bg-black/20">
+          <video 
+            src="/mascot/mascot_running_video.webm" 
+            autoPlay 
+            loop 
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          />
         </div>
-      </FormSettingsLayout>
+        
+        {/* Footer Progress Bar */}
+        <div className="bg-background border-t border-border p-6 sm:p-8 flex flex-col justify-center space-y-4 shadow-[0_-20px_40px_rgba(0,0,0,0.05)] relative z-10">
+          <div className="flex justify-between items-end max-w-4xl mx-auto w-full">
+            <h2 className="text-2xl font-black text-headline uppercase tracking-widest animate-pulse">Memuat...</h2>
+            <span className="text-sm font-bold text-primary animate-pulse">Menyiapkan ruang kendali Umbuddy</span>
+          </div>
+          <div className="h-3 w-full max-w-4xl mx-auto bg-muted/30 rounded-full overflow-hidden relative">
+            <div className="absolute inset-y-0 left-0 bg-primary rounded-full animate-pulse w-full" />
+          </div>
+        </div>
+      </div>
     )
   }
 
