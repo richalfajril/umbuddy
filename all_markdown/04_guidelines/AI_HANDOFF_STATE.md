@@ -64,27 +64,26 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 1.26.35 WIB*
+*Auto-generated pada: 8/6/2026, 1.54.59 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
-- **Unpushed commits:** 3 commit belum di-push
-- **Latest commit:** `e3dfeca docs: add ai handoff state document`
+- **Unpushed commits:** 4 commit belum di-push
+- **Latest commit:** `1279039 chore: add ai handoff updater`
 
 **Last 5 Commits:**
 ```text
+1279039 chore: add ai handoff updater
 e3dfeca docs: add ai handoff state document
 b7d5152 docs: add architecture baseline and development rules
 0db2232 docs: add architecture baseline documentation
 0610172 refactor: move admin api route utils to server
-61154c5 refactor: move onboarding api route utils to server
 ```
 
 **Changed Files:**
 
 ```text
-M package.json
-?? scripts/update-ai-handoff.mjs
+M src/server/auth/auth.service.ts
 ```
 
 **Saran AI:**

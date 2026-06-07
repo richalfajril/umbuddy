@@ -216,56 +216,59 @@ export class AuthService {
         },
       })
 
-      const user = existingUser
-        ? await tx.user.update({
-            where: { id: existingUser.id },
-            data: {
-              name: existingUser.name || safeName,
-              oauth_provider: provider,
-              email_verified: existingUser.email_verified || emailVerified,
-              status:
-                existingUser.status === USER_STATUS.PENDING_VERIFICATION && emailVerified
-                  ? USER_STATUS.ACTIVE
-                  : existingUser.status,
-            },
-          })
-        : await tx.user.create({
-            data: {
-              name: safeName,
-              email: normalizedEmail,
-              oauth_provider: provider,
-              email_verified: emailVerified,
-              status: emailVerified ? USER_STATUS.ACTIVE : USER_STATUS.PENDING_VERIFICATION,
-              role: USER_ROLE.USER,
-              registration_source: provider,
-            },
-          })
+      let user
 
-      await tx.userProfile.upsert({
-        where: { user_id: user.id },
-        update: {
-          avatar_url: avatarUrl ?? undefined,
-        },
-        create: {
-          user_id: user.id,
-          avatar_url: avatarUrl,
-        },
-      })
-      await tx.userProgression.upsert({
-        where: { user_id: user.id },
-        update: {},
-        create: { user_id: user.id, level: 1, total_xp: 0 },
-      })
-      await tx.userSettings.upsert({
-        where: { user_id: user.id },
-        update: {},
-        create: { user_id: user.id },
-      })
-      await tx.onboardingState.upsert({
-        where: { user_id: user.id },
-        update: {},
-        create: { user_id: user.id },
-      })
+      if (existingUser) {
+        user = await tx.user.update({
+          where: { id: existingUser.id },
+          data: {
+            name: existingUser.name || safeName,
+            oauth_provider: provider,
+            email_verified: existingUser.email_verified || emailVerified,
+            status:
+              existingUser.status === USER_STATUS.PENDING_VERIFICATION && emailVerified
+                ? USER_STATUS.ACTIVE
+                : existingUser.status,
+          },
+        })
+
+        // Hanya perbarui avatar jika ada yang baru dari provider OAuth
+        if (avatarUrl) {
+          await tx.userProfile.updateMany({
+            where: { user_id: user.id },
+            data: { avatar_url: avatarUrl },
+          })
+        }
+      } else {
+        user = await tx.user.create({
+          data: {
+            name: safeName,
+            email: normalizedEmail,
+            oauth_provider: provider,
+            email_verified: emailVerified,
+            status: emailVerified ? USER_STATUS.ACTIVE : USER_STATUS.PENDING_VERIFICATION,
+            role: USER_ROLE.USER,
+            registration_source: provider,
+          },
+        })
+
+        // Buat relasi wajib untuk user baru
+        await tx.userProfile.create({
+          data: {
+            user_id: user.id,
+            avatar_url: avatarUrl,
+          },
+        })
+        await tx.userProgression.create({
+          data: { user_id: user.id, level: 1, total_xp: 0 },
+        })
+        await tx.userSettings.create({
+          data: { user_id: user.id },
+        })
+        await tx.onboardingState.create({
+          data: { user_id: user.id },
+        })
+      }
 
       return user
     })
