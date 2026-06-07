@@ -11,6 +11,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "handoff:update": "node scripts/update-ai-handoff.mjs",
+    "handoff:check": "git status && git log --oneline -5",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate deploy",
     "db:studio": "prisma studio",

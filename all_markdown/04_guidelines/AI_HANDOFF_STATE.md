@@ -61,3 +61,32 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 - [ ] Next Recommended Task
 - [ ] Validation Status
 - [ ] Risks / Do Not Touch Yet
+
+<!-- AI_HANDOFF_AUTO_START -->
+## Auto Snapshot (Git State)
+*Auto-generated pada: 8/6/2026, 1.26.35 WIB*
+
+- **Current branch:** `main`
+- **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
+- **Unpushed commits:** 3 commit belum di-push
+- **Latest commit:** `e3dfeca docs: add ai handoff state document`
+
+**Last 5 Commits:**
+```text
+e3dfeca docs: add ai handoff state document
+b7d5152 docs: add architecture baseline and development rules
+0db2232 docs: add architecture baseline documentation
+0610172 refactor: move admin api route utils to server
+61154c5 refactor: move onboarding api route utils to server
+```
+
+**Changed Files:**
+
+```text
+M package.json
+?? scripts/update-ai-handoff.mjs
+```
+
+**Saran AI:**
+Direkomendasikan menjalankan `git diff` atau `git status` sebelum memulai tugas baru.
+<!-- AI_HANDOFF_AUTO_END -->
