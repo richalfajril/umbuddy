@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server'
 import { OnboardingService } from '@/server/services/onboarding.service'
-import { errorResponse, getRequiredUserId, onboardingErrorResponse } from '../../_utils'
+import { apiErrorResponse, getRequiredUserId } from '@/server/api/route-utils'
+import { onboardingErrorResponse } from '@/server/api/onboarding.route-utils'
 
 export async function POST() {
   const userId = await getRequiredUserId()
   if (!userId) {
-    return errorResponse('UNAUTHORIZED', 'Kamu perlu masuk dulu untuk memulai tes mini.', 401)
+    return apiErrorResponse('UNAUTHORIZED', 'Kamu perlu masuk dulu untuk memulai tes mini.', 401)
   }
 
   try {

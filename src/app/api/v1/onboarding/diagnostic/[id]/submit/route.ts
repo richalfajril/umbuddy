@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import { validateDto } from '@/server/validation/dto'
 import { OnboardingService, type DiagnosticAnswerInput } from '@/server/services/onboarding.service'
-import { errorResponse, getRequiredUserId, onboardingErrorResponse, readJson } from '../../../_utils'
+import { apiErrorResponse, getRequiredUserId, readApiJson } from '@/server/api/route-utils'
+import { onboardingErrorResponse } from '@/server/api/onboarding.route-utils'
 import { DiagnosticSubmitDto } from '@/server/validation/onboarding/submit.dto'
 
 type RouteContext = {
@@ -61,16 +62,16 @@ function validateAnswers(payload: unknown[]): AnswerValidationResult {
 export async function POST(req: Request, context: RouteContext) {
   const userId = await getRequiredUserId()
   if (!userId) {
-    return errorResponse('UNAUTHORIZED', 'Kamu perlu masuk dulu untuk mengunci jawaban.', 401)
+    return apiErrorResponse('UNAUTHORIZED', 'Kamu perlu masuk dulu untuk mengunci jawaban.', 401)
   }
 
   const { id } = await context.params
-  const { payload, error } = await readJson(req)
+  const { payload, error } = await readApiJson(req)
   if (error) return error
 
   const validation = await validateDto(DiagnosticSubmitDto, payload)
   if (validation.data === null) {
-    return errorResponse(
+    return apiErrorResponse(
       'VALIDATION_ERROR',
       'Jawaban diagnostic belum valid.',
       400,
@@ -80,7 +81,7 @@ export async function POST(req: Request, context: RouteContext) {
 
   const answers = validateAnswers(validation.data.answers)
   if (!answers.ok) {
-    return errorResponse('VALIDATION_ERROR', 'Jawaban diagnostic belum valid.', 400, answers.errors)
+    return apiErrorResponse('VALIDATION_ERROR', 'Jawaban diagnostic belum valid.', 400, answers.errors)
   }
 
   try {
