@@ -1,5 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest'
-import { AuthService } from '@/services/auth.service'
+import { AuthService } from '@/server/auth/auth.service'
 import { prisma } from '@/server/db'
 
 type User = Awaited<ReturnType<typeof prisma.user.create>>

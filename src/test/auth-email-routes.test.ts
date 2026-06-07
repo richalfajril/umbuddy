@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { AuthService } from '@/services/auth.service'
-import { EmailQuotaService } from '@/services/email-quota.service'
+import { AuthService } from '@/server/auth/auth.service'
+import { EmailQuotaService } from '@/server/email/email-quota.service'
 import { getResendClient } from '@/server/email/client'
 
-vi.mock('@/services/auth.service', () => ({
+vi.mock('@/server/auth/auth.service', () => ({
   AuthService: {
     registerUser: vi.fn(),
     canCreateEmailVerificationRequest: vi.fn(),
@@ -13,7 +13,7 @@ vi.mock('@/services/auth.service', () => ({
   },
 }))
 
-vi.mock('@/services/email-quota.service', () => ({
+vi.mock('@/server/email/email-quota.service', () => ({
   EmailQuotaService: {
     consumeAuthEmailQuota: vi.fn(),
   },

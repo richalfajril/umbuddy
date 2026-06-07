@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { getServerSession } from 'next-auth'
-import { OnboardingService } from '@/services/onboarding.service'
+import { OnboardingService } from '@/server/services/onboarding.service'
 
 vi.mock('next-auth', () => ({
   getServerSession: vi.fn(),
@@ -10,7 +10,7 @@ vi.mock('@/server/auth/config', () => ({
   authConfig: {},
 }))
 
-vi.mock('@/services/onboarding.service', () => {
+vi.mock('@/server/services/onboarding.service', () => {
   class OnboardingError extends Error {
     constructor(
       public readonly code: string,

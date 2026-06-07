@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { OnboardingService } from '@/services/onboarding.service'
+import { OnboardingService } from '@/server/services/onboarding.service'
 import { errorResponse, getRequiredUserId, onboardingErrorResponse } from '../../_utils'
 
 export async function POST() {

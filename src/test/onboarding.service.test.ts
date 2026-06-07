@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { OnboardingService } from '@/services/onboarding.service'
+import { OnboardingService } from '@/server/services/onboarding.service'
 import { prisma } from '@/server/db'
 
 type PracticeSession = Awaited<ReturnType<typeof prisma.practiceSession.create>>

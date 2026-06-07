@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authConfig } from '@/server/auth/config'
-import { PracticeError } from '@/services/practice.service'
+import { PracticeError } from '@/server/services/practice.service'
 
 export async function getRequiredUserId() {
   const session = await getServerSession(authConfig)

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { AuthService } from '@/services/auth.service'
+import { AuthService } from '@/server/auth/auth.service'
 import { getClientIp, rateLimitByKey } from '@/server/redis/rate-limit'
 import { validateDto } from '@/server/validation/dto'
 import { PasswordResetConfirmDto } from './confirm.dto'

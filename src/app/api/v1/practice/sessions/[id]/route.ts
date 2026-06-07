@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { PracticeService } from '@/services/practice.service'
+import { PracticeService } from '@/server/services/practice.service'
 import { errorResponse, getRequiredUserId, practiceErrorResponse } from '../../_utils'
 
 type RouteContext = {

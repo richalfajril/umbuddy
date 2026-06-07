@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { validateDto } from '@/server/validation/dto'
-import { PracticeService } from '@/services/practice.service'
+import { PracticeService } from '@/server/services/practice.service'
 import { errorResponse, getRequiredUserId, practiceErrorResponse, readJson } from '../../../_utils'
 import { validatePracticeAnswers } from '../_answer-validation'
 import { PracticeAnswersDto } from '../answers/answers.dto'

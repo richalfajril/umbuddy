@@ -1,4 +1,4 @@
-import type { PracticeAnswerInput } from '@/services/practice.service'
+import type { PracticeAnswerInput } from '@/server/services/practice.service'
 
 const ANSWER_OPTIONS = ['A', 'B', 'C', 'D', 'E']
 

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { getServerSession } from 'next-auth'
-import { PracticeService } from '@/services/practice.service'
+import { PracticeService } from '@/server/services/practice.service'
 
 vi.mock('next-auth', () => ({
   getServerSession: vi.fn(),
@@ -10,7 +10,7 @@ vi.mock('@/server/auth/config', () => ({
   authConfig: {},
 }))
 
-vi.mock('@/services/practice.service', () => {
+vi.mock('@/server/services/practice.service', () => {
   class PracticeError extends Error {
     constructor(
       public readonly code: string,

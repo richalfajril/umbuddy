@@ -20,7 +20,7 @@ import 'server-only'
 import type { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { AuthService } from '@/services/auth.service'
+import { AuthService } from '@/server/auth/auth.service'
 import { getClientIp, rateLimitByKey } from '@/server/redis/rate-limit'
 
 const ACTIVE_USER_STATUS = 'ACTIVE'

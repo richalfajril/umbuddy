@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { EmailQuotaService } from '@/services/email-quota.service'
+import { EmailQuotaService } from '@/server/email/email-quota.service'
 import { getRedisClient } from '@/server/redis/client'
 
 const redis = {
