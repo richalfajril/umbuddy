@@ -11,7 +11,7 @@ import {
   LandingShowcases,
   LandingStickyCTA,
   LandingTestimonials,
-} from '@/components/organisms/landing'
+} from '@/features/user-landing/_components'
 import { HeroLayout } from '@/components/templates/hero-layout'
 
 // Flow landing menyusun section publik agar route app tetap routing-only.
