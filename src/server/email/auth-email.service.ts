@@ -45,4 +45,47 @@ export class AuthEmailService {
       console.error('Email verification send error:', error)
     }
   }
+
+  /**
+   * Mengirim email reset password dengan pengecekan kuota.
+   */
+  static async sendPasswordResetEmail(email: string, ip: string, baseUrl: string) {
+    const canCreateReset = await AuthService.canCreatePasswordResetRequest(email)
+    if (!canCreateReset) return
+
+    // Cek batas pengiriman email untuk mencegah spam
+    const quota = await EmailQuotaService.consumeAuthEmailQuota({
+      type: 'password-reset',
+      email,
+      ip,
+    })
+    if (!quota.allowed) return
+
+    // Buat token reset password baru
+    const resetRequest = await AuthService.createPasswordResetRequest(email)
+    if (!resetRequest) return
+
+    // Buat link tautan reset password
+    const resetUrl = new URL('/auth/reset-password', baseUrl)
+    resetUrl.searchParams.set('token', resetRequest.token)
+
+    try {
+      // Kirim email via Resend
+      await getResendClient().emails.send({
+        from: EMAIL_FROM,
+        to: resetRequest.email,
+        subject: 'Reset Password Umbuddy',
+        text: [
+          `Halo ${resetRequest.name},`,
+          '',
+          'Gunakan link berikut untuk reset password Umbuddy. Link berlaku 1 jam:',
+          resetUrl.toString(),
+          '',
+          'Jika kamu tidak meminta reset password, abaikan email ini.',
+        ].join('\n'),
+      })
+    } catch (error) {
+      console.error('Password reset email error:', error)
+    }
+  }
 }
