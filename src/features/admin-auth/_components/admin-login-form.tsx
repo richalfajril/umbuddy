@@ -71,14 +71,14 @@ export function AdminLoginForm() {
   if (isLoading) {
     return (
       <div className="fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden animate-in fade-in duration-500">
-        {/* Video Area (object-contain ensures it won't overlap/crop) */}
-        <div className="flex-1 relative bg-black/5 dark:bg-black/20 p-8 sm:p-12">
+        {/* Video Area (Fullscreen appearance adjusting to available height) */}
+        <div className="flex-1 relative overflow-hidden bg-black/5 dark:bg-black/20">
           <video 
             src="/mascot/mascot_running_video.webm" 
             autoPlay 
             loop 
             playsInline
-            className="w-full h-full object-contain"
+            className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
         

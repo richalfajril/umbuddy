@@ -64,20 +64,20 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 4.35.03 WIB*
+*Auto-generated pada: 8/6/2026, 4.39.49 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
 - **Unpushed commits:** 0 commit belum di-push
-- **Latest commit:** `37d8f91 style(auth): redesign splash screen to use fullscreen video with bottom progress bar`
+- **Latest commit:** `2c5d3e6 fix(auth): correct setState in effect lint errors and finalize splash screen progress bar UI`
 
 **Last 5 Commits:**
 ```text
+2c5d3e6 fix(auth): correct setState in effect lint errors and finalize splash screen progress bar UI
 37d8f91 style(auth): redesign splash screen to use fullscreen video with bottom progress bar
 d9f5ff6 style: increase mascot container size in login form
 638dbde style(auth): enlarge mascot video and enable sound on splash screen
 e6d3d6a feat: add running mascot video asset to public directory
-009759d feat(auth): replace loading spinner with mascot running video
 ```
 
 **Changed Files:**
