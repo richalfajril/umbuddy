@@ -1,4 +1,4 @@
-import { RegisterFlow } from '@/features/user-auth/register-flow'
+import { RegisterFlow } from '@/features/user-auth/user-auth-register-flow'
 
 export default function RegisterPage() {
   return <RegisterFlow />

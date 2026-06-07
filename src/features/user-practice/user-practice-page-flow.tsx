@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { authConfig } from '@/lib/auth/config'
 import { prisma } from '@/lib/prisma/client'
 import { resolveProgression } from '@/features/user-dashboard/_utils/dashboard.utils'
-import { PracticeFlow } from '@/features/user-practice/practice-flow'
+import { PracticeFlow } from '@/features/user-practice/user-practice-flow'
 
 // Flow server practice menjaga auth guard dan mengambil data header sebelum latihan client dimulai.
 export async function PracticePageFlow() {
