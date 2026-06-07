@@ -1,126 +1,135 @@
-# Architecture Baseline
+# Umbuddy Architecture Baseline
 
-## Tujuan
-Dokumen ini mendefinisikan *baseline* arsitektur proyek Umbuddy V1 yang telah diselesaikan melalui refaktor Fase 1-13. Dokumen ini bertujuan menjadi panduan praktis dan wajib dipatuhi oleh seluruh developer serta agen AI pada masa pengembangan mendatang agar struktur dan konvensi *codebase* tetap bersih, tertata, dan modular.
+## Tujuan Dokumen
+Dokumen ini mendefinisikan *baseline* arsitektur proyek Umbuddy V1 pasca-refaktor Fase 1-13. Dokumen ini menjadi satu-satunya sumber kebenaran (Single Source of Truth) untuk standar pengembangan, batasan sistem, dan panduan operasional. Seluruh developer serta agen AI wajib mengikuti aturan di dokumen ini pada masa pengembangan mendatang agar *codebase* tetap bersih, tertata, dan modular.
 
-## Refactor Checkpoint
-Baseline ini ditetapkan dan ditandai pada Git Tag: `v0.1-architecture-baseline`.
+## Checkpoint Arsitektur
+Baseline ini secara resmi ditetapkan pada Git Tag: `v0.1-architecture-baseline`.
+Jika terjadi kerusakan struktural akibat eksperimen, Anda selalu dapat mengembalikan proyek ke keadaan ini melalui: `git checkout v0.1-architecture-baseline`.
 
-## Ringkasan Arsitektur Baseline
-Arsitektur Umbuddy menggunakan pendekatan **Feature-Based Architecture** untuk logika domain dan **Atomic Design** untuk komponen UI yang dapat digunakan kembali (*reusable*). Server dan Client dipisahkan secara ketat untuk menjamin keamanan, performa, dan skalabilitas.
+## Ringkasan Baseline
+Arsitektur Umbuddy menggunakan pendekatan **Feature-Based Architecture** untuk logika domain utama dan **Atomic Design** untuk komponen antarmuka (*shared UI*). Lapisan Server dan Client dipisahkan dengan sangat ketat (melalui `src/server` dan `src/features`) untuk menjamin keamanan, performa, skalabilitas, serta mencegah kebocoran *secret keys*.
 
-## Tanggung Jawab Folder Utama
-- `src/app`: Khusus untuk App Router (halaman dan layout).
+## Tanggung Jawab Folder Final
+- `src/app`: Khusus untuk App Router (hanya routing halaman dan layout).
 - `src/app/api`: Khusus untuk *endpoint* API (hanya berisi file `route.ts`).
-- `src/features`: Tempat utama menyimpan logika fitur dan komponen spesifik domain (Frontend & Server Components).
-- `src/components`: Komponen UI modular (*shared UI*) dengan pendekatan Atomic Design.
-- `src/server`: Logika spesifik *backend* (database, auth, API utils, validation, dan domain services).
-- `src/lib`: Utilitas ringan dan murni (*generic utils*) yang bisa digunakan di client maupun server (contoh: *design tokens*).
-- `src/integrations`: Integrasi sistem eksternal yang berjalan di sisi *client* atau pihak ketiga.
-- `src/test`: Tempat penyimpanan semua berkas pengujian otomatis (*unit* maupun *integration test*).
+- `src/features`: Tempat utama menyimpan logika fitur spesifik domain (Frontend UI & Server Components/Flows).
+- `src/components`: Komponen UI modular (*shared UI*) yang bisa di-*reuse* lintas fitur.
+- `src/server`: Logika spesifik *backend* murni (Database Prisma, Auth, API Utils, Validation, dan Domain Services).
+- `src/lib`: Utilitas ringan dan murni (*generic utils*) yang bisa digunakan dengan aman di client dan server (contoh: *design tokens*, *fonts*).
+- `src/integrations`: Integrasi eksternal pihak ketiga yang berjalan di sisi *client* atau browser.
+- `src/test`: Pusat dari semua spesifikasi pengujian otomatis (Vitest) beserta *mocks*.
 
-## Aturan Feature-Based Architecture
-Semua logika domain harus dikelompokkan ke dalam folder fitur, bukan dikelompokkan berdasarkan tipe file secara global.
-- Fitur pengguna umum diletakkan di `src/features/user-*` (contoh: `user-practice`, `user-onboarding`).
-- Fitur admin diletakkan di `src/features/admin-*` (contoh: `admin-dashboard`, `admin-questions`).
-- Logika domain yang dibagikan antarsistem fitur diletakkan di `src/features/shared`.
+## Feature-Based Architecture
+Semua logika domain harus dikelompokkan ke dalam folder fitur berdasarkan tujuannya.
+- **Fitur Pengguna**: `src/features/user-*` (contoh: `user-practice`, `user-onboarding`).
+- **Fitur Admin**: `src/features/admin-*` (contoh: `admin-dashboard`, `admin-questions`).
+- **Fitur Lintas Domain**: `src/features/shared`.
 
-**Contoh Struktur Fitur Pengguna (`src/features/user-example/`):**
+**Contoh Struktur Fitur (`src/features/user-example/`):**
 ```text
 src/features/user-example/
-├── user-example-flow.tsx
-├── _components/
-├── _hooks/
-├── _services/
-├── _schemas/
-├── _types/
-├── _constants/
-└── _utils/
+├── user-example-flow.tsx   <-- Server Component orchestrator
+├── _components/            <-- UI spesifik fitur ini
+├── _hooks/                 <-- Hooks spesifik fitur
+├── _services/              <-- Logika client/service lokal
+├── _schemas/               <-- Zod validation untuk form client
+├── _types/                 <-- Tipe data spesifik
+├── _constants/             <-- Konstanta lokal
+└── _utils/                 <-- Fungsi utilitas lokal
 ```
 
-**Contoh Struktur Fitur Admin (`src/features/admin-example/`):**
-```text
-src/features/admin-example/
-├── admin-example-flow.tsx
-├── _components/
-├── _services/
-├── _schemas/
-├── _types/
-├── _constants/
-└── _utils/
+## Atomic Design untuk Shared UI
+Folder `src/components` **HANYA BOLEH** berisi UI primitif dan agnostik yang independen dari logika fitur.
+- `src/components/ui`: UI primitif dasar (biasanya integrasi komponen Shadcn).
+- `src/components/atoms`: Komponen terkecil (*Button*, *Input*, *Badge*).
+- `src/components/molecules`: Gabungan *atoms* sederhana (*SearchBar*, *FormField*).
+- `src/components/organisms`: Blok UI besar mandiri (*Navbar*, *Card* kompleks).
+- `src/components/templates`: Kerangka struktur (*scaffolds layout*).
+
+## App Router Rules
+- Direktori `src/app` adalah *route-only*.
+- Komponen di dalam `app/` (seperti `page.tsx`, `layout.tsx`) berfungsi sebagai *entry point* URL yang merender komponen dari `src/features/*`.
+
+**Contoh yang Benar:**
+```tsx
+// src/app/(user)/example/page.tsx
+import { ExampleFlow } from '@/features/user-example/user-example-flow'
+
+export default function ExamplePage() {
+  return <ExampleFlow />
+}
 ```
 
-## Aturan Shared UI (Atomic Design)
-Folder `src/components` HANYA untuk komponen antarmuka yang independen dari logika bisnis (bisa di-*reuse* lintas fitur).
-- `src/components/ui`: UI primitif tingkat rendah (biasanya komponen Shadcn).
-- `src/components/atoms`: Komponen kustom paling kecil dan sederhana (Button, Input).
-- `src/components/molecules`: Gabungan beberapa *atoms* (Search Bar, Form Field).
-- `src/components/organisms`: Blok UI besar yang dapat di-*reuse* (Navbar, Footer, Card kompleks).
-- `src/components/templates`: Struktur susunan layout (*layout scaffolds*).
-- **Aturan:** Bangun UI bersama dari hierarki terendah (*atoms* → *molecules* → *organisms* → *templates*) ketika masuk akal.
+## API Route Rules
+- Setiap folder API **HANYA BOLEH** berisi file `route.ts`. Tidak boleh ada fungsi *helper* (`_utils.ts`) atau DTO di dalam `src/app/api/v1/`.
+- API Handlers bersifat "Thin Route": mereka hanya bertugas melakukan *parsing request*, memanggil layanan (Service) di `src/server`, dan mengembalikan HTTP *response*.
 
-## Aturan App Router (`src/app`)
-- **Route-only:** Folder ini hanya mengatur *routing* Next.js (seperti `page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`).
-- Komponen di `app/` murni bertindak sebagai titik masuk (*entry point*) dan akan mengimpor komponen *-flow.tsx* (sebagai *Server Component* orkestrator) dari `src/features/*`.
+**Contoh yang Benar:**
+```tsx
+// src/app/api/v1/example/route.ts
+import { ExampleService } from '@/server/example'
+import { apiErrorResponse } from '@/server/api/route-utils'
 
-**Contoh App Route:**
-```text
-src/app/(user)/example/page.tsx
-→ imports and renders src/features/user-example/user-example-flow.tsx
+export async function POST(req: Request) {
+  try {
+     const data = await ExampleService.process()
+     return NextResponse.json(data)
+  } catch (error) {
+     return apiErrorResponse('ERROR_CODE', 'Terjadi kesalahan', 400)
+  }
+}
 ```
 
-## Aturan API Route (`src/app/api`)
-- **Thin Handlers:** Setiap direktori API **HANYA BOLEH** berisi berkas `route.ts`.
-- Dilarang keras menempatkan `_utils.ts`, `dto.ts`, skema, atau fungsi bantuan apa pun di dalam `src/app/api`.
-- Berkas `route.ts` hanya bertugas mem-parsing HTTP *request*, memvalidasi, memanggil service dari `src/server`, dan mengembalikan HTTP *response*.
+## Server Layer Rules
+- Segala bentuk logika bisnis internal, akses database Prisma, otentikasi NextAuth, operasi cache Redis, dan fungsi email WAJIB diletakkan di `src/server`.
+- Fungsi *helper* API yang digunakan bersama (seperti penanganan *error* umum) diletakkan di `src/server/api/route-utils.ts`. Utilitas API spesifik domain masuk ke `src/server/api/[domain].route-utils.ts`.
 
-**Contoh API Route:**
-```text
-src/app/api/v1/example/route.ts
-→ parses request, validates, calls src/server service, returns response
-```
+## Validation dan DTO Rules
+- Definisi validasi keamanan API (DTOs) dan skema parameter *backend* diletakkan di `src/server/validation/`.
+- Jika skema Zod tersebut dibagi dengan *client* (contohnya form React Hook Form), letakkan di folder fitur yang bersangkutan (`src/features/[fitur]/_schemas/`).
 
-## Aturan Lapis Server (`src/server`)
-- Segala logika bisnis *backend*, akses database (Prisma), operasi Redis, layanan *email*, sistem Autentikasi (NextAuth), dan *route utilities* wajib bermukim di dalam `src/server`.
-- Fungsi pembantu API *endpoint* yang dibagi secara umum diletakkan di `src/server/api/route-utils.ts`. Utilitas khusus domain API diletakkan di `src/server/api/[domain].route-utils.ts`.
+## Lib dan Integrations Rules
+- Jangan jadikan `src/lib` sebagai keranjang sampah. Hanya letakkan *utility functions* primitif (pemformat tanggal murni, *design-tokens*) di sini.
+- Integrasi SDK khusus yang berjalan di browser (contoh: *analytics client*) masuk ke `src/integrations`.
 
-## Aturan Validasi dan DTO
-- Definisi skema *server validation* / DTO (seperti Zod schemas) untuk rute API WAJIB ditempatkan di `src/server/validation/`.
-- Jika skema tersebut juga digunakan oleh *client* (sebagai validasi form *frontend*), maka letakkan di dalam folder fitur terkait pada bagian `_schemas` (contoh: `src/features/admin-auth/_schemas`).
+## Testing Rules
+- Seluruh pengujian (Unit Tests dan Integration Tests) wajib berada dalam `src/test/`. Ini mendukung struktur konvensi Vitest terpusat kita yang sudah sangat efisien.
 
-## Aturan Lib dan Integrations
-- `src/lib`: Hanya digunakan untuk fungsi utilitas generik ringan yang aman untuk *client* dan *server* (misalnya pembacaan *design tokens* atau pemformatan utilitas murni).
-- `src/integrations`: Hanya digunakan untuk pustaka *client* eksternal dan perantara API sistem pihak ketiga yang berjalan secara spesifik di sisi *browser/client*.
+## Documentation dan Comment Rules
+- Semua dokumentasi (termasuk *markdown* di `all_markdown/`), komentar spesifikasi kode (*JSDoc*), pesan *commit*, dan percakapan PR **wajib menggunakan Bahasa Indonesia**.
+- Penjelasan harus ringkas, praktis, serta langsung menuju alasan (*why*) daripada mengulang kode (*what*). Dilarang membuat folder `docs/` terpisah.
 
-## Aturan Pengujian (Testing)
-- Seluruh spesifikasi tes, file *mock*, dan pengujian dipertahankan berpusat dalam `src/test`. Hal ini menjaga kebersihan pohon direktori *source code* serta sesuai dengan konfigurasi Vitest pada proyek ini.
+---
 
-## Aturan Komentar dan Dokumentasi
-- Komentar dalam *codebase*, *pull request*, maupun dokumen spesifikasi **wajib menggunakan Bahasa Indonesia** yang baku namun komunikatif.
-- Dokumentasi struktural dan *markdown files* yang digunakan agen dan developer wajib diletakkan di dalam folder utama `all_markdown/` sesuai kategorinya. **Jangan pernah membuat folder `docs/`**.
+## Instruksi Default untuk AI/Developer
+Jika Anda adalah agen AI atau developer yang baru mulai bekerja di repositori ini, Anda **WAJIB MENGINGAT** aturan-aturan operasional di bawah ini sebelum menulis sebaris kode pun.
 
-## Checklist Fitur Baru
-- [ ] Buat direktori di dalam `src/features/` berdasarkan tipe fitur (contoh: `user-[nama-fitur]` atau `admin-[nama-fitur]`).
-- [ ] Buat file *Server Component* orkestrator (seperti `[nama]-flow.tsx`).
-- [ ] Simpan komponen UI spesifik pada folder `_components/` di dalam fitur, bukan di `src/components/`.
-- [ ] Pastikan layanan backend API terdaftar di `src/server/`.
-- [ ] Buat rute di `src/app` dengan mengekspor *page* yang memuat `-flow.tsx`.
-- [ ] Pastikan UI primitif yang *reusable* telah diletakkan di `src/components/` menggunakan standar *Atomic Design*.
+**Rules Utama:**
+1. `src/app` is route-only (hanya untuk routing Next.js).
+2. `src/app/api` **must** contain `route.ts` handlers only. (Tidak boleh ada `_utils` atau DTO di dalam rute API).
+3. API handlers must stay thin and delegate logic to `src/server`.
+4. User features go to `src/features/user-*`.
+5. Admin features go to `src/features/admin-*`.
+6. Shared feature logic goes to `src/features/shared`.
+7. Shared reusable UI goes to `src/components` using Atomic Design (*atoms*, *molecules*, *organisms*, *templates*).
+8. Server-only logic (Prisma, Auth, Redis, Services) goes to `src/server`.
+9. DTO/server validation goes to `src/server/validation`.
+10. Lightweight generic utilities only go to `src/lib`.
+11. Browser external integrations go to `src/integrations`.
+12. **Do not** import `src/server` from Client Components (`"use client"`). Server imports hanya valid di dalam Server Components.
+13. **Do not** put feature-specific UI into `src/components`. (UI spesifik fitur wajib masuk ke `src/features/*/_components`).
+14. **Do not** let shared UI (`src/components`) import from `src/features`. UI Shared harus 100% independen/agnostik.
+15. Comments/docs **must** use Bahasa Indonesia and match the existing project style.
 
-## Checklist Revisi / Penyesuaian
-- [ ] Cek ulang apakah ada utilitas API yang berada di folder *route* alih-alih `src/server`.
-- [ ] Pastikan tidak ada komponen *client* yang membocorkan lingkungan *server* (contoh: *import* `prisma` atau `next-auth` di `use client`).
-- [ ] Pastikan *import* `_utils` lokal sesuai peruntukannya dan tidak ada *cross-import* lintas domain tanpa alasan valid.
+## Checklist Sebelum Editing
+- [ ] Inspeksi file atau folder lain yang serupa dengan yang ingin dikerjakan untuk meniru konvensi yang sudah ada.
+- [ ] Rangkum (*summarize*) rencana perubahan terlebih dahulu.
+- [ ] Identifikasi dan catat daftar file yang akan dibuat atau dimodifikasi.
+- [ ] Identifikasi *risky areas* (contoh: perubahan skema, manipulasi otentikasi) dan validasi kembali apakah sesuai batas arsitektur.
 
-## Pola yang Terlarang (Forbidden Patterns)
-- ❌ Meng-*import* dari `src/server/*` di dalam *Client Components* (`"use client"`).
-- ❌ Menyimpan komponen UI spesifik suatu fitur/halaman di dalam `src/components`. (Harus masuk `src/features/*/_components`).
-- ❌ Meng-*import* kode dari `src/features` di dalam komponen *Shared UI* (`src/components`). Komponen UI murni tidak boleh bergantung pada fitur.
-- ❌ Menempatkan file selain `route.ts` di dalam jalur URI `src/app/api`.
-- ❌ Menulis logika *database* secara langsung di dalam rute API alih-alih mendelegasikannya ke *service* di `src/server`.
-
-## Perintah Validasi Wajib
-Semua refaktorisasi maupun pembuatan fitur baru wajib lolos validasi berikut secara mutlak:
+## Checklist Setelah Editing
+Setelah mengedit kode, jalankan kompilasi validasi penuh (dilarang *commit* jika gagal):
 ```bash
 npm run typecheck
 npm run lint
@@ -128,6 +137,23 @@ npm run test
 npm run build
 ```
 
-## Referensi Git Checkpoint
-Kembalikan proyek ke versi sebelum adanya penambahan fitur baru apabila terdapat eksperimen yang merusak struktur ke *checkpoint* V1:
-`git checkout v0.1-architecture-baseline`
+## Aturan Fitur Baru
+- **Fitur Pengguna:** Buat folder `src/features/user-[nama]/`. Buat *entry point* `user-[nama]-flow.tsx` (sebagai Server Component pengambil data). Panggil flow ini dari `src/app/[route]/page.tsx`.
+- **Fitur Admin:** Buat folder `src/features/admin-[nama]/`. Gunakan helper autentikasi admin di `src/server/admin-auth`. Panggil flow dari `src/app/admin/[route]/page.tsx`.
+- **Shared UI:** Jika UI dijamin dapat digunakan ulang lintas halaman, masukkan secara hierarkis ke `src/components/[atoms|molecules|organisms]/`.
+- **Backend Service:** Segala logika manipulasi data baru WAJIB dibuat sebagai class/method independen di `src/server/[nama-service]/` dan dipanggil dari API Routes atau Server Components.
+
+## Forbidden Patterns
+- ❌ **Client Server Leak:** Meng-*import* dari `src/server/*` di dalam *Client Components* (`"use client"`). Ini fatal dan merusak kompilasi Turbopack.
+- ❌ **Bloated Routes:** Menulis query database Prisma secara langsung di dalam file `src/app/api/.../route.ts` alih-alih di `src/server/`.
+- ❌ **UI Dependency Inversion:** Membuat komponen di `src/components/` meng-*import* *state* atau fungsi dari `src/features/`. Komponen shared wajib bersifat "dungu" (*dumb*) dan hanya mengandalkan *props*.
+- ❌ **Non-Route API Files:** Menempatkan fungsi bantuan utilitas API berdampingan dengan `route.ts`. Pindahkan semua pembantu ke `src/server/api/`.
+
+## Command Validasi Wajib
+Semua penambahan kode wajib diakhiri dengan menjalankan keempat instruksi validasi di bawah ini:
+```bash
+npm run typecheck
+npm run lint
+npm run test
+npm run build
+```
