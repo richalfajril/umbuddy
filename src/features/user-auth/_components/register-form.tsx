@@ -100,7 +100,7 @@ export function RegisterForm() {
             Sedang Memproses...
           </h2>
           <p className="text-body text-center font-medium px-4">
-            Tunggu sebentar Pejuang, markas CPNS-mu sedang disiapkan!
+            Tunggu sebentar Cambies, markas CPNS-mu sedang disiapkan!
           </p>
         </div>
       </FormSettingsLayout>

@@ -107,7 +107,7 @@ export function LoginForm() {
         addToast({
           type: 'success',
           title: 'Berhasil Masuk! 🚀',
-          message: 'Selamat datang kembali Pejuang! Memuat markas...',
+          message: 'Selamat datang kembali Cambies! Memuat markas...',
         })
         window.location.href = '/dashboard'
       }
@@ -148,7 +148,7 @@ export function LoginForm() {
             Sedang Memproses...
           </h2>
           <p className="text-body text-center font-medium px-4">
-            Tunggu sebentar Pejuang, markas CPNS-mu sedang disiapkan!
+            Tunggu sebentar Cambies, markas CPNS-mu sedang disiapkan!
           </p>
         </div>
       </FormSettingsLayout>
@@ -241,7 +241,7 @@ export function LoginForm() {
             isLoading={isLoading}
             loadingLabel="Masuk..."
           >
-            Masuk Pejuang
+            Masuk Cambies
           </Button>
         </form>
 
