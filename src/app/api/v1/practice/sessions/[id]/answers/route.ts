@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server'
 import { validateDto } from '@/server/validation/dto'
 import { PracticeService } from '@/server/services/practice.service'
 import { errorResponse, getRequiredUserId, practiceErrorResponse, readJson } from '../../../_utils'
-import { validatePracticeAnswers } from '../_answer-validation'
-import { PracticeAnswersDto } from './answers.dto'
+import { validatePracticeAnswers } from '@/server/validation/practice/answer-validation'
+import { PracticeAnswersDto } from '@/server/validation/practice/answers.dto'
 
 type RouteContext = {
   params: Promise<{ id: string }>

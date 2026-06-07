@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { validateDto } from '@/server/validation/dto'
 import { PracticeService } from '@/server/services/practice.service'
 import { errorResponse, getRequiredUserId, practiceErrorResponse, readJson } from '../_utils'
-import { StartPracticeSessionDto } from './start-session.dto'
+import { StartPracticeSessionDto } from '@/server/validation/practice/start-session.dto'
 
 export async function POST(req: Request) {
   const userId = await getRequiredUserId()
