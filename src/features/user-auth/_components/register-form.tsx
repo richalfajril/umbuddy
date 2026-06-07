@@ -47,7 +47,7 @@ export function RegisterForm() {
     if (!isGoogleLoading) return
     const interval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 98) return prev
+        if (prev >= 100) return 100
         const increment = Math.max(1, Math.floor((100 - prev) / 10))
         return prev + increment
       })
