@@ -1,5 +1,5 @@
 /**
- * src/lib/supabase/client.ts
+ * src/integrations/supabase/client.ts
  * Supabase BROWSER-SAFE client — hanya pakai anon key (public).
  *
  * Gunakan untuk: realtime channel subscription, public data read di Client Components.

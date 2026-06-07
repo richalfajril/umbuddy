@@ -1,5 +1,5 @@
 /**
- * src/lib/supabase/server.ts
+ * src/server/supabase/server.ts
  * Supabase SERVER-ONLY client — pakai service_role key.
  *
  * ⚠️ SERVER-ONLY — jangan pernah import file ini di Client Component.
