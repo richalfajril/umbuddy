@@ -87,6 +87,7 @@ export function AdminLoginForm() {
             src="/mascot/mascot_running_video.webm" 
             autoPlay 
             loop 
+            muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
           />

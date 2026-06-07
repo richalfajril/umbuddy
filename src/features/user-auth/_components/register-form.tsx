@@ -67,25 +67,12 @@ export function RegisterForm() {
   // Cek jika user baru kembali dari Google register success
   React.useEffect(() => {
     let timeout: NodeJS.Timeout
-    const searchParams = new URLSearchParams(window.location.search)
-    const isGoogleSuccess = searchParams.get('google_success') === 'true'
-    const hasError = searchParams.has('error')
-    const errorType = searchParams.get('error')
-
-    if (isGoogleSuccess && !hasError) {
+    const isGoogleSuccess = new URLSearchParams(window.location.search).get('google_success') === 'true'
+    if (isGoogleSuccess) {
       timeout = setTimeout(() => setIsProcessingSuccess(true), 0)
     }
-
-    if (hasError && errorType === 'OAuthAccountNotLinked') {
-      addToast({
-        type: 'error',
-        title: 'Akun Bentrok',
-        message: 'Email ini sudah terdaftar. Silakan log masuk dari halaman Login.',
-      })
-    }
-
     return () => clearTimeout(timeout)
-  }, [addToast])
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -146,6 +133,7 @@ export function RegisterForm() {
             src="/mascot/mascot_running_video.webm" 
             autoPlay 
             loop 
+            muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
           />
