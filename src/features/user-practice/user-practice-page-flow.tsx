@@ -1,13 +1,12 @@
-import { getServerSession } from 'next-auth'
+import { getUserSession } from '@/server/auth/session'
 import { redirect } from 'next/navigation'
-import { authConfig } from '@/server/auth/config'
 import { prisma } from '@/server/db/client'
 import { resolveProgression } from '@/features/shared/_utils/user-progression.utils'
 import { PracticeFlow } from '@/features/user-practice/user-practice-flow'
 
 // Flow server practice menjaga auth guard dan mengambil data header sebelum latihan client dimulai.
 export async function PracticePageFlow() {
-  const session = await getServerSession(authConfig)
+  const session = await getUserSession()
 
   if (!session || session.user.revoked) {
     redirect('/auth/login')

@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authConfig } from '@/server/auth/config'
+import { getUserSession } from '@/server/auth/session'
 import { OnboardingError } from '@/server/services/onboarding.service'
 
 export async function getRequiredUserId() {
-  const session = await getServerSession(authConfig)
+  const session = await getUserSession()
   if (!session?.user?.id || session.user.revoked) {
     return null
   }
