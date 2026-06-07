@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { validateDto } from '@/server/validation/dto'
 import { OnboardingService, type DiagnosticAnswerInput } from '@/server/services/onboarding.service'
 import { errorResponse, getRequiredUserId, onboardingErrorResponse, readJson } from '../../../_utils'
-import { DiagnosticSubmitDto } from './submit.dto'
+import { DiagnosticSubmitDto } from '@/server/validation/onboarding/submit.dto'
 
 type RouteContext = {
   params: Promise<{ id: string }>

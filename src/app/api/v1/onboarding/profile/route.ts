@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { validateDto } from '@/server/validation/dto'
 import { OnboardingService } from '@/server/services/onboarding.service'
 import { errorResponse, getRequiredUserId, onboardingErrorResponse, readJson } from '../_utils'
-import { OnboardingProfileDto } from './profile.dto'
+import { OnboardingProfileDto } from '@/server/validation/onboarding/profile.dto'
 
 export async function POST(req: Request) {
   const userId = await getRequiredUserId()
