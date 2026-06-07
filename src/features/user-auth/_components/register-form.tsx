@@ -20,6 +20,7 @@ export function RegisterForm() {
   const [showPassword, setShowPassword] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = React.useState(false)
+  const [isProcessingSuccess, setIsProcessingSuccess] = React.useState(false)
   const [progress, setProgress] = React.useState(0)
   const [successMessage, setSuccessMessage] = React.useState('')
   const [errorMessage, setErrorMessage] = React.useState('')
@@ -44,16 +45,32 @@ export function RegisterForm() {
   }, [])
 
   React.useEffect(() => {
-    if (!isGoogleLoading) return
+    if (!isProcessingSuccess && !isLoading) return
     const interval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 98) return prev
+        if (prev >= 98) {
+          if (isProcessingSuccess) {
+            clearInterval(interval)
+            window.location.href = '/dashboard'
+          }
+          return prev
+        }
         const increment = Math.max(1, Math.floor((100 - prev) / 10))
         return prev + increment
       })
-    }, 200)
+    }, isProcessingSuccess ? 20 : 200)
     return () => clearInterval(interval)
-  }, [isGoogleLoading])
+  }, [isProcessingSuccess, isLoading])
+
+  // Cek jika user baru kembali dari Google register success
+  React.useEffect(() => {
+    let timeout: NodeJS.Timeout
+    const isGoogleSuccess = new URLSearchParams(window.location.search).get('google_success') === 'true'
+    if (isGoogleSuccess) {
+      timeout = setTimeout(() => setIsProcessingSuccess(true), 0)
+    }
+    return () => clearTimeout(timeout)
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -102,10 +119,10 @@ export function RegisterForm() {
 
     setProgress(0)
     setIsGoogleLoading(true)
-    signIn('google', { callbackUrl: '/dashboard' })
+    signIn('google', { callbackUrl: '/auth/register?google_success=true' })
   }
 
-  if (isGoogleLoading) {
+  if (isLoading || isProcessingSuccess) {
     return (
       <div className="fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden animate-in fade-in duration-500">
         {/* Video Area (Fullscreen appearance adjusting to available height) */}

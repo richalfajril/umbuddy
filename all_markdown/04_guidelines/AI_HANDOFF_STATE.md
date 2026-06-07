@@ -64,27 +64,26 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 4.57.07 WIB*
+*Auto-generated pada: 8/6/2026, 5.02.18 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
-- **Unpushed commits:** 1 commit belum di-push
-- **Latest commit:** `799976f fix(auth): change fake progress bar limit from 98% to 100%`
+- **Unpushed commits:** 2 commit belum di-push
+- **Latest commit:** `0b4d7a2 fix(auth): revert fake progress bar limit back to 98%`
 
 **Last 5 Commits:**
 ```text
+0b4d7a2 fix(auth): revert fake progress bar limit back to 98%
 799976f fix(auth): change fake progress bar limit from 98% to 100%
 ce4a7ec style(auth): ensure splash video adapts to available height as true fullscreen above footer
 2c5d3e6 fix(auth): correct setState in effect lint errors and finalize splash screen progress bar UI
 37d8f91 style(auth): redesign splash screen to use fullscreen video with bottom progress bar
-d9f5ff6 style: increase mascot container size in login form
 ```
 
 **Changed Files:**
 
 ```text
-M src/features/admin-auth/_components/admin-login-form.tsx
- M src/features/user-auth/_components/login-form.tsx
+M src/features/user-auth/_components/login-form.tsx
  M src/features/user-auth/_components/register-form.tsx
 ```
 

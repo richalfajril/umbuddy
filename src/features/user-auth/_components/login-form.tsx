@@ -20,6 +20,7 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = React.useState(false)
+  const [isProcessingSuccess, setIsProcessingSuccess] = React.useState(false)
   const [progress, setProgress] = React.useState(0)
   const [googleOAuthStatus, setGoogleOAuthStatus] = React.useState<GoogleOAuthStatus>('NOT_VERIFIED')
   const { addToast } = useToastStore()
@@ -42,16 +43,32 @@ export function LoginForm() {
   }, [])
 
   React.useEffect(() => {
-    if (!isLoading && !isGoogleLoading) return
+    if (!isLoading && !isProcessingSuccess) return
     const interval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 98) return prev
+        if (prev >= 98) {
+          if (isProcessingSuccess) {
+            clearInterval(interval)
+            window.location.href = '/dashboard'
+          }
+          return prev
+        }
         const increment = Math.max(1, Math.floor((100 - prev) / 10))
         return prev + increment
       })
-    }, 200)
+    }, isProcessingSuccess ? 20 : 200)
     return () => clearInterval(interval)
-  }, [isLoading, isGoogleLoading])
+  }, [isLoading, isProcessingSuccess])
+
+  // Cek jika user baru kembali dari Google login success
+  React.useEffect(() => {
+    let timeout: NodeJS.Timeout
+    const isGoogleSuccess = new URLSearchParams(window.location.search).get('google_success') === 'true'
+    if (isGoogleSuccess) {
+      timeout = setTimeout(() => setIsProcessingSuccess(true), 0)
+    }
+    return () => clearTimeout(timeout)
+  }, [])
 
   // Verify token dari query param diproses di login agar user langsung melihat status email.
   React.useEffect(() => {
@@ -151,10 +168,10 @@ export function LoginForm() {
 
     setProgress(0)
     setIsGoogleLoading(true)
-    signIn('google', { callbackUrl: '/dashboard' })
+    signIn('google', { callbackUrl: '/auth/login?google_success=true' })
   }
 
-  if (isLoading || isGoogleLoading) {
+  if (isLoading || isProcessingSuccess) {
     return (
       <div className="fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden animate-in fade-in duration-500">
         {/* Video Area (Fullscreen appearance adjusting to available height) */}
