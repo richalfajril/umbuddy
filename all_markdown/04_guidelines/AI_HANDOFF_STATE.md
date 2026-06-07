@@ -64,20 +64,20 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 5.44.23 WIB*
+*Auto-generated pada: 8/6/2026, 5.50.10 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
 - **Unpushed commits:** 0 commit belum di-push
-- **Latest commit:** `2fc0ff5 fix(auth): clear Next.js client router cache on logout to prevent splash screen loop`
+- **Latest commit:** `9883a6b fix(auth): bypass safari popup blocker by opening window synchronously`
 
 **Last 5 Commits:**
 ```text
+9883a6b fix(auth): bypass safari popup blocker by opening window synchronously
 2fc0ff5 fix(auth): clear Next.js client router cache on logout to prevent splash screen loop
 1c51914 feat(auth): implement popup mode for google login to preserve media autoplay permissions
 4f17677 fix(auth): prevent splash screen loop on OAuth error and remove muted attribute
 3a79145 fix(auth): add muted attribute to video for mobile autoplay and smooth out progress bar speed
-b5384fa fix(auth): replace window.location.href with router.push to eliminate black flash unload screen during splash redirect
 ```
 
 **Changed Files:**
