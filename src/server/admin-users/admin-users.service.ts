@@ -63,6 +63,45 @@ export class AdminUsersService {
   }
 
   /**
+   * Mengambil statistik ringkasan pengguna
+   */
+  static async getUserSummaryStats() {
+    const now = new Date()
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
+
+    const [totalUsers, activeLast7Days, newLast30Days, suspendedUsers] = await Promise.all([
+      prisma.user.count(),
+      prisma.user.count({
+        where: {
+          auth_sessions: {
+            some: {
+              issued_at: { gte: sevenDaysAgo }
+            }
+          }
+        }
+      }),
+      prisma.user.count({
+        where: {
+          created_at: { gte: thirtyDaysAgo }
+        }
+      }),
+      prisma.user.count({
+        where: {
+          status: 'SUSPENDED'
+        }
+      })
+    ])
+
+    return {
+      totalUsers,
+      activeLast7Days,
+      newLast30Days,
+      suspendedUsers
+    }
+  }
+
+  /**
    * Mengambil detail lengkap seorang user beserta progress dan log aktivitas terakhir
    */
   static async getUserDetail(userId: string) {

@@ -6,6 +6,7 @@ import { ArrowLeft, Users, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useToastStore } from '@/stores/useToastStore'
 import type { AdminUserListItem, AdminUsersListResponse } from '../_types/admin-users.types'
 import { AdminUsersFilters } from './admin-users-filters'
+import { AdminUsersSummaryCards } from './admin-users-summary-cards'
 import { AdminUsersTable } from './admin-users-table'
 import { AdminUserStatusModal } from './admin-user-status-modal'
 
@@ -110,6 +111,9 @@ export function AdminUsersView({
               Total: {total.toLocaleString('id-ID')} akun
             </div>
           </header>
+
+          {/* Summary Cards */}
+          <AdminUsersSummaryCards />
 
           {/* Tabel dan Filter */}
           <section className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-5 dark:bg-surface">

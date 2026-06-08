@@ -10,6 +10,13 @@ export interface AdminUserListItem {
   } | null
 }
 
+export interface AdminUserSummaryStats {
+  totalUsers: number
+  activeLast7Days: number
+  newLast30Days: number
+  suspendedUsers: number
+}
+
 export interface AdminUsersListResponse {
   users: AdminUserListItem[]
   total: number
