@@ -6,6 +6,8 @@ export interface AdminUserListParams {
   limit: number
   keyword?: string
   status?: string
+  instansi?: string
+  registrationSource?: string
 }
 
 export class AdminUsersService {
@@ -13,21 +15,38 @@ export class AdminUsersService {
    * Mengambil daftar user dengan paginasi, pencarian, dan filter status
    */
   static async listUsers(params: AdminUserListParams) {
-    const { page, limit, keyword, status } = params
+    const { page, limit, keyword, status, instansi, registrationSource } = params
     const skip = (page - 1) * limit
 
     const where: Prisma.UserWhereInput = {}
 
     if (keyword) {
+      const isUuidLike = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(keyword.trim())
+      
       where.OR = [
         { name: { contains: keyword, mode: 'insensitive' } },
         { email: { contains: keyword, mode: 'insensitive' } },
+        { phone: { contains: keyword, mode: 'insensitive' } },
       ]
+      
+      if (isUuidLike) {
+        where.OR.push({ id: { equals: keyword.trim() } })
+      }
     }
 
     if (status) {
       // Sesuai enum UserStatus di prisma: PENDING_VERIFICATION, ACTIVE, SUSPENDED, BANNED
       where.status = status as import('@prisma/client').UserStatus
+    }
+
+    if (instansi) {
+      where.profile = {
+        target_instansi: { contains: instansi, mode: 'insensitive' }
+      }
+    }
+
+    if (registrationSource) {
+      where.registration_source = { equals: registrationSource }
     }
 
     const [users, total] = await Promise.all([

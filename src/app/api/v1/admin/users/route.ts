@@ -17,13 +17,17 @@ export async function GET(request: Request) {
     const limit = parseInt(url.searchParams.get('limit') || '15', 10)
     const keyword = url.searchParams.get('keyword') || undefined
     const status = url.searchParams.get('status') || undefined
+    const instansi = url.searchParams.get('instansi') || undefined
+    const registrationSource = url.searchParams.get('registrationSource') || undefined
 
     // 3. Ambil data
     const result = await AdminUsersService.listUsers({
       page,
       limit,
       keyword,
-      status
+      status,
+      instansi,
+      registrationSource
     })
 
     return NextResponse.json(result)

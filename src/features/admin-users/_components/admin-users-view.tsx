@@ -25,6 +25,8 @@ export function AdminUsersView({
   
   const [status, setStatus] = React.useState('')
   const [keyword, setKeyword] = React.useState('')
+  const [instansi, setInstansi] = React.useState('')
+  const [registrationSource, setRegistrationSource] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
 
   // Modal State
@@ -41,6 +43,8 @@ export function AdminUsersView({
     params.set('limit', currentLimit.toString())
     if (status) params.set('status', status)
     if (keyword.trim()) params.set('keyword', keyword.trim())
+    if (instansi.trim()) params.set('instansi', instansi.trim())
+    if (registrationSource.trim()) params.set('registrationSource', registrationSource.trim())
 
     try {
       const response = await fetch(`/api/v1/admin/users?${params.toString()}`)
@@ -120,10 +124,14 @@ export function AdminUsersView({
             <AdminUsersFilters
               keyword={keyword}
               status={status}
+              instansi={instansi}
+              registrationSource={registrationSource}
               limit={limit}
               isLoading={isLoading}
               onKeywordChange={setKeyword}
               onStatusChange={setStatus}
+              onInstansiChange={setInstansi}
+              onRegistrationSourceChange={setRegistrationSource}
               onLimitChange={handleLimitChange}
               onFilter={handleFilter}
             />
