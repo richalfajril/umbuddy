@@ -1,11 +1,20 @@
 import Link from 'next/link'
 import { ArrowRight, CheckCircle2, FileQuestion, ShieldCheck } from 'lucide-react'
-import { ADMIN_DASHBOARD_SUMMARY_CARDS } from '../_constants/admin-dashboard.constants'
 import type { AdminDashboardViewProps } from '../_types/admin-dashboard.types'
 import { AdminDashboardShell } from './admin-dashboard-shell'
+import { AdminKpiCards } from './admin-kpi-cards'
+import { AdminTrendChart } from './admin-trend-chart'
+import { AdminQuestionsPieChart } from './admin-questions-pie-chart'
+import { AnalyticsService } from '@/server/analytics/analytics.service'
+import * as React from 'react'
 
-// View dashboard admin menampilkan ringkasan MVP tanpa query tambahan.
-export function AdminDashboardView({ admin }: AdminDashboardViewProps) {
+// View dashboard admin menampilkan ringkasan analitik dan jalan pintas manajemen.
+export async function AdminDashboardView({ admin }: AdminDashboardViewProps) {
+  // Fetch data untuk chart di level ini agar bisa di-pass ke Client Component
+  const [trendData, questionsKpi] = await Promise.all([
+    AnalyticsService.getRegistrationTrend7Days(),
+    AnalyticsService.getQuestionsKpi(),
+  ])
   return (
     <AdminDashboardShell adminEmail={admin.email} adminRole={admin.role}>
       <section className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
@@ -30,24 +39,17 @@ export function AdminDashboardView({ admin }: AdminDashboardViewProps) {
             </div>
           </div>
 
-          {/* Ringkasan status MVP membantu admin melihat modul yang aktif. */}
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {ADMIN_DASHBOARD_SUMMARY_CARDS.map((card) => (
-              <div
-                key={card.label}
-                className="rounded-3xl border border-border bg-background p-5 shadow-sm transition hover:border-primary/35 hover:shadow-[0_16px_36px_-28px_rgba(116,195,50,0.55)] dark:bg-surface"
-              >
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-muted">
-                  {card.label}
-                </p>
-                <p className="mt-3 font-display text-3xl font-black text-headline">
-                  {card.value}
-                </p>
-                <p className="mt-1 text-sm font-bold text-primary">
-                  {card.detail}
-                </p>
-              </div>
-            ))}
+          {/* Ringkasan status KPI */}
+          <div className="mt-6">
+            <React.Suspense fallback={<div className="h-[120px] w-full animate-pulse rounded-3xl bg-muted/20" />}>
+              <AdminKpiCards />
+            </React.Suspense>
+          </div>
+
+          {/* Area Visualisasi Grafik */}
+          <div className="mt-4 grid gap-4 lg:grid-cols-[2fr_1fr]">
+            <AdminTrendChart data={trendData} />
+            <AdminQuestionsPieChart published={questionsKpi.publishedQuestions} draft={questionsKpi.draftQuestions} />
           </div>
 
           {/* Aksi utama diarahkan ke A2 karena modul ini sudah menjadi MVP aktif. */}

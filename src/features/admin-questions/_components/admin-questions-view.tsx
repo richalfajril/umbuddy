@@ -3,7 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
-import { AdminDashboardShell } from '@/features/admin-dashboard/_components'
+import { AdminDashboardShell } from '@/features/admin-dashboard/_components/admin-dashboard-shell'
 import { useToastStore } from '@/stores/useToastStore'
 import { initialAdminQuestionForm } from '../_constants/admin-questions.constants'
 import type {
