@@ -15,6 +15,7 @@ export function AdminLoginForm() {
   const [showPassword, setShowPassword] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isProcessingSuccess, setIsProcessingSuccess] = React.useState(false)
+  const [isMobile, setIsMobile] = React.useState(true)
   const [progress, setProgress] = React.useState(0)
   const { addToast } = useToastStore()
 
@@ -40,6 +41,14 @@ export function AdminLoginForm() {
     }, 20)
     return () => clearInterval(interval)
   }, [isProcessingSuccess])
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768
+    }
+    const timeout = setTimeout(() => setIsMobile(checkMobile()), 0)
+    return () => clearTimeout(timeout)
+  }, [])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -85,6 +94,7 @@ export function AdminLoginForm() {
             autoPlay 
             loop 
             playsInline
+            muted={isMobile}
             className="absolute inset-0 w-full h-full object-cover"
           />
         </div>

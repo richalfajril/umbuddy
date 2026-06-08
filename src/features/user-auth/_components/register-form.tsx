@@ -21,6 +21,7 @@ export function RegisterForm() {
   const [isLoading, setIsLoading] = React.useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = React.useState(false)
   const [isProcessingSuccess, setIsProcessingSuccess] = React.useState(false)
+  const [isMobile, setIsMobile] = React.useState(true)
   const [progress, setProgress] = React.useState(0)
   const [successMessage, setSuccessMessage] = React.useState('')
   const [errorMessage, setErrorMessage] = React.useState('')
@@ -30,6 +31,13 @@ export function RegisterForm() {
   // Public auth status memastikan tombol Google hanya aktif jika env OAuth verified.
   React.useEffect(() => {
     let active = true
+    
+    // Cek mobile untuk memastikan video loading screen di-mute di mobile agar bisa autoplay
+    const checkMobile = () => {
+      return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768
+    }
+    const timeout = setTimeout(() => setIsMobile(checkMobile()), 0)
+
     fetch('/api/v1/public/auth-status')
       .then((response) => response.json())
       .then((data: { google_oauth?: GoogleOAuthStatus }) => {
@@ -41,6 +49,7 @@ export function RegisterForm() {
 
     return () => {
       active = false
+      clearTimeout(timeout)
     }
   }, [])
 
@@ -132,6 +141,7 @@ export function RegisterForm() {
             autoPlay 
             loop 
             playsInline
+            muted={isMobile}
             className="absolute inset-0 w-full h-full object-cover"
           />
         </div>

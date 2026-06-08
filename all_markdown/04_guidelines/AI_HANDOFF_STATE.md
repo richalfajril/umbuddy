@@ -64,20 +64,20 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 6.07.02 WIB*
+*Auto-generated pada: 8/6/2026, 15.25.25 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
 - **Unpushed commits:** 0 commit belum di-push
-- **Latest commit:** `da80c32 refactor: replace next/navigation router with window.location for auth redirects and clean up redundant state management in login and register forms`
+- **Latest commit:** `88f19e3 fix(auth): only show splash screen on actual login success, remove gray flash`
 
 **Last 5 Commits:**
 ```text
+88f19e3 fix(auth): only show splash screen on actual login success, remove gray flash
 da80c32 refactor: replace next/navigation router with window.location for auth redirects and clean up redundant state management in login and register forms
 209716a refactor: add muted attribute to mascot videos and simplify OAuth state handling in auth forms
 a2f1f46 refactor: remove Google OAuth popup flow in favor of direct redirect and update session handling
 4db16f0 fix(auth): revert to simple window.open to avoid cross-origin DOMException on mobile browsers
-9883a6b fix(auth): bypass safari popup blocker by opening window synchronously
 ```
 
 **Changed Files:**
