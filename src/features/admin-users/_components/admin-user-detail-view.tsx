@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ArrowLeft, User, Mail, ShieldAlert, Activity, CheckCircle2, AlertCircle } from 'lucide-react'
 import type { AdminUserDetail, AdminUserSupportNote } from '../_types/admin-users.types'
 import { AdminUserSupportNoteForm } from './admin-user-support-note-form'
+import { AdminUserVerificationActions } from './admin-user-verification-actions'
 
 interface AdminUserDetailViewProps {
   user: AdminUserDetail
@@ -21,8 +22,20 @@ export function AdminUserDetailView({
   const [supportNotes, setSupportNotes] = React.useState(user.support_notes || [])
   const activityLogs = user.activity_logs || []
 
+  // Local optimistic state for manual verification and status
+  const [emailVerified, setEmailVerified] = React.useState(user.email_verified)
+  const [currentStatus, setCurrentStatus] = React.useState(user.status)
+
   const handleNoteAdded = (newNote: AdminUserSupportNote) => {
     setSupportNotes((prev) => [newNote, ...prev])
+  }
+
+  const handleEmailVerified = (newStatus: string, newNote: AdminUserSupportNote | null) => {
+    setEmailVerified(true)
+    setCurrentStatus(newStatus)
+    if (newNote) {
+      setSupportNotes((prev) => [newNote, ...prev])
+    }
   }
 
   return (
@@ -40,7 +53,7 @@ export function AdminUserDetailView({
             </h1>
           </div>
           <div className="flex flex-col items-end">
-            <StatusBadge status={user.status} />
+            <StatusBadge status={currentStatus} />
             <p className="mt-2 text-xs font-semibold text-muted">User ID: {user.id}</p>
           </div>
         </header>
@@ -66,7 +79,25 @@ export function AdminUserDetailView({
                   <p className="text-xs font-bold uppercase tracking-wider text-muted flex items-center gap-2">
                     <Mail className="h-3 w-3" /> Email
                   </p>
-                  <p className="mt-1 font-semibold text-headline">{user.email}</p>
+                  <p className="mt-1 font-semibold text-headline flex flex-wrap items-center gap-2">
+                    {user.email}
+                    {emailVerified ? (
+                      <span className="inline-flex items-center gap-1 rounded bg-green-500/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-green-500">
+                        Terverifikasi
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 rounded bg-orange-500/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-orange-500">
+                        Belum Terverifikasi
+                      </span>
+                    )}
+                  </p>
+                  {!emailVerified && (
+                    <AdminUserVerificationActions
+                      userId={user.id}
+                      isEmailVerified={emailVerified}
+                      onVerified={handleEmailVerified}
+                    />
+                  )}
                 </div>
                 <div>
                   <p className="text-xs font-bold uppercase tracking-wider text-muted">Target Instansi</p>

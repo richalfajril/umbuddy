@@ -38,6 +38,7 @@ export interface AdminUserDetail {
   id: string
   name: string
   email: string
+  email_verified: boolean
   status: string
   role: string
   created_at: string | Date

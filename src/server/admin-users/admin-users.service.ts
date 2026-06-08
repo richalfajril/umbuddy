@@ -218,4 +218,67 @@ export class AdminUsersService {
       createdAt: newNote.created_at
     }
   }
+
+  /**
+   * Memverifikasi email pengguna secara manual
+   */
+  static async manuallyVerifyUserEmail(userId: string, adminId: string, reason: string = 'Email diverifikasi manual oleh admin.') {
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+    if (!user) throw new Error('User tidak ditemukan')
+
+    if (user.email_verified) {
+      return {
+        userId: user.id,
+        emailVerified: user.email_verified,
+        status: user.status,
+        note: null
+      }
+    }
+
+    const newStatus = user.status === 'PENDING_VERIFICATION' ? 'ACTIVE' : user.status
+
+    const result = await prisma.$transaction(async (tx) => {
+      const updatedUser = await tx.user.update({
+        where: { id: userId },
+        data: {
+          email_verified: true,
+          status: newStatus as import('@prisma/client').UserStatus,
+        }
+      })
+
+      await tx.adminLog.create({
+        data: {
+          admin_id: adminId,
+          action: 'MANUAL_VERIFY_USER_EMAIL',
+          resource_type: 'USER',
+          resource_id: userId,
+          changes: {
+            old_email_verified: false,
+            new_email_verified: true,
+            old_status: user.status,
+            new_status: newStatus,
+            reason
+          }
+        }
+      })
+
+      const note = await tx.userSupportNote.create({
+        data: {
+          user_id: userId,
+          admin_id: adminId,
+          note: reason,
+          category: 'MANUAL_EMAIL_VERIFICATION',
+        }
+      })
+
+      return {
+        userId: updatedUser.id,
+        emailVerified: updatedUser.email_verified,
+        status: updatedUser.status,
+        note
+      }
+    })
+
+    return result
+  }
 }
