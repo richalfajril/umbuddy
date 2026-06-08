@@ -64,20 +64,20 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 16.03.21 WIB*
+*Auto-generated pada: 8/6/2026, 16.06.57 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
 - **Unpushed commits:** 0 commit belum di-push
-- **Latest commit:** `9071140 style(auth): add gradient overlay to splash screen for smooth video-to-footer transition`
+- **Latest commit:** `e3f6fb8 fix(auth): handle autoplay exception, extract pure effect redirect, and clear google oauth query param to prevent infinite loading loop`
 
 **Last 5 Commits:**
 ```text
+e3f6fb8 fix(auth): handle autoplay exception, extract pure effect redirect, and clear google oauth query param to prevent infinite loading loop
 9071140 style(auth): add gradient overlay to splash screen for smooth video-to-footer transition
 6e9b2f0 refactor(auth): extract splash screen logic into reusable AuthSplashScreen organism
 96810bd feat(auth): set success splash screen loading bar duration to exactly 2.5 seconds
 4f50d8f fix(auth): preload splash video in background to eliminate load blink
-ab9e726 fix(auth): automatically mute splash video on mobile devices to allow autoplay
 ```
 
 **Changed Files:**

@@ -38,6 +38,7 @@ export function AuthSplashScreen({
 
   return (
     <div 
+      aria-hidden={!isProcessingSuccess}
       className={`fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden transition-opacity duration-500 ${isProcessingSuccess ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
     >
       {/* Video Area (Fullscreen appearance adjusting to available height) */}
