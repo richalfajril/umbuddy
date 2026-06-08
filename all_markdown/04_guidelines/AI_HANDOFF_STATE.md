@@ -17,15 +17,20 @@
 - Notes: Repositori berada dalam status *baseline* arsitektur yang sempurna tanpa *technical debt* yang tersisa dari Fase 1-13.
 
 ## Latest Completed Work
-- Summary: Mengimplementasikan fitur A5 Analytics Dashboard Metrics pada Admin Backoffice. Memasang `recharts`, membuat `AnalyticsService` dengan Prisma, dan merender KPI cards, tren bar chart, serta donat chart distribusi bank soal di halaman Dashboard Admin secara Server-Side (Streaming dengan Suspense).
-- Files changed: `src/server/analytics/analytics.service.ts`, `admin-kpi-cards.tsx`, `admin-trend-chart.tsx`, `admin-questions-pie-chart.tsx`, `admin-dashboard-view.tsx`, `admin-questions-view.tsx`.
-- Commits: Belum di-commit (tugas baru selesai).
-- Validation: Lolos *typecheck*, *lint*, dan *build* statis/dinamis.
+- Summary: Smooth Navigation Phase 1B (Admin Persistent Layout) is COMPLETE. Admin routes now safely use a persistent `AdminDashboardShell` in `src/app/admin/layout.tsx`. 
+- Manual Note on Phase 2 (User Navigation): 
+  - User persistent layout is **intentionally deferred**.
+  - Reason: `PracticeFlow` is a client-side state machine and must be route-split before a persistent user shell can be safely implemented without breaking the immersive full-screen exam mode.
+  - **Do not implement** a Zustand/global shell visibility store.
+  - Future ideal path: split practice into a shell-wrapped route (setup) and an immersive route (exam/session/review).
+- Files changed: `src/app/admin/layout.tsx`, `admin-auth.service.ts`, etc.
+- Commits: `f01076b refactor(admin): persist admin shell layout` (pushed).
+- Validation: Lolos typecheck, lint, dan build statis/dinamis.
 
 ## Current Active Task
-- Status: Selesai membangun A5 Analytics. Siap berlanjut ke tugas berikutnya.
-- Scope: Validasi akhir dan *commit* hasil kerja.
-- Files involved: Semua file komponen dashboard admin.
+- Status: Selesai merefaktor Smooth Navigation Phase 1 (Admin). Phase 2 (User) ditunda sesuai kesepakatan. Siap berlanjut ke tugas berikutnya.
+- Scope: Validasi akhir dan *commit* hasil dokumentasi handoff.
+- Files involved: `AI_HANDOFF_STATE.md`
 - Risk level: Sangat Rendah.
 
 ## Next Recommended Task
@@ -64,20 +69,20 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 16.52.32 WIB*
+*Auto-generated pada: 8/6/2026, 17.50.41 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Clean (Tidak ada perubahan)
 - **Unpushed commits:** 0 commit belum di-push
-- **Latest commit:** `ee9e0a7 feat: implement admin analytics dashboard with Recharts, AnalyticsService, and streaming server components`
+- **Latest commit:** `f01076b refactor(admin): persist admin shell layout`
 
 **Last 5 Commits:**
 ```text
+f01076b refactor(admin): persist admin shell layout
+a2ede2c feat: implement admin user management module including listing, filtering, and detailed user profile views
+5cb61a8 docs: update ai handoff state
 ee9e0a7 feat: implement admin analytics dashboard with Recharts, AnalyticsService, and streaming server components
 8b08291 style: reduce height of auth splash screen gradient overlay
-5780d16 fix(auth): implement absolute sessionStorage safeguard to eliminate any possibility of infinite splash loops on vercel deployments
-2d80bf2 fix: synchronize video muted state with DOM to ensure reliable autoplay fallback on mobile
-2a58fc8 chore(auth): remove unused error variables in catch blocks for clean typescript compile
 ```
 
 **Changed Files:**

@@ -6,14 +6,14 @@ import {
   getScorePercent,
   getWeakestArea,
 } from "@/features/user-dashboard/_utils/dashboard.utils";
-import { getUserSession } from "@/server/auth/session";
+import { getCachedUserSession } from "@/server/auth/session";
 import { prisma } from "@/server/db/client";
 import { redirect } from "next/navigation";
 
 // Server composition untuk guard session, ambil data dashboard, lalu render view.
 export async function UserDashboardFlow() {
   // Session server menjaga dashboard tetap hanya untuk user login yang belum revoked.
-  const session = await getUserSession();
+  const session = await getCachedUserSession();
   if (!session || session.user.revoked) {
     redirect("/auth/login");
   }
