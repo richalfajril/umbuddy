@@ -56,20 +56,31 @@ export function RegisterForm() {
 
   React.useEffect(() => {
     if (!isProcessingSuccess && !isLoading) return
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 98) {
-          if (isProcessingSuccess) {
+    
+    if (isProcessingSuccess) {
+      // Saat sukses, jalankan bar perlahan agar memakan waktu ~2.5 detik (50 ticks * 50ms)
+      const interval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 98) {
             clearInterval(interval)
             window.location.href = '/dashboard'
+            return prev
           }
-          return prev
-        }
-        const increment = Math.max(1, Math.floor((100 - prev) / 10))
-        return prev + increment
-      })
-    }, isProcessingSuccess ? 20 : 200)
-    return () => clearInterval(interval)
+          return prev + 2
+        })
+      }, 50)
+      return () => clearInterval(interval)
+    } else {
+      // Saat validasi form awal, jalankan efek loading melambat
+      const interval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 98) return prev
+          const increment = Math.max(1, Math.floor((100 - prev) / 10))
+          return prev + increment
+        })
+      }, 200)
+      return () => clearInterval(interval)
+    }
   }, [isProcessingSuccess, isLoading])
 
   React.useEffect(() => {

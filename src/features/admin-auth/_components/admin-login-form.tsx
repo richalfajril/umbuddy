@@ -27,19 +27,18 @@ export function AdminLoginForm() {
 
   React.useEffect(() => {
     if (!isProcessingSuccess) return
+    
+    // Saat sukses, jalankan bar perlahan agar memakan waktu ~2.5 detik (50 ticks * 50ms)
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 98) {
-          if (isProcessingSuccess) {
-            clearInterval(interval)
-            window.location.href = '/admin/dashboard'
-          }
+          clearInterval(interval)
+          window.location.href = '/admin/dashboard'
           return prev
         }
-        const increment = Math.max(1, Math.floor((100 - prev) / 10))
-        return prev + increment
+        return prev + 2
       })
-    }, 20)
+    }, 50)
     return () => clearInterval(interval)
   }, [isProcessingSuccess])
 
