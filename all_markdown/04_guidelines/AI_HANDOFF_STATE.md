@@ -64,29 +64,26 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 15.49.31 WIB*
+*Auto-generated pada: 8/6/2026, 15.55.00 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
 - **Unpushed commits:** 0 commit belum di-push
-- **Latest commit:** `96810bd feat(auth): set success splash screen loading bar duration to exactly 2.5 seconds`
+- **Latest commit:** `6e9b2f0 refactor(auth): extract splash screen logic into reusable AuthSplashScreen organism`
 
 **Last 5 Commits:**
 ```text
+6e9b2f0 refactor(auth): extract splash screen logic into reusable AuthSplashScreen organism
 96810bd feat(auth): set success splash screen loading bar duration to exactly 2.5 seconds
 4f50d8f fix(auth): preload splash video in background to eliminate load blink
 ab9e726 fix(auth): automatically mute splash video on mobile devices to allow autoplay
 88f19e3 fix(auth): only show splash screen on actual login success, remove gray flash
-da80c32 refactor: replace next/navigation router with window.location for auth redirects and clean up redundant state management in login and register forms
 ```
 
 **Changed Files:**
 
 ```text
-M src/features/admin-auth/_components/admin-login-form.tsx
- M src/features/user-auth/_components/login-form.tsx
- M src/features/user-auth/_components/register-form.tsx
-?? src/components/organisms/auth-splash-screen.tsx
+M src/components/organisms/auth-splash-screen.tsx
 ```
 
 **Saran AI:**

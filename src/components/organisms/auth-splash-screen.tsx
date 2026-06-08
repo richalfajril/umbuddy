@@ -45,10 +45,12 @@ export function AuthSplashScreen({
           muted={isMobile}
           className="absolute inset-0 w-full h-full object-cover"
         />
+        {/* Gradasi pemisah agar transisi antara video dan footer terlihat menyatu halus */}
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none" />
       </div>
       
       {/* Footer Progress Bar */}
-      <div className="bg-background border-t border-border p-6 sm:p-8 flex flex-col justify-center space-y-4 relative z-10">
+      <div className="bg-background p-6 sm:p-8 flex flex-col justify-center space-y-4 relative z-10">
         <div className="text-center mb-1">
           <span className="text-sm font-bold text-primary animate-pulse">{loadingText}</span>
         </div>
