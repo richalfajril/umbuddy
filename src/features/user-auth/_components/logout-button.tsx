@@ -28,7 +28,7 @@ export function LogoutButton({ className = '' }: LogoutButtonProps) {
   const handleLogout = async () => {
     try {
       setIsSigningOut(true)
-      const result = await signOut({
+      await signOut({
         redirect: false,
         callbackUrl: '/auth/login',
       })
@@ -39,7 +39,8 @@ export function LogoutButton({ className = '' }: LogoutButtonProps) {
         message: 'Sesi Kamu sudah ditutup dengan aman.',
       })
 
-      router.replace(result.url || '/auth/login')
+      // Abaikan result.url karena NextAuth kadang menyimpan parameter lama (seperti google_success)
+      router.replace('/auth/login')
       router.refresh()
     } catch {
       setIsSigningOut(false)

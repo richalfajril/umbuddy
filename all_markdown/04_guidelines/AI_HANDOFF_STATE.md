@@ -64,26 +64,27 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 16.12.45 WIB*
+*Auto-generated pada: 8/6/2026, 16.18.44 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
 - **Unpushed commits:** 0 commit belum di-push
-- **Latest commit:** `94a3bda fix(auth): replace hard reload with soft navigation via useRouter and add aria-hidden for a11y`
+- **Latest commit:** `5a70365 fix(auth): fix infinite splash screen loop on logout by clearing google_success url param via next router replace`
 
 **Last 5 Commits:**
 ```text
+5a70365 fix(auth): fix infinite splash screen loop on logout by clearing google_success url param via next router replace
 94a3bda fix(auth): replace hard reload with soft navigation via useRouter and add aria-hidden for a11y
 e3f6fb8 fix(auth): handle autoplay exception, extract pure effect redirect, and clear google oauth query param to prevent infinite loading loop
 9071140 style(auth): add gradient overlay to splash screen for smooth video-to-footer transition
 6e9b2f0 refactor(auth): extract splash screen logic into reusable AuthSplashScreen organism
-96810bd feat(auth): set success splash screen loading bar duration to exactly 2.5 seconds
 ```
 
 **Changed Files:**
 
 ```text
 M src/features/user-auth/_components/login-form.tsx
+ M src/features/user-auth/_components/logout-button.tsx
  M src/features/user-auth/_components/register-form.tsx
 ```
 

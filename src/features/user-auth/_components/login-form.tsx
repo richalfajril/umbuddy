@@ -86,6 +86,8 @@ export function LoginForm() {
     let timeout: NodeJS.Timeout
     const isGoogleSuccess = new URLSearchParams(window.location.search).get('google_success') === 'true'
     if (isGoogleSuccess) {
+      // Bersihkan sinkron di browser
+      window.history.replaceState(null, '', window.location.pathname)
       // Bersihkan URL via router internal Next.js agar cache router ikut bersih
       // Ini mencegah infinite loop saat user logout dan dikembalikan ke /auth/login
       router.replace('/auth/login')
