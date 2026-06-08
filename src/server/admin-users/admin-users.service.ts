@@ -193,4 +193,29 @@ export class AdminUsersService {
 
     return result
   }
+
+  /**
+   * Menambahkan catatan manual (support note) untuk seorang user
+   */
+  static async addSupportNote(userId: string, adminId: string, note: string, category: string = 'MANUAL_NOTE') {
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+    if (!user) throw new Error('User tidak ditemukan')
+
+    const newNote = await prisma.userSupportNote.create({
+      data: {
+        user_id: userId,
+        admin_id: adminId,
+        note,
+        category: category || 'MANUAL_NOTE',
+      }
+    })
+
+    return {
+      id: newNote.id,
+      note: newNote.note,
+      category: newNote.category,
+      adminId: newNote.admin_id,
+      createdAt: newNote.created_at
+    }
+  }
 }

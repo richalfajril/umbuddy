@@ -25,6 +25,14 @@ export interface AdminUsersListResponse {
   totalPages: number
 }
 
+export interface AdminUserSupportNote {
+  id: string
+  category?: string | null
+  note: string
+  admin_id: string | null
+  created_at: string | Date
+}
+
 // Untuk data profil lebih lengkap saat detail
 export interface AdminUserDetail {
   id: string
@@ -36,5 +44,5 @@ export interface AdminUserDetail {
   profile?: { target_instansi?: string | null } | null
   progression?: { total_xp?: number | null; level?: number | null } | null
   activity_logs?: { id: string; type: string; description?: string | null; created_at: string | Date }[] | null
-  support_notes?: { id: string; category?: string | null; note: string; admin_id: string | null; created_at: string | Date }[] | null
+  support_notes?: AdminUserSupportNote[] | null
 }

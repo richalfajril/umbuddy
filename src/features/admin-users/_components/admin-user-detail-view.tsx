@@ -3,7 +3,8 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, User, Mail, ShieldAlert, Activity, CheckCircle2, AlertCircle } from 'lucide-react'
-import type { AdminUserDetail } from '../_types/admin-users.types'
+import type { AdminUserDetail, AdminUserSupportNote } from '../_types/admin-users.types'
+import { AdminUserSupportNoteForm } from './admin-user-support-note-form'
 
 interface AdminUserDetailViewProps {
   user: AdminUserDetail
@@ -17,8 +18,12 @@ export function AdminUserDetailView({
   const currentXp = user.progression?.total_xp || 0
   const level = user.progression?.level || 1
   
-  const supportNotes = user.support_notes || []
+  const [supportNotes, setSupportNotes] = React.useState(user.support_notes || [])
   const activityLogs = user.activity_logs || []
+
+  const handleNoteAdded = (newNote: AdminUserSupportNote) => {
+    setSupportNotes((prev) => [newNote, ...prev])
+  }
 
   return (
     <section className="min-h-screen bg-background px-4 py-6 text-headline sm:px-6 lg:px-8">
@@ -107,6 +112,8 @@ export function AdminUserDetailView({
                 Catatan Moderasi & Audit Log
               </h3>
               
+              <AdminUserSupportNoteForm userId={user.id} onNoteAdded={handleNoteAdded} />
+
               {supportNotes.length === 0 ? (
                 <p className="text-sm font-semibold text-muted italic p-4 bg-surface rounded-xl border border-border text-center">
                   Belum ada catatan moderasi untuk pengguna ini.
