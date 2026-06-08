@@ -1,5 +1,6 @@
 import { prisma } from '@/server/db/client'
 import type { Prisma } from '@prisma/client'
+import { AuthEmailService } from '@/server/email/auth-email.service'
 
 export interface AdminUserListParams {
   page: number
@@ -334,6 +335,47 @@ export class AdminUsersService {
         userId,
         revokedSessions: revokeResult.count,
         sessionVersionIncremented: true,
+        note
+      }
+    })
+
+    return result
+  }
+
+  /**
+   * Memicu pengiriman tautan reset password ke email pengguna (tanpa revoke sesi)
+   */
+  static async triggerPasswordResetEmail(userId: string, adminId: string, ip: string, baseUrl: string, reason: string = 'Admin memicu pengiriman tautan reset password ke email pengguna.') {
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+    if (!user) throw new Error('User tidak ditemukan')
+
+    // Panggil service email yang sudah dilengkapi rate-limit dan quota logic
+    await AuthEmailService.sendPasswordResetEmail(user.email, ip, baseUrl)
+
+    const result = await prisma.$transaction(async (tx) => {
+      await tx.adminLog.create({
+        data: {
+          admin_id: adminId,
+          action: 'ADMIN_TRIGGER_PASSWORD_RESET',
+          resource_type: 'USER',
+          resource_id: userId,
+          changes: { reason, email_sent: true }
+        }
+      })
+
+      const note = await tx.userSupportNote.create({
+        data: {
+          user_id: userId,
+          admin_id: adminId,
+          note: reason,
+          category: 'PASSWORD_RESET',
+        }
+      })
+
+      return {
+        userId,
+        email: user.email,
+        emailSent: true,
         note
       }
     })
