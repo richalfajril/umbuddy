@@ -132,19 +132,24 @@ export function RegisterForm() {
   }
 
   // Google register/login memakai provider NextAuth yang sama dengan login.
-  const handleGoogleLogin = () => {
-    if (googleOAuthStatus !== 'PASS') {
+  const handleGoogleLogin = async () => {
+    if (googleOAuthStatus === 'NOT_VERIFIED') {
       addToast({
         type: 'warning',
-        title: 'Google OAuth Belum Aktif',
-        message: 'Konfigurasi Google login belum diverifikasi di server.',
+        title: 'Sistem Belum Siap',
+        message: 'Google Login sedang dalam tahap verifikasi, silakan pakai formulir manual untuk sementara.',
       })
       return
     }
 
-    setProgress(0)
-    setIsGoogleLoading(true)
-    signIn('google', { callbackUrl: '/auth/register?google_success=true' })
+    try {
+      setProgress(0)
+      setIsGoogleLoading(true)
+      await signIn('google', { callbackUrl: '/auth/register?google_success=true' })
+    } catch {
+      setIsGoogleLoading(false)
+      addToast({ type: 'error', title: 'Error', message: 'Gagal menghubungi server otentikasi.' })
+    }
   }
 
   return (

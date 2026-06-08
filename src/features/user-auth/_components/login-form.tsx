@@ -117,27 +117,28 @@ export function LoginForm() {
       })
       .then((data) => {
         if (!active) return
-        addToast({
-          type: 'success',
-          title: 'Email Terverifikasi',
-          message: data.message ?? 'Email berhasil diverifikasi. Kamu sudah bisa masuk.',
-        })
-        window.history.replaceState(null, '', '/auth/login')
+        if (data.message) {
+          addToast({ type: 'success', title: 'Email terverifikasi', message: data.message })
+        } else {
+          addToast({ type: 'success', title: 'Email terverifikasi', message: 'Silakan masuk dengan akun Kamu.' })
+        }
+        // Gunakan router replace agar Next.js membersihkan URL dari memori cache router
+        router.replace('/auth/login')
       })
-      .catch((error: unknown) => {
+      .catch(() => {
         if (!active) return
         addToast({
           type: 'error',
           title: 'Verifikasi Gagal',
-          message: error instanceof Error ? error.message : 'Link verifikasi tidak valid.',
+          message: 'Link verifikasi tidak valid.',
         })
-        window.history.replaceState(null, '', '/auth/login')
+        router.replace('/auth/login')
       })
 
     return () => {
       active = false
     }
-  }, [addToast])
+  }, [addToast, router])
 
   // Credentials login memakai redirect false agar toast error bisa dikontrol.
   const handleSubmit = async (e: React.FormEvent) => {
@@ -182,19 +183,24 @@ export function LoginForm() {
   }
 
   // Google login tetap lewat NextAuth, hanya diblok jika server melaporkan NOT_VERIFIED.
-  const handleGoogleLogin = () => {
-    if (googleOAuthStatus !== 'PASS') {
+  const handleGoogleLogin = async () => {
+    if (googleOAuthStatus === 'NOT_VERIFIED') {
       addToast({
         type: 'warning',
-        title: 'Google OAuth Belum Aktif',
-        message: 'Konfigurasi Google login belum diverifikasi di server.',
+        title: 'Sistem Belum Siap',
+        message: 'Google Login sedang dalam tahap verifikasi, silakan pakai email & password untuk sementara.',
       })
       return
     }
 
-    setProgress(0)
-    setIsGoogleLoading(true)
-    signIn('google', { callbackUrl: '/auth/login?google_success=true' })
+    try {
+      setProgress(0)
+      setIsGoogleLoading(true)
+      await signIn('google', { callbackUrl: '/auth/login?google_success=true' })
+    } catch {
+      setIsGoogleLoading(false)
+      addToast({ type: 'error', title: 'Error', message: 'Gagal menghubungi server otentikasi.' })
+    }
   }
 
   return (
