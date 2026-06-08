@@ -4,7 +4,7 @@ import { AdminUsersService } from '@/server/admin-users/admin-users.service'
 import { AdminUserDetailView } from './_components/admin-user-detail-view'
 
 export async function AdminUserDetailFlow({ userId }: { userId: string }) {
-  const session = await AdminAuthService.getCurrentAdmin()
+  const session = await AdminAuthService.getCachedCurrentAdmin()
 
   if (!session) {
     redirect('/admin/login')
@@ -19,11 +19,5 @@ export async function AdminUserDetailFlow({ userId }: { userId: string }) {
     redirect('/admin/users')
   }
 
-  return (
-    <AdminUserDetailView
-      user={userDetail}
-      adminEmail={session.admin.email}
-      adminRole={session.admin.role}
-    />
-  )
+  return <AdminUserDetailView user={userDetail} />
 }

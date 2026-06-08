@@ -4,7 +4,7 @@ import { AdminDashboardView } from './_components'
 
 // Flow dashboard admin menjaga guard session sebelum render layout backoffice.
 export async function AdminDashboardFlow() {
-  const session = await AdminAuthService.getCurrentAdmin()
+  const session = await AdminAuthService.getCachedCurrentAdmin()
 
   if (!session) {
     redirect('/admin/login')

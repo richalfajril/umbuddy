@@ -1,4 +1,5 @@
 import 'server-only'
+import { cache } from 'react'
 import { cookies } from 'next/headers'
 import { prisma } from '@/server/db'
 import { ADMIN_SESSION_COOKIE, ADMIN_SESSION_TTL_SECONDS } from './admin-auth.constants'
@@ -145,6 +146,11 @@ export class AdminAuthService {
     const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value
     return this.getSessionContext(token)
   }
+
+  // Cached version untuk menghindari double DB query antara layout dan page flow.
+  static getCachedCurrentAdmin = cache(async () => {
+    return AdminAuthService.getCurrentAdmin()
+  })
 
   // Validasi seed password dipakai ulang oleh script agar aturan admin konsisten.
   static validateSeedPassword(password: string): boolean {

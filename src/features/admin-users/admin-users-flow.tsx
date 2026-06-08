@@ -5,7 +5,7 @@ import { AdminUsersView } from './_components/admin-users-view'
 
 // Server component penjaga otentikasi untuk fitur admin users.
 export async function AdminUsersFlow() {
-  const session = await AdminAuthService.getCurrentAdmin()
+  const session = await AdminAuthService.getCachedCurrentAdmin()
 
   if (!session) {
     redirect('/admin/login')
@@ -18,11 +18,5 @@ export async function AdminUsersFlow() {
   })
 
   // Oper data aman ke komponen UI klien
-  return (
-    <AdminUsersView
-      initialData={initialData}
-      adminEmail={session.admin.email}
-      adminRole={session.admin.role}
-    />
-  )
+  return <AdminUsersView initialData={initialData} />
 }

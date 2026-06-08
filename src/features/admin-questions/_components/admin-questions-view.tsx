@@ -3,7 +3,6 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
-import { AdminDashboardShell } from '@/features/admin-dashboard/_components/admin-dashboard-shell'
 import { useToastStore } from '@/stores/useToastStore'
 import { initialAdminQuestionForm } from '../_constants/admin-questions.constants'
 import type {
@@ -22,16 +21,12 @@ import { AdminQuestionTable } from './admin-question-table'
 type AdminQuestionsViewProps = {
   initialQuestions: AdminQuestionListItem[]
   initialTotal: number
-  adminEmail: string
-  adminRole: string
 }
 
 // UI utama A2 MVP untuk list dan create draft question.
 export function AdminQuestionsView({
   initialQuestions,
   initialTotal,
-  adminEmail,
-  adminRole,
 }: AdminQuestionsViewProps) {
   // State list, filter, dan form dikelola lokal agar MVP tetap cepat.
   const [questions, setQuestions] = React.useState(initialQuestions)
@@ -127,60 +122,58 @@ export function AdminQuestionsView({
   }
 
   return (
-    <AdminDashboardShell adminEmail={adminEmail} adminRole={adminRole}>
-      <section className="min-h-screen bg-background px-4 py-6 text-headline sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl space-y-6">
-          {/* Header halaman admin questions menjaga konteks backoffice dan akses balik. */}
-          <header className="flex flex-col gap-4 rounded-2xl border border-border bg-background p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
-            <div>
-              <Link href="/admin/dashboard" className="inline-flex min-h-[44px] items-center gap-2 text-sm font-black text-primary hover:underline">
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                Kembali ke Admin
-              </Link>
-              <p className="mt-3 text-xs font-black uppercase tracking-[0.22em] text-primary">
-                Question Management
-              </p>
-              <h1 className="mt-1 text-2xl font-black text-headline">
-                Kurasi <span className="text-primary">Bank Soal</span>
-              </h1>
-              <p className="mt-1 text-sm text-body">
-                Login sebagai {adminEmail} ({adminRole}). Buat draft, review, lalu publish soal berkualitas.
-              </p>
-            </div>
-            <div className="rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm font-black text-primary-dark dark:text-primary">
-              {total} soal ditemukan
-            </div>
-          </header>
-
-          <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
-            {/* Panel list soal berisi filter dan tabel padat untuk admin content. */}
-            <section className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-5 dark:bg-surface">
-              <AdminQuestionFilters
-                keyword={keyword}
-                status={status}
-                category={category}
-                isLoading={isLoading}
-                onKeywordChange={setKeyword}
-                onStatusChange={setStatus}
-                onCategoryChange={setCategory}
-                onFilter={() => void loadQuestions()}
-              />
-              <AdminQuestionTable
-                questions={questions}
-                onRunAction={(questionId, action) => void runQuestionAction(questionId, action)}
-              />
-            </section>
-
-            {/* Form create draft berisi field minimum sesuai A2 MVP. */}
-            <AdminQuestionForm
-              form={form}
-              isSaving={isSaving}
-              onSubmit={createDraft}
-              onUpdateForm={updateForm}
-            />
+    <section className="min-h-screen bg-background px-4 py-6 text-headline sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl space-y-6">
+        {/* Header halaman admin questions menjaga konteks backoffice dan akses balik. */}
+        <header className="flex flex-col gap-4 rounded-2xl border border-border bg-background p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
+          <div>
+            <Link href="/admin/dashboard" className="inline-flex min-h-[44px] items-center gap-2 text-sm font-black text-primary hover:underline">
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              Kembali ke Admin
+            </Link>
+            <p className="mt-3 text-xs font-black uppercase tracking-[0.22em] text-primary">
+              Question Management
+            </p>
+            <h1 className="mt-1 text-2xl font-black text-headline">
+              Kurasi <span className="text-primary">Bank Soal</span>
+            </h1>
+            <p className="mt-1 text-sm text-body">
+              Login untuk membuat draft, me-review, lalu mem-publish soal berkualitas.
+            </p>
           </div>
+          <div className="rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm font-black text-primary-dark dark:text-primary">
+            {total} soal ditemukan
+          </div>
+        </header>
+
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
+          {/* Panel list soal berisi filter dan tabel padat untuk admin content. */}
+          <section className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-5 dark:bg-surface">
+            <AdminQuestionFilters
+              keyword={keyword}
+              status={status}
+              category={category}
+              isLoading={isLoading}
+              onKeywordChange={setKeyword}
+              onStatusChange={setStatus}
+              onCategoryChange={setCategory}
+              onFilter={() => void loadQuestions()}
+            />
+            <AdminQuestionTable
+              questions={questions}
+              onRunAction={(questionId, action) => void runQuestionAction(questionId, action)}
+            />
+          </section>
+
+          {/* Form create draft berisi field minimum sesuai A2 MVP. */}
+          <AdminQuestionForm
+            form={form}
+            isSaving={isSaving}
+            onSubmit={createDraft}
+            onUpdateForm={updateForm}
+          />
         </div>
-      </section>
-    </AdminDashboardShell>
+      </div>
+    </section>
   )
 }

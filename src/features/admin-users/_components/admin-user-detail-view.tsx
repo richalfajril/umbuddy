@@ -3,19 +3,14 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, User, Mail, ShieldAlert, Activity, CheckCircle2, AlertCircle } from 'lucide-react'
-import { AdminDashboardShell } from '@/features/admin-dashboard/_components/admin-dashboard-shell'
 import type { AdminUserDetail } from '../_types/admin-users.types'
 
 interface AdminUserDetailViewProps {
   user: AdminUserDetail
-  adminEmail: string
-  adminRole: string
 }
 
 export function AdminUserDetailView({
   user,
-  adminEmail,
-  adminRole,
 }: AdminUserDetailViewProps) {
   // Parsing progression/profile aman
   const targetInstansi = user.profile?.target_instansi || 'Belum diatur'
@@ -26,155 +21,153 @@ export function AdminUserDetailView({
   const activityLogs = user.activity_logs || []
 
   return (
-    <AdminDashboardShell adminEmail={adminEmail} adminRole={adminRole}>
-      <section className="min-h-screen bg-background px-4 py-6 text-headline sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-5xl space-y-6">
-          {/* Header */}
-          <header className="flex flex-col gap-4 rounded-2xl border border-border bg-background p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
-            <div>
-              <Link href="/admin/users" className="inline-flex min-h-[44px] items-center gap-2 text-sm font-black text-primary hover:underline">
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                Kembali ke Direktori
-              </Link>
-              <h1 className="mt-4 text-2xl font-black text-headline">
-                Detail <span className="text-primary">Profil Pengguna</span>
-              </h1>
-            </div>
-            <div className="flex flex-col items-end">
-              <StatusBadge status={user.status} />
-              <p className="mt-2 text-xs font-semibold text-muted">User ID: {user.id}</p>
-            </div>
-          </header>
+    <section className="min-h-screen bg-background px-4 py-6 text-headline sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-5xl space-y-6">
+        {/* Header */}
+        <header className="flex flex-col gap-4 rounded-2xl border border-border bg-background p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
+          <div>
+            <Link href="/admin/users" className="inline-flex min-h-[44px] items-center gap-2 text-sm font-black text-primary hover:underline">
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              Kembali ke Direktori
+            </Link>
+            <h1 className="mt-4 text-2xl font-black text-headline">
+              Detail <span className="text-primary">Profil Pengguna</span>
+            </h1>
+          </div>
+          <div className="flex flex-col items-end">
+            <StatusBadge status={user.status} />
+            <p className="mt-2 text-xs font-semibold text-muted">User ID: {user.id}</p>
+          </div>
+        </header>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            {/* Kartu Profil Utama */}
-            <div className="md:col-span-1 space-y-6">
-              <div className="rounded-2xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
-                <div className="flex items-center gap-4 border-b border-border pb-4">
-                  <div className="grid h-16 w-16 place-items-center rounded-2xl bg-primary/10 text-primary">
-                    <User className="h-8 w-8" />
-                  </div>
-                  <div>
-                    <h2 className="font-display text-xl font-black">{user.name}</h2>
-                    <span className="mt-1 inline-block rounded-md bg-surface px-2 py-1 text-xs font-bold text-muted border border-border">
-                      {user.role}
-                    </span>
-                  </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          {/* Kartu Profil Utama */}
+          <div className="md:col-span-1 space-y-6">
+            <div className="rounded-2xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
+              <div className="flex items-center gap-4 border-b border-border pb-4">
+                <div className="grid h-16 w-16 place-items-center rounded-2xl bg-primary/10 text-primary">
+                  <User className="h-8 w-8" />
                 </div>
-
-                <div className="mt-4 space-y-4">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-muted flex items-center gap-2">
-                      <Mail className="h-3 w-3" /> Email
-                    </p>
-                    <p className="mt-1 font-semibold text-headline">{user.email}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-muted">Target Instansi</p>
-                    <p className="mt-1 font-semibold text-headline">{targetInstansi}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-muted">Bergabung Sejak</p>
-                    <p className="mt-1 font-semibold text-headline">
-                      {new Date(user.created_at).toLocaleDateString('id-ID', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric'
-                      })}
-                    </p>
-                  </div>
+                <div>
+                  <h2 className="font-display text-xl font-black">{user.name}</h2>
+                  <span className="mt-1 inline-block rounded-md bg-surface px-2 py-1 text-xs font-bold text-muted border border-border">
+                    {user.role}
+                  </span>
                 </div>
               </div>
 
-              {/* Kartu Progres Gamifikasi */}
-              <div className="rounded-2xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
-                <h3 className="font-display text-lg font-black text-headline flex items-center gap-2">
-                  <Activity className="h-5 w-5 text-primary" />
-                  Metrik Gamifikasi
-                </h3>
-                <div className="mt-4 grid grid-cols-2 gap-4">
-                  <div className="rounded-xl bg-surface p-4 border border-border">
-                    <p className="text-xs font-bold text-muted">Total XP</p>
-                    <p className="mt-1 font-display text-2xl font-black text-primary">{currentXp}</p>
-                  </div>
-                  <div className="rounded-xl bg-surface p-4 border border-border">
-                    <p className="text-xs font-bold text-muted">Level</p>
-                    <p className="mt-1 font-display text-2xl font-black text-headline">{level}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Area Log dan Catatan Admin */}
-            <div className="md:col-span-2 space-y-6">
-              {/* Support Notes / Catatan Admin */}
-              <div className="rounded-2xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
-                <h3 className="font-display text-lg font-black text-headline mb-4">
-                  Catatan Moderasi & Audit Log
-                </h3>
-                
-                {supportNotes.length === 0 ? (
-                  <p className="text-sm font-semibold text-muted italic p-4 bg-surface rounded-xl border border-border text-center">
-                    Belum ada catatan moderasi untuk pengguna ini.
+              <div className="mt-4 space-y-4">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted flex items-center gap-2">
+                    <Mail className="h-3 w-3" /> Email
                   </p>
-                ) : (
-                  <div className="space-y-3">
-                    {supportNotes.map((note) => (
-                      <div key={note.id} className="rounded-xl border border-border bg-surface p-4">
-                        <div className="flex justify-between items-start">
-                          <span className="inline-block rounded bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">
-                            {note.category || 'NOTE'}
-                          </span>
-                          <span className="text-xs font-semibold text-muted">
-                            {new Date(note.created_at).toLocaleString('id-ID')}
-                          </span>
-                        </div>
-                        <p className="mt-2 text-sm font-semibold text-headline leading-relaxed">
-                          {note.note}
-                        </p>
-                        <p className="mt-2 text-xs font-bold text-muted">
-                          Admin ID: {note.admin_id}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-              
-              {/* Recent Activity Logs */}
-              <div className="rounded-2xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
-                <h3 className="font-display text-lg font-black text-headline mb-4">
-                  10 Aktivitas Terakhir
-                </h3>
-                
-                {activityLogs.length === 0 ? (
-                  <p className="text-sm font-semibold text-muted italic p-4 bg-surface rounded-xl border border-border text-center">
-                    Belum ada rekaman aktivitas sistem.
+                  <p className="mt-1 font-semibold text-headline">{user.email}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted">Target Instansi</p>
+                  <p className="mt-1 font-semibold text-headline">{targetInstansi}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted">Bergabung Sejak</p>
+                  <p className="mt-1 font-semibold text-headline">
+                    {new Date(user.created_at).toLocaleDateString('id-ID', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric'
+                    })}
                   </p>
-                ) : (
-                  <div className="space-y-0">
-                    {activityLogs.map((log, i: number) => (
-                      <div key={log.id} className={`flex items-start gap-4 py-3 ${i !== activityLogs.length - 1 ? 'border-b border-border' : ''}`}>
-                        <div className="mt-0.5 grid h-2 w-2 shrink-0 place-items-center rounded-full bg-primary/50 ring-4 ring-primary/10" />
-                        <div>
-                          <p className="text-sm font-bold text-headline">{log.type}</p>
-                          {log.description && (
-                            <p className="mt-0.5 text-xs font-semibold text-muted">{log.description}</p>
-                          )}
-                          <p className="mt-1 text-xs font-bold text-muted opacity-70">
-                            {new Date(log.created_at).toLocaleString('id-ID')}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                </div>
+              </div>
+            </div>
+
+            {/* Kartu Progres Gamifikasi */}
+            <div className="rounded-2xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
+              <h3 className="font-display text-lg font-black text-headline flex items-center gap-2">
+                <Activity className="h-5 w-5 text-primary" />
+                Metrik Gamifikasi
+              </h3>
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                <div className="rounded-xl bg-surface p-4 border border-border">
+                  <p className="text-xs font-bold text-muted">Total XP</p>
+                  <p className="mt-1 font-display text-2xl font-black text-primary">{currentXp}</p>
+                </div>
+                <div className="rounded-xl bg-surface p-4 border border-border">
+                  <p className="text-xs font-bold text-muted">Level</p>
+                  <p className="mt-1 font-display text-2xl font-black text-headline">{level}</p>
+                </div>
               </div>
             </div>
           </div>
+
+          {/* Area Log dan Catatan Admin */}
+          <div className="md:col-span-2 space-y-6">
+            {/* Support Notes / Catatan Admin */}
+            <div className="rounded-2xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
+              <h3 className="font-display text-lg font-black text-headline mb-4">
+                Catatan Moderasi & Audit Log
+              </h3>
+              
+              {supportNotes.length === 0 ? (
+                <p className="text-sm font-semibold text-muted italic p-4 bg-surface rounded-xl border border-border text-center">
+                  Belum ada catatan moderasi untuk pengguna ini.
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {supportNotes.map((note) => (
+                    <div key={note.id} className="rounded-xl border border-border bg-surface p-4">
+                      <div className="flex justify-between items-start">
+                        <span className="inline-block rounded bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">
+                          {note.category || 'NOTE'}
+                        </span>
+                        <span className="text-xs font-semibold text-muted">
+                          {new Date(note.created_at).toLocaleString('id-ID')}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-sm font-semibold text-headline leading-relaxed">
+                        {note.note}
+                      </p>
+                      <p className="mt-2 text-xs font-bold text-muted">
+                        Admin ID: {note.admin_id}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            {/* Recent Activity Logs */}
+            <div className="rounded-2xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
+              <h3 className="font-display text-lg font-black text-headline mb-4">
+                10 Aktivitas Terakhir
+              </h3>
+              
+              {activityLogs.length === 0 ? (
+                <p className="text-sm font-semibold text-muted italic p-4 bg-surface rounded-xl border border-border text-center">
+                  Belum ada rekaman aktivitas sistem.
+                </p>
+              ) : (
+                <div className="space-y-0">
+                  {activityLogs.map((log, i: number) => (
+                    <div key={log.id} className={`flex items-start gap-4 py-3 ${i !== activityLogs.length - 1 ? 'border-b border-border' : ''}`}>
+                      <div className="mt-0.5 grid h-2 w-2 shrink-0 place-items-center rounded-full bg-primary/50 ring-4 ring-primary/10" />
+                      <div>
+                        <p className="text-sm font-bold text-headline">{log.type}</p>
+                        {log.description && (
+                          <p className="mt-0.5 text-xs font-semibold text-muted">{log.description}</p>
+                        )}
+                        <p className="mt-1 text-xs font-bold text-muted opacity-70">
+                          {new Date(log.created_at).toLocaleString('id-ID')}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      </section>
-    </AdminDashboardShell>
+      </div>
+    </section>
   )
 }
 

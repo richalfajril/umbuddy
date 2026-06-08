@@ -3,7 +3,6 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Users, ChevronLeft, ChevronRight } from 'lucide-react'
-import { AdminDashboardShell } from '@/features/admin-dashboard/_components/admin-dashboard-shell'
 import { useToastStore } from '@/stores/useToastStore'
 import type { AdminUserListItem, AdminUsersListResponse } from '../_types/admin-users.types'
 import { AdminUsersFilters } from './admin-users-filters'
@@ -12,14 +11,10 @@ import { AdminUserStatusModal } from './admin-user-status-modal'
 
 interface AdminUsersViewProps {
   initialData: AdminUsersListResponse
-  adminEmail: string
-  adminRole: string
 }
 
 export function AdminUsersView({
   initialData,
-  adminEmail,
-  adminRole,
 }: AdminUsersViewProps) {
   const [users, setUsers] = React.useState<AdminUserListItem[]>(initialData.users)
   const [total, setTotal] = React.useState(initialData.total)
@@ -90,7 +85,7 @@ export function AdminUsersView({
   }
 
   return (
-    <AdminDashboardShell adminEmail={adminEmail} adminRole={adminRole}>
+    <>
       <section className="min-h-screen bg-background px-4 py-6 text-headline sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl space-y-6">
           {/* Header halaman */}
@@ -173,6 +168,6 @@ export function AdminUsersView({
         currentStatus={modalUser.status}
         onStatusUpdated={() => void loadUsers()}
       />
-    </AdminDashboardShell>
+    </>
   )
 }

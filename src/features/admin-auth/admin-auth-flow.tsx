@@ -4,7 +4,7 @@ import { AdminLoginForm } from './_components/admin-login-form'
 
 // Flow server admin login memastikan admin yang sudah punya session tidak melihat form lagi.
 export async function AdminAuthFlow() {
-  const session = await AdminAuthService.getCurrentAdmin()
+  const session = await AdminAuthService.getCachedCurrentAdmin()
 
   if (session) {
     redirect('/admin/dashboard')

@@ -5,7 +5,7 @@ import { AdminQuestionsView } from './_components'
 
 // Flow server A2 memastikan hanya admin aktif yang bisa membuka question management.
 export async function AdminQuestionsFlow() {
-  const session = await AdminAuthService.getCurrentAdmin()
+  const session = await AdminAuthService.getCachedCurrentAdmin()
 
   if (!session) {
     redirect('/admin/login')
@@ -21,8 +21,6 @@ export async function AdminQuestionsFlow() {
     <AdminQuestionsView
       initialQuestions={data.questions}
       initialTotal={data.total}
-      adminEmail={session.admin.email}
-      adminRole={session.admin.role}
     />
   )
 }

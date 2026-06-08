@@ -152,7 +152,7 @@ function AdminSidebarSkeleton() {
 }
 
 // Konten skeleton admin dashboard meniru hero dan kartu ringkasan backoffice.
-function AdminDashboardLoadingContent() {
+export function AdminDashboardLoadingContent() {
   return (
     <>
       <SkeletonBlock className="h-44 w-full rounded-3xl" />
@@ -170,7 +170,7 @@ function AdminDashboardLoadingContent() {
 }
 
 // Konten skeleton admin questions meniru filter, tabel, dan form create draft.
-function AdminQuestionsLoadingContent() {
+export function AdminQuestionsLoadingContent() {
   return (
     <>
       <SkeletonBlock className="h-40 w-full rounded-3xl" />

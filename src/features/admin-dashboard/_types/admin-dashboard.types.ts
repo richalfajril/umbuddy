@@ -15,5 +15,5 @@ export type AdminNavItem = {
 
 // Props view dashboard admin berisi admin publik tanpa token/session rahasia.
 export type AdminDashboardViewProps = {
-  admin: PublicAdmin
+  admin: { role: string }
 }
