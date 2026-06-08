@@ -85,14 +85,25 @@ export function LoginForm() {
   React.useEffect(() => {
     let timeout: NodeJS.Timeout
     const isGoogleSuccess = new URLSearchParams(window.location.search).get('google_success') === 'true'
-    if (isGoogleSuccess) {
+    
+    // HARD FIX: Gunakan sessionStorage sebagai pelindung mutlak dari infinite loop
+    const hasProcessed = typeof window !== 'undefined' ? sessionStorage.getItem('google_auth_processed') : null
+
+    if (isGoogleSuccess && !hasProcessed) {
+      if (typeof window !== 'undefined') sessionStorage.setItem('google_auth_processed', 'true')
+      
       // Bersihkan sinkron di browser
       window.history.replaceState(null, '', window.location.pathname)
       // Bersihkan URL via router internal Next.js agar cache router ikut bersih
-      // Ini mencegah infinite loop saat user logout dan dikembalikan ke /auth/login
       router.replace('/auth/login')
+      
       timeout = setTimeout(() => setIsProcessingSuccess(true), 0)
+    } else if (isGoogleSuccess && hasProcessed) {
+      // Jika URL masih nyangkut tapi sudah diproses, cukup bersihkan diam-diam tanpa trigger animasi
+      window.history.replaceState(null, '', window.location.pathname)
+      router.replace('/auth/login')
     }
+    
     return () => clearTimeout(timeout)
   }, [router])
 
@@ -194,6 +205,7 @@ export function LoginForm() {
     }
 
     try {
+      if (typeof window !== 'undefined') sessionStorage.removeItem('google_auth_processed')
       setProgress(0)
       setIsGoogleLoading(true)
       await signIn('google', { callbackUrl: '/auth/login?google_success=true' })

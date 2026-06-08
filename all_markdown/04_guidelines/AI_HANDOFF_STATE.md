@@ -64,27 +64,26 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 16.23.49 WIB*
+*Auto-generated pada: 8/6/2026, 16.32.09 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
 - **Unpushed commits:** 0 commit belum di-push
-- **Latest commit:** `0651675 fix(auth): force absolute URL cleanup on logout and ignore cached result.url to break infinite splash loop`
+- **Latest commit:** `2d80bf2 fix: synchronize video muted state with DOM to ensure reliable autoplay fallback on mobile`
 
 **Last 5 Commits:**
 ```text
+2d80bf2 fix: synchronize video muted state with DOM to ensure reliable autoplay fallback on mobile
+2a58fc8 chore(auth): remove unused error variables in catch blocks for clean typescript compile
 0651675 fix(auth): force absolute URL cleanup on logout and ignore cached result.url to break infinite splash loop
 5a70365 fix(auth): fix infinite splash screen loop on logout by clearing google_success url param via next router replace
 94a3bda fix(auth): replace hard reload with soft navigation via useRouter and add aria-hidden for a11y
-e3f6fb8 fix(auth): handle autoplay exception, extract pure effect redirect, and clear google oauth query param to prevent infinite loading loop
-9071140 style(auth): add gradient overlay to splash screen for smooth video-to-footer transition
 ```
 
 **Changed Files:**
 
 ```text
-M src/components/organisms/auth-splash-screen.tsx
- M src/features/user-auth/_components/login-form.tsx
+M src/features/user-auth/_components/login-form.tsx
  M src/features/user-auth/_components/register-form.tsx
 ```
 
