@@ -11,7 +11,8 @@ export function AuthSplashScreen({
   progress,
   loadingText = 'Menyiapkan markas Cambies...',
 }: AuthSplashScreenProps) {
-  const [isMobile, setIsMobile] = React.useState(true)
+  // Gunakan state isMuted agar fallback autoplay mutasi manual tersinkronisasi dengan React
+  const [isMuted, setIsMuted] = React.useState(true)
   const videoRef = React.useRef<HTMLVideoElement>(null)
 
   // Cek mobile untuk memastikan video loading screen di-mute di mobile agar bisa autoplay
@@ -19,7 +20,7 @@ export function AuthSplashScreen({
     const checkMobile = () => {
       return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768
     }
-    const timeout = setTimeout(() => setIsMobile(checkMobile()), 0)
+    const timeout = setTimeout(() => setIsMuted(checkMobile()), 0)
     return () => clearTimeout(timeout)
   }, [])
 
@@ -28,7 +29,10 @@ export function AuthSplashScreen({
     if (isProcessingSuccess && videoRef.current) {
       videoRef.current.play().catch((err) => {
         console.warn('Autoplay unmuted diblokir oleh browser. Mengaktifkan fallback mute.', err)
+        // Sinkronisasi state agar React tidak revert atribut muted di render berikutnya (reconciliation)
+        setIsMuted(true)
         if (videoRef.current) {
+          // Mutasi DOM langsung agar play() sukses di siklus eksekusi yang sama
           videoRef.current.muted = true
           videoRef.current.play().catch(console.error)
         }
@@ -49,8 +53,9 @@ export function AuthSplashScreen({
           preload="auto"
           loop 
           playsInline
-          muted={isMobile}
-          className="absolute inset-0 w-full h-full object-cover"
+          muted={isMuted}
+          className="h-full w-full object-cover"
+          aria-hidden="true"
         />
         {/* Gradasi pemisah agar transisi antara video dan footer terlihat menyatu halus */}
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none" />
