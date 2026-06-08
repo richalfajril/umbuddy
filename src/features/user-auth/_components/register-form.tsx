@@ -54,7 +54,6 @@ export function RegisterForm() {
         setProgress((prev) => {
           if (prev >= 98) {
             clearInterval(interval)
-            window.location.href = '/dashboard'
             return prev
           }
           return prev + 2
@@ -74,11 +73,20 @@ export function RegisterForm() {
     }
   }, [isProcessingSuccess, isLoading])
 
+  // Watcher terpisah untuk menangani redirect agar fungsi state updater tetap murni (pure)
+  React.useEffect(() => {
+    if (isProcessingSuccess && progress >= 98) {
+      window.location.href = '/dashboard'
+    }
+  }, [isProcessingSuccess, progress])
+
   // Cek jika user baru kembali dari Google register success
   React.useEffect(() => {
     let timeout: NodeJS.Timeout
     const isGoogleSuccess = new URLSearchParams(window.location.search).get('google_success') === 'true'
     if (isGoogleSuccess) {
+      // Bersihkan URL dari parameter agar tidak terjebak infinite loop saat menekan tombol Back
+      window.history.replaceState(null, '', window.location.pathname)
       timeout = setTimeout(() => setIsProcessingSuccess(true), 0)
     }
     return () => clearTimeout(timeout)

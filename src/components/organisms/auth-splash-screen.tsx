@@ -23,10 +23,16 @@ export function AuthSplashScreen({
     return () => clearTimeout(timeout)
   }, [])
 
-  // Auto-play video saat sukses agar transisi instan
+  // Auto-play video saat sukses agar transisi instan (dengan graceful fallback untuk kebijakan autoplay)
   React.useEffect(() => {
     if (isProcessingSuccess && videoRef.current) {
-      videoRef.current.play().catch(console.error)
+      videoRef.current.play().catch((err) => {
+        console.warn('Autoplay unmuted diblokir oleh browser. Mengaktifkan fallback mute.', err)
+        if (videoRef.current) {
+          videoRef.current.muted = true
+          videoRef.current.play().catch(console.error)
+        }
+      })
     }
   }, [isProcessingSuccess])
 

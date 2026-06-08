@@ -31,7 +31,6 @@ export function AdminLoginForm() {
       setProgress((prev) => {
         if (prev >= 98) {
           clearInterval(interval)
-          window.location.href = '/admin/dashboard'
           return prev
         }
         return prev + 2
@@ -39,6 +38,13 @@ export function AdminLoginForm() {
     }, 50)
     return () => clearInterval(interval)
   }, [isProcessingSuccess])
+
+  // Watcher terpisah untuk menangani redirect agar fungsi state updater tetap murni (pure)
+  React.useEffect(() => {
+    if (isProcessingSuccess && progress >= 98) {
+      window.location.href = '/admin/dashboard'
+    }
+  }, [isProcessingSuccess, progress])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
