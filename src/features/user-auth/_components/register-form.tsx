@@ -22,6 +22,7 @@ export function RegisterForm() {
   const [isGoogleLoading, setIsGoogleLoading] = React.useState(false)
   const [isProcessingSuccess, setIsProcessingSuccess] = React.useState(false)
   const [isMobile, setIsMobile] = React.useState(true)
+  const videoRef = React.useRef<HTMLVideoElement>(null)
   const [progress, setProgress] = React.useState(0)
   const [successMessage, setSuccessMessage] = React.useState('')
   const [errorMessage, setErrorMessage] = React.useState('')
@@ -70,6 +71,12 @@ export function RegisterForm() {
     }, isProcessingSuccess ? 20 : 200)
     return () => clearInterval(interval)
   }, [isProcessingSuccess, isLoading])
+
+  React.useEffect(() => {
+    if (isProcessingSuccess && videoRef.current) {
+      videoRef.current.play().catch(console.error)
+    }
+  }, [isProcessingSuccess])
 
   // Cek jika user baru kembali dari Google register success
   React.useEffect(() => {
@@ -131,14 +138,17 @@ export function RegisterForm() {
     signIn('google', { callbackUrl: '/auth/register?google_success=true' })
   }
 
-  if (isProcessingSuccess) {
-    return (
-      <div className="fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden animate-in fade-in duration-500">
+  return (
+    <>
+      <div 
+        className={`fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden transition-opacity duration-500 ${isProcessingSuccess ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      >
         {/* Video Area (Fullscreen appearance adjusting to available height) */}
         <div className="flex-1 relative overflow-hidden">
           <video 
+            ref={videoRef}
             src="/mascot/mascot_running_video.webm" 
-            autoPlay 
+            preload="auto"
             loop 
             playsInline
             muted={isMobile}
@@ -164,11 +174,8 @@ export function RegisterForm() {
           </div>
         </div>
       </div>
-    )
-  }
 
-  return (
-    <FormSettingsLayout staticCard header={<AuthLogoHeader />}>
+      <FormSettingsLayout staticCard header={<AuthLogoHeader />}>
       <div className="space-y-6">
         {/* Header copy menekankan benefit mulai belajar tanpa menjanjikan akses sebelum verifikasi. */}
         <div className="text-center space-y-2">
@@ -303,5 +310,6 @@ export function RegisterForm() {
         </p>
       </div>
     </FormSettingsLayout>
+    </>
   )
 }

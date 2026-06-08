@@ -64,20 +64,20 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 8/6/2026, 15.25.25 WIB*
+*Auto-generated pada: 8/6/2026, 15.32.35 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Dirty (Ada perubahan yang belum di-commit)
 - **Unpushed commits:** 0 commit belum di-push
-- **Latest commit:** `88f19e3 fix(auth): only show splash screen on actual login success, remove gray flash`
+- **Latest commit:** `ab9e726 fix(auth): automatically mute splash video on mobile devices to allow autoplay`
 
 **Last 5 Commits:**
 ```text
+ab9e726 fix(auth): automatically mute splash video on mobile devices to allow autoplay
 88f19e3 fix(auth): only show splash screen on actual login success, remove gray flash
 da80c32 refactor: replace next/navigation router with window.location for auth redirects and clean up redundant state management in login and register forms
 209716a refactor: add muted attribute to mascot videos and simplify OAuth state handling in auth forms
 a2f1f46 refactor: remove Google OAuth popup flow in favor of direct redirect and update session handling
-4db16f0 fix(auth): revert to simple window.open to avoid cross-origin DOMException on mobile browsers
 ```
 
 **Changed Files:**
