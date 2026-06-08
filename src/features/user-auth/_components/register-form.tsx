@@ -87,12 +87,13 @@ export function RegisterForm() {
     let timeout: NodeJS.Timeout
     const isGoogleSuccess = new URLSearchParams(window.location.search).get('google_success') === 'true'
     if (isGoogleSuccess) {
-      // Bersihkan URL dari parameter agar tidak terjebak infinite loop saat menekan tombol Back
-      window.history.replaceState(null, '', window.location.pathname)
+      // Bersihkan URL via router internal Next.js agar cache router ikut bersih
+      // Ini mencegah infinite loop saat user logout dan dikembalikan ke /auth/register
+      router.replace('/auth/register')
       timeout = setTimeout(() => setIsProcessingSuccess(true), 0)
     }
     return () => clearTimeout(timeout)
-  }, [])
+  }, [router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
