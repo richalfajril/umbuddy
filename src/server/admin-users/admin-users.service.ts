@@ -281,4 +281,63 @@ export class AdminUsersService {
 
     return result
   }
+
+  /**
+   * Memaksa pengguna logout dari semua perangkat (revokes sessions and bumps session_version)
+   */
+  static async forceLogoutUser(userId: string, adminId: string, reason: string = 'Sesi pengguna dipaksa keluar oleh admin.') {
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+    if (!user) throw new Error('User tidak ditemukan')
+
+    const result = await prisma.$transaction(async (tx) => {
+      // Increment session version so any active JWT becomes invalid
+      await tx.user.update({
+        where: { id: userId },
+        data: { session_version: { increment: 1 } },
+      })
+
+      // Revoke persistent sessions
+      const revokeResult = await tx.authSession.updateMany({
+        where: {
+          user_id: userId,
+          revoked_at: null,
+        },
+        data: {
+          revoked_at: new Date(),
+        },
+      })
+
+      await tx.adminLog.create({
+        data: {
+          admin_id: adminId,
+          action: 'FORCE_LOGOUT_USER',
+          resource_type: 'USER',
+          resource_id: userId,
+          changes: {
+            reason,
+            sessions_revoked: revokeResult.count,
+            session_version_incremented: true,
+          }
+        }
+      })
+
+      const note = await tx.userSupportNote.create({
+        data: {
+          user_id: userId,
+          admin_id: adminId,
+          note: reason,
+          category: 'FORCE_LOGOUT',
+        }
+      })
+
+      return {
+        userId,
+        revokedSessions: revokeResult.count,
+        sessionVersionIncremented: true,
+        note
+      }
+    })
+
+    return result
+  }
 }

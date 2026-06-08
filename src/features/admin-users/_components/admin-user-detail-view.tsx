@@ -2,10 +2,11 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { ArrowLeft, User, Mail, ShieldAlert, Activity, CheckCircle2, AlertCircle } from 'lucide-react'
+import { ArrowLeft, User, Mail, Activity, CheckCircle2, ShieldAlert, AlertCircle } from 'lucide-react'
 import type { AdminUserDetail, AdminUserSupportNote } from '../_types/admin-users.types'
 import { AdminUserSupportNoteForm } from './admin-user-support-note-form'
 import { AdminUserVerificationActions } from './admin-user-verification-actions'
+import { AdminUserSecurityActions } from './admin-user-security-actions'
 
 interface AdminUserDetailViewProps {
   user: AdminUserDetail
@@ -133,6 +134,9 @@ export function AdminUserDetailView({
                 </div>
               </div>
             </div>
+            
+            {/* Area Keamanan & Tindakan Paksa */}
+            <AdminUserSecurityActions userId={user.id} onActionSuccess={handleNoteAdded} />
           </div>
 
           {/* Area Log dan Catatan Admin */}
