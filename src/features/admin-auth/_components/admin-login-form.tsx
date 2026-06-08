@@ -5,18 +5,16 @@ import { Eye, EyeOff } from 'lucide-react'
 import { AuthLogoHeader } from '@/components/molecules/auth-logo-header'
 import { FormSettingsLayout } from '@/components/templates/form-settings-layout'
 import { Button, Input, Label } from '@/components/ui'
+import { AuthSplashScreen } from '@/components/organisms/auth-splash-screen'
 import { useToastStore } from '@/stores/useToastStore'
 import type { AdminAuthApiError, AdminLoginFormState } from '../_types/admin-auth.types'
 
 // Form login admin memakai visual auth user, tetapi tetap memakai endpoint dan cookie admin.
 export function AdminLoginForm() {
-  // State credential admin sengaja lokal karena endpoint login mengatur cookie httpOnly.
   const [form, setForm] = React.useState<AdminLoginFormState>({ email: '', password: '' })
   const [showPassword, setShowPassword] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isProcessingSuccess, setIsProcessingSuccess] = React.useState(false)
-  const [isMobile, setIsMobile] = React.useState(true)
-  const videoRef = React.useRef<HTMLVideoElement>(null)
   const [progress, setProgress] = React.useState(0)
   const { addToast } = useToastStore()
 
@@ -41,20 +39,6 @@ export function AdminLoginForm() {
     }, 50)
     return () => clearInterval(interval)
   }, [isProcessingSuccess])
-
-  React.useEffect(() => {
-    if (isProcessingSuccess && videoRef.current) {
-      videoRef.current.play().catch(console.error)
-    }
-  }, [isProcessingSuccess])
-
-  React.useEffect(() => {
-    const checkMobile = () => {
-      return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768
-    }
-    const timeout = setTimeout(() => setIsMobile(checkMobile()), 0)
-    return () => clearTimeout(timeout)
-  }, [])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -92,40 +76,11 @@ export function AdminLoginForm() {
 
   return (
     <>
-      <div 
-        className={`fixed inset-0 z-[100] flex flex-col bg-background overflow-hidden transition-opacity duration-500 ${isProcessingSuccess ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-      >
-        {/* Video Area (Fullscreen appearance adjusting to available height) */}
-        <div className="flex-1 relative overflow-hidden">
-          <video 
-            ref={videoRef}
-            src="/mascot/mascot_running_video.webm" 
-            preload="auto"
-            loop 
-            playsInline
-            muted={isMobile}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        </div>
-        
-        {/* Footer Progress Bar */}
-        <div className="bg-background border-t border-border p-6 sm:p-8 flex flex-col justify-center space-y-4 relative z-10">
-          <div className="text-center mb-1">
-            <span className="text-sm font-bold text-primary animate-pulse">Menyiapkan ruang kendali Umbuddy...</span>
-          </div>
-          <div className="h-14 w-full max-w-4xl mx-auto bg-muted/30 rounded-2xl overflow-hidden relative border border-border/50 shadow-inner">
-            <div 
-              className="absolute inset-y-0 left-0 bg-primary transition-all duration-300 ease-out" 
-              style={{ width: `${progress}%` }} 
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-lg font-black text-white uppercase tracking-widest drop-shadow-md">
-                MEMUAT... {progress}%
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <AuthSplashScreen 
+        isProcessingSuccess={isProcessingSuccess} 
+        progress={progress}
+        loadingText="Menyiapkan ruang kendali Umbuddy..."
+      />
 
       <FormSettingsLayout staticCard header={<AuthLogoHeader />}>
       <div className="space-y-6">
