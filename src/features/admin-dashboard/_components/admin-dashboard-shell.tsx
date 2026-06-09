@@ -49,7 +49,7 @@ export function AdminDashboardShell({
       </header>
 
       {/* Konten utama bergeser pada desktop agar tidak tertutup sidebar. */}
-      <main className="lg:pl-72">
+      <main className="lg:pl-60">
         {children}
       </main>
     </div>
