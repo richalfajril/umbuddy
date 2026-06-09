@@ -173,7 +173,7 @@ export function AdminSidebar({
 
       {/* Floating Theme Toggle di kanan bawah (jangan terlalu mepet bawah agar tidak menabrak native UI device) */}
       <div className="fixed bottom-6 right-6 z-50 drop-shadow-md">
-        <ThemeToggle variant="icon" />
+        <ThemeToggle variant="floating" />
       </div>
     </>
   )
