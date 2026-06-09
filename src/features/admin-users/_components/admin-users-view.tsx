@@ -97,7 +97,7 @@ export function AdminUsersView({
 
   return (
     <>
-      <section className="min-h-screen bg-background px-4 py-6 text-headline sm:px-6 lg:px-8">
+      <section className="px-4 py-6 text-headline sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl space-y-6">
           {/* Header halaman */}
           <header className="flex flex-col gap-4 rounded-2xl border border-border bg-background p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
