@@ -48,7 +48,7 @@ export function LandingStickyCTA() {
         </div>
       </div>
 
-      <Link href="/auth/register">
+      <Link href="/auth/register" prefetch>
         <Button size="sm" className="px-5 py-4 rounded-xl font-bold shadow-md hover:shadow-lg active:scale-95 transition-all text-xs flex items-center gap-1">
           Mulai Sekarang
           <ArrowRight className="w-3.5 h-3.5" />

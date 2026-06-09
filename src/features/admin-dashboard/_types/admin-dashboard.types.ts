@@ -1,5 +1,3 @@
-import type { PublicAdmin } from '@/server/admin-auth'
-
 // Key icon yang dipetakan di sidebar agar constants tetap sederhana dan mudah dibaca.
 export type AdminNavIconKey = 'dashboard' | 'questions' | 'users' | 'notifications' | 'settings'
 

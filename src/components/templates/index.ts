@@ -9,6 +9,8 @@ export { FocusExamLayout } from './focus-exam-layout'
 export { DataListLayout } from './data-list-layout'
 export { RouteTransition } from './route-transition'
 export {
+  AdminUserDetailLoadingContent,
+  AdminUsersLoadingContent,
   AdminRouteLoadingSkeleton,
   OnboardingRouteLoadingSkeleton,
   UserRouteLoadingSkeleton,

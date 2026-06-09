@@ -21,6 +21,7 @@ export const ADMIN_DASHBOARD_NAV_ITEMS: AdminNavItem[] = [
     href: '/admin/users',
     icon: 'users',
     description: 'Kelola pengguna dan status akun.',
+    prefetch: true,
   },
   {
     label: 'Notifikasi',

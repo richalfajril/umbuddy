@@ -19,7 +19,7 @@ export function LandingNavbar() {
         <div className="flex justify-between items-center h-20">
           {/* Logo Section */}
           <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="flex items-center">
+            <Link href="/" prefetch className="flex items-center">
               <Image 
                 src="/logo/logo_horizontal.png" 
                 alt="Umbuddy Logo" 
@@ -42,10 +42,10 @@ export function LandingNavbar() {
             <Link href="#faq" className="text-sm font-medium text-body hover:text-primary transition-colors">FAQ</Link>
             
             <div className="flex items-center gap-3 ml-2">
-              <Link href="/auth/login">
+              <Link href="/auth/login" prefetch>
                 <Button variant="secondary" size="sm">Masuk</Button>
               </Link>
-              <Link href="/auth/register">
+              <Link href="/auth/register" prefetch>
                 <Button variant="primary" size="sm">Daftar Gratis</Button>
               </Link>
             </div>
@@ -74,10 +74,10 @@ export function LandingNavbar() {
           <Link href="#testimonials" onClick={() => setIsMenuOpen(false)} className="block text-base font-medium text-body py-2">Testimoni</Link>
           <Link href="#faq" onClick={() => setIsMenuOpen(false)} className="block text-base font-medium text-body py-2">FAQ</Link>
           <div className="grid grid-cols-2 gap-4 pt-4">
-            <Link href="/auth/login" className="w-full">
+            <Link href="/auth/login" prefetch className="w-full">
               <Button variant="secondary" className="w-full">Masuk</Button>
             </Link>
-            <Link href="/auth/register" className="w-full">
+            <Link href="/auth/register" prefetch className="w-full">
               <Button variant="primary" className="w-full">Daftar</Button>
             </Link>
           </div>

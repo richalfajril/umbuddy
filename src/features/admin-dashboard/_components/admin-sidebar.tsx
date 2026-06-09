@@ -39,7 +39,13 @@ export function AdminSidebar({
     <aside className="flex h-full w-60 flex-col border-r border-border bg-background text-headline">
       {/* Header brand backoffice menjaga konteks area admin. */}
       <div className="flex min-h-16 items-center justify-between border-b border-border px-3">
-        <Link href="/admin/dashboard" className="flex items-center gap-2" onClick={onCloseMobile}>
+        <Link
+          href="/admin/dashboard"
+          prefetch
+          transitionTypes={['app-nav']}
+          className="flex items-center gap-2"
+          onClick={onCloseMobile}
+        >
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary font-display text-lg font-black text-primary-foreground shadow-md shadow-primary/25">
             U
           </span>

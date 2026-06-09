@@ -1,5 +1,5 @@
 type UserRouteLoadingVariant = 'dashboard' | 'practice'
-type AdminRouteLoadingVariant = 'dashboard' | 'questions'
+type AdminRouteLoadingVariant = 'dashboard' | 'questions' | 'users'
 
 type SkeletonBlockProps = {
   className: string
@@ -47,19 +47,58 @@ function UserTopBarSkeleton() {
   )
 }
 
-// Skeleton dashboard user meniru grid kartu utama agar navigasi terasa langsung merespons.
+// Skeleton dashboard user menampilkan struktur asli dengan shimmer hanya pada data dari server.
 function UserDashboardLoadingContent() {
   return (
     <div className="mx-auto grid max-w-7xl gap-4 px-4 py-5 sm:px-6 xl:grid-cols-12">
-      <SkeletonBlock className="h-44 xl:col-span-5" />
-      <SkeletonBlock className="h-44 xl:col-span-3" />
-      <SkeletonBlock className="h-44 xl:col-span-4" />
-      <SkeletonBlock className="h-56 xl:col-span-5" />
-      <SkeletonBlock className="h-56 xl:col-span-4" />
-      <SkeletonBlock className="h-56 xl:col-span-3" />
-      <SkeletonBlock className="h-64 xl:col-span-6" />
-      <SkeletonBlock className="h-64 xl:col-span-3" />
-      <SkeletonBlock className="h-64 xl:col-span-3" />
+      <section className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface xl:col-span-5">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">Markas Harian</p>
+        <SkeletonBlock className="mt-4 h-8 w-48" />
+        <SkeletonBlock className="mt-3 h-4 w-64 max-w-full" />
+        <SkeletonBlock className="mt-5 h-11 w-44" />
+      </section>
+      <section className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface xl:col-span-3">
+        <p className="text-sm font-bold text-headline">Progress Score</p>
+        <SkeletonBlock className="mt-3 h-10 w-24" />
+        <p className="mt-5 text-sm font-bold text-headline">Target Score</p>
+        <SkeletonBlock className="mt-3 h-10 w-24" />
+      </section>
+      <section className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface xl:col-span-4">
+        <p className="text-lg font-black text-headline">Teman Online</p>
+        <div className="mt-5 grid grid-cols-4 gap-3">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="grid justify-items-center gap-2">
+              <SkeletonBlock className="h-14 w-14 rounded-full" />
+              <SkeletonBlock className="h-3 w-12" />
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface xl:col-span-6">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">Tactical Analytics</p>
+        <SkeletonBlock className="mt-4 h-7 w-64 max-w-full" />
+        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <SkeletonBlock key={index} className="h-16" />
+          ))}
+        </div>
+      </section>
+      <section className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface xl:col-span-3">
+        <p className="font-display text-xl font-black uppercase text-headline">Daily Missions</p>
+        <div className="mt-5 space-y-4">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <SkeletonBlock key={index} className="h-10" />
+          ))}
+        </div>
+      </section>
+      <section className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface xl:col-span-3">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">Leaderboard</p>
+        <div className="mt-5 space-y-3">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <SkeletonBlock key={index} className="h-12" />
+          ))}
+        </div>
+      </section>
     </div>
   )
 }
@@ -139,14 +178,14 @@ export function OnboardingRouteLoadingSkeleton() {
 // Sidebar skeleton admin memberi shell stabil saat halaman backoffice dinamis dimuat.
 function AdminSidebarSkeleton() {
   return (
-    <aside className="fixed inset-y-0 left-0 hidden w-72 border-r border-border bg-background px-5 py-6 lg:block">
-      <SkeletonBlock className="h-12 w-40" />
-      <div className="mt-8 space-y-3">
+    <aside className="fixed inset-y-0 left-0 hidden w-60 border-r border-border bg-background px-4 py-4 lg:block">
+      <SkeletonBlock className="h-10 w-36" />
+      <div className="mt-6 space-y-2">
         {Array.from({ length: 5 }).map((_, index) => (
-          <SkeletonBlock key={index} className="h-12 w-full rounded-xl" />
+          <SkeletonBlock key={index} className="h-11 w-full rounded-xl" />
         ))}
       </div>
-      <SkeletonBlock className="absolute bottom-6 left-5 right-5 h-16 rounded-2xl" />
+      <SkeletonBlock className="absolute bottom-4 left-4 right-4 h-12 rounded-2xl" />
     </aside>
   )
 }
@@ -155,32 +194,56 @@ function AdminSidebarSkeleton() {
 export function AdminDashboardLoadingContent() {
   return (
     <>
-      <SkeletonBlock className="h-44 w-full rounded-3xl" />
+      <section className="rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">Umbuddy Backoffice</p>
+        <h1 className="mt-3 font-display text-3xl font-black text-headline">
+          Markas admin sedang <span className="text-primary">disiapkan</span>
+        </h1>
+        <SkeletonBlock className="mt-4 h-5 w-80 max-w-full" />
+      </section>
       <div className="mt-6 grid gap-4 md:grid-cols-3">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <SkeletonBlock key={index} className="h-36 rounded-3xl" />
+        {['Total Pengguna', 'Bank Soal', 'Sesi Latihan & Battle'].map((label) => (
+          <section key={label} className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-muted">{label}</p>
+            <SkeletonBlock className="mt-8 h-9 w-20" />
+            <SkeletonBlock className="mt-3 h-4 w-28" />
+          </section>
         ))}
       </div>
       <div className="mt-6 grid gap-4 xl:grid-cols-[1.25fr_0.75fr]">
-        <SkeletonBlock className="h-64 rounded-3xl" />
-        <SkeletonBlock className="h-64 rounded-3xl" />
+        <section className="rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
+          <p className="font-display text-xl font-black text-headline">Tren Registrasi Mingguan</p>
+          <SkeletonBlock className="mt-8 h-48 rounded-xl" />
+        </section>
+        <section className="rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
+          <p className="font-display text-xl font-black text-headline">Distribusi Soal</p>
+          <SkeletonBlock className="mx-auto mt-8 h-40 w-40 rounded-full" />
+        </section>
       </div>
     </>
   )
 }
 
-// Konten skeleton admin questions meniru filter, tabel, dan form create draft.
+// Konten skeleton admin questions memakai shimmer hanya untuk total dan row soal dari API.
 export function AdminQuestionsLoadingContent() {
   return (
     <>
-      <SkeletonBlock className="h-40 w-full rounded-3xl" />
+      <header className="rounded-2xl border border-border bg-background p-5 shadow-sm dark:bg-surface">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">Question Management</p>
+        <h1 className="mt-1 text-2xl font-black text-headline">
+          Kurasi <span className="text-primary">Bank Soal</span>
+        </h1>
+        <SkeletonBlock className="mt-4 h-5 w-32" />
+      </header>
       <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
         <div className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface">
+          <p className="text-sm font-black text-headline">Filter Soal</p>
           <div className="grid gap-3 md:grid-cols-[1fr_180px_180px_auto]">
-            <SkeletonBlock className="h-11 rounded-xl" />
-            <SkeletonBlock className="h-11 rounded-xl" />
-            <SkeletonBlock className="h-11 rounded-xl" />
-            <SkeletonBlock className="h-11 rounded-xl" />
+            {['Keyword', 'Status', 'Kategori', 'Aksi'].map((label) => (
+              <div key={label} className="mt-3 rounded-xl border border-border px-3 py-2 text-sm font-bold text-muted">
+                {label}
+              </div>
+            ))}
           </div>
           <div className="mt-5 space-y-3">
             {Array.from({ length: 6 }).map((_, index) => (
@@ -189,14 +252,97 @@ export function AdminQuestionsLoadingContent() {
           </div>
         </div>
         <div className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface">
-          <SkeletonBlock className="h-4 w-28" />
-          <SkeletonBlock className="mt-4 h-7 w-48" />
-          <div className="mt-5 grid gap-3">
-            {Array.from({ length: 8 }).map((_, index) => (
-              <SkeletonBlock key={index} className="h-11 rounded-xl" />
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">Create Draft</p>
+          <h2 className="mt-3 font-display text-xl font-black text-headline">Form draft siap setelah data route selesai.</h2>
+          <p className="mt-3 text-sm leading-6 text-body">
+            Panel ini tidak memakai skeleton karena form bukan data dari API.
+          </p>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// Konten skeleton admin users memakai label nyata dan shimmer hanya untuk angka/baris data API.
+export function AdminUsersLoadingContent() {
+  return (
+    <>
+      <header className="flex flex-col gap-4 rounded-2xl border border-border bg-background p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
+        <div>
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">User Management</p>
+          <h1 className="mt-1 text-2xl font-black text-headline">
+            Direktori <span className="text-primary">Pengguna</span>
+          </h1>
+          <p className="mt-1 text-sm text-body">Kelola status akun dan metrik pengguna.</p>
+        </div>
+        <div className="rounded-xl border border-primary/30 bg-primary/10 px-4 py-3">
+          <SkeletonBlock className="h-5 w-24" />
+        </div>
+      </header>
+      <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {['Total Pengguna', 'Aktif 7 Hari', 'Pengguna Baru (30h)', 'Ditangguhkan'].map((label) => (
+          <section key={label} className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+            <p className="text-sm font-semibold text-muted">{label}</p>
+            <SkeletonBlock className="mt-4 h-8 w-20" />
+          </section>
+        ))}
+      </div>
+      <section className="mt-6 rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-5 dark:bg-surface">
+        <div className="grid gap-3 md:grid-cols-[1fr_160px_160px_160px_120px_auto]">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <SkeletonBlock key={index} className="h-11 rounded-xl" />
+          ))}
+        </div>
+        <div className="mt-5 overflow-hidden rounded-xl border border-border">
+          <div className="grid grid-cols-[1.4fr_1fr_0.8fr_0.7fr_0.6fr] bg-surface px-6 py-4 text-xs font-black uppercase tracking-wider text-muted">
+            <span>User</span>
+            <span>Role / Instansi</span>
+            <span>Bergabung</span>
+            <span>Status</span>
+            <span className="text-right">Aksi</span>
+          </div>
+          <div className="divide-y divide-border bg-background">
+            {Array.from({ length: 7 }).map((_, index) => (
+              <div key={index} className="grid grid-cols-[1.4fr_1fr_0.8fr_0.7fr_0.6fr] gap-4 px-6 py-4">
+                <SkeletonBlock className="h-10" />
+                <SkeletonBlock className="h-8" />
+                <SkeletonBlock className="h-8" />
+                <SkeletonBlock className="h-8" />
+                <SkeletonBlock className="ml-auto h-8 w-20" />
+              </div>
             ))}
           </div>
         </div>
+      </section>
+    </>
+  )
+}
+
+// Konten skeleton detail user hanya menandai nilai profil/log yang datang dari API/server.
+export function AdminUserDetailLoadingContent() {
+  return (
+    <>
+      <header className="rounded-2xl border border-border bg-background p-5 shadow-sm dark:bg-surface">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">User Detail</p>
+        <h1 className="mt-1 text-2xl font-black text-headline">
+          Detail <span className="text-primary">Profil Pengguna</span>
+        </h1>
+      </header>
+      <div className="mt-6 grid gap-6 md:grid-cols-3">
+        <section className="space-y-4 rounded-2xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
+          <p className="text-xs font-bold uppercase tracking-wider text-muted">Profil</p>
+          <SkeletonBlock className="h-8 w-48" />
+          <SkeletonBlock className="h-5 w-64 max-w-full" />
+          <SkeletonBlock className="h-5 w-40" />
+        </section>
+        <section className="rounded-2xl border border-border bg-background p-6 shadow-sm dark:bg-surface md:col-span-2">
+          <p className="text-xs font-bold uppercase tracking-wider text-muted">Catatan & Aktivitas</p>
+          <div className="mt-5 space-y-3">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SkeletonBlock key={index} className="h-16" />
+            ))}
+          </div>
+        </section>
       </div>
     </>
   )
@@ -211,9 +357,15 @@ export function AdminRouteLoadingSkeleton({ variant }: { variant: AdminRouteLoad
         <SkeletonBlock className="h-11 w-11 rounded-xl" />
         <SkeletonBlock className="h-9 w-32 rounded-xl" />
       </header>
-      <main className="px-4 py-6 sm:px-6 lg:pl-80 lg:pr-8 lg:pt-8">
+      <main className="px-4 py-6 sm:px-6 lg:pl-60 lg:pr-8 lg:pt-8">
         <div className="mx-auto max-w-7xl">
-          {variant === 'questions' ? <AdminQuestionsLoadingContent /> : <AdminDashboardLoadingContent />}
+          {variant === 'questions' ? (
+            <AdminQuestionsLoadingContent />
+          ) : variant === 'users' ? (
+            <AdminUsersLoadingContent />
+          ) : (
+            <AdminDashboardLoadingContent />
+          )}
         </div>
       </main>
     </div>

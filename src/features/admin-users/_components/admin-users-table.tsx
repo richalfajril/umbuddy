@@ -80,6 +80,8 @@ export function AdminUsersTable({ users, onChangeStatusClick }: AdminUsersTableP
                   </button>
                   <Link
                     href={`/admin/users/${user.id}`}
+                    prefetch
+                    transitionTypes={['app-nav']}
                     className="inline-flex items-center gap-1 rounded-xl bg-surface px-3 py-2 text-xs font-bold text-headline transition hover:bg-border"
                   >
                     Detail

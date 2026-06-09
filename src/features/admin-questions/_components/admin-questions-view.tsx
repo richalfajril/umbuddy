@@ -127,7 +127,12 @@ export function AdminQuestionsView({
         {/* Header halaman admin questions menjaga konteks backoffice dan akses balik. */}
         <header className="flex flex-col gap-4 rounded-2xl border border-border bg-background p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
           <div>
-            <Link href="/admin/dashboard" className="inline-flex min-h-[44px] items-center gap-2 text-sm font-black text-primary hover:underline">
+            <Link
+              href="/admin/dashboard"
+              prefetch
+              transitionTypes={['app-nav']}
+              className="inline-flex min-h-[44px] items-center gap-2 text-sm font-black text-primary hover:underline"
+            >
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               Kembali ke Admin
             </Link>

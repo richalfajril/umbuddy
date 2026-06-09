@@ -52,7 +52,7 @@ export function ResetPasswordForm() {
       staticCard
       header={
         // Header logo disamakan dengan auth lain sambil menjaga route reset tetap mandiri.
-        <Link href="/" className="flex flex-col items-center gap-0 transition-transform hover:scale-105 active:scale-95">
+        <Link href="/" prefetch className="flex flex-col items-center gap-0 transition-transform hover:scale-105 active:scale-95">
           <Image
             src="/logo/logo_only.png"
             alt="Umbuddy Mascot"
@@ -142,6 +142,7 @@ export function ResetPasswordForm() {
         {/* Link login menjadi langkah berikutnya setelah password berhasil diubah. */}
         <Link
           href="/auth/login"
+          prefetch
           className="flex min-h-[44px] items-center justify-center gap-2 text-sm font-black text-primary hover:underline"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />

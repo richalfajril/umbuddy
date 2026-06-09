@@ -51,7 +51,7 @@ export function LandingHero() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
-              <Link href="/auth/register" className="w-full sm:w-auto">
+              <Link href="/auth/register" prefetch className="w-full sm:w-auto">
                 <Button size="lg" className="w-full sm:w-auto px-8 py-6 text-lg group">
                   Mulai Latihan Sekarang
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />

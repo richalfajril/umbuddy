@@ -86,6 +86,7 @@ export function ForgotPasswordForm() {
         {/* Link kembali membantu user yang masih ingat password tanpa mengulang route manual. */}
         <Link
           href="/auth/login"
+          prefetch
           className="flex min-h-[44px] items-center justify-center gap-2 text-sm font-black text-primary hover:underline"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />

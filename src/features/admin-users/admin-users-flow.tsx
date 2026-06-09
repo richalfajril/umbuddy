@@ -11,12 +11,15 @@ export async function AdminUsersFlow() {
     redirect('/admin/login')
   }
 
-  // Pre-fetch data pertama kali agar SSR kencang (Limit default 15)
-  const initialData = await AdminUsersService.listUsers({
-    page: 1,
-    limit: 15,
-  })
+  // Jalankan query list dan summary paralel agar halaman users tidak waterfall saat dibuka.
+  const [initialData, initialSummary] = await Promise.all([
+    AdminUsersService.listUsers({
+      page: 1,
+      limit: 15,
+    }),
+    AdminUsersService.getUserSummaryStats(),
+  ])
 
   // Oper data aman ke komponen UI klien
-  return <AdminUsersView initialData={initialData} />
+  return <AdminUsersView initialData={initialData} initialSummary={initialSummary} />
 }

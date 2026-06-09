@@ -294,7 +294,7 @@ export function RegisterForm() {
         <div className="text-center pt-4">
           <p className="text-sm text-body">
             Sudah punya akun?{' '}
-            <Link href="/auth/login" className="font-bold text-primary hover:underline">
+            <Link href="/auth/login" prefetch className="font-bold text-primary hover:underline">
               Masuk di sini
             </Link>
           </p>

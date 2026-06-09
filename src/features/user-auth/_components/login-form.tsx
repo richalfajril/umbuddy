@@ -269,6 +269,7 @@ export function LoginForm() {
               <Label htmlFor="password">Password</Label>
               <Link 
                 href="/auth/forgot-password" 
+                prefetch
                 className="text-xs font-bold text-primary hover:underline"
               >
                 Lupa password?
@@ -315,7 +316,7 @@ export function LoginForm() {
         <div className="text-center pt-4">
           <p className="text-sm text-body">
             Belum punya akun?{' '}
-            <Link href="/auth/register" className="font-bold text-primary hover:underline">
+            <Link href="/auth/register" prefetch className="font-bold text-primary hover:underline">
               Daftar sekarang gratis
             </Link>
           </p>

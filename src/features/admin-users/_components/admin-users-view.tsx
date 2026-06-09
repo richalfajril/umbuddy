@@ -4,7 +4,11 @@ import * as React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Users, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useToastStore } from '@/stores/useToastStore'
-import type { AdminUserListItem, AdminUsersListResponse } from '../_types/admin-users.types'
+import type {
+  AdminUserListItem,
+  AdminUserSummaryStats,
+  AdminUsersListResponse,
+} from '../_types/admin-users.types'
 import { AdminUsersFilters } from './admin-users-filters'
 import { AdminUsersSummaryCards } from './admin-users-summary-cards'
 import { AdminUsersTable } from './admin-users-table'
@@ -12,10 +16,12 @@ import { AdminUserStatusModal } from './admin-user-status-modal'
 
 interface AdminUsersViewProps {
   initialData: AdminUsersListResponse
+  initialSummary: AdminUserSummaryStats
 }
 
 export function AdminUsersView({
   initialData,
+  initialSummary,
 }: AdminUsersViewProps) {
   const [users, setUsers] = React.useState<AdminUserListItem[]>(initialData.users)
   const [total, setTotal] = React.useState(initialData.total)
@@ -64,7 +70,7 @@ export function AdminUsersView({
     } finally {
       setIsLoading(false)
     }
-  }, [addToast, keyword, limit, page, status])
+  }, [addToast, instansi, keyword, limit, page, registrationSource, status])
 
   const handleFilter = () => {
     setPage(1)
@@ -96,7 +102,12 @@ export function AdminUsersView({
           {/* Header halaman */}
           <header className="flex flex-col gap-4 rounded-2xl border border-border bg-background p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
             <div>
-              <Link href="/admin/dashboard" className="inline-flex min-h-[44px] items-center gap-2 text-sm font-black text-primary hover:underline">
+              <Link
+                href="/admin/dashboard"
+                prefetch
+                transitionTypes={['app-nav']}
+                className="inline-flex min-h-[44px] items-center gap-2 text-sm font-black text-primary hover:underline"
+              >
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                 Kembali ke Dashboard
               </Link>
@@ -117,7 +128,7 @@ export function AdminUsersView({
           </header>
 
           {/* Summary Cards */}
-          <AdminUsersSummaryCards />
+          <AdminUsersSummaryCards initialStats={initialSummary} />
 
           {/* Tabel dan Filter */}
           <section className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-5 dark:bg-surface">

@@ -24,6 +24,7 @@ export function AuthErrorCard({ error }: { error?: string }) {
         {/* CTA selalu kembali ke login agar user punya recovery path yang jelas. */}
         <Link
           href="/auth/login"
+          prefetch
           className="mt-6 inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-black text-primary-foreground border-2 border-border shadow-chunky transition hover:bg-primary-hover active:translate-y-[2px] active:shadow-none"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />

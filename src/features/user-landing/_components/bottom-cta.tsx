@@ -23,7 +23,7 @@ export function LandingBottomCTA() {
             </div>
             
             <div>
-              <Link href="/auth/register">
+              <Link href="/auth/register" prefetch>
                 <Button size="lg" className="w-full sm:w-auto px-10 py-6 text-lg group">
                   Daftar Gratis Sekarang
                   <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" aria-hidden="true" />

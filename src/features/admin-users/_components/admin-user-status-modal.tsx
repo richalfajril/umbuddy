@@ -28,11 +28,10 @@ export function AdminUserStatusModal({
   // Sinkronisasi status saat modal dibuka dengan user berbeda
   React.useEffect(() => {
     if (isOpen) {
+      // Reset pilihan saat modal dibuka untuk user berbeda tanpa mengubah alur submit.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setNewStatus(currentStatus)
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setReason('')
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setError('')
     }
   }, [isOpen, currentStatus])
