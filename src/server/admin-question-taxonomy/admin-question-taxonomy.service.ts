@@ -85,22 +85,33 @@ export class AdminQuestionTaxonomyService {
   }
 
   /**
-   * Menjalankan proses seeder secara idempotent.
-   * Hanya membuat entitas (subtes/materi) yang belum ada agar data yang
-   * sudah di-edit admin tidak ter-overwrite/hilang.
+   * Menjalankan proses seeder secara idempotent dan non-destructive.
+   * Hanya membuat entitas (subtes/materi/sub-materi) yang belum ada.
+   * Jangan overwrite/rename materi, sub-materi, order, atau status.
+   * Mengembalikan peringatan jika ada perbedaan nama.
    */
   static async seedDefaultTaxonomy() {
+    const warnings: string[] = []
+    const created: string[] = []
+
     for (const subtest of SEED_DATA) {
       // 1. Pastikan Subtest ada
-      const createdSubtest = await prisma.questionSubtest.upsert({
-        where: { code: subtest.code },
-        update: {}, // Jangan timpa perubahan nama/deskripsi admin
-        create: {
-          code: subtest.code,
-          name: subtest.name,
-          order: subtest.order,
-        }
+      let createdSubtest = await prisma.questionSubtest.findUnique({
+        where: { code: subtest.code }
       })
+
+      if (!createdSubtest) {
+        createdSubtest = await prisma.questionSubtest.create({
+          data: {
+            code: subtest.code,
+            name: subtest.name,
+            order: subtest.order,
+          }
+        })
+        created.push(`Subtes: ${subtest.name}`)
+      } else if (createdSubtest.name !== subtest.name) {
+        warnings.push(`Subtes '${subtest.code}' sudah menggunakan nama berbeda ('${createdSubtest.name}'). Tidak ditimpa.`)
+      }
 
       // 2. Pastikan Materi ada
       for (const material of subtest.materials) {
@@ -116,6 +127,7 @@ export class AdminQuestionTaxonomyService {
               order: material.order,
             }
           })
+          created.push(`Materi: ${material.name}`)
         }
 
         // 3. Pastikan Sub-Materi ada (bila didefinisikan)
@@ -133,12 +145,18 @@ export class AdminQuestionTaxonomyService {
                   order: subMaterial.order,
                 }
               })
+              created.push(`Sub-materi: ${subMaterial.name}`)
             }
           }
         }
       }
     }
 
-    return { success: true, message: 'Taxonomy seed completed idempotently.' }
+    return { 
+      success: true, 
+      message: 'Sinkronisasi selesai.',
+      warnings,
+      created 
+    }
   }
 }

@@ -40,13 +40,25 @@ export function AdminTaxonomyView() {
     setIsSeeding(true)
     try {
       const res = await fetch('/api/v1/admin/question-taxonomy/seed', { method: 'POST' })
-      if (!res.ok) throw new Error('Seeder gagal dieksekusi')
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Seeder gagal dieksekusi')
       await loadTaxonomy()
-      addToast({
-        type: 'success',
-        title: 'Sinkronisasi Berhasil',
-        message: 'Taksonomi default CPNS telah tersinkronisasi.',
-      })
+      
+      if (data.warnings && data.warnings.length > 0) {
+        addToast({
+          type: 'warning',
+          title: 'Sinkronisasi Selesai',
+          message: `${data.warnings[0]}${data.warnings.length > 1 ? ` (+${data.warnings.length - 1} warning lainnya)` : ''}`,
+        })
+      } else {
+        addToast({
+          type: 'success',
+          title: 'Sinkronisasi Berhasil',
+          message: data.created && data.created.length > 0
+            ? `${data.created.length} data baru ditambahkan.`
+            : 'Taksonomi sudah up-to-date.',
+        })
+      }
     } catch (error) {
       addToast({
         type: 'error',
