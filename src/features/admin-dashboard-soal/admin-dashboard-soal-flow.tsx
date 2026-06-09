@@ -1,6 +1,13 @@
+import { AdminAuthService } from '@/server/admin-auth'
+import { AdminDashboardSoalService } from '@/server/admin-questions/admin-dashboard-soal.service'
 import { AdminDashboardSoalView } from './_components/admin-dashboard-soal-view'
+import { redirect } from 'next/navigation'
 
-// Flow ini akan mengambil data overview dashboard di sprint berikutnya
 export async function AdminDashboardSoalFlow() {
-  return <AdminDashboardSoalView />
+  const session = await AdminAuthService.getCachedCurrentAdmin()
+  if (!session) redirect('/admin/login')
+
+  const metrics = await AdminDashboardSoalService.getMetrics(session)
+
+  return <AdminDashboardSoalView metrics={metrics} />
 }
