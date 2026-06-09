@@ -1,1 +1,1 @@
-export * from './admin-questions-import-flow'
+export { AdminQuestionsImportFlow } from './admin-questions-import-flow'

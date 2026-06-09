@@ -1,1 +1,1 @@
-export * from './admin-tryouts-flow'
+export { AdminTryoutsFlow } from './admin-tryouts-flow'

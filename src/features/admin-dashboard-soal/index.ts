@@ -1,1 +1,1 @@
-export * from './admin-dashboard-soal-flow'
+export { AdminDashboardSoalFlow } from './admin-dashboard-soal-flow'
