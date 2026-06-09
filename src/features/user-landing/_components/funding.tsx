@@ -15,7 +15,7 @@ export function LandingFunding() {
         {/* Title & Description */}
         <div className="text-center mb-12 space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary mx-auto">
-            <Heart className="w-4 h-4 text-primary fill-primary animate-pulse" />
+            <Heart className="w-4 h-4 text-primary fill-primary motion-safe:animate-pulse motion-reduce:animate-none" />
             <span className="text-xs font-black uppercase tracking-wider">Dukung Komunitas</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-black font-display text-headline">
@@ -32,7 +32,7 @@ export function LandingFunding() {
           {/* Card 1: Dukung Server */}
           <Card 
             padding="lg" 
-            className="flex flex-col justify-between items-center text-center p-8 sm:p-10 relative overflow-hidden group hover:scale-[1.01] hover:-translate-y-1 transition-all duration-300 border border-border bg-background"
+            className="flex flex-col justify-between items-center text-center p-8 sm:p-10 relative overflow-hidden group hover:scale-[1.01] hover:-translate-y-1 transition-colors transition-transform transition-shadow duration-300 border border-border bg-background"
           >
             <div className="w-full flex flex-col items-center">
               
@@ -50,7 +50,7 @@ export function LandingFunding() {
               {/* Title & Info */}
               <div className="space-y-3 mb-8">
                 <h3 className="text-2xl font-black font-display text-headline flex items-center justify-center gap-2">
-                  <Heart className="w-6 h-6 text-error fill-error animate-pulse" />
+                  <Heart className="w-6 h-6 text-error fill-error motion-safe:animate-pulse motion-reduce:animate-none" />
                   Dukung Server
                 </h3>
                 <p className="text-sm sm:text-base text-body leading-relaxed max-w-sm">
@@ -64,7 +64,7 @@ export function LandingFunding() {
               href="https://saweria.co" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="w-full sm:w-auto min-w-[240px] inline-flex items-center justify-center gap-2 px-6 py-4 bg-[#faae2b] text-headline font-extrabold rounded-2xl border-2 border-[#e0911b] shadow-[0_4px_0_0_#c07b12] active:translate-y-[3px] active:shadow-[0_1px_0_0_#c07b12] hover:bg-[#fa9e1b] transition-all text-base"
+              className="w-full sm:w-auto min-w-[240px] inline-flex items-center justify-center gap-2 px-6 py-4 bg-[#faae2b] text-headline font-extrabold rounded-2xl border-2 border-[#e0911b] shadow-[0_4px_0_0_#c07b12] active:translate-y-[3px] active:shadow-[0_1px_0_0_#c07b12] hover:bg-[#fa9e1b] transition-colors transition-transform transition-shadow text-base"
             >
               <Heart className="w-5 h-5 text-headline" />
               <span>Dukung via Saweria</span>
@@ -74,7 +74,7 @@ export function LandingFunding() {
           {/* Card 2: Crowdsourcing Soal */}
           <Card 
             padding="lg" 
-            className="flex flex-col justify-between items-center text-center p-8 sm:p-10 relative overflow-hidden group hover:scale-[1.01] hover:-translate-y-1 transition-all duration-300 border border-border bg-background"
+            className="flex flex-col justify-between items-center text-center p-8 sm:p-10 relative overflow-hidden group hover:scale-[1.01] hover:-translate-y-1 transition-colors transition-transform transition-shadow duration-300 border border-border bg-background"
           >
             <div className="w-full flex flex-col items-center">
               
@@ -103,7 +103,7 @@ export function LandingFunding() {
 
             {/* Chunky Secondary Button */}
             <button 
-              className="w-full sm:w-auto min-w-[240px] inline-flex items-center justify-center gap-2 px-6 py-4 bg-surface text-headline font-extrabold rounded-2xl border-2 border-border-strong shadow-[0_4px_0_0_var(--color-border-strong)] active:translate-y-[3px] active:shadow-[0_1px_0_0_var(--color-border-strong)] hover:bg-surface-hover transition-all text-base"
+              className="w-full sm:w-auto min-w-[240px] inline-flex items-center justify-center gap-2 px-6 py-4 bg-surface text-headline font-extrabold rounded-2xl border-2 border-border-strong shadow-[0_4px_0_0_var(--color-border-strong)] active:translate-y-[3px] active:shadow-[0_1px_0_0_var(--color-border-strong)] hover:bg-surface-hover transition-colors transition-transform transition-shadow text-base"
             >
               <UploadCloud className="w-5 h-5 text-headline" />
               <span>Sumbang Soal Sekarang</span>

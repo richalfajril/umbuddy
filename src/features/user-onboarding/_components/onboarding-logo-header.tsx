@@ -4,7 +4,7 @@ import Link from 'next/link'
 // Header logo konsisten untuk semua step onboarding.
 export function OnboardingLogoHeader() {
   return (
-    <Link href="/" className="flex flex-col items-center gap-0 transition-transform duration-300 hover:scale-105 active:scale-95">
+    <Link href="/" prefetch className="flex flex-col items-center gap-0 transition-transform duration-300 hover:scale-105 active:scale-95">
       {/* Logo only dipakai sebagai mascot-like anchor visual di atas form onboarding. */}
       <Image
         src="/logo/logo_only.png"

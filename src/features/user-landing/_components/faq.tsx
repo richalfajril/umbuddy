@@ -41,8 +41,8 @@ export function LandingFAQ() {
   return (
     <section id="faq" className="py-20 bg-gradient-to-b from-background via-surface/60 to-background relative overflow-hidden border-b border-border/40 bg-grid-pattern">
       {/* Decorative glowing blobs */}
-      <div className="glow-blob-primary absolute top-1/3 left-10 opacity-40 dark:opacity-20 pointer-events-none -z-10 animate-pulse" />
-      <div className="glow-blob-secondary absolute bottom-1/3 right-10 opacity-40 dark:opacity-20 pointer-events-none -z-10 animate-pulse" />
+      <div className="glow-blob-primary absolute top-1/3 left-10 opacity-40 dark:opacity-20 pointer-events-none -z-10 motion-safe:animate-pulse motion-reduce:animate-none" />
+      <div className="glow-blob-secondary absolute bottom-1/3 right-10 opacity-40 dark:opacity-20 pointer-events-none -z-10 motion-safe:animate-pulse motion-reduce:animate-none" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Asymmetrical Layout Split */}
@@ -51,7 +51,7 @@ export function LandingFAQ() {
           {/* Left Column: Title & Description (Sticky) */}
           <div className="lg:sticky lg:top-24 space-y-4 text-center lg:text-left">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary mx-auto lg:mx-0">
-              <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+              <Sparkles className="w-4 h-4 text-primary motion-safe:animate-pulse motion-reduce:animate-none" />
               <span className="text-xs font-black uppercase tracking-wider">FAQ & Bantuan</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-black font-display text-headline leading-tight">
@@ -68,7 +68,7 @@ export function LandingFAQ() {
               <Card 
                 key={idx} 
                 padding="none"
-                className={`hover:border-primary/50 transition-all duration-300 ${
+                className={`hover:border-primary/50 transition-colors transition-transform transition-shadow duration-300 ${
                   activeIndex === idx ? 'border-primary/50' : 'border-border'
                 }`}
               >
@@ -89,7 +89,7 @@ export function LandingFAQ() {
 
                 {/* Pure CSS slide-down height transition */}
                 <div 
-                  className={`grid transition-all duration-300 ease-in-out ${
+                  className={`grid transition-colors transition-transform transition-shadow duration-300 ease-in-out ${
                     activeIndex === idx ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
                   }`}
                 >

@@ -89,21 +89,21 @@ export function LandingFeatures() {
         }}
       >
         {/* Decorative glowing blobs */}
-        <div className="glow-blob-primary absolute top-1/4 left-1/4 opacity-40 dark:opacity-20 pointer-events-none -z-10 animate-pulse" />
-        <div className="glow-blob-secondary absolute bottom-1/4 right-1/4 opacity-40 dark:opacity-20 pointer-events-none -z-10 animate-pulse" />
+        <div className="glow-blob-primary absolute top-1/4 left-1/4 opacity-40 dark:opacity-20 pointer-events-none -z-10 motion-safe:animate-pulse motion-reduce:animate-none" />
+        <div className="glow-blob-secondary absolute bottom-1/4 right-1/4 opacity-40 dark:opacity-20 pointer-events-none -z-10 motion-safe:animate-pulse motion-reduce:animate-none" />
         
         {/* Floating Decors */}
-        <div className="absolute right-[8%] top-[15%] text-xp/25 w-16 h-16 animate-float pointer-events-none hidden lg:block" style={{ animationDelay: '2s' }}>
+        <div className="absolute right-[8%] top-[15%] text-xp/25 w-16 h-16 motion-safe:animate-float motion-reduce:animate-none pointer-events-none hidden lg:block" style={{ animationDelay: '2s' }}>
           <Coins className="w-full h-full" />
         </div>
-        <div className="absolute left-[6%] bottom-[20%] text-primary/15 w-14 h-14 animate-bounce-subtle pointer-events-none hidden lg:block">
+        <div className="absolute left-[6%] bottom-[20%] text-primary/15 w-14 h-14 motion-safe:animate-bounce-subtle motion-reduce:animate-none pointer-events-none hidden lg:block">
           <Flame className="w-full h-full" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12 space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary mx-auto">
-            <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+            <Sparkles className="w-4 h-4 text-primary motion-safe:animate-pulse motion-reduce:animate-none" />
             <span className="text-xs font-black uppercase tracking-wider">Fitur Unggulan</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-black font-display text-headline">
@@ -118,7 +118,7 @@ export function LandingFeatures() {
           {features.map((feature, idx) => (
             <Card 
               key={idx} 
-              className={`relative overflow-hidden group hover:scale-[1.01] hover:-translate-y-1 transition-all duration-300 p-8 flex flex-col justify-between min-h-[280px] sm:min-h-[260px] ${feature.className}`}
+              className={`relative overflow-hidden group hover:scale-[1.01] hover:-translate-y-1 transition-colors transition-transform transition-shadow duration-300 p-8 flex flex-col justify-between min-h-[280px] sm:min-h-[260px] ${feature.className}`}
             >
               <div className="space-y-6 relative z-10 max-w-[80%] sm:max-w-[75%] lg:max-w-[70%]">
                 <div className="p-3 bg-background rounded-2xl w-fit shadow-sm border border-border">
@@ -135,7 +135,7 @@ export function LandingFeatures() {
               </div>
 
               {/* Mascot Preview */}
-              <div className="absolute -right-4 -bottom-4 w-36 h-36 sm:w-40 sm:h-40 opacity-20 group-hover:opacity-30 lg:opacity-100 lg:group-hover:opacity-100 group-hover:scale-105 group-hover:-rotate-3 transition-all duration-300 grayscale-[0.3] group-hover:grayscale-0">
+              <div className="absolute -right-4 -bottom-4 w-36 h-36 sm:w-40 sm:h-40 opacity-20 group-hover:opacity-30 lg:opacity-100 lg:group-hover:opacity-100 group-hover:scale-105 group-hover:-rotate-3 transition-colors transition-transform transition-shadow duration-300 grayscale-[0.3] group-hover:grayscale-0">
                 <Image 
                   src={feature.mascot} 
                   alt={feature.title} 

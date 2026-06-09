@@ -44,7 +44,7 @@ export function LandingFooter() {
                 href="https://instagram.com" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="p-2.5 rounded-xl bg-background border border-border hover:border-primary/50 hover:bg-primary-light/30 hover:text-primary dark:hover:bg-primary/10 transition-all text-body group" 
+                className="p-2.5 rounded-xl bg-background border border-border hover:border-primary/50 hover:bg-primary-light/30 hover:text-primary dark:hover:bg-primary/10 transition-colors transition-transform transition-shadow text-body group" 
                 aria-label="Instagram"
               >
                 <svg className="w-5 h-5 group-hover:scale-105 transition-transform" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true">
@@ -57,7 +57,7 @@ export function LandingFooter() {
                 href="https://tiktok.com" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="p-2.5 rounded-xl bg-background border border-border hover:border-primary/50 hover:bg-primary-light/30 hover:text-primary dark:hover:bg-primary/10 transition-all text-body group" 
+                className="p-2.5 rounded-xl bg-background border border-border hover:border-primary/50 hover:bg-primary-light/30 hover:text-primary dark:hover:bg-primary/10 transition-colors transition-transform transition-shadow text-body group" 
                 aria-label="TikTok"
               >
                 <svg className="w-5 h-5 group-hover:scale-105 transition-transform" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -66,7 +66,7 @@ export function LandingFooter() {
               </Link>
               <Link 
                 href="mailto:halo@umbuddy.com" 
-                className="p-2.5 rounded-xl bg-background border border-border hover:border-primary/50 hover:bg-primary-light/30 hover:text-primary dark:hover:bg-primary/10 transition-all text-body group" 
+                className="p-2.5 rounded-xl bg-background border border-border hover:border-primary/50 hover:bg-primary-light/30 hover:text-primary dark:hover:bg-primary/10 transition-colors transition-transform transition-shadow text-body group" 
                 aria-label="Email Support"
               >
                 <Mail className="w-5 h-5 group-hover:scale-105 transition-transform" />
@@ -118,7 +118,7 @@ export function LandingFooter() {
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-body font-medium">
           <p>© {currentYear} Umbuddy. Hak Cipta Dilindungi.</p>
           <div className="flex items-center gap-1.5">
-            Dibuat dengan <Heart className="w-3.5 h-3.5 text-error fill-error animate-pulse" /> untuk Indonesia ASN Juara
+            Dibuat dengan <Heart className="w-3.5 h-3.5 text-error fill-error motion-safe:animate-pulse motion-reduce:animate-none" /> untuk Indonesia ASN Juara
           </div>
         </div>
 

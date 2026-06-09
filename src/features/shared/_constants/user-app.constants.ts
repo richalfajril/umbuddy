@@ -7,7 +7,7 @@ export const USER_APP_NAV_ITEMS: AppNavItem[] = [
   { label: 'Practice', href: '/practice', icon: PencilLine, prefetch: true },
   { label: 'Battle', href: '/battle', icon: Swords, disabled: true },
   { label: 'Rank', href: '/leaderboard', icon: Trophy, disabled: true },
-  { label: 'Profile', href: '/profile', icon: UserRound, disabled: true },
+  { label: 'Profile', href: '/profile', icon: UserRound, prefetch: true },
 ]
 
 // Glow card user app dibuat shared agar dashboard dan practice terasa satu sistem visual.

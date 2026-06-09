@@ -33,7 +33,7 @@ export function LandingBottomCTA() {
           </div>
 
           {/* Right: Floating Mascot with Glow Blob */}
-          <div className="relative flex justify-center lg:justify-end animate-float">
+          <div className="relative flex justify-center lg:justify-end motion-safe:animate-float motion-reduce:animate-none">
             <div className="relative z-10">
               <Image 
                 src="/mascot/mascot_encouraging.png" 

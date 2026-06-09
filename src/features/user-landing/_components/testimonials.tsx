@@ -102,10 +102,10 @@ export function LandingTestimonials() {
 
       <section id="testimonials" className="bg-gradient-to-b from-surface/40 via-primary-light/10 to-background py-20 dark:via-primary/5 relative overflow-hidden">
         {/* Floating Decors */}
-        <div className="absolute left-[8%] top-1/4 text-error/15 w-14 h-14 animate-float pointer-events-none hidden lg:block" style={{ animationDelay: '1.5s' }}>
+        <div className="absolute left-[8%] top-1/4 text-error/15 w-14 h-14 motion-safe:animate-float motion-reduce:animate-none pointer-events-none hidden lg:block" style={{ animationDelay: '1.5s' }}>
           <Heart className="w-full h-full fill-error/5" />
         </div>
-        <div className="absolute right-[10%] bottom-1/4 text-xp/25 w-16 h-16 animate-bounce-subtle pointer-events-none hidden lg:block" style={{ animationDelay: '3.5s' }}>
+        <div className="absolute right-[10%] bottom-1/4 text-xp/25 w-16 h-16 motion-safe:animate-bounce-subtle motion-reduce:animate-none pointer-events-none hidden lg:block" style={{ animationDelay: '3.5s' }}>
           <Sparkles className="w-full h-full" />
         </div>
       
@@ -162,13 +162,20 @@ export function LandingTestimonials() {
           right: 0;
           background: linear-gradient(to left, var(--background) 0%, transparent 100%);
         }
+        @media (prefers-reduced-motion: reduce) {
+          .animate-marquee-left,
+          .animate-marquee-right {
+            animation: none;
+            transform: none;
+          }
+        }
       `}</style>
 
       <div className="w-full">
         {/* Title */}
         <div className="mb-12 text-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary mx-auto">
-            <Heart className="w-4 h-4 text-primary fill-primary animate-pulse" />
+            <Heart className="w-4 h-4 text-primary fill-primary motion-safe:animate-pulse motion-reduce:animate-none" />
             <span className="text-xs font-black uppercase tracking-wider">Harapan & Bukti Nyata</span>
           </div>
           <h2 className="font-display text-3xl font-black text-headline md:text-5xl">
@@ -188,7 +195,7 @@ export function LandingTestimonials() {
               <Card 
                 key={`r1-${item.name}-${idx}`} 
                 padding="lg" 
-                className="w-[320px] sm:w-[380px] flex-shrink-0 relative overflow-hidden group hover:scale-[1.02] transition-all duration-300 mx-3 border border-border"
+                className="w-[320px] sm:w-[380px] flex-shrink-0 relative overflow-hidden group hover:scale-[1.02] transition-colors transition-transform transition-shadow duration-300 mx-3 border border-border"
               >
                 {/* Accentuated Gold Quote Mark Icon */}
                 <Quote className="absolute top-4 right-4 h-10 w-10 text-xp/20 fill-xp/10 dark:text-xp/30 dark:fill-xp/20 transition-transform group-hover:scale-110" aria-hidden="true" />
@@ -217,7 +224,7 @@ export function LandingTestimonials() {
               <Card 
                 key={`r2-${item.name}-${idx}`} 
                 padding="lg" 
-                className="w-[320px] sm:w-[380px] flex-shrink-0 relative overflow-hidden group hover:scale-[1.02] transition-all duration-300 mx-3 border border-border"
+                className="w-[320px] sm:w-[380px] flex-shrink-0 relative overflow-hidden group hover:scale-[1.02] transition-colors transition-transform transition-shadow duration-300 mx-3 border border-border"
               >
                 {/* Accentuated Gold Quote Mark Icon */}
                 <Quote className="absolute top-4 right-4 h-10 w-10 text-xp/20 fill-xp/10 dark:text-xp/30 dark:fill-xp/20 transition-transform group-hover:scale-110" aria-hidden="true" />

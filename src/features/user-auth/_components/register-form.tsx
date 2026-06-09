@@ -14,7 +14,11 @@ import { useRouter } from 'next/navigation'
 import * as React from 'react'
 
 // Form registrasi email/password + Google OAuth tanpa mengubah kontrak API register.
-export function RegisterForm() {
+export function RegisterForm({
+  initialGoogleOAuthStatus,
+}: {
+  initialGoogleOAuthStatus?: GoogleOAuthStatus
+}) {
   const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -25,12 +29,16 @@ export function RegisterForm() {
   const [progress, setProgress] = React.useState(0)
   const [successMessage, setSuccessMessage] = React.useState('')
   const [errorMessage, setErrorMessage] = React.useState('')
-  const [googleOAuthStatus, setGoogleOAuthStatus] = React.useState<GoogleOAuthStatus>('NOT_VERIFIED')
+  const [googleOAuthStatus, setGoogleOAuthStatus] = React.useState<GoogleOAuthStatus>(
+    initialGoogleOAuthStatus ?? 'NOT_VERIFIED'
+  )
   const { addToast } = useToastStore()
   const router = useRouter()
 
-  // Status Google OAuth dibaca dari public endpoint agar tombol bisa disabled jika env belum siap.
+  // Status Google OAuth difetch hanya jika server flow belum memberi status awal.
   React.useEffect(() => {
+    if (initialGoogleOAuthStatus) return
+
     let active = true
 
     fetch('/api/v1/public/auth-status')
@@ -45,7 +53,7 @@ export function RegisterForm() {
     return () => {
       active = false
     }
-  }, [])
+  }, [initialGoogleOAuthStatus])
 
   React.useEffect(() => {
     if (!isProcessingSuccess && !isLoading) return

@@ -94,7 +94,7 @@ export function LandingMetrics() {
         {metricsData.map((item, idx) => (
           <div 
             key={idx} 
-            className="flex items-center gap-4 transition-all duration-200 group"
+            className="flex items-center gap-4 transition-colors transition-transform transition-shadow duration-200 group"
           >
             {/* Round Icon themed in green without card wrapper */}
             <div className="flex-shrink-0 p-3 rounded-2xl border border-primary/20 bg-primary-light/40 dark:bg-primary/5 transition-transform group-hover:scale-105 duration-200">

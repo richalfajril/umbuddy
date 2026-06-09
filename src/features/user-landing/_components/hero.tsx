@@ -11,13 +11,13 @@ export function LandingHero() {
   return (
     <section className="relative w-full py-20 md:py-24 overflow-hidden bg-gradient-to-b from-primary-light/30 via-background to-background dark:from-primary/5 dark:via-background dark:to-background bg-grid-pattern">
       {/* Subtle Floating Background Decors */}
-      <div className="absolute top-16 right-16 text-primary/15 dark:text-primary/10 w-16 h-16 animate-float pointer-events-none hidden lg:block" style={{ animationDelay: '1s' }}>
+      <div className="absolute top-16 right-16 text-primary/15 dark:text-primary/10 w-16 h-16 motion-safe:animate-float motion-reduce:animate-none pointer-events-none hidden lg:block" style={{ animationDelay: '1s' }}>
         <Sprout className="w-full h-full" />
       </div>
-      <div className="absolute bottom-16 left-12 text-xp/20 dark:text-xp/10 w-14 h-14 animate-float pointer-events-none hidden lg:block" style={{ animationDelay: '3s' }}>
+      <div className="absolute bottom-16 left-12 text-xp/20 dark:text-xp/10 w-14 h-14 motion-safe:animate-float motion-reduce:animate-none pointer-events-none hidden lg:block" style={{ animationDelay: '3s' }}>
         <Shield className="w-full h-full" />
       </div>
-      <div className="absolute top-1/2 left-[15%] text-primary/10 dark:text-primary/5 w-12 h-12 animate-bounce-subtle pointer-events-none hidden lg:block">
+      <div className="absolute top-1/2 left-[15%] text-primary/10 dark:text-primary/5 w-12 h-12 motion-safe:animate-bounce-subtle motion-reduce:animate-none pointer-events-none hidden lg:block">
         <HelpCircle className="w-full h-full" />
       </div>
 
@@ -26,7 +26,7 @@ export function LandingHero() {
           
           {/* Text Content */}
           <div className="flex-1 text-center lg:text-left space-y-8 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 animate-bounce-subtle">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 motion-safe:animate-bounce-subtle motion-reduce:animate-none">
               <Trophy className="w-4 h-4" />
               <span className="text-xs font-bold uppercase tracking-wider">#1 Game-Based CPNS Platform</span>
             </div>
@@ -96,7 +96,7 @@ export function LandingHero() {
           </div>
 
           {/* Mascot Image */}
-          <div className="flex-1 relative max-w-md lg:max-w-xl animate-float">
+          <div className="flex-1 relative max-w-md lg:max-w-xl motion-safe:animate-float motion-reduce:animate-none">
             <div className="relative z-10 scale-110 md:scale-125">
               <Image 
                 src="/mascot/mascot_greeting.png" 
@@ -126,7 +126,7 @@ export function LandingHero() {
               </div>
             </div>
             {/* Green Glow Blob behind Mascot */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] bg-primary rounded-full blur-[80px] opacity-35 dark:opacity-25 -z-10 animate-pulse" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] bg-primary rounded-full blur-[80px] opacity-35 dark:opacity-25 -z-10 motion-safe:animate-pulse motion-reduce:animate-none" />
           </div>
         </div>
       </div>

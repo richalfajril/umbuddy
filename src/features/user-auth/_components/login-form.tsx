@@ -15,7 +15,11 @@ import { useRouter } from 'next/navigation'
 import * as React from 'react'
 
 // Form login credentials + Google OAuth tanpa memindahkan core NextAuth config.
-export function LoginForm() {
+export function LoginForm({
+  initialGoogleOAuthStatus,
+}: {
+  initialGoogleOAuthStatus?: GoogleOAuthStatus
+}) {
   // State form credentials dijaga lokal agar halaman app route tetap thin.
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -24,12 +28,16 @@ export function LoginForm() {
   const [isGoogleLoading, setIsGoogleLoading] = React.useState(false)
   const [isProcessingSuccess, setIsProcessingSuccess] = React.useState(false)
   const [progress, setProgress] = React.useState(0)
-  const [googleOAuthStatus, setGoogleOAuthStatus] = React.useState<GoogleOAuthStatus>('NOT_VERIFIED')
+  const [googleOAuthStatus, setGoogleOAuthStatus] = React.useState<GoogleOAuthStatus>(
+    initialGoogleOAuthStatus ?? 'NOT_VERIFIED'
+  )
   const { addToast } = useToastStore()
   const router = useRouter()
 
-  // Status Google OAuth dibaca dari public endpoint agar tombol bisa disabled jika env belum siap.
+  // Status Google OAuth difetch hanya jika server flow belum memberi status awal.
   React.useEffect(() => {
+    if (initialGoogleOAuthStatus) return
+
     let active = true
 
     fetch('/api/v1/public/auth-status')
@@ -44,7 +52,7 @@ export function LoginForm() {
     return () => {
       active = false
     }
-  }, [])
+  }, [initialGoogleOAuthStatus])
 
   React.useEffect(() => {
     if (!isLoading && !isProcessingSuccess) return

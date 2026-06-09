@@ -81,17 +81,17 @@ export function LandingShowcases() {
         }}
       >
         {/* Floating Decors */}
-        <div className="absolute left-[5%] top-1/4 text-primary/10 w-16 h-16 animate-float pointer-events-none hidden lg:block" style={{ animationDelay: '1s' }}>
+        <div className="absolute left-[5%] top-1/4 text-primary/10 w-16 h-16 motion-safe:animate-float motion-reduce:animate-none pointer-events-none hidden lg:block" style={{ animationDelay: '1s' }}>
           <HelpCircle className="w-full h-full" />
         </div>
-        <div className="absolute right-[6%] bottom-1/3 text-xp/20 w-16 h-16 animate-bounce-subtle pointer-events-none hidden lg:block" style={{ animationDelay: '4s' }}>
+        <div className="absolute right-[6%] bottom-1/3 text-xp/20 w-16 h-16 motion-safe:animate-bounce-subtle motion-reduce:animate-none pointer-events-none hidden lg:block" style={{ animationDelay: '4s' }}>
           <Trophy className="w-full h-full" />
         </div>
       
         {/* ── Section Title & Subtitle (Selling the USP) ── */}
         <div className="text-center mb-16 space-y-4 max-w-3xl mx-auto px-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">
-            <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+            <Sparkles className="w-4 h-4 text-primary motion-safe:animate-pulse motion-reduce:animate-none" />
             <span className="text-xs font-black uppercase tracking-wider">Kenapa Umbuddy Berbeda?</span>
         </div>
         <h2 className="font-display text-3xl font-black text-headline md:text-5xl leading-tight">
@@ -107,9 +107,9 @@ export function LandingShowcases() {
         {/* ── PILAR 1: Belajar Berbasis Progression ── */}
         <div ref={progressionRef} className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Text */}
-          <div className={`space-y-6 transition-all duration-700 ${progressionVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+          <div className={`space-y-6 transition-opacity transition-transform duration-700 ${progressionVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
             <div className="inline-flex items-center gap-2 rounded-full border border-xp/30 bg-xp-light px-4 py-2 text-headline dark:text-xp">
-              <Flame className="h-4 w-4 text-xp animate-pulse" aria-hidden="true" />
+              <Flame className="h-4 w-4 text-xp motion-safe:animate-pulse motion-reduce:animate-none" aria-hidden="true" />
               <span className="text-xs font-black uppercase">Pilar 1: Progression-Based</span>
             </div>
             <h3 className="font-display text-2xl sm:text-3xl font-black text-headline md:text-4xl">
@@ -131,14 +131,14 @@ export function LandingShowcases() {
           {/* Right Visual Card */}
           <div className="relative">
             <div className="glow-blob-primary absolute -top-10 -right-10 opacity-70 dark:opacity-30 pointer-events-none -z-10" />
-            <div className={`transition-all duration-700 delay-200 ${progressionVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-              <Card padding="lg" className="relative overflow-hidden hover:border-primary/30 hover:shadow-elevated transition-all duration-300 bg-background">
+            <div className={`transition-opacity transition-transform duration-700 delay-200 ${progressionVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+              <Card padding="lg" className="relative overflow-hidden hover:border-primary/30 hover:shadow-elevated transition-colors transition-transform transition-shadow duration-300 bg-background">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <p className="text-xs font-black uppercase text-primary">Mission & Streak</p>
                   <h4 className="font-display text-xl font-black text-headline">Target Taktis Hari Ini</h4>
                 </div>
-                <div className="streak-badge animate-bounce-subtle">
+                <div className="streak-badge motion-safe:animate-bounce-subtle motion-reduce:animate-none">
                   <Flame className="w-4 h-4 fill-current" />
                   <span>7 Hari Beruntun</span>
                 </div>
@@ -154,7 +154,7 @@ export function LandingShowcases() {
                   </div>
                 </div>
                 <div className="flex items-start gap-3 p-4 rounded-2xl border-2 border-primary/20 bg-primary-light/30 dark:bg-primary/5">
-                  <div className="flex-shrink-0 flex h-6 w-6 items-center justify-center rounded-full border-2 border-primary text-primary animate-pulse">
+                  <div className="flex-shrink-0 flex h-6 w-6 items-center justify-center rounded-full border-2 border-primary text-primary motion-safe:animate-pulse motion-reduce:animate-none">
                     <span className="w-2.5 h-2.5 bg-primary rounded-full" />
                   </div>
                   <div>
@@ -173,8 +173,8 @@ export function LandingShowcases() {
           {/* Left Visual Card (Reversed for alternate rhythm) */}
           <div className="relative order-2 lg:order-1">
             <div className="glow-blob-secondary absolute -bottom-10 -left-10 opacity-70 dark:opacity-30 pointer-events-none -z-10" />
-            <div className={`transition-all duration-700 delay-200 ${battleVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
-              <Card padding="lg" className="relative overflow-hidden hover:border-primary/30 hover:shadow-elevated transition-all duration-300 bg-background">
+            <div className={`transition-opacity transition-transform duration-700 delay-200 ${battleVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+              <Card padding="lg" className="relative overflow-hidden hover:border-primary/30 hover:shadow-elevated transition-colors transition-transform transition-shadow duration-300 bg-background">
                 <div className="mb-6 flex items-center justify-between">
                   <div>
                     <p className="text-sm font-black uppercase text-primary flex items-center gap-1.5">
@@ -188,10 +188,10 @@ export function LandingShowcases() {
                       Kamu vs Bima
                     </h3>
                   </div>
-                  <Image src="/mascot/mascot_battle.png" alt="" width={96} height={96} className="h-20 w-20 object-contain animate-float" />
+                  <Image src="/mascot/mascot_battle.png" alt="" width={96} height={96} className="h-20 w-20 object-contain motion-safe:animate-float motion-reduce:animate-none" />
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-2xl border-2 border-primary bg-primary-light/50 dark:bg-primary/10 p-4 text-primary-dark dark:text-primary animate-pulse-subtle">
+                  <div className="rounded-2xl border-2 border-primary bg-primary-light/50 dark:bg-primary/10 p-4 text-primary-dark dark:text-primary motion-safe:animate-pulse-subtle motion-reduce:animate-none">
                     <p className="text-sm font-black">Kamu</p>
                     <p className="font-display text-4xl font-black">420</p>
                     <p className="text-xs font-bold text-headline">18 jawaban benar</p>
@@ -209,7 +209,7 @@ export function LandingShowcases() {
                   </div>
                   <div className="progress-bar-track">
                     <div 
-                      className="progress-bar-fill transition-all duration-1000 ease-out" 
+                      className="progress-bar-fill transition-[width] duration-1000 ease-out" 
                       style={{ width: battleVisible ? '72%' : '0%' }} 
                     />
                   </div>
@@ -219,9 +219,9 @@ export function LandingShowcases() {
           </div>
 
           {/* Right Text */}
-          <div className={`order-1 lg:order-2 space-y-6 transition-all duration-700 ${battleVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+          <div className={`order-1 lg:order-2 space-y-6 transition-opacity transition-transform duration-700 ${battleVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
             <div className="inline-flex items-center gap-2 rounded-full border border-xp/30 bg-xp-light px-4 py-2 text-headline dark:text-xp">
-              <Swords className="h-4 w-4 text-xp animate-pulse" aria-hidden="true" />
+              <Swords className="h-4 w-4 text-xp motion-safe:animate-pulse motion-reduce:animate-none" aria-hidden="true" />
               <span className="text-xs font-black uppercase">Pilar 2: PvP Battle Realtime</span>
             </div>
             <h3 className="font-display text-2xl sm:text-3xl font-black text-headline md:text-4xl">
@@ -244,9 +244,9 @@ export function LandingShowcases() {
         {/* ── PILAR 3: Analytics Adaptif (Reusing Analytics Showcase) ── */}
         <div ref={analyticsRef} className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Text */}
-          <div className={`space-y-6 transition-all duration-700 ${analyticsVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+          <div className={`space-y-6 transition-opacity transition-transform duration-700 ${analyticsVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
             <div className="inline-flex items-center gap-2 rounded-full border border-xp/30 bg-xp-light px-4 py-2 text-headline dark:text-xp">
-              <BarChart3 className="h-4 w-4 text-xp animate-pulse" aria-hidden="true" />
+              <BarChart3 className="h-4 w-4 text-xp motion-safe:animate-pulse motion-reduce:animate-none" aria-hidden="true" />
               <span className="text-xs font-black uppercase">Pilar 3: Adaptive Analytics</span>
             </div>
             <h3 className="font-display text-2xl sm:text-3xl font-black text-headline md:text-4xl">
@@ -256,11 +256,11 @@ export function LandingShowcases() {
               Umbuddy membaca pola jawabanmu secara cerdas dan mendeteksi kelemahanmu secara spesifik di materi TWK, TIU, dan TKP. Kami menerjemahkannya menjadi misi harian baru, prioritas materi, dan prediksi progress nyata. Kamu nggak perlu bingung lagi harus mulai belajar dari mana setiap hari.
             </p>
             <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-2xl border border-border bg-background p-4 text-center shadow-card hover:shadow-elevated hover:border-primary/20 hover:scale-[1.02] transition-all duration-300">
+              <div className="rounded-2xl border border-border bg-background p-4 text-center shadow-card hover:shadow-elevated hover:border-primary/20 hover:scale-[1.02] transition-colors transition-transform transition-shadow duration-300">
                 <p className="font-display text-3xl font-black text-primary">92%</p>
                 <p className="text-xs font-bold text-muted mt-1">Akurasi prediksi skor</p>
               </div>
-              <div className="rounded-2xl border border-border bg-background p-4 text-center shadow-card hover:shadow-elevated hover:border-xp/30 hover:scale-[1.02] transition-all duration-300">
+              <div className="rounded-2xl border border-border bg-background p-4 text-center shadow-card hover:shadow-elevated hover:border-xp/30 hover:scale-[1.02] transition-colors transition-transform transition-shadow duration-300">
                 <p className="font-display text-3xl font-black text-xp">30+</p>
                 <p className="text-xs font-bold text-muted mt-1">Sub-materi dianalisis</p>
               </div>
@@ -270,10 +270,10 @@ export function LandingShowcases() {
           {/* Right Visual Card */}
           <div className="relative">
             <div className="glow-blob-primary absolute -top-10 -right-10 opacity-70 dark:opacity-30 pointer-events-none -z-10" />
-            <div className={`transition-all duration-700 delay-200 ${analyticsVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-              <Card padding="lg" className="relative overflow-hidden hover:border-primary/30 hover:shadow-elevated transition-all duration-300 bg-background">
+            <div className={`transition-opacity transition-transform duration-700 delay-200 ${analyticsVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+              <Card padding="lg" className="relative overflow-hidden hover:border-primary/30 hover:shadow-elevated transition-colors transition-transform transition-shadow duration-300 bg-background">
                 <div className="flex items-center gap-4">
-                  <Image src="/mascot/mascot_detective.png" alt="" width={110} height={110} className="h-24 w-24 object-contain animate-float" />
+                  <Image src="/mascot/mascot_detective.png" alt="" width={110} height={110} className="h-24 w-24 object-contain motion-safe:animate-float motion-reduce:animate-none" />
                   <div>
                     <p className="text-sm font-black uppercase text-primary">Weak Area Analysis</p>
                     <h3 className="font-display text-2xl font-black text-headline">
@@ -289,7 +289,7 @@ export function LandingShowcases() {
                   ].map((item) => {
                     const Icon = item.icon
                     return (
-                      <div key={item.label} className="rounded-2xl border border-border bg-background p-4 hover:border-primary/20 transition-all duration-200">
+                      <div key={item.label} className="rounded-2xl border border-border bg-background p-4 hover:border-primary/20 transition-colors transition-transform transition-shadow duration-200">
                         <div className="mb-2 flex items-center justify-between">
                           <span className="flex items-center gap-2 font-black text-headline">
                             <Icon className="h-5 w-5 text-primary" aria-hidden="true" />
@@ -299,7 +299,7 @@ export function LandingShowcases() {
                         </div>
                         <div className="progress-bar-track">
                           <div 
-                            className="progress-bar-fill transition-all duration-1000 ease-out" 
+                            className="progress-bar-fill transition-[width] duration-1000 ease-out" 
                             style={{ width: analyticsVisible ? `${item.value}%` : '0%' }} 
                           />
                         </div>
@@ -317,10 +317,10 @@ export function LandingShowcases() {
           {/* Left Visual Card (Reversed for alternate rhythm) */}
           <div className="relative order-2 lg:order-1">
             <div className="glow-blob-secondary absolute -bottom-10 -left-10 opacity-70 dark:opacity-30 pointer-events-none -z-10" />
-            <div className={`transition-all duration-700 delay-200 ${gamificationVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
-              <Card padding="lg" className="relative overflow-hidden hover:border-primary/30 hover:shadow-elevated transition-all duration-300 bg-gradient-to-br from-background to-primary-light/20 dark:to-primary/5 bg-background">
+            <div className={`transition-opacity transition-transform duration-700 delay-200 ${gamificationVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+              <Card padding="lg" className="relative overflow-hidden hover:border-primary/30 hover:shadow-elevated transition-colors transition-transform transition-shadow duration-300 bg-gradient-to-br from-background to-primary-light/20 dark:to-primary/5 bg-background">
                 <div className="flex items-start gap-4">
-                  <Image src="/mascot/mascot_success.png" alt="" width={100} height={100} className="h-20 w-20 object-contain animate-float shrink-0" />
+                  <Image src="/mascot/mascot_success.png" alt="" width={100} height={100} className="h-20 w-20 object-contain motion-safe:animate-float motion-reduce:animate-none shrink-0" />
                   <div className="space-y-3 relative z-10">
                     <div className="p-3 bg-background rounded-2xl border border-border text-xs sm:text-sm font-bold text-headline leading-relaxed shadow-sm relative before:absolute before:-left-3 before:top-6 before:w-0 before:h-0 before:border-y-8 before:border-y-transparent before:border-r-8 before:border-r-background">
                       &ldquo;Wah, TWK kamu meningkat pesat minggu ini! Kamu selangkah lagi naik pangkat ke <span className="text-primary font-black">Umbies Senior</span>. Yuk selesaikan misi hari ini!&rdquo;
@@ -336,9 +336,9 @@ export function LandingShowcases() {
           </div>
 
           {/* Right Text */}
-          <div className={`order-1 lg:order-2 space-y-6 transition-all duration-700 ${gamificationVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+          <div className={`order-1 lg:order-2 space-y-6 transition-opacity transition-transform duration-700 ${gamificationVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
             <div className="inline-flex items-center gap-2 rounded-full border border-xp/30 bg-xp-light px-4 py-2 text-headline dark:text-xp">
-              <Sparkles className="h-4 w-4 text-xp animate-pulse" aria-hidden="true" />
+              <Sparkles className="h-4 w-4 text-xp motion-safe:animate-pulse motion-reduce:animate-none" aria-hidden="true" />
               <span className="text-xs font-black uppercase">Pilar 4: Gamified Retention</span>
             </div>
             <h3 className="font-display text-2xl sm:text-3xl font-black text-headline md:text-4xl">
@@ -361,9 +361,9 @@ export function LandingShowcases() {
         {/* ── PILAR 5: Community Ranking (Reusing Leaderboard Showcase) ── */}
         <div ref={leaderboardRef} className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Text */}
-          <div className={`space-y-6 transition-all duration-700 ${leaderboardVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+          <div className={`space-y-6 transition-opacity transition-transform duration-700 ${leaderboardVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
             <div className="inline-flex items-center gap-2 rounded-full border border-xp/30 bg-xp-light px-4 py-2 text-headline dark:text-xp">
-              <Trophy className="h-4 w-4 text-xp animate-pulse" aria-hidden="true" />
+              <Trophy className="h-4 w-4 text-xp motion-safe:animate-pulse motion-reduce:animate-none" aria-hidden="true" />
               <span className="text-xs font-black uppercase">Pilar 5: Community Ranked</span>
             </div>
             <h3 className="font-display text-2xl sm:text-3xl font-black text-headline md:text-4xl">
@@ -385,19 +385,19 @@ export function LandingShowcases() {
           {/* Right Visual Card */}
           <div className="relative">
             <div className="glow-blob-primary absolute -top-10 -right-10 opacity-70 dark:opacity-30 pointer-events-none -z-10" />
-            <div className={`transition-all duration-700 delay-200 ${leaderboardVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-              <Card padding="none" className="p-4 sm:p-7 relative overflow-hidden hover:border-primary/20 hover:shadow-elevated transition-all duration-300 bg-background">
+            <div className={`transition-opacity transition-transform duration-700 delay-200 ${leaderboardVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+              <Card padding="none" className="p-4 sm:p-7 relative overflow-hidden hover:border-primary/20 hover:shadow-elevated transition-colors transition-transform transition-shadow duration-300 bg-background">
                 <div className="mb-6 flex items-center justify-between">
                   <h3 className="font-display text-xl sm:text-2xl font-black text-headline">
                     Top Umbies Minggu Ini
                   </h3>
-                  <Medal className="h-6 w-6 sm:h-8 sm:w-8 text-xp animate-bounce-subtle" aria-hidden="true" />
+                  <Medal className="h-6 w-6 sm:h-8 sm:w-8 text-xp motion-safe:animate-bounce-subtle motion-reduce:animate-none" aria-hidden="true" />
                 </div>
                 <div className="space-y-3">
                   {leaderboardUsers.map((user, index) => (
                     <div 
                       key={user.rank} 
-                      className="flex items-center gap-2 sm:gap-4 rounded-2xl border border-border bg-surface p-3 sm:p-4 hover:bg-surface-hover hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-sm transition-all duration-200"
+                      className="flex items-center gap-2 sm:gap-4 rounded-2xl border border-border bg-surface p-3 sm:p-4 hover:bg-surface-hover hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-sm transition-colors transition-transform transition-shadow duration-200"
                       style={{
                         transform: leaderboardVisible ? 'translateY(0)' : 'translateY(24px)',
                         opacity: leaderboardVisible ? 1 : 0,

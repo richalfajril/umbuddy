@@ -1,4 +1,7 @@
-type UserRouteLoadingVariant = 'dashboard' | 'practice'
+import Image from 'next/image'
+import Link from 'next/link'
+
+type UserRouteLoadingVariant = 'dashboard' | 'practice' | 'profile'
 type AdminRouteLoadingVariant = 'dashboard' | 'questions' | 'users'
 
 type SkeletonBlockProps = {
@@ -10,7 +13,7 @@ function SkeletonBlock({ className }: SkeletonBlockProps) {
   return <div className={`animate-pulse rounded-2xl bg-surface-hover ${className}`} />
 }
 
-// Sidebar skeleton user meniru struktur navigasi aplikasi utama tanpa interaksi.
+// Sidebar skeleton user menjaga ruang navigasi stabil tanpa meniru konten data.
 function UserSidebarSkeleton() {
   return (
     <aside className="fixed inset-y-0 left-0 hidden w-20 border-r border-border bg-background px-3 py-5 lg:block">
@@ -25,13 +28,13 @@ function UserSidebarSkeleton() {
   )
 }
 
-// Top bar skeleton user menjaga area progress tetap stabil saat route dinamis dimuat.
+// Top bar skeleton user hanya memberi shimmer pada nilai progression yang datang dari server.
 function UserTopBarSkeleton() {
   return (
     <header className="rounded-none border-b border-border bg-background px-4 py-4 shadow-sm lg:rounded-b-3xl lg:px-6">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
         <div className="flex min-w-0 items-center gap-3">
-          <SkeletonBlock className="h-14 w-14 shrink-0 rounded-2xl" />
+          <div className="h-14 w-14 shrink-0 rounded-2xl border border-border bg-surface" />
           <div className="min-w-0 space-y-2">
             <SkeletonBlock className="h-5 w-28" />
             <SkeletonBlock className="h-3 w-20" />
@@ -39,15 +42,15 @@ function UserTopBarSkeleton() {
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-3">
-          <SkeletonBlock className="hidden h-8 w-16 sm:block" />
-          <SkeletonBlock className="h-8 w-20" />
+          <SkeletonBlock className="hidden h-5 w-10 sm:block" />
+          <SkeletonBlock className="h-5 w-16" />
         </div>
       </div>
     </header>
   )
 }
 
-// Skeleton dashboard user menampilkan struktur asli dengan shimmer hanya pada data dari server.
+// Skeleton dashboard user menampilkan label nyata dan shimmer hanya untuk data server.
 function UserDashboardLoadingContent() {
   return (
     <div className="mx-auto grid max-w-7xl gap-4 px-4 py-5 sm:px-6 xl:grid-cols-12">
@@ -55,7 +58,9 @@ function UserDashboardLoadingContent() {
         <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">Markas Harian</p>
         <SkeletonBlock className="mt-4 h-8 w-48" />
         <SkeletonBlock className="mt-3 h-4 w-64 max-w-full" />
-        <SkeletonBlock className="mt-5 h-11 w-44" />
+        <span className="mt-5 inline-flex min-h-11 items-center rounded-2xl bg-primary px-5 text-sm font-black text-primary-foreground shadow-button">
+          Mulai Daily Practice
+        </span>
       </section>
       <section className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface xl:col-span-3">
         <p className="text-sm font-bold text-headline">Progress Score</p>
@@ -68,7 +73,7 @@ function UserDashboardLoadingContent() {
         <div className="mt-5 grid grid-cols-4 gap-3">
           {Array.from({ length: 4 }).map((_, index) => (
             <div key={index} className="grid justify-items-center gap-2">
-              <SkeletonBlock className="h-14 w-14 rounded-full" />
+              <div className="h-14 w-14 rounded-full border border-border bg-surface" />
               <SkeletonBlock className="h-3 w-12" />
             </div>
           ))}
@@ -78,16 +83,26 @@ function UserDashboardLoadingContent() {
         <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">Tactical Analytics</p>
         <SkeletonBlock className="mt-4 h-7 w-64 max-w-full" />
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          {Array.from({ length: 3 }).map((_, index) => (
-            <SkeletonBlock key={index} className="h-16" />
+          {['TWK', 'TIU', 'TKP'].map((label) => (
+            <div key={label} className="rounded-2xl border border-border bg-surface p-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black text-headline">{label}</span>
+                <SkeletonBlock className="h-4 w-10" />
+              </div>
+              <SkeletonBlock className="mt-3 h-2 w-full rounded-full" />
+              <SkeletonBlock className="mt-3 h-3 w-20" />
+            </div>
           ))}
         </div>
       </section>
       <section className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface xl:col-span-3">
         <p className="font-display text-xl font-black uppercase text-headline">Daily Missions</p>
         <div className="mt-5 space-y-4">
-          {Array.from({ length: 3 }).map((_, index) => (
-            <SkeletonBlock key={index} className="h-10" />
+          {['Complete 20 TWK Questions', 'Win 1 Battle Arena', 'Login 3 days streak'].map((label) => (
+            <div key={label} className="rounded-2xl border border-border bg-surface p-3">
+              <p className="text-xs font-black text-headline">{label}</p>
+              <SkeletonBlock className="mt-2 h-2 w-full rounded-full" />
+            </div>
           ))}
         </div>
       </section>
@@ -95,7 +110,12 @@ function UserDashboardLoadingContent() {
         <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">Leaderboard</p>
         <div className="mt-5 space-y-3">
           {Array.from({ length: 4 }).map((_, index) => (
-            <SkeletonBlock key={index} className="h-12" />
+            <div key={index} className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-3">
+              <span className="text-xs font-black text-muted">{index + 1}</span>
+              <div className="h-8 w-8 rounded-full bg-background" />
+              <SkeletonBlock className="h-4 flex-1" />
+              <SkeletonBlock className="h-4 w-10" />
+            </div>
           ))}
         </div>
       </section>
@@ -103,12 +123,12 @@ function UserDashboardLoadingContent() {
   )
 }
 
-// Skeleton practice meniru layout ujian: header timer, navigator soal, dan kartu soal.
+// Skeleton practice hanya memberi shimmer pada nomor, soal, opsi, dan waktu dari API/session.
 function UserPracticeLoadingContent() {
   return (
     <div className="mx-auto grid max-w-7xl gap-5 px-4 py-5 sm:px-6 xl:grid-cols-[280px_minmax(0,1fr)]">
       <aside className="hidden rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface xl:block">
-        <SkeletonBlock className="h-5 w-36" />
+        <p className="text-sm font-black text-headline">Navigasi Soal</p>
         <div className="mt-5 grid grid-cols-5 gap-2">
           {Array.from({ length: 25 }).map((_, index) => (
             <SkeletonBlock key={index} className="h-10 rounded-xl" />
@@ -118,7 +138,7 @@ function UserPracticeLoadingContent() {
       <section className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface sm:p-7">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <SkeletonBlock className="h-8 w-14" />
+            <span className="rounded-full bg-primary px-3 py-1 text-xs font-black text-primary-foreground">TWK</span>
             <SkeletonBlock className="h-5 w-32" />
           </div>
           <SkeletonBlock className="h-9 w-28" />
@@ -130,8 +150,54 @@ function UserPracticeLoadingContent() {
           ))}
         </div>
         <div className="mt-8 flex justify-between gap-3">
-          <SkeletonBlock className="h-11 w-44" />
-          <SkeletonBlock className="h-11 w-32" />
+          <span className="inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-black text-primary-foreground">
+            Simpan dan Lanjutkan
+          </span>
+          <span className="inline-flex min-h-11 items-center rounded-xl border border-error px-4 text-sm font-black text-error">
+            Lewatkan
+          </span>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+// Skeleton profile memprioritaskan data identitas/progress tanpa mengganti shell halaman.
+function UserProfileLoadingContent() {
+  return (
+    <div className="mx-auto grid max-w-7xl gap-4 px-4 py-5 sm:px-6 xl:grid-cols-12">
+      <section className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface xl:col-span-5">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">Profil Cambies</p>
+        <SkeletonBlock className="mt-4 h-8 w-48" />
+        <SkeletonBlock className="mt-3 h-4 w-64 max-w-full" />
+        <SkeletonBlock className="mt-5 h-4 w-40" />
+      </section>
+      {['Total XP', 'Rata-rata Skor', 'Soal Dikerjakan'].map((label) => (
+        <section key={label} className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface xl:col-span-2">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-muted">{label}</p>
+          <SkeletonBlock className="mt-5 h-8 w-20" />
+        </section>
+      ))}
+      <section className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface xl:col-span-7">
+        <p className="font-display text-xl font-black text-headline">Ringkasan Performa</p>
+        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          {['TWK', 'TIU', 'TKP'].map((label) => (
+            <div key={label} className="rounded-2xl border border-border bg-surface p-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black text-headline">{label}</span>
+                <SkeletonBlock className="h-4 w-10" />
+              </div>
+              <SkeletonBlock className="mt-3 h-2 w-full rounded-full" />
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface xl:col-span-5">
+        <p className="font-display text-xl font-black text-headline">Aktivitas Terbaru</p>
+        <div className="mt-5 space-y-3">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <SkeletonBlock key={index} className="h-12" />
+          ))}
         </div>
       </section>
     </div>
@@ -145,30 +211,51 @@ export function UserRouteLoadingSkeleton({ variant }: { variant: UserRouteLoadin
       <UserSidebarSkeleton />
       <main className="pb-24 lg:pl-20">
         <UserTopBarSkeleton />
-        {variant === 'practice' ? <UserPracticeLoadingContent /> : <UserDashboardLoadingContent />}
+        {variant === 'practice' ? (
+          <UserPracticeLoadingContent />
+        ) : variant === 'profile' ? (
+          <UserProfileLoadingContent />
+        ) : (
+          <UserDashboardLoadingContent />
+        )}
       </main>
     </div>
   )
 }
 
-// Skeleton onboarding menjaga pengguna melihat struktur form sebelum status onboarding selesai dicek.
+// Skeleton onboarding memakai logo nyata dan shimmer hanya pada status yang menunggu API.
 export function OnboardingRouteLoadingSkeleton() {
   return (
     <main className="grid min-h-screen place-items-center bg-background px-4 py-10 text-headline">
       <div className="w-full max-w-xl">
-        <div className="mx-auto flex w-fit flex-col items-center gap-3">
-          <SkeletonBlock className="h-24 w-24 rounded-3xl" />
-          <SkeletonBlock className="h-10 w-48" />
-        </div>
+        <Link href="/" prefetch className="mx-auto flex w-fit flex-col items-center gap-0">
+          <Image
+            src="/logo/logo_only.png"
+            alt="Umbuddy Mascot"
+            width={120}
+            height={120}
+            className="h-20 w-auto sm:h-28"
+            style={{ width: 'auto' }}
+            priority
+          />
+          <Image
+            src="/logo/logo_text.png"
+            alt="Umbuddy"
+            width={224}
+            height={56}
+            className="h-auto w-48 -mt-3 sm:w-56 sm:-mt-4"
+            style={{ height: 'auto' }}
+            priority
+          />
+        </Link>
         <section className="mt-8 rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface sm:p-8">
-          <SkeletonBlock className="mx-auto h-7 w-64" />
-          <SkeletonBlock className="mx-auto mt-3 h-4 w-80 max-w-full" />
-          <div className="mt-8 grid gap-4">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <SkeletonBlock key={index} className="h-12 w-full" />
-            ))}
-          </div>
-          <SkeletonBlock className="mt-6 h-12 w-full" />
+          <p className="text-center font-display text-2xl font-black text-headline">
+            Menyiapkan <span className="text-primary">Onboarding</span>
+          </p>
+          <p className="mx-auto mt-3 max-w-sm text-center text-sm leading-6 text-body">
+            Kami sedang membaca progres Kamu agar langkah berikutnya pas.
+          </p>
+          <SkeletonBlock className="mx-auto mt-8 h-4 w-48" />
         </section>
       </div>
     </main>

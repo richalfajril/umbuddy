@@ -7,6 +7,21 @@ import { AdminQuestionsPieChart } from './admin-questions-pie-chart'
 import { AnalyticsService } from '@/server/analytics/analytics.service'
 import * as React from 'react'
 
+// Fallback KPI hanya shimmer pada angka ringkasan, bukan seluruh komponen dashboard.
+function AdminKpiDataFallback() {
+  return (
+    <div className="grid gap-4 md:grid-cols-3">
+      {['Total Pengguna', 'Bank Soal', 'Sesi Latihan & Battle'].map((label) => (
+        <section key={label} className="rounded-3xl border border-border bg-background p-5 shadow-sm dark:bg-surface">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-muted">{label}</p>
+          <div className="mt-8 h-9 w-20 animate-pulse rounded-xl bg-surface-hover" />
+          <div className="mt-3 h-4 w-28 animate-pulse rounded-xl bg-surface-hover" />
+        </section>
+      ))}
+    </div>
+  )
+}
+
 // View dashboard admin menampilkan ringkasan analitik dan jalan pintas manajemen.
 export async function AdminDashboardView({ admin }: AdminDashboardViewProps) {
   // Fetch data untuk chart di level ini agar bisa di-pass ke Client Component
@@ -39,7 +54,7 @@ export async function AdminDashboardView({ admin }: AdminDashboardViewProps) {
 
         {/* Ringkasan status KPI */}
         <div className="mt-6">
-          <React.Suspense fallback={<div className="h-[120px] w-full animate-pulse rounded-3xl bg-muted/20" />}>
+          <React.Suspense fallback={<AdminKpiDataFallback />}>
             <AdminKpiCards />
           </React.Suspense>
         </div>
