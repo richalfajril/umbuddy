@@ -7,7 +7,6 @@ import { FormSettingsLayout } from '@/components/templates/form-settings-layout'
 import { Button, Input, Label } from '@/components/ui'
 import { AuthSplashScreen } from '@/components/organisms/auth-splash-screen'
 import { useToastStore } from '@/stores/useToastStore'
-import { useRouter } from 'next/navigation'
 import type { AdminAuthApiError, AdminLoginFormState } from '../_types/admin-auth.types'
 
 // Form login admin memakai visual auth user, tetapi tetap memakai endpoint dan cookie admin.
@@ -18,7 +17,6 @@ export function AdminLoginForm() {
   const [isProcessingSuccess, setIsProcessingSuccess] = React.useState(false)
   const [progress, setProgress] = React.useState(0)
   const { addToast } = useToastStore()
-  const router = useRouter()
 
   // Helper update field menjaga controlled input tetap ringkas.
   const updateField = (field: keyof AdminLoginFormState, value: string) => {
@@ -44,9 +42,10 @@ export function AdminLoginForm() {
   // Watcher terpisah untuk menangani redirect agar fungsi state updater tetap murni (pure)
   React.useEffect(() => {
     if (isProcessingSuccess && progress >= 98) {
-      router.push('/admin/dashboard')
+      // Navigasi dokumen penuh memastikan layout admin membaca ulang cookie session baru.
+      window.location.assign('/admin/dashboard')
     }
-  }, [isProcessingSuccess, progress, router])
+  }, [isProcessingSuccess, progress])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
