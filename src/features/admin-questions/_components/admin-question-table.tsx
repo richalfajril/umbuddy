@@ -1,18 +1,20 @@
 'use client'
 
-import { Archive, CheckCircle2, RotateCcw } from 'lucide-react'
+import { Archive, CheckCircle2, RotateCcw, Pencil } from 'lucide-react'
 import type { AdminQuestionListItem } from '../_types/admin-questions.types'
 import { getQuestionStatusClass } from '../_utils/admin-questions.utils'
 
 type AdminQuestionTableProps = {
   questions: AdminQuestionListItem[]
   onRunAction: (questionId: string, action: 'publish' | 'archive' | 'restore') => void
+  onEditQuestion: (question: AdminQuestionListItem) => void
 }
 
 // Tabel list soal dipisah agar render baris dan action workflow tidak memenuhi view utama.
 export function AdminQuestionTable({
   questions,
   onRunAction,
+  onEditQuestion,
 }: AdminQuestionTableProps) {
   return (
     <div className="mt-5 overflow-x-auto">
@@ -46,6 +48,16 @@ export function AdminQuestionTable({
               </td>
               <td className="py-4 pr-3">
                 <div className="flex flex-wrap gap-2">
+                  {question.status === 'DRAFT' && (
+                    <button
+                      type="button"
+                      onClick={() => onEditQuestion(question)}
+                      className="inline-flex min-h-[36px] items-center gap-1 rounded-lg border border-muted/30 px-2 text-xs font-black text-headline"
+                    >
+                      <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+                      Edit
+                    </button>
+                  )}
                   {question.status === 'DRAFT' || question.status === 'FLAGGED' ? (
                     <button
                       type="button"

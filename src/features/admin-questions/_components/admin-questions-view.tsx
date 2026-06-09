@@ -35,6 +35,7 @@ export function AdminQuestionsView({
   const [category, setCategory] = React.useState('')
   const [keyword, setKeyword] = React.useState('')
   const [form, setForm] = React.useState<AdminQuestionFormState>(initialAdminQuestionForm)
+  const [editingId, setEditingId] = React.useState<string | null>(null)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isSaving, setIsSaving] = React.useState(false)
   const { addToast } = useToastStore()
@@ -42,6 +43,37 @@ export function AdminQuestionsView({
   // Helper update field form agar input tetap controlled dan ringkas.
   const updateForm = (field: keyof AdminQuestionFormState, value: string) => {
     setForm((current) => ({ ...current, [field]: value }))
+  }
+
+  // Edit handler: mapping dari response item ke form state
+  const handleEditQuestion = (question: AdminQuestionListItem) => {
+    setEditingId(question.id)
+    setForm({
+      category: question.category,
+      package_code: question.package_code,
+      number: question.number.toString(),
+      text: question.text,
+      option_a: question.options['A'] || '',
+      option_b: question.options['B'] || '',
+      option_c: question.options['C'] || '',
+      option_d: question.options['D'] || '',
+      option_e: question.options['E'] || '',
+      answer_key: question.answer_key || 'A',
+      tkp_a: question.tkp_weights?.['A']?.toString() || '1',
+      tkp_b: question.tkp_weights?.['B']?.toString() || '2',
+      tkp_c: question.tkp_weights?.['C']?.toString() || '3',
+      tkp_d: question.tkp_weights?.['D']?.toString() || '4',
+      tkp_e: question.tkp_weights?.['E']?.toString() || '5',
+      explanation: question.explanation || '',
+      difficulty: question.difficulty || 'medium',
+    })
+    // Auto scroll ke form jika form ada di bawah (mobile view)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handleCancelEdit = () => {
+    setEditingId(null)
+    setForm(initialAdminQuestionForm)
   }
 
   // Fetch list soal memakai filter admin saat ini.
@@ -69,14 +101,18 @@ export function AdminQuestionsView({
     }
   }, [addToast, category, keyword, status])
 
-  // Submit create draft mengirim payload sesuai kontrak admin questions.
-  const createDraft = async (event: React.FormEvent) => {
+  // Submit create draft atau update draft mengirim payload sesuai kontrak.
+  const saveQuestion = async (event: React.FormEvent) => {
     event.preventDefault()
     setIsSaving(true)
 
     try {
-      const response = await fetch('/api/v1/admin/questions', {
-        method: 'POST',
+      const isEdit = editingId !== null
+      const url = isEdit ? `/api/v1/admin/questions/${editingId}` : '/api/v1/admin/questions'
+      const method = isEdit ? 'PUT' : 'POST'
+
+      const response = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(buildAdminQuestionPayload(form)),
       })
@@ -84,10 +120,11 @@ export function AdminQuestionsView({
       if (!response.ok) throw new Error(await readAdminQuestionApiError(response))
 
       setForm(initialAdminQuestionForm)
+      setEditingId(null)
       addToast({
         type: 'success',
-        title: 'Draft Soal Tersimpan',
-        message: 'Soal masuk Draft dan siap direview sebelum publish.',
+        title: isEdit ? 'Perubahan Tersimpan' : 'Draft Soal Tersimpan',
+        message: isEdit ? 'Soal berhasil diperbarui.' : 'Soal masuk Draft dan siap direview sebelum publish.',
       })
       await loadQuestions()
     } catch (error) {
@@ -167,15 +204,18 @@ export function AdminQuestionsView({
             <AdminQuestionTable
               questions={questions}
               onRunAction={(questionId, action) => void runQuestionAction(questionId, action)}
+              onEditQuestion={handleEditQuestion}
             />
           </section>
 
-          {/* Form create draft berisi field minimum sesuai A2 MVP. */}
+          {/* Form create/edit berisi field minimum sesuai A2 MVP. */}
           <AdminQuestionForm
             form={form}
             isSaving={isSaving}
-            onSubmit={createDraft}
+            isEditMode={editingId !== null}
+            onSubmit={saveQuestion}
             onUpdateForm={updateForm}
+            onCancelEdit={handleCancelEdit}
           />
         </div>
       </div>

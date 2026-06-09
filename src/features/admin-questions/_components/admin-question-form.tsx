@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { Save } from 'lucide-react'
+import { Save, X } from 'lucide-react'
 import { Button, Input, Label } from '@/components/ui'
 import type {
   AdminQuestionCategory,
@@ -11,24 +11,28 @@ import type {
 type AdminQuestionFormProps = {
   form: AdminQuestionFormState
   isSaving: boolean
+  isEditMode?: boolean
   onSubmit: (event: React.FormEvent) => void
   onUpdateForm: (field: keyof AdminQuestionFormState, value: string) => void
+  onCancelEdit?: () => void
 }
 
 // Form create draft soal berisi input minimum sesuai A2 MVP.
 export function AdminQuestionForm({
   form,
   isSaving,
+  isEditMode = false,
   onSubmit,
   onUpdateForm,
+  onCancelEdit,
 }: AdminQuestionFormProps) {
   return (
     <form onSubmit={onSubmit} className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-5 dark:bg-surface">
       <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
-        Create Draft
+        {isEditMode ? 'Edit Draft' : 'Create Draft'}
       </p>
       <h2 className="mt-1 text-xl font-black text-headline">
-        Tambah Soal Baru
+        {isEditMode ? 'Ubah Soal' : 'Tambah Soal Baru'}
       </h2>
 
       <div className="mt-5 space-y-4">
@@ -119,10 +123,18 @@ export function AdminQuestionForm({
         </div>
 
         {/* Submit menyimpan draft saja; publish tetap aksi eksplisit di list. */}
-        <Button type="submit" className="h-14 w-full" isLoading={isSaving} loadingLabel="Menyimpan...">
-          <Save className="h-5 w-5" aria-hidden="true" />
-          Simpan Draft
-        </Button>
+        <div className={isEditMode ? "grid grid-cols-2 gap-3" : ""}>
+          {isEditMode && onCancelEdit && (
+            <Button type="button" variant="secondary" onClick={onCancelEdit} className="h-14 w-full">
+              <X className="h-5 w-5" aria-hidden="true" />
+              Batal
+            </Button>
+          )}
+          <Button type="submit" className="h-14 w-full" isLoading={isSaving} loadingLabel="Menyimpan...">
+            <Save className="h-5 w-5" aria-hidden="true" />
+            {isEditMode ? 'Simpan Perubahan' : 'Simpan Draft'}
+          </Button>
+        </div>
       </div>
     </form>
   )
