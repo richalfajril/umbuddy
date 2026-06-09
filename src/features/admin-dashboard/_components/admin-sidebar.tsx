@@ -8,7 +8,7 @@ import type { LucideIcon } from 'lucide-react'
 import { ThemeToggle } from '@/components/atoms/theme-toggle'
 import { AdminLogoutButton } from '@/features/admin-auth/_components/admin-logout-button'
 import { ADMIN_DASHBOARD_NAV_ITEMS } from '../_constants/admin-dashboard.constants'
-import type { AdminNavIconKey, AdminNavItem } from '../_types/admin-dashboard.types'
+import type { AdminNavIconKey } from '../_types/admin-dashboard.types'
 
 const adminNavIcons: Record<AdminNavIconKey, LucideIcon> = {
   dashboard: LayoutDashboard,
@@ -52,7 +52,7 @@ export function AdminSidebar({
   const sidebarContent = (
     <aside className="flex h-full w-64 flex-col border-r border-border bg-background text-headline">
       {/* Header Logo Clean using image */}
-      <div className="flex h-[72px] items-center justify-between px-6 pt-2">
+      <div className="relative flex h-[72px] items-center justify-center px-6 pt-2">
         <Link
           href="/admin/dashboard"
           prefetch
@@ -65,14 +65,14 @@ export function AdminSidebar({
             alt="Umbuddy Logo"
             width={160}
             height={40}
-            className="h-8 w-auto object-contain dark:brightness-200 dark:grayscale"
+            className="h-8 w-auto object-contain"
             priority
           />
         </Link>
         <button
           type="button"
           onClick={onCloseMobile}
-          className="grid min-h-11 min-w-11 place-items-center rounded-xl text-headline hover:bg-surface lg:hidden"
+          className="absolute right-4 top-4 grid min-h-11 min-w-11 place-items-center rounded-xl text-headline hover:bg-surface lg:hidden"
           aria-label="Tutup menu admin"
         >
           <X className="h-5 w-5" />
@@ -172,7 +172,7 @@ export function AdminSidebar({
       </div>
 
       {/* Floating Theme Toggle di kanan bawah (jangan terlalu mepet bawah agar tidak menabrak native UI device) */}
-      <div className="fixed bottom-6 right-6 z-50 drop-shadow-md">
+      <div className="fixed bottom-6 right-6 z-50 drop-shadow-md hidden lg:block">
         <ThemeToggle variant="floating" />
       </div>
     </>
