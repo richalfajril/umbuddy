@@ -95,10 +95,10 @@ export function AdminSidebar({
               transitionTypes={['app-nav']}
               onClick={onCloseMobile}
               className={[
-                'group flex min-h-11 items-center gap-2 rounded-xl border px-2.5 py-2 transition',
+                'group flex min-h-11 items-center gap-2 rounded-xl px-2.5 py-2 transition',
                 isActive
-                  ? 'border-primary/50 bg-primary text-primary-foreground shadow-md shadow-primary/15'
-                  : 'border-border bg-surface text-body hover:border-primary/40 hover:bg-surface-hover hover:text-headline',
+                  ? 'bg-primary text-primary-foreground shadow-md shadow-primary/15'
+                  : 'bg-surface text-body hover:bg-surface-hover hover:text-headline',
                 item.isSoon ? 'opacity-70' : '',
               ].join(' ')}
             >
