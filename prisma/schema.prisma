@@ -184,6 +184,52 @@ model Question {
   @@map("questions")
 }
 
+model QuestionSubtest {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  name        String
+  description String?
+  order       Int      @default(0)
+  is_active   Boolean  @default(true)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  materials QuestionMaterial[]
+
+  @@map("question_subtests")
+}
+
+model QuestionMaterial {
+  id          String   @id @default(uuid())
+  subtest_id  String
+  name        String
+  description String?
+  order       Int      @default(0)
+  is_active   Boolean  @default(true)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  subtest       QuestionSubtest       @relation(fields: [subtest_id], references: [id])
+  sub_materials QuestionSubMaterial[]
+
+  @@map("question_materials")
+}
+
+model QuestionSubMaterial {
+  id          String   @id @default(uuid())
+  material_id String
+  name        String
+  description String?
+  order       Int      @default(0)
+  is_active   Boolean  @default(true)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  material QuestionMaterial @relation(fields: [material_id], references: [id])
+
+  @@map("question_sub_materials")
+}
+
 model QuestionReport {
   id          String               @id @default(uuid())
   user_id     String

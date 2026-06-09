@@ -10,6 +10,13 @@ export const ADMIN_DASHBOARD_NAV_ITEMS: AdminNavItem[] = [
     prefetch: true,
   },
   {
+    label: 'Subtes & Materi',
+    href: '/admin/subtests',
+    icon: 'questions',
+    description: 'Manajemen taksonomi tes CPNS.',
+    prefetch: true,
+  },
+  {
     label: 'Kelola Soal',
     href: '/admin/questions',
     icon: 'questions',
