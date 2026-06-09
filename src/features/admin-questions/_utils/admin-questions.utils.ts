@@ -13,11 +13,11 @@ export async function readAdminQuestionApiError(response: Response) {
 // Membentuk payload API create question dari form backoffice.
 export function buildAdminQuestionPayload(form: AdminQuestionFormState) {
   const options = {
-    A: form.option_a,
-    B: form.option_b,
-    C: form.option_c,
-    D: form.option_d,
-    ...(form.option_e.trim() ? { E: form.option_e } : {}),
+    A: { text: form.option_a },
+    B: { text: form.option_b },
+    C: { text: form.option_c },
+    D: { text: form.option_d },
+    ...(form.option_e.trim() ? { E: { text: form.option_e } } : {}),
   }
 
   return {

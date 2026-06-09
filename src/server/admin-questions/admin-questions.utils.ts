@@ -41,11 +41,25 @@ function normalizeOptions(value: unknown) {
   const options = Object.fromEntries(
     Object.entries(value as Record<string, unknown>)
       .filter(([key]) => ADMIN_QUESTION_OPTIONS.includes(key as (typeof ADMIN_QUESTION_OPTIONS)[number]))
-      .map(([key, option]) => [key, typeof option === 'string' ? option.trim() : ''])
-      .filter(([, option]) => option.length > 0)
+      .map(([key, option]) => {
+        if (typeof option === 'string') {
+          return [key, { text: option.trim() }]
+        }
+        if (typeof option === 'object' && option !== null) {
+          const optObj = option as { text?: unknown; image_url?: unknown }
+          const text = typeof optObj.text === 'string' ? optObj.text.trim() : undefined
+          const image_url = typeof optObj.image_url === 'string' ? optObj.image_url.trim() : undefined
+          return [key, { text, image_url }]
+        }
+        return [key, {}]
+      })
+      .filter(([, opt]) => {
+        const option = opt as { text?: string; image_url?: string }
+        return Boolean(option.text) || Boolean(option.image_url)
+      })
   )
 
-  return Object.keys(options).length > 0 ? options : null
+  return Object.keys(options).length > 0 ? options as Record<string, { text?: string, image_url?: string }> : null
 }
 
 // Mengubah unknown JSON TKP weights menjadi object skor 1-5 yang aman.
@@ -75,7 +89,14 @@ export function parseAdminQuestionMutationPayload(payload: unknown): AdminQuesti
   const category = data.category
   const packageCode = typeof data.package_code === 'string' ? data.package_code.trim() : ''
   const number = typeof data.number === 'number' ? data.number : Number(data.number)
-  const text = typeof data.text === 'string' ? data.text.trim() : ''
+  
+  const text = typeof data.text === 'string' ? data.text.trim() : null
+  const imageUrls = Array.isArray(data.image_urls) ? data.image_urls.filter(u => typeof u === 'string') as string[] : []
+  
+  const subtestId = typeof data.subtest_id === 'string' ? data.subtest_id.trim() : null
+  const materialId = typeof data.material_id === 'string' ? data.material_id.trim() : null
+  const subMaterialId = typeof data.sub_material_id === 'string' ? data.sub_material_id.trim() : null
+
   const explanation = typeof data.explanation === 'string' ? data.explanation.trim() : ''
   const difficulty = typeof data.difficulty === 'string' ? data.difficulty.trim().toLowerCase() : ''
   const options = normalizeOptions(data.options)
@@ -84,11 +105,18 @@ export function parseAdminQuestionMutationPayload(payload: unknown): AdminQuesti
   if (!isAdminQuestionCategory(category)) details.push({ field: 'category', message: 'Kategori harus TWK, TIU, atau TKP.' })
   if (!packageCode) details.push({ field: 'package_code', message: 'Kode paket wajib diisi.' })
   if (!Number.isInteger(number) || number < 1) details.push({ field: 'number', message: 'Nomor soal harus angka positif.' })
-  if (!text || text.length > 5000) details.push({ field: 'text', message: 'Pertanyaan wajib diisi dan maksimal 5000 karakter.' })
+  
+  if (!text && imageUrls.length === 0) {
+    details.push({ field: 'text', message: 'Pertanyaan (teks atau gambar) wajib diisi.' })
+  }
+  if (text && text.length > 5000) {
+    details.push({ field: 'text', message: 'Pertanyaan maksimal 5000 karakter.' })
+  }
+
   if (!explanation || explanation.length > 5000) details.push({ field: 'explanation', message: 'Pembahasan wajib diisi dan maksimal 5000 karakter.' })
   if (!options) details.push({ field: 'options', message: 'Pilihan jawaban wajib diisi.' })
 
-  const requiredOptions = ['A', 'B', 'C', 'D']
+  const requiredOptions = ['A', 'B', 'C', 'D', 'E'].slice(0, category === 'TWK' || category === 'TIU' || category === 'TKP' ? 5 : 5)
   for (const option of requiredOptions) {
     if (!options?.[option]) details.push({ field: `options.${option}`, message: `Pilihan ${option} wajib diisi.` })
   }
@@ -119,11 +147,15 @@ export function parseAdminQuestionMutationPayload(payload: unknown): AdminQuesti
     package_code: packageCode,
     number,
     text,
+    image_urls: imageUrls,
     options,
     answer_key: category === 'TKP' ? null : answerKey,
     tkp_weights: category === 'TKP' ? tkpWeights : null,
     explanation,
     difficulty: difficulty || null,
+    subtest_id: subtestId || null,
+    material_id: materialId || null,
+    sub_material_id: subMaterialId || null,
   }
 }
 
@@ -133,27 +165,36 @@ export function toAdminQuestionListItem(question: {
   category: AdminQuestionCategory
   package_code: string
   number: number
-  text: string
+  text: string | null
+  image_urls: Prisma.JsonValue
   options: Prisma.JsonValue
   answer_key: string | null
   tkp_weights: Prisma.JsonValue | null
   explanation: string | null
   difficulty: string | null
+  subtest_id: string | null
+  material_id: string | null
+  sub_material_id: string | null
   status: AdminQuestionStatus
   created_at: Date
   updated_at: Date
 }): AdminQuestionListItem {
+  const imageUrlsArray = Array.isArray(question.image_urls) ? question.image_urls.filter(u => typeof u === 'string') as string[] : []
   return {
     id: question.id,
     category: question.category,
     package_code: question.package_code,
     number: question.number,
     text: question.text,
+    image_urls: imageUrlsArray,
     options: normalizeOptions(question.options) ?? {},
     answer_key: question.answer_key,
     tkp_weights: normalizeTkpWeights(question.tkp_weights),
     explanation: question.explanation,
     difficulty: question.difficulty,
+    subtest_id: question.subtest_id,
+    material_id: question.material_id,
+    sub_material_id: question.sub_material_id,
     status: question.status,
     created_at: question.created_at.toISOString(),
     updated_at: question.updated_at.toISOString(),

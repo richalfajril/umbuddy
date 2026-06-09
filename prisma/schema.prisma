@@ -157,23 +157,35 @@ model PremiumInterestLead {
 }
 
 model Question {
-  id                String                @id @default(uuid())
-  category          QuestionCategory
-  package_code      String
-  number            Int
-  text              String
-  options           Json
-  answer_key        String?
-  tkp_weights       Json?
-  explanation       String?
-  difficulty        String?
-  status            QuestionStatus        @default(DRAFT)
-  image_urls        Json                  @default("[]")
-  created_by        String?
-  updated_by        String?
-  created_at        DateTime              @default(now())
-  updated_at        DateTime              @updatedAt
-  deleted_at        DateTime?
+  id           String           @id @default(uuid())
+  category     QuestionCategory
+  package_code String
+  number       Int
+  text         String?
+  options      Json
+  answer_key   String?
+  tkp_weights  Json?
+  explanation  String?
+  difficulty   String?
+  status       QuestionStatus   @default(DRAFT)
+  image_urls   Json             @default("[]")
+
+  // Taksonomi CPNS (Opsional untuk backward compatibility dengan soal lama)
+  subtest_id      String?
+  material_id     String?
+  sub_material_id String?
+
+  created_by String?
+  updated_by String?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  // Relasi Taksonomi
+  subtest      QuestionSubtest?     @relation(fields: [subtest_id], references: [id])
+  material     QuestionMaterial?    @relation(fields: [material_id], references: [id])
+  sub_material QuestionSubMaterial? @relation(fields: [sub_material_id], references: [id])
+
   battle_answers    BattleAnswer[]
   cat_answers       CatSimulationAnswer[]
   practice_attempts PracticeAttempt[]
@@ -195,6 +207,7 @@ model QuestionSubtest {
   updated_at  DateTime @updatedAt
 
   materials QuestionMaterial[]
+  questions Question[]
 
   @@map("question_subtests")
 }
@@ -211,6 +224,7 @@ model QuestionMaterial {
 
   subtest       QuestionSubtest       @relation(fields: [subtest_id], references: [id])
   sub_materials QuestionSubMaterial[]
+  questions     Question[]
 
   @@map("question_materials")
 }
@@ -225,7 +239,8 @@ model QuestionSubMaterial {
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 
-  material QuestionMaterial @relation(fields: [material_id], references: [id])
+  material  QuestionMaterial @relation(fields: [material_id], references: [id])
+  questions Question[]
 
   @@map("question_sub_materials")
 }

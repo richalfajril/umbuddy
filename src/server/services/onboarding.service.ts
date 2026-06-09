@@ -39,8 +39,9 @@ export interface DiagnosticAnswerInput {
 interface PrivateDiagnosticQuestion {
   id: string
   category: DiagnosticCategory
-  text: string
-  options: Record<string, string>
+  text: string | null
+  image_urls: string[]
+  options: Record<string, { text?: string; image_url?: string }>
   answer_key?: string | null
   tkp_weights?: Record<string, number> | null
   explanation?: string | null
@@ -50,8 +51,9 @@ interface PrivateDiagnosticQuestion {
 export interface PublicDiagnosticQuestion {
   id: string
   category: DiagnosticCategory
-  text: string
-  options: Record<string, string>
+  text: string | null
+  image_urls: string[]
+  options: Record<string, { text?: string; image_url?: string }>
   source: 'db' | 'fallback'
 }
 
@@ -81,14 +83,29 @@ function sanitizeText(value: string, maxLength = 120): string {
     .slice(0, maxLength)
 }
 
-function toOptions(value: unknown): Record<string, string> {
+function toOptions(value: unknown): Record<string, { text?: string; image_url?: string }> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return {}
 
-  return Object.fromEntries(
+  const options = Object.fromEntries(
     Object.entries(value as Record<string, unknown>)
-      .filter(([key, option]) => ANSWER_OPTIONS.includes(key as (typeof ANSWER_OPTIONS)[number]) && typeof option === 'string')
-      .map(([key, option]) => [key, String(option)])
+      .filter(([key]) => ANSWER_OPTIONS.includes(key as (typeof ANSWER_OPTIONS)[number]))
+      .map(([key, option]) => {
+        if (typeof option === 'string') return [key, { text: String(option) }]
+        if (typeof option === 'object' && option !== null) {
+          const optObj = option as { text?: unknown; image_url?: unknown }
+          const text = typeof optObj.text === 'string' ? optObj.text : undefined
+          const image_url = typeof optObj.image_url === 'string' ? optObj.image_url : undefined
+          return [key, { text, image_url }]
+        }
+        return [key, {}]
+      })
+      .filter(([, opt]) => {
+        const option = opt as { text?: string; image_url?: string }
+        return Boolean(option.text) || Boolean(option.image_url)
+      })
   )
+
+  return options as Record<string, { text?: string; image_url?: string }>
 }
 
 function toWeights(value: unknown): Record<string, number> | null {
@@ -109,6 +126,7 @@ function toPublicQuestion(question: PrivateDiagnosticQuestion): PublicDiagnostic
     id: question.id,
     category: question.category,
     text: question.text,
+    image_urls: question.image_urls,
     options: question.options,
     source: question.source,
   }
@@ -132,12 +150,13 @@ function getFallbackQuestions(): PrivateDiagnosticQuestion[] {
     id,
     category,
     text,
+    image_urls: [],
     options: {
-      A: 'Pilihan A',
-      B: 'Pilihan B',
-      C: 'Pilihan C',
-      D: 'Pilihan D',
-      E: 'Pilihan E',
+      A: { text: 'Pilihan A' },
+      B: { text: 'Pilihan B' },
+      C: { text: 'Pilihan C' },
+      D: { text: 'Pilihan D' },
+      E: { text: 'Pilihan E' },
     },
     answer_key: typeof answerOrWeights === 'string' ? answerOrWeights : null,
     tkp_weights: typeof answerOrWeights === 'string' ? null : answerOrWeights,
@@ -613,6 +632,7 @@ export class OnboardingService {
         id: question.id,
         category,
         text: question.text,
+        image_urls: Array.isArray(question.image_urls) ? question.image_urls.filter(u => typeof u === 'string') as string[] : [],
         options: toOptions(question.options),
         answer_key: question.answer_key,
         tkp_weights: toWeights(question.tkp_weights),

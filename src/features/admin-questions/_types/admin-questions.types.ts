@@ -4,18 +4,27 @@ export type AdminQuestionCategory = 'TWK' | 'TIU' | 'TKP'
 // Tipe status soal untuk badge dan aksi workflow.
 export type AdminQuestionStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED' | 'FLAGGED'
 
+export type AdminQuestionOption = {
+  text?: string
+  image_url?: string
+}
+
 // Item soal dari API admin questions.
 export type AdminQuestionListItem = {
   id: string
   category: AdminQuestionCategory
   package_code: string
   number: number
-  text: string
-  options: Record<string, string>
+  text: string | null
+  image_urls: string[]
+  options: Record<string, AdminQuestionOption>
   answer_key: string | null
   tkp_weights: Record<string, number> | null
   explanation: string | null
   difficulty: string | null
+  subtest_id: string | null
+  material_id: string | null
+  sub_material_id: string | null
   status: AdminQuestionStatus
   created_at: string
   updated_at: string

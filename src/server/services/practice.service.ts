@@ -37,8 +37,9 @@ export interface PracticeAnswerInput {
 interface PrivatePracticeQuestion {
   id: string
   category: PracticeCategory
-  text: string
-  options: Record<string, string>
+  text: string | null
+  image_urls: string[]
+  options: Record<string, { text?: string; image_url?: string }>
   answer_key?: string | null
   tkp_weights?: Record<string, number> | null
   explanation?: string | null
@@ -58,8 +59,9 @@ interface PracticeMetadata {
 interface PracticeReviewItem {
   question_id: string
   category: PracticeCategory
-  text: string
-  options: Record<string, string>
+  text: string | null
+  image_urls: string[]
+  options: Record<string, { text?: string; image_url?: string }>
   selected_option: string | null
   answer_key: string | null
   correct: boolean | null
@@ -98,14 +100,29 @@ function normalizeScore(score: number): number {
   return Number(score.toFixed(2))
 }
 
-function toOptions(value: unknown): Record<string, string> {
+function toOptions(value: unknown): Record<string, { text?: string; image_url?: string }> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return {}
 
-  return Object.fromEntries(
+  const options = Object.fromEntries(
     Object.entries(value as Record<string, unknown>)
-      .filter(([key, option]) => ANSWER_OPTIONS.includes(key as (typeof ANSWER_OPTIONS)[number]) && typeof option === 'string')
-      .map(([key, option]) => [key, String(option)])
+      .filter(([key]) => ANSWER_OPTIONS.includes(key as (typeof ANSWER_OPTIONS)[number]))
+      .map(([key, option]) => {
+        if (typeof option === 'string') return [key, { text: String(option) }]
+        if (typeof option === 'object' && option !== null) {
+          const optObj = option as { text?: unknown; image_url?: unknown }
+          const text = typeof optObj.text === 'string' ? optObj.text : undefined
+          const image_url = typeof optObj.image_url === 'string' ? optObj.image_url : undefined
+          return [key, { text, image_url }]
+        }
+        return [key, {}]
+      })
+      .filter(([, opt]) => {
+        const option = opt as { text?: string; image_url?: string }
+        return Boolean(option.text) || Boolean(option.image_url)
+      })
   )
+
+  return options as Record<string, { text?: string; image_url?: string }>
 }
 
 function toWeights(value: unknown): Record<string, number> | null {
@@ -126,6 +143,7 @@ function toPublicQuestion(question: PrivatePracticeQuestion) {
     id: question.id,
     category: question.category,
     text: question.text,
+    image_urls: question.image_urls,
     options: question.options,
     source: question.source,
   }
@@ -177,12 +195,13 @@ function getFallbackQuestions(category: PracticeCategory, count: number): Privat
         id: 'fallback-practice-twk-1',
         category: 'TWK',
         text: 'Nilai Pancasila yang paling tampak saat warga bermusyawarah untuk menyelesaikan masalah lingkungan adalah ...',
+        image_urls: [],
         options: {
-          A: 'Keadilan sosial',
-          B: 'Persatuan Indonesia',
-          C: 'Kerakyatan yang dipimpin oleh hikmat kebijaksanaan',
-          D: 'Ketuhanan Yang Maha Esa',
-          E: 'Kemanusiaan yang adil dan beradab',
+          A: { text: 'Keadilan sosial' },
+          B: { text: 'Persatuan Indonesia' },
+          C: { text: 'Kerakyatan yang dipimpin oleh hikmat kebijaksanaan' },
+          D: { text: 'Ketuhanan Yang Maha Esa' },
+          E: { text: 'Kemanusiaan yang adil dan beradab' },
         },
         answer_key: 'C',
         explanation: 'Musyawarah untuk mufakat merupakan pengamalan utama sila keempat Pancasila.',
@@ -191,12 +210,13 @@ function getFallbackQuestions(category: PracticeCategory, count: number): Privat
         id: 'fallback-practice-twk-2',
         category: 'TWK',
         text: 'Contoh bela negara non-fisik bagi pelajar adalah ...',
+        image_urls: [],
         options: {
-          A: 'Menolak semua budaya asing',
-          B: 'Belajar tekun dan berprestasi untuk bangsa',
-          C: 'Membatasi pergaulan antardaerah',
-          D: 'Menyebarkan informasi tanpa verifikasi',
-          E: 'Menghindari kegiatan sosial',
+          A: { text: 'Menolak semua budaya asing' },
+          B: { text: 'Belajar tekun dan berprestasi untuk bangsa' },
+          C: { text: 'Membatasi pergaulan antardaerah' },
+          D: { text: 'Menyebarkan informasi tanpa verifikasi' },
+          E: { text: 'Menghindari kegiatan sosial' },
         },
         answer_key: 'B',
         explanation: 'Bela negara non-fisik bisa dilakukan lewat kompetensi, prestasi, dan kontribusi positif.',
@@ -207,7 +227,8 @@ function getFallbackQuestions(category: PracticeCategory, count: number): Privat
         id: 'fallback-practice-tiu-1',
         category: 'TIU',
         text: '2, 4, 8, 16, ...',
-        options: { A: '18', B: '24', C: '30', D: '32', E: '36' },
+        image_urls: [],
+        options: { A: { text: '18' }, B: { text: '24' }, C: { text: '30' }, D: { text: '32' }, E: { text: '36' } },
         answer_key: 'D',
         explanation: 'Deret dikali 2, sehingga setelah 16 adalah 32.',
       },
@@ -215,7 +236,8 @@ function getFallbackQuestions(category: PracticeCategory, count: number): Privat
         id: 'fallback-practice-tiu-2',
         category: 'TIU',
         text: 'BUKU : MEMBACA = PENSIL : ...',
-        options: { A: 'Menulis', B: 'Kertas', C: 'Meja', D: 'Menghapus', E: 'Belajar' },
+        image_urls: [],
+        options: { A: { text: 'Menulis' }, B: { text: 'Kertas' }, C: { text: 'Meja' }, D: { text: 'Menghapus' }, E: { text: 'Belajar' } },
         answer_key: 'A',
         explanation: 'Buku digunakan untuk membaca, pensil digunakan untuk menulis.',
       },
@@ -225,12 +247,13 @@ function getFallbackQuestions(category: PracticeCategory, count: number): Privat
         id: 'fallback-practice-tkp-1',
         category: 'TKP',
         text: 'Rekan kerja baru tampak kesulitan memahami prosedur kantor. Sikap Kamu adalah ...',
+        image_urls: [],
         options: {
-          A: 'Membiarkan agar ia belajar sendiri',
-          B: 'Menegurnya karena lambat beradaptasi',
-          C: 'Menyapanya dan menawarkan bantuan seperlunya',
-          D: 'Meminta atasan menggantinya',
-          E: 'Mengambil semua pekerjaannya',
+          A: { text: 'Membiarkan agar ia belajar sendiri' },
+          B: { text: 'Menegurnya karena lambat beradaptasi' },
+          C: { text: 'Menyapanya dan menawarkan bantuan seperlunya' },
+          D: { text: 'Meminta atasan menggantinya' },
+          E: { text: 'Mengambil semua pekerjaannya' },
         },
         tkp_weights: { A: 2, B: 1, C: 5, D: 3, E: 4 },
         explanation: 'Pilihan C menunjukkan inisiatif, kerja sama, dan empati yang proporsional.',
@@ -239,12 +262,13 @@ function getFallbackQuestions(category: PracticeCategory, count: number): Privat
         id: 'fallback-practice-tkp-2',
         category: 'TKP',
         text: 'Saat sistem digital baru diterapkan, respons terbaik adalah ...',
+        image_urls: [],
         options: {
-          A: 'Menunggu sampai diwajibkan',
-          B: 'Belajar dari panduan dan rekan yang paham',
-          C: 'Tetap memakai cara manual',
-          D: 'Mengajak rekan menolak perubahan',
-          E: 'Mengikuti pelatihan dengan terpaksa',
+          A: { text: 'Menunggu sampai diwajibkan' },
+          B: { text: 'Belajar dari panduan dan rekan yang paham' },
+          C: { text: 'Tetap memakai cara manual' },
+          D: { text: 'Mengajak rekan menolak perubahan' },
+          E: { text: 'Mengikuti pelatihan dengan terpaksa' },
         },
         tkp_weights: { A: 4, B: 5, C: 2, D: 1, E: 3 },
         explanation: 'Pilihan B paling proaktif dan adaptif terhadap perubahan teknologi.',
@@ -585,6 +609,7 @@ export class PracticeService {
       id: question.id,
       category,
       text: question.text,
+      image_urls: Array.isArray(question.image_urls) ? question.image_urls.filter(u => typeof u === 'string') as string[] : [],
       options: toOptions(question.options),
       answer_key: question.answer_key,
       tkp_weights: toWeights(question.tkp_weights),
@@ -667,6 +692,7 @@ export class PracticeService {
         question_id: question.id,
         category: question.category,
         text: question.text,
+        image_urls: question.image_urls,
         options: question.options,
         selected_option: selectedOption,
         answer_key: answerKey,
