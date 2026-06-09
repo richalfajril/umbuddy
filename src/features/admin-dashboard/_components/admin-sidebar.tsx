@@ -1,8 +1,9 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Bell, FileQuestion, LayoutDashboard, Settings, ShieldCheck, Users, X, MoreVertical } from 'lucide-react'
+import { Bell, FileQuestion, LayoutDashboard, Settings, ShieldCheck, Users, X } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { ThemeToggle } from '@/components/atoms/theme-toggle'
 import { AdminLogoutButton } from '@/features/admin-auth/_components/admin-logout-button'
@@ -50,21 +51,23 @@ export function AdminSidebar({
 
   const sidebarContent = (
     <aside className="flex h-full w-64 flex-col border-r border-border bg-background text-headline">
-      {/* Header Logo Clean */}
-      <div className="flex min-h-16 items-center justify-between px-6 pt-2">
+      {/* Header Logo Clean using image */}
+      <div className="flex h-[72px] items-center justify-between px-6 pt-2">
         <Link
           href="/admin/dashboard"
           prefetch
           transitionTypes={['app-nav']}
-          className="flex items-center gap-3"
+          className="flex items-center"
           onClick={onCloseMobile}
         >
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary font-display text-lg font-black text-white">
-            U
-          </span>
-          <span className="text-xl font-black text-primary tracking-tight">
-            umbuddy
-          </span>
+          <Image
+            src="/logo/logo_text.png"
+            alt="Umbuddy Logo"
+            width={160}
+            height={40}
+            className="h-8 w-auto object-contain dark:brightness-200 dark:grayscale"
+            priority
+          />
         </Link>
         <button
           type="button"
@@ -125,26 +128,21 @@ export function AdminSidebar({
         ))}
       </nav>
 
-      {/* Profile Footer Clean */}
-      <div className="border-t border-border p-4">
-        <div className="flex items-center gap-3">
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-surface border border-border text-xs font-bold text-headline">
-            {adminRole === 'SUPER_ADMIN' ? 'SA' : 'AD'}
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-bold text-headline">Admin Umbuddy</p>
-            <p className="truncate text-xs text-muted">{adminEmail}</p>
-          </div>
-          <button className="shrink-0 p-1 text-muted hover:text-headline">
-            <MoreVertical className="h-4 w-4" />
-          </button>
-        </div>
-        <div className="mt-3 flex gap-2">
-          <ThemeToggle variant="inline" />
-          <div className="flex-1">
-            <AdminLogoutButton />
+      {/* Profile & Logout (Dipertahankan bentuk chunky di bagian bawah) */}
+      <div className="grid gap-3 border-t border-border p-4">
+        {/* Identitas admin bergaya chunky original */}
+        <div className="rounded-xl border border-primary/25 bg-primary/10 p-3">
+          <div className="flex items-center gap-2">
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground">
+              <ShieldCheck className="h-4 w-4" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-xs font-black">{adminEmail}</p>
+              <p className="truncate text-[10px] font-bold uppercase tracking-[0.12em] text-primary">{adminRole}</p>
+            </div>
           </div>
         </div>
+        <AdminLogoutButton />
       </div>
     </aside>
   )
@@ -171,6 +169,11 @@ export function AdminSidebar({
         ].join(' ')}
       >
         {sidebarContent}
+      </div>
+
+      {/* Floating Theme Toggle di kanan bawah (jangan terlalu mepet bawah agar tidak menabrak native UI device) */}
+      <div className="fixed bottom-6 right-6 z-50 drop-shadow-md">
+        <ThemeToggle variant="icon" />
       </div>
     </>
   )

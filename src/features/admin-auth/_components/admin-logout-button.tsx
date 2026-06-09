@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { Button } from '@/components/ui'
 
 // Tombol logout admin memakai fetch agar user tetap diarahkan rapi ke halaman login.
 export function AdminLogoutButton() {
@@ -18,13 +19,15 @@ export function AdminLogoutButton() {
   }
 
   return (
-    <button
+    <Button
+      variant="danger"
       type="button"
       onClick={handleLogout}
-      disabled={isLoading}
-      className="rounded-xl border border-border bg-background px-4 py-3 text-sm font-black text-headline transition hover:bg-surface disabled:cursor-not-allowed disabled:opacity-60"
+      isLoading={isLoading}
+      loadingLabel="Logout..."
+      className="w-full h-11"
     >
-      {isLoading ? 'Logout...' : 'Logout Admin'}
-    </button>
+      Logout Admin
+    </Button>
   )
 }
