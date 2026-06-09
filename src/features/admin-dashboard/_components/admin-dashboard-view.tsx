@@ -28,9 +28,9 @@ export async function AdminDashboardView({ admin }: AdminDashboardViewProps) {
     AnalyticsService.getQuestionsKpi(),
   ])
   return (
-    <section className="px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-      <div className="mx-auto max-w-7xl">
-        {/* Hero backoffice menegaskan area admin dan status guard. */}
+    <section className="px-4 py-6 text-headline sm:px-6 lg:px-8 lg:py-8">
+      <div className="mx-auto max-w-7xl space-y-6">
+        {/* Hero backoffice menegaskan area admin*/}
         <div className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-7 dark:bg-surface">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div>
@@ -51,14 +51,14 @@ export async function AdminDashboardView({ admin }: AdminDashboardViewProps) {
         </div>
 
         {/* Ringkasan status KPI */}
-        <div className="mt-6">
+        <div>
           <React.Suspense fallback={<AdminKpiDataFallback />}>
             <AdminKpiCards />
           </React.Suspense>
         </div>
 
         {/* Area Visualisasi Grafik */}
-        <div className="mt-4 grid gap-4 lg:grid-cols-[2fr_1fr]">
+        <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
           <AdminTrendChart data={trendData} />
           <AdminQuestionsPieChart published={questionsKpi.publishedQuestions} draft={questionsKpi.draftQuestions} />
         </div>
