@@ -40,7 +40,7 @@ export function AdminSidebar({
       items: ADMIN_DASHBOARD_NAV_ITEMS.filter((i) => i.icon === 'dashboard'),
     },
     {
-      title: 'Manajemen Tryout',
+      title: 'Manajemen Soal',
       items: ADMIN_DASHBOARD_NAV_ITEMS.filter((i) => i.icon === 'questions'),
     },
     {

@@ -3,10 +3,10 @@ import { redirect } from 'next/navigation'
 import { AdminAuthService } from '@/server/admin-auth'
 
 export const metadata: Metadata = {
-  title: 'Dashboard Soal | Umbuddy Admin',
+  title: 'Manajemen Try Out | Umbuddy Admin',
 }
 
-export default async function AdminDashboardSoalPage() {
+export default async function AdminTryOutsPage() {
   const session = await AdminAuthService.getCachedCurrentAdmin()
   if (!session) redirect('/admin/login')
 
@@ -16,19 +16,19 @@ export default async function AdminDashboardSoalPage() {
         <header className="flex flex-col gap-4 rounded-2xl border border-border bg-background p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
-              Overview
+              Try Out
             </p>
             <h1 className="mt-1 text-2xl font-black text-headline">
-              Dashboard <span className="text-primary">Soal</span>
+              Manajemen <span className="text-primary">Try Out</span>
             </h1>
             <p className="mt-1 text-sm text-body">
-              Ringkasan performa dan metrik bank soal Anda.
+              Kelola paket Try Out dan integrasi subtes.
             </p>
           </div>
         </header>
         
         <div className="rounded-2xl border border-border bg-background p-8 text-center text-sm font-bold text-muted shadow-sm dark:bg-surface">
-          Dashboard Summary akan diimplementasikan pada fase berikutnya.
+          Fitur Manajemen Try Out sedang dalam pengembangan.
         </div>
       </div>
     </section>
