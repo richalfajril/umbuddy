@@ -78,7 +78,7 @@ export function AdminTaxonomyView() {
             <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
               CPNS Taxonomy
             </p>
-            <h1 className="mt-1 text-2xl font-black text-headline">
+            <h1 className="mt-2 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
               Manajemen <span className="text-primary">Subtes & Materi</span>
             </h1>
             <p className="mt-1 text-sm text-body">

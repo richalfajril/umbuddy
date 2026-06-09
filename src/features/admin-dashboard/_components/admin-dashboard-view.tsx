@@ -39,7 +39,7 @@ export async function AdminDashboardView({ admin }: AdminDashboardViewProps) {
               <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
                 Umbuddy Backoffice
               </p>
-              <h1 className="mt-2 font-display text-3xl font-black leading-tight sm:text-4xl">
+              <h1 className="mt-2 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
                 Markas admin sudah <span className="text-primary">siap</span>
               </h1>
               <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-body sm:text-base">

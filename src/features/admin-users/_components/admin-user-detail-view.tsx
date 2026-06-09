@@ -54,7 +54,7 @@ export function AdminUserDetailView({
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               Kembali ke Direktori
             </Link>
-            <h1 className="mt-4 text-2xl font-black text-headline">
+            <h1 className="mt-2 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
               Detail <span className="text-primary">Profil Pengguna</span>
             </h1>
           </div>

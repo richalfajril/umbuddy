@@ -114,7 +114,7 @@ export function AdminUsersView({
               <p className="mt-3 text-xs font-black uppercase tracking-[0.22em] text-primary">
                 User Management
               </p>
-              <h1 className="mt-1 flex items-center gap-3 text-2xl font-black text-headline">
+              <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
                 <Users className="h-7 w-7 text-primary" />
                 Direktori <span className="text-primary">Pengguna</span>
               </h1>

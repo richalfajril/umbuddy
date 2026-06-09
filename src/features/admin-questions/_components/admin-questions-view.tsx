@@ -165,7 +165,7 @@ export function AdminQuestionsView({
             <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
               Question Management
             </p>
-            <h1 className="mt-1 text-2xl font-black text-headline">
+            <h1 className="mt-2 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
               Kurasi <span className="text-primary">Bank Soal</span>
             </h1>
             <p className="mt-1 text-sm text-body">
