@@ -1,8 +1,6 @@
 'use client'
 
 import * as React from 'react'
-import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
 import { useToastStore } from '@/stores/useToastStore'
 import { initialAdminQuestionForm } from '../_constants/admin-questions.constants'
 import type {
@@ -159,21 +157,12 @@ export function AdminQuestionsView({
   }
 
   return (
-    <section className="min-h-screen bg-background px-4 py-6 text-headline sm:px-6 lg:px-8">
+    <section className="px-4 py-6 pb-24 text-headline sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-6">
-        {/* Header halaman admin questions menjaga konteks backoffice dan akses balik. */}
+        {/* Header halaman admin questions menjaga konteks backoffice. */}
         <header className="flex flex-col gap-4 rounded-2xl border border-border bg-background p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
           <div>
-            <Link
-              href="/admin/dashboard"
-              prefetch
-              transitionTypes={['app-nav']}
-              className="inline-flex min-h-[44px] items-center gap-2 text-sm font-black text-primary hover:underline"
-            >
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              Kembali ke Admin
-            </Link>
-            <p className="mt-3 text-xs font-black uppercase tracking-[0.22em] text-primary">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
               Question Management
             </p>
             <h1 className="mt-1 text-2xl font-black text-headline">
