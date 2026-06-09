@@ -51,7 +51,7 @@ export function AdminUsersFilters({
             </div>
             <input
               type="text"
-              className="block w-full rounded-2xl border border-border bg-surface py-2.5 pl-10 pr-3 text-sm font-semibold text-headline transition placeholder:text-muted focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10"
+              className="block w-full rounded-3xl border border-border bg-surface py-2.5 pl-10 pr-3 text-sm font-semibold text-headline transition placeholder:text-muted focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10"
               placeholder="Cari nama, email, hp, ID..."
               value={keyword}
               onChange={(e) => onKeywordChange(e.target.value)}
@@ -61,7 +61,7 @@ export function AdminUsersFilters({
 
           {/* Status Filter */}
           <select
-            className="w-full rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm font-bold text-headline transition focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10 sm:w-auto"
+            className="w-full rounded-3xl border border-border bg-surface px-4 py-2.5 text-sm font-bold text-headline transition focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10 sm:w-auto"
             value={status}
             onChange={(e) => {
               onStatusChange(e.target.value)
@@ -78,7 +78,7 @@ export function AdminUsersFilters({
           
           {/* Smart Pagination Limit Filter */}
           <select
-            className="w-full rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm font-bold text-headline transition focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10 sm:w-auto"
+            className="w-full rounded-3xl border border-border bg-surface px-4 py-2.5 text-sm font-bold text-headline transition focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10 sm:w-auto"
             value={limit}
             onChange={(e) => {
               onLimitChange(Number(e.target.value))
@@ -106,7 +106,7 @@ export function AdminUsersFilters({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center mt-1">
         <input
           type="text"
-          className="block w-full max-w-sm rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-headline transition placeholder:text-muted focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10"
+          className="block w-full max-w-sm rounded-3xl border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-headline transition placeholder:text-muted focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10"
           placeholder="Filter target instansi (opsional)..."
           value={instansi || ''}
           onChange={(e) => onInstansiChange(e.target.value)}
@@ -114,7 +114,7 @@ export function AdminUsersFilters({
         />
 
         <select
-          className="w-full rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm font-bold text-headline transition focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10 sm:w-auto"
+          className="w-full rounded-3xl border border-border bg-surface px-4 py-2.5 text-sm font-bold text-headline transition focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10 sm:w-auto"
           value={registrationSource || ''}
           onChange={(e) => {
             onRegistrationSourceChange(e.target.value)

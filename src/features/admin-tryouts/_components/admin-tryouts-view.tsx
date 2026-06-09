@@ -20,7 +20,7 @@ export function AdminTryoutsView() {
           </div>
         </header>
         
-        <div className="rounded-2xl border border-border bg-background p-8 text-center text-sm font-bold text-muted shadow-sm dark:bg-surface">
+        <div className="rounded-3xl border border-border bg-background p-8 text-center text-sm font-bold text-muted shadow-sm dark:bg-surface">
           Fitur Manajemen Try Out sedang dalam pengembangan.
         </div>
       </div>

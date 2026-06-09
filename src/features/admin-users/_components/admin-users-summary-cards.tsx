@@ -53,7 +53,7 @@ export function AdminUsersSummaryCards({ initialStats }: AdminUsersSummaryCardsP
 
   return (
     <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <div className="flex flex-col justify-between rounded-2xl border border-border bg-surface p-5 shadow-sm">
+      <div className="flex flex-col justify-between rounded-3xl border border-border bg-surface p-6 shadow-sm">
         <div className="mb-4 flex items-start justify-between">
           <p className="text-sm font-semibold text-muted">Total Pengguna</p>
           <div className="rounded-lg bg-primary/10 p-2">
@@ -63,7 +63,7 @@ export function AdminUsersSummaryCards({ initialStats }: AdminUsersSummaryCardsP
         <h3 className="text-2xl font-black text-headline">{renderValue(stats?.totalUsers)}</h3>
       </div>
 
-      <div className="flex flex-col justify-between rounded-2xl border border-border bg-surface p-5 shadow-sm">
+      <div className="flex flex-col justify-between rounded-3xl border border-border bg-surface p-6 shadow-sm">
         <div className="mb-1 flex items-start justify-between">
           <p className="text-sm font-semibold text-muted">Aktif 7 Hari</p>
           <div className="rounded-lg bg-green-500/10 p-2">
@@ -74,7 +74,7 @@ export function AdminUsersSummaryCards({ initialStats }: AdminUsersSummaryCardsP
         <p className="text-xs font-semibold text-muted/70">Berdasarkan sesi login terbaru</p>
       </div>
 
-      <div className="flex flex-col justify-between rounded-2xl border border-border bg-surface p-5 shadow-sm">
+      <div className="flex flex-col justify-between rounded-3xl border border-border bg-surface p-6 shadow-sm">
         <div className="mb-4 flex items-start justify-between">
           <p className="text-sm font-semibold text-muted">Pengguna Baru (30h)</p>
           <div className="rounded-lg bg-blue-500/10 p-2">
@@ -84,7 +84,7 @@ export function AdminUsersSummaryCards({ initialStats }: AdminUsersSummaryCardsP
         <h3 className="text-2xl font-black text-headline">{renderValue(stats?.newLast30Days)}</h3>
       </div>
 
-      <div className="flex flex-col justify-between rounded-2xl border border-border bg-surface p-5 shadow-sm">
+      <div className="flex flex-col justify-between rounded-3xl border border-border bg-surface p-6 shadow-sm">
         <div className="mb-4 flex items-start justify-between">
           <p className="text-sm font-semibold text-muted">Ditangguhkan</p>
           <div className="rounded-lg bg-red-500/10 p-2">

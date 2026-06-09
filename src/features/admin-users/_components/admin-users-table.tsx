@@ -13,7 +13,7 @@ interface AdminUsersTableProps {
 export function AdminUsersTable({ users, onChangeStatusClick }: AdminUsersTableProps) {
   if (users.length === 0) {
     return (
-      <div className="flex min-h-[300px] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-surface/50 p-8 text-center">
+      <div className="flex min-h-[300px] flex-col items-center justify-center rounded-3xl border border-dashed border-border bg-surface/50 p-8 text-center">
         <div className="grid h-16 w-16 place-items-center rounded-2xl bg-muted/20 text-muted">
           <AlertCircle className="h-8 w-8" />
         </div>

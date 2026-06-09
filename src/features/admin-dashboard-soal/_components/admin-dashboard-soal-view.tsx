@@ -73,28 +73,28 @@ export function AdminDashboardSoalView({ metrics }: { metrics: AdminDashboardMet
         
         {/* Top Metrics Cards */}
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <div className="flex flex-col gap-1 rounded-2xl border border-border bg-background p-5 shadow-sm dark:bg-surface">
+          <div className="flex flex-col gap-1 rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
             <div className="flex items-center gap-2 text-sm font-bold text-muted">
               <BarChart3 className="h-4 w-4 text-primary" />
               Total Soal
             </div>
             <p className="text-3xl font-black text-headline">{metrics.total}</p>
           </div>
-          <div className="flex flex-col gap-1 rounded-2xl border border-border bg-background p-5 shadow-sm dark:bg-surface">
+          <div className="flex flex-col gap-1 rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
             <div className="flex items-center gap-2 text-sm font-bold text-muted">
               <FileEdit className="h-4 w-4 text-amber-500" />
               Draft
             </div>
             <p className="text-3xl font-black text-headline">{metrics.draft}</p>
           </div>
-          <div className="flex flex-col gap-1 rounded-2xl border border-border bg-background p-5 shadow-sm dark:bg-surface">
+          <div className="flex flex-col gap-1 rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
             <div className="flex items-center gap-2 text-sm font-bold text-muted">
               <CheckCircle className="h-4 w-4 text-green-500" />
               Published
             </div>
             <p className="text-3xl font-black text-headline">{metrics.published}</p>
           </div>
-          <div className="flex flex-col gap-1 rounded-2xl border border-border bg-background p-5 shadow-sm dark:bg-surface">
+          <div className="flex flex-col gap-1 rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
             <div className="flex items-center gap-2 text-sm font-bold text-muted">
               <Archive className="h-4 w-4 text-slate-500" />
               Archived
@@ -105,7 +105,7 @@ export function AdminDashboardSoalView({ metrics }: { metrics: AdminDashboardMet
 
         <div className="grid gap-6 md:grid-cols-2">
           {/* Distribusi Kategori */}
-          <div className="rounded-2xl border border-border bg-background p-5 shadow-sm dark:bg-surface">
+          <div className="rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
             <h2 className="mb-4 text-sm font-bold text-headline">Distribusi Kategori</h2>
             <div className="space-y-3">
               {metrics.distributionCategory.length === 0 ? (
@@ -124,7 +124,7 @@ export function AdminDashboardSoalView({ metrics }: { metrics: AdminDashboardMet
           </div>
 
           {/* Distribusi Materi Top 5 */}
-          <div className="rounded-2xl border border-border bg-background p-5 shadow-sm dark:bg-surface">
+          <div className="rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
             <h2 className="mb-4 text-sm font-bold text-headline">Distribusi Materi Terbanyak</h2>
             <div className="space-y-3">
               {metrics.distributionMaterial.length === 0 ? (
@@ -145,7 +145,7 @@ export function AdminDashboardSoalView({ metrics }: { metrics: AdminDashboardMet
 
         <div className="grid gap-6 md:grid-cols-2">
           {/* Quality Metrics */}
-          <div className="rounded-2xl border border-border bg-background p-5 shadow-sm dark:bg-surface">
+          <div className="rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
             <h2 className="mb-4 text-sm font-bold text-headline">Indikator Kualitas</h2>
             <div className="space-y-3">
               <div className="flex items-center justify-between rounded-xl border border-border p-3">
@@ -184,7 +184,7 @@ export function AdminDashboardSoalView({ metrics }: { metrics: AdminDashboardMet
           </div>
 
           {/* Recent Created */}
-          <div className="rounded-2xl border border-border bg-background p-5 shadow-sm dark:bg-surface">
+          <div className="rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
             <h2 className="mb-4 text-sm font-bold text-headline">Soal Baru Ditambahkan</h2>
             <div className="space-y-3">
               {metrics.recentQuestions.length === 0 ? (

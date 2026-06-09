@@ -20,7 +20,7 @@ export function AdminQuestionsImportView() {
           </div>
         </header>
         
-        <div className="rounded-2xl border border-border bg-background p-8 text-center text-sm font-bold text-muted shadow-sm dark:bg-surface">
+        <div className="rounded-3xl border border-border bg-background p-8 text-center text-sm font-bold text-muted shadow-sm dark:bg-surface">
           Fitur Import Excel sedang dalam pengembangan.
         </div>
       </div>

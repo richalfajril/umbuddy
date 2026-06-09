@@ -179,7 +179,7 @@ export function AdminQuestionsView({
 
         <div className="grid gap-6 items-start xl:grid-cols-[minmax(0,1fr)_420px]">
           {/* Panel list soal berisi filter dan tabel padat untuk admin content. */}
-          <section className="min-w-0 rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-5 dark:bg-surface">
+          <section className="min-w-0 rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-6 dark:bg-surface">
             <AdminQuestionFilters
               keyword={keyword}
               status={status}

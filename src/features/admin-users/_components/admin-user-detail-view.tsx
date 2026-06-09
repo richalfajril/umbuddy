@@ -67,7 +67,7 @@ export function AdminUserDetailView({
         <div className="grid gap-6 md:grid-cols-3">
           {/* Kartu Profil Utama */}
           <div className="md:col-span-1 space-y-6">
-            <div className="rounded-2xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
+            <div className="rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
               <div className="flex items-center gap-4 border-b border-border pb-4">
                 <div className="grid h-16 w-16 place-items-center rounded-2xl bg-primary/10 text-primary">
                   <User className="h-8 w-8" />
@@ -123,7 +123,7 @@ export function AdminUserDetailView({
             </div>
 
             {/* Kartu Progres Gamifikasi */}
-            <div className="rounded-2xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
+            <div className="rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
               <h3 className="font-display text-lg font-black text-headline flex items-center gap-2">
                 <Activity className="h-5 w-5 text-primary" />
                 Metrik Gamifikasi
@@ -147,7 +147,7 @@ export function AdminUserDetailView({
           {/* Area Log dan Catatan Admin */}
           <div className="md:col-span-2 space-y-6">
             {/* Support Notes / Catatan Admin */}
-            <div className="rounded-2xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
+            <div className="rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
               <h3 className="font-display text-lg font-black text-headline mb-4">
                 Catatan Moderasi & Audit Log
               </h3>
@@ -183,7 +183,7 @@ export function AdminUserDetailView({
             </div>
             
             {/* Recent Activity Logs */}
-            <div className="rounded-2xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
+            <div className="rounded-3xl border border-border bg-background p-6 shadow-sm dark:bg-surface">
               <h3 className="font-display text-lg font-black text-headline mb-4">
                 10 Aktivitas Terakhir
               </h3>

@@ -131,7 +131,7 @@ export function AdminUsersView({
           <AdminUsersSummaryCards initialStats={initialSummary} />
 
           {/* Tabel dan Filter */}
-          <section className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-5 dark:bg-surface">
+          <section className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-6 dark:bg-surface">
             <AdminUsersFilters
               keyword={keyword}
               status={status}

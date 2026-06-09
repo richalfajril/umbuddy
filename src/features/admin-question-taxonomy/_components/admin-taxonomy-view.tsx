@@ -95,7 +95,7 @@ export function AdminTaxonomyView() {
           </Button>
         </header>
 
-        <div className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-5 dark:bg-surface">
+        <div className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-6 dark:bg-surface">
           {isLoading ? (
             <div className="py-12 text-center text-sm font-bold text-muted animate-pulse">
               Memuat hierarki materi...

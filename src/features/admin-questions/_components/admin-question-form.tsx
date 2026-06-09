@@ -27,7 +27,7 @@ export function AdminQuestionForm({
   onCancelEdit,
 }: AdminQuestionFormProps) {
   return (
-    <form onSubmit={onSubmit} className="rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-5 dark:bg-surface">
+    <form onSubmit={onSubmit} className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-6 dark:bg-surface">
       <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
         {isEditMode ? 'Edit Draft' : 'Create Draft'}
       </p>
