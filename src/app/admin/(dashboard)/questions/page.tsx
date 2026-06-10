@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { AdminAuthService } from '@/server/admin-auth'
-import { AdminDashboardSoalFlow } from '@/features/admin-dashboard-soal'
+import { AdminDashboardSoalFlow } from '@/features/admin-questions-dashboard'
 
 export const metadata: Metadata = {
   title: 'Dashboard Soal | Umbuddy Admin',

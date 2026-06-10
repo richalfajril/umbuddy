@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { AdminAuthService } from '@/server/admin-auth'
-import { AdminTaxonomyView } from '@/features/admin-question-taxonomy/_components'
+import { AdminTaxonomyView } from '@/features/admin-questions-taxonomy/_components'
 
 export const metadata: Metadata = {
   title: 'Manajemen Subtes | Umbuddy Admin',
