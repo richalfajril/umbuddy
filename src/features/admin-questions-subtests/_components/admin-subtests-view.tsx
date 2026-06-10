@@ -2,9 +2,10 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { Plus, MoreHorizontal, FileSpreadsheet, Eye, Pencil, Trash2 } from 'lucide-react'
+import { Plus, MoreHorizontal, FileSpreadsheet, Eye, Pencil, Trash2, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { SmartPagination } from '@/components/molecules'
+import { useToastStore } from '@/stores/useToastStore'
 
 // Interface untuk struktur data paket
 interface SubtestPackage {
@@ -21,6 +22,11 @@ export function AdminSubtestsView() {
   const [isLoading, setIsLoading] = React.useState(true)
   const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null)
   
+  // State untuk Delete Modal
+  const [deleteConfirmation, setDeleteConfirmation] = React.useState<SubtestPackage | null>(null)
+  const [isDeleting, setIsDeleting] = React.useState(false)
+  const { addToast } = useToastStore()
+  
   // Pagination state
   const [page, setPage] = React.useState(1)
   const [limit, setLimit] = React.useState(10)
@@ -30,24 +36,49 @@ export function AdminSubtestsView() {
   const totalPages = Math.ceil(total / limit)
   const paginatedSubtests = subtests.slice((page - 1) * limit, page * limit)
 
-  React.useEffect(() => {
-    async function fetchPackages() {
-      try {
-        const res = await fetch('/api/v1/admin/questions/packages')
-        const data = await res.json()
-        if (data.success) {
-          setSubtests(data.data)
-        } else {
-          console.error(data.error)
-        }
-      } catch (err) {
-        console.error('Failed to fetch packages', err)
-      } finally {
-        setIsLoading(false)
+  const fetchPackages = React.useCallback(async () => {
+    try {
+      const res = await fetch('/api/v1/admin/questions/packages')
+      const data = await res.json()
+      if (data.success) {
+        setSubtests(data.data)
+      } else {
+        console.error(data.error)
       }
+    } catch (err) {
+      console.error('Failed to fetch packages', err)
+    } finally {
+      setIsLoading(false)
     }
-    fetchPackages()
   }, [])
+
+  React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void fetchPackages()
+  }, [fetchPackages])
+  
+  const handleDeleteConfirm = async () => {
+    if (!deleteConfirmation) return
+    
+    setIsDeleting(true)
+    try {
+      const res = await fetch(`/api/v1/admin/questions/packages/${deleteConfirmation.packageCode}`, {
+        method: 'DELETE'
+      })
+      const data = await res.json()
+
+      if (!res.ok) throw new Error(data.error || 'Gagal menghapus subtes')
+
+      addToast({ type: 'success', title: 'Berhasil', message: data.message || `Subtes ${deleteConfirmation.packageCode} telah dihapus` })
+      setDeleteConfirmation(null)
+      fetchPackages() // Refresh data
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : 'Terjadi kesalahan'
+      addToast({ type: 'error', title: 'Gagal Hapus', message: msg })
+    } finally {
+      setIsDeleting(false)
+    }
+  }
   
   return (
     <section className="px-4 py-6 text-headline sm:px-6 lg:px-8 lg:py-8">
@@ -161,7 +192,13 @@ export function AdminSubtestsView() {
                                 <Pencil className="h-4 w-4" />
                                 Edit
                               </button>
-                              <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30">
+                              <button 
+                                onClick={() => {
+                                  setActiveDropdown(null)
+                                  setDeleteConfirmation(st)
+                                }}
+                                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
+                              >
                                 <Trash2 className="h-4 w-4" />
                                 Hapus
                               </button>
@@ -176,8 +213,13 @@ export function AdminSubtestsView() {
             </table>
           </div>
 
-          <div className="p-5 sm:p-6 border-t border-border">
-            <SmartPagination
+          <div className="flex flex-col items-center justify-between gap-4 border-t border-border p-5 sm:flex-row sm:p-6">
+            <p className="text-sm font-medium text-muted">
+              Menampilkan <span className="font-bold text-headline">{Math.min((page - 1) * limit + 1, total)}</span>-
+              <span className="font-bold text-headline">{Math.min(page * limit, total)}</span> dari <span className="font-bold text-headline">{total}</span> data
+            </p>
+
+            <SmartPagination 
               page={page}
               limit={limit}
               total={total}
@@ -187,11 +229,49 @@ export function AdminSubtestsView() {
                 setLimit(newLimit)
                 setPage(1)
               }}
-              isLoading={isLoading}
             />
           </div>
         </div>
       </div>
+
+      {/* Modal Konfirmasi Hapus */}
+      {deleteConfirmation && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-headline/50 backdrop-blur-sm" onClick={() => !isDeleting && setDeleteConfirmation(null)} />
+          <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-border bg-background p-6 shadow-2xl dark:bg-surface sm:p-8">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
+              <AlertCircle className="h-8 w-8 text-red-600 dark:text-red-500" />
+            </div>
+            
+            <div className="mt-6 text-center">
+              <h3 className="text-xl font-black text-headline">Hapus Subtes?</h3>
+              <p className="mt-2 text-sm font-medium text-muted">
+                Anda yakin ingin menghapus paket soal <span className="font-bold text-headline">{deleteConfirmation.packageCode}</span> secara permanen?
+                Total <strong>{deleteConfirmation.totalQuestions} soal</strong> di dalamnya akan ikut terhapus.
+              </p>
+            </div>
+            
+            <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+              <Button 
+                variant="secondary" 
+                onClick={() => setDeleteConfirmation(null)}
+                disabled={isDeleting}
+                className="w-full sm:w-auto"
+              >
+                Batal
+              </Button>
+              <Button 
+                variant="danger"
+                onClick={handleDeleteConfirm}
+                disabled={isDeleting}
+                className="w-full sm:w-auto"
+              >
+                {isDeleting ? 'Menghapus...' : 'Ya, Hapus'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
