@@ -3,6 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { MoreHorizontal, AlertCircle, ShieldAlert, ChevronRight, CheckCircle2, Copy, User } from 'lucide-react'
+import { AdminTable, AdminTableHeader, AdminTableHead, AdminTableBody, AdminTableRow, AdminTableCell } from '@/components/molecules'
 import { useToastStore } from '@/stores/useToastStore'
 import { USER_PROGRESSION_RANKS } from '@/features/shared/_constants/user-app.constants'
 import type { AdminUserListItem } from '../_types/admin-users.types'
@@ -36,119 +37,112 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-border">
-      <table className="w-full text-left text-sm text-body">
-        <thead className="bg-surface text-sm font-bold text-headline">
-          <tr>
-            <th className="px-4 py-5 whitespace-nowrap">No</th>
-            <th className="px-4 py-5 min-w-[200px]">Nama</th>
-            <th className="px-4 py-5 whitespace-nowrap">Role</th>
-            <th className="px-4 py-5 whitespace-nowrap">Email</th>
-            <th className="px-4 py-5 whitespace-nowrap">No HP</th>
-            <th className="px-4 py-5 whitespace-nowrap">Tanggal Lahir</th>
-            <th className="px-4 py-5 whitespace-nowrap">Institusi</th>
-            <th className="px-4 py-5 whitespace-nowrap">Jurusan</th>
-            <th className="px-4 py-5 whitespace-nowrap">Kota/Kabupaten</th>
-            <th className="px-4 py-5 whitespace-nowrap">Provinsi</th>
-            <th className="px-4 py-5 whitespace-nowrap">Instansi</th>
-            <th className="px-4 py-5 whitespace-nowrap">Target Skor</th>
-            <th className="px-4 py-5 whitespace-nowrap">Pangkat</th>
-            <th className="px-4 py-5 whitespace-nowrap text-right min-w-[140px]">XP</th>
-            <th className="px-4 py-5 whitespace-nowrap">Bergabung</th>
-            <th className="px-4 py-5 whitespace-nowrap">Status</th>
-            <th className="px-4 py-5 text-right whitespace-nowrap sticky right-0 bg-surface shadow-[-4px_0_12px_rgba(0,0,0,0.05)]">Aksi</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-border bg-background">
-          {users.map((user, index) => {
-            let rankJabatan = '-'
-            let rankGolongan = ''
-            if (user.progression?.total_xp) {
-              const rank = USER_PROGRESSION_RANKS.slice().reverse().find(r => user.progression!.total_xp >= r.requiredXp) || USER_PROGRESSION_RANKS[0]
-              rankJabatan = rank.jabatan
-              rankGolongan = rank.golongan
-            }
+    <AdminTable>
+      <AdminTableHeader>
+        <tr>
+          <AdminTableHead>No</AdminTableHead>
+          <AdminTableHead className="min-w-[200px]">Nama</AdminTableHead>
+          <AdminTableHead>Role</AdminTableHead>
+          <AdminTableHead>Email</AdminTableHead>
+          <AdminTableHead>No HP</AdminTableHead>
+          <AdminTableHead>Tanggal Lahir</AdminTableHead>
+          <AdminTableHead>Institusi</AdminTableHead>
+          <AdminTableHead>Jurusan</AdminTableHead>
+          <AdminTableHead>Kota/Kabupaten</AdminTableHead>
+          <AdminTableHead>Provinsi</AdminTableHead>
+          <AdminTableHead>Instansi</AdminTableHead>
+          <AdminTableHead>Target Skor</AdminTableHead>
+          <AdminTableHead>Pangkat</AdminTableHead>
+          <AdminTableHead className="text-right min-w-[140px]">XP</AdminTableHead>
+          <AdminTableHead>Bergabung</AdminTableHead>
+          <AdminTableHead>Status</AdminTableHead>
+          <AdminTableHead className="text-right sticky right-0 bg-surface shadow-[-4px_0_12px_rgba(0,0,0,0.05)]">Aksi</AdminTableHead>
+        </tr>
+      </AdminTableHeader>
+      <AdminTableBody>
+        {users.map((user, index) => {
+          const rankJabatan = user.progression ? USER_PROGRESSION_RANKS.find(r => user.progression!.total_xp >= r.requiredXp)?.jabatan || 'Pemula' : '-'
+          const rankGolongan = user.progression ? USER_PROGRESSION_RANKS.find(r => user.progression!.total_xp >= r.requiredXp)?.golongan || 'I/a' : '-'
 
-            return (
-              <tr key={user.id} className="transition hover:bg-surface/50 group">
-                <td className="px-4 py-2.5 text-muted font-medium whitespace-nowrap">
-                  {(page - 1) * limit + index + 1}
-                </td>
-                <td className="px-4 py-2.5">
-                  <div>
-                    <p className="font-bold text-headline">{user.name}</p>
-                  </div>
-                </td>
-                <td className="px-4 py-2.5 whitespace-nowrap">
-                  <span className="inline-flex rounded-md bg-primary/10 px-2 py-1 text-xs font-bold text-primary">
-                    {user.role}
-                  </span>
-                </td>
-                <td className="px-4 py-2.5 whitespace-nowrap">
-                  <div className="flex items-center gap-1.5 text-sm">
-                    {user.email}
-                    {user.email_verified && (
-                      <span title="Email Terverifikasi" className="flex items-center">
-                        <CheckCircle2 className="h-4 w-4 text-green-500" />
-                      </span>
-                    )}
-                  </div>
-                </td>
-                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
-                  {user.phone || '-'}
-                </td>
-                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
-                  {user.profile?.birth_date ? new Date(user.profile.birth_date).toLocaleDateString('id-ID', {
-                    day: 'numeric', month: 'short', year: 'numeric'
-                  }) : '-'}
-                </td>
-                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
-                  {user.profile?.institution || '-'}
-                </td>
-                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
-                  {user.profile?.major || '-'}
-                </td>
-                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
-                  {user.profile?.city || '-'}
-                </td>
-                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
-                  {user.profile?.province || '-'}
-                </td>
-                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
-                  {user.profile?.target_instansi || '-'}
-                </td>
-                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
-                  {user.profile?.target_score || '-'}
-                </td>
-                <td className="px-4 py-2.5 whitespace-nowrap">
-                  {user.progression ? (
-                    <div>
-                      <p className="font-semibold text-sm text-headline">{rankJabatan} {rankGolongan}</p>
-                    </div>
-                  ) : (
-                    <span className="text-muted">-</span>
+          return (
+            <AdminTableRow key={user.id}>
+              <AdminTableCell className="text-muted font-medium">
+                {(page - 1) * limit + index + 1}
+              </AdminTableCell>
+              <AdminTableCell>
+                <div>
+                  <p className="font-bold text-headline">{user.name}</p>
+                </div>
+              </AdminTableCell>
+              <AdminTableCell>
+                <span className="inline-flex rounded-md bg-primary/10 px-2 py-1 text-xs font-bold text-primary">
+                  {user.role}
+                </span>
+              </AdminTableCell>
+              <AdminTableCell>
+                <div className="flex items-center gap-1.5 text-sm">
+                  {user.email}
+                  {user.email_verified && (
+                    <span title="Email Terverifikasi" className="flex items-center">
+                      <CheckCircle2 className="h-4 w-4 text-green-500" />
+                    </span>
                   )}
-                </td>
-                <td className="px-4 py-2.5 whitespace-nowrap text-muted font-mono text-right">
-                  {user.progression ? user.progression.total_xp.toLocaleString('id-ID') : '-'}
-                </td>
-                <td className="px-4 py-2.5 whitespace-nowrap font-semibold text-muted">
-                  {new Date(user.created_at).toLocaleDateString('id-ID', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                  })}
-                </td>
-                <td className="px-4 py-2.5 whitespace-nowrap">
-                  <StatusBadge status={user.status} />
-                </td>
-                <ActionCell user={user} onChangeStatusClick={onChangeStatusClick} />
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-    </div>
+                </div>
+              </AdminTableCell>
+              <AdminTableCell className="text-muted">
+                {user.phone || '-'}
+              </AdminTableCell>
+              <AdminTableCell className="text-muted">
+                {user.profile?.birth_date ? new Date(user.profile.birth_date).toLocaleDateString('id-ID', {
+                  day: 'numeric', month: 'short', year: 'numeric'
+                }) : '-'}
+              </AdminTableCell>
+              <AdminTableCell className="text-muted">
+                {user.profile?.institution || '-'}
+              </AdminTableCell>
+              <AdminTableCell className="text-muted">
+                {user.profile?.major || '-'}
+              </AdminTableCell>
+              <AdminTableCell className="text-muted">
+                {user.profile?.city || '-'}
+              </AdminTableCell>
+              <AdminTableCell className="text-muted">
+                {user.profile?.province || '-'}
+              </AdminTableCell>
+              <AdminTableCell className="text-muted">
+                {user.profile?.target_instansi || '-'}
+              </AdminTableCell>
+              <AdminTableCell className="text-muted">
+                {user.profile?.target_score || '-'}
+              </AdminTableCell>
+              <AdminTableCell>
+                {user.progression ? (
+                  <div>
+                    <p className="font-semibold text-sm text-headline">{rankJabatan} {rankGolongan}</p>
+                  </div>
+                ) : (
+                  <span className="text-muted">-</span>
+                )}
+              </AdminTableCell>
+              <AdminTableCell className="text-muted font-mono text-right">
+                {user.progression ? user.progression.total_xp.toLocaleString('id-ID') : '-'}
+              </AdminTableCell>
+              <AdminTableCell className="font-semibold text-muted">
+                {new Date(user.created_at).toLocaleDateString('id-ID', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                })}
+              </AdminTableCell>
+              <AdminTableCell>
+                <StatusBadge status={user.status} />
+              </AdminTableCell>
+              <ActionCell user={user} onChangeStatusClick={onChangeStatusClick} />
+            </AdminTableRow>
+          )
+        })}
+      </AdminTableBody>
+    </AdminTable>
   )
 }
 
@@ -175,9 +169,9 @@ function ActionCell({
   }, [isOpen])
 
   return (
-    <td 
+    <AdminTableCell 
       ref={ref}
-      className={`px-4 py-2.5 text-right whitespace-nowrap sticky right-0 bg-background group-hover:bg-surface/95 transition-colors shadow-[-4px_0_12px_rgba(0,0,0,0.05)] border-l border-border ${isOpen ? 'z-[60]' : 'z-10'}`}
+      className={`text-right sticky right-0 bg-background group-hover:bg-surface/95 transition-colors shadow-[-4px_0_12px_rgba(0,0,0,0.05)] border-l border-border ${isOpen ? 'z-[60]' : 'z-10'}`}
     >
       <div className="relative flex justify-end">
         <button
@@ -215,7 +209,7 @@ function ActionCell({
           </div>
         )}
       </div>
-    </td>
+    </AdminTableCell>
   )
 }
 

@@ -4,7 +4,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import { Plus, MoreHorizontal, FileSpreadsheet, Eye, Pencil, Trash2, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui'
-import { SmartPagination } from '@/components/molecules'
+import { SmartPagination, AdminTable, AdminTableHeader, AdminTableHead, AdminTableBody, AdminTableRow, AdminTableCell } from '@/components/molecules'
 import { useToastStore } from '@/stores/useToastStore'
 
 // Interface untuk struktur data paket
@@ -111,59 +111,60 @@ export function AdminSubtestsView() {
         </header>
 
         {/* Table/List Area */}
-        <div className="rounded-3xl border border-border bg-background p-1 shadow-sm dark:bg-surface">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-body">
-              <thead className="border-b border-border text-xs uppercase text-muted">
-                <tr>
-                  <th scope="col" className="px-6 py-4 font-bold">No</th>
-                  <th scope="col" className="px-6 py-4 font-bold">Nama Subtes / Paket</th>
-                  <th scope="col" className="px-6 py-4 font-bold">Kategori</th>
-                  <th scope="col" className="px-6 py-4 font-bold">Total Soal</th>
-                  <th scope="col" className="px-6 py-4 font-bold">Tanggal Dibuat</th>
-                  <th scope="col" className="px-6 py-4 font-bold">Terakhir Diubah</th>
-                  <th scope="col" className="px-6 py-4 font-bold text-center">Aksi</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {isLoading ? (
-                  <tr>
-                    <td colSpan={7} className="px-6 py-12 text-center text-muted">
-                      Memuat daftar paket soal...
-                    </td>
-                  </tr>
-                ) : subtests.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="px-6 py-12 text-center text-muted">
-                      Belum ada paket subtes yang dibuat.
-                    </td>
-                  </tr>
-                ) : (
-                  paginatedSubtests.map((st, i) => (
-                    <tr key={st.id} className="transition-colors hover:bg-muted/5">
-                      <td className="whitespace-nowrap px-6 py-4 font-medium text-headline">{((page - 1) * limit) + i + 1}</td>
-                      <td className="px-6 py-4 font-bold text-headline">{st.packageCode}</td>
-                      <td className="px-6 py-4">
-                        <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">
-                          {st.category}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">{st.totalQuestions} Soal</td>
-                      <td className="px-6 py-4">
-                        {new Date(st.createdAt).toLocaleDateString('id-ID', {
-                          day: '2-digit',
-                          month: 'long',
-                          year: 'numeric'
-                        })}
-                      </td>
-                      <td className="px-6 py-4">
-                        {new Date(st.updatedAt).toLocaleDateString('id-ID', {
-                          day: '2-digit',
-                          month: 'long',
-                          year: 'numeric'
-                        })}
-                      </td>
-                      <td className="px-6 py-4 text-center">
+        {/* Table/List Area */}
+        <div className="rounded-2xl bg-background shadow-sm dark:bg-surface">
+          <AdminTable>
+            <AdminTableHeader>
+              <tr>
+                <AdminTableHead>No</AdminTableHead>
+                <AdminTableHead>Nama Subtes / Paket</AdminTableHead>
+                <AdminTableHead>Kategori</AdminTableHead>
+                <AdminTableHead>Total Soal</AdminTableHead>
+                <AdminTableHead>Tanggal Dibuat</AdminTableHead>
+                <AdminTableHead>Terakhir Diubah</AdminTableHead>
+                <AdminTableHead className="text-right">Aksi</AdminTableHead>
+              </tr>
+            </AdminTableHeader>
+            <AdminTableBody>
+              {isLoading ? (
+                <AdminTableRow>
+                  <AdminTableCell colSpan={7} className="px-6 py-12 text-center text-muted">
+                    Memuat daftar paket soal...
+                  </AdminTableCell>
+                </AdminTableRow>
+              ) : subtests.length === 0 ? (
+                <AdminTableRow>
+                  <AdminTableCell colSpan={7} className="px-6 py-12 text-center text-muted">
+                    Belum ada paket subtes yang dibuat.
+                  </AdminTableCell>
+                </AdminTableRow>
+              ) : (
+                paginatedSubtests.map((st, i) => (
+                  <AdminTableRow key={st.id}>
+                    <AdminTableCell className="font-medium text-muted">{((page - 1) * limit) + i + 1}</AdminTableCell>
+                    <AdminTableCell className="font-bold text-headline">{st.packageCode}</AdminTableCell>
+                    <AdminTableCell>
+                      <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-bold text-primary">
+                        {st.category}
+                      </span>
+                    </AdminTableCell>
+                    <AdminTableCell className="text-muted">{st.totalQuestions} Soal</AdminTableCell>
+                    <AdminTableCell className="text-muted">
+                      {new Date(st.createdAt).toLocaleDateString('id-ID', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric'
+                      })}
+                    </AdminTableCell>
+                    <AdminTableCell className="text-muted">
+                      {new Date(st.updatedAt).toLocaleDateString('id-ID', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric'
+                      })}
+                    </AdminTableCell>
+                    <AdminTableCell className="text-right">
+                      <div className="relative flex justify-end">
                         <button 
                           onClick={(e) => {
                             if (activeDropdown?.id === st.id) {
@@ -177,17 +178,18 @@ export function AdminSubtestsView() {
                               })
                             }
                           }}
-                          className="rounded-lg p-2 text-muted hover:bg-border/50 hover:text-headline transition-colors"
+                          className={`rounded-xl p-2 transition ${activeDropdown?.id === st.id ? 'bg-surface text-headline' : 'text-muted hover:bg-surface hover:text-headline'}`}
+                          title="Aksi Lainnya"
                         >
-                          <MoreHorizontal className="h-4 w-4" />
+                          <MoreHorizontal className="h-5 w-5" />
                         </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                      </div>
+                    </AdminTableCell>
+                  </AdminTableRow>
+                ))
+              )}
+            </AdminTableBody>
+          </AdminTable>
 
           <div className="px-5 pb-5 sm:px-6 sm:pb-6">
             <SmartPagination 
