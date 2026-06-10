@@ -63,7 +63,7 @@ export function AdminSubtestsView() {
                   <th scope="col" className="px-6 py-4 font-bold">No</th>
                   <th scope="col" className="px-6 py-4 font-bold">Nama Subtes / Paket</th>
                   <th scope="col" className="px-6 py-4 font-bold">Kategori</th>
-                  <th scope="col" className="px-6 py-4 font-bold">Maksimal Soal</th>
+                  <th scope="col" className="px-6 py-4 font-bold">Total Soal</th>
                   <th scope="col" className="px-6 py-4 font-bold">Tanggal Dibuat</th>
                   <th scope="col" className="px-6 py-4 font-bold">Terakhir Diubah</th>
                   <th scope="col" className="px-6 py-4 font-bold text-center">Aksi</th>

@@ -3,6 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import * as XLSX from 'xlsx'
 import { ArrowLeft, FileUp } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { useToastStore } from '@/stores/useToastStore'
@@ -15,12 +16,34 @@ export function AdminSubtestsCreateView() {
   // Form states
   const [packageName, setPackageName] = React.useState('')
   const [category, setCategory] = React.useState('CAMPURAN')
-  const [maxQuestions, setMaxQuestions] = React.useState('15')
+  const [totalQuestions, setTotalQuestions] = React.useState<number | null>(null)
+  const [isParsing, setIsParsing] = React.useState(false)
   const [file, setFile] = React.useState<File | null>(null)
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0])
+      const selectedFile = e.target.files[0]
+      setFile(selectedFile)
+      setIsParsing(true)
+      
+      try {
+        const buffer = await selectedFile.arrayBuffer()
+        const workbook = XLSX.read(buffer, { type: 'buffer' })
+        const firstSheetName = workbook.SheetNames[0]
+        const worksheet = workbook.Sheets[firstSheetName]
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 })
+        // Exclude empty rows
+        const rows = jsonData.filter((row: unknown) => Array.isArray(row) && row.length > 0)
+        // Assume row 1 is header, so total = rows - 1
+        const count = rows.length > 1 ? rows.length - 1 : 0
+        setTotalQuestions(count)
+      } catch (error) {
+        console.error('Error parsing excel:', error)
+        addToast({ type: 'error', title: 'Gagal Membaca File', message: 'Pastikan file Excel memiliki format yang valid.' })
+        setTotalQuestions(null)
+      } finally {
+        setIsParsing(false)
+      }
     }
   }
 
@@ -113,16 +136,18 @@ export function AdminSubtestsCreateView() {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="maxQuestions" className="text-sm font-bold text-headline">
-                  Maksimal Soal <span className="text-red-500">*</span>
+                <label className="text-sm font-bold text-headline">
+                  Total Soal <span className="text-muted font-normal">(Otomatis)</span>
                 </label>
-                <input
-                  id="maxQuestions"
-                  type="number"
-                  value={maxQuestions}
-                  onChange={(e) => setMaxQuestions(e.target.value)}
-                  className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-headline focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:bg-surface"
-                />
+                <div className="flex w-full items-center rounded-xl border border-border bg-muted/20 px-4 py-3 text-sm text-headline dark:bg-surface/50">
+                  {isParsing ? (
+                    <span className="animate-pulse text-muted">Menghitung...</span>
+                  ) : (
+                    <span className="font-bold">
+                      {totalQuestions !== null ? `${totalQuestions} Soal` : '-'}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
 
