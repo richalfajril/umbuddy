@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { MoreHorizontal, AlertCircle, ShieldAlert, ChevronRight, CheckCircle2, Copy } from 'lucide-react'
+import { MoreHorizontal, AlertCircle, ShieldAlert, ChevronRight, CheckCircle2, Copy, User } from 'lucide-react'
 import { useToastStore } from '@/stores/useToastStore'
 import { USER_PROGRESSION_RANKS } from '@/features/shared/_constants/user-app.constants'
 import type { AdminUserListItem } from '../_types/admin-users.types'
@@ -177,7 +177,7 @@ function ActionCell({
   return (
     <td 
       ref={ref}
-      className="px-4 py-2.5 text-right whitespace-nowrap sticky right-0 bg-background group-hover:bg-surface/95 transition-colors shadow-[-4px_0_12px_rgba(0,0,0,0.05)] border-l border-border"
+      className={`px-4 py-2.5 text-right whitespace-nowrap sticky right-0 bg-background group-hover:bg-surface/95 transition-colors shadow-[-4px_0_12px_rgba(0,0,0,0.05)] border-l border-border ${isOpen ? 'z-[60]' : 'z-10'}`}
     >
       <div className="relative flex justify-end">
         <button
@@ -190,14 +190,15 @@ function ActionCell({
         </button>
 
         {isOpen && (
-          <div className="absolute right-10 top-0 z-[60] w-40 animate-in fade-in zoom-in-95 rounded-xl border border-border bg-background p-1.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)]">
+          <div className="absolute right-10 top-0 w-44 animate-in fade-in zoom-in-95 rounded-xl border border-border bg-background p-1.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] z-[70]">
             <button
               onClick={() => {
                 setIsOpen(false)
                 onChangeStatusClick(user.id, user.status, user.name)
               }}
-              className="w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-headline transition hover:bg-surface"
+              className="group flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-headline transition hover:bg-amber-500/10 hover:text-amber-600 dark:hover:text-amber-500"
             >
+              <ShieldAlert className="h-4 w-4 text-amber-500" />
               Moderasi
             </button>
             <Link
@@ -205,8 +206,9 @@ function ActionCell({
               onClick={() => setIsOpen(false)}
               prefetch
               transitionTypes={['app-nav']}
-              className="block w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-headline transition hover:bg-surface"
+              className="group flex w-full items-center gap-2.5 mt-1 rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-headline transition hover:bg-primary/10 hover:text-primary"
             >
+              <User className="h-4 w-4 text-primary" />
               Detail akun
             </Link>
           </div>
