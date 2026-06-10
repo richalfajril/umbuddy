@@ -9,7 +9,7 @@ import type {
   AdminUsersListResponse,
 } from '../_types/admin-users.types'
 import { AdminUsersFilters } from './admin-users-filters'
-import { SmartPagination } from '@/components/molecules'
+import { AdminTableLayout } from '@/components/organisms'
 import { AdminUsersSummaryCards } from './admin-users-summary-cards'
 import { AdminUsersTable } from './admin-users-table'
 import { AdminUserStatusModal } from './admin-user-status-modal'
@@ -134,34 +134,32 @@ export function AdminUsersView({
           <AdminUsersSummaryCards initialStats={initialSummary} />
 
           {/* Tabel dan Filter */}
-          <section className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-6 dark:bg-surface">
-            <AdminUsersFilters
-              keyword={keyword}
-              isLoading={isLoading}
-              onKeywordChange={setKeyword}
-              onFilter={handleFilter}
-            />
-            
-            <div className={isLoading ? 'opacity-50 pointer-events-none transition-opacity' : 'transition-opacity'}>
-              <AdminUsersTable
-                users={users}
-                page={page}
-                limit={limit}
-                onChangeStatusClick={openStatusModal}
+          <AdminTableLayout
+            filters={
+              <AdminUsersFilters
+                keyword={keyword}
+                isLoading={isLoading}
+                onKeywordChange={setKeyword}
+                onFilter={handleFilter}
               />
-            </div>
-
-            {/* Smart Pagination Controls */}
-            <SmartPagination
+            }
+            pagination={{
+              page,
+              limit,
+              total,
+              totalPages,
+              onPageChange: handlePageChange,
+              onLimitChange: handleLimitChange,
+              isLoading
+            }}
+          >
+            <AdminUsersTable
+              users={users}
               page={page}
               limit={limit}
-              total={total}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-              onLimitChange={handleLimitChange}
-              isLoading={isLoading}
+              onChangeStatusClick={openStatusModal}
             />
-          </section>
+          </AdminTableLayout>
         </div>
       </section>
 
