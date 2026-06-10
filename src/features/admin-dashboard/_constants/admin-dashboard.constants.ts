@@ -25,7 +25,7 @@ export const ADMIN_DASHBOARD_NAV_ITEMS: AdminNavItem[] = [
   },
   {
     label: 'Try Out',
-    href: '/admin/tryouts',
+    href: '/admin/tryout',
     icon: 'tryouts',
     description: 'Manajemen paket soal Try Out.',
     prefetch: true,
@@ -46,21 +46,21 @@ export const ADMIN_DASHBOARD_NAV_ITEMS: AdminNavItem[] = [
   },
   {
     label: 'Users',
-    href: '/admin/users',
+    href: '/admin/data/users',
     icon: 'users',
     description: 'Kelola pengguna dan status akun.',
     prefetch: true,
   },
   {
     label: 'Notifikasi',
-    href: '/admin/notifications',
+    href: '/admin/data/notifications',
     icon: 'notifications',
     description: 'Kelola campaign dan pesan sistem.',
     isSoon: true,
   },
   {
     label: 'Settings',
-    href: '/admin/settings',
+    href: '/admin/data/settings',
     icon: 'settings',
     description: 'Konfigurasi backoffice Umbuddy.',
     isSoon: true,
