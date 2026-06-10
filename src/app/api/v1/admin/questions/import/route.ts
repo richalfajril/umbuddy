@@ -1,25 +1,15 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/server/db/client'
-import { getCachedUserSession } from '@/server/auth/session'
-import { QuestionCategory, QuestionStatus, Prisma, UserRole, BulkUploadStatus } from '@prisma/client'
+import { AdminAuthService } from '@/server/admin-auth'
+import { QuestionCategory, QuestionStatus, Prisma, BulkUploadStatus } from '@prisma/client'
 
 export async function POST(req: Request) {
   try {
-    const session = await getCachedUserSession()
+    const session = await AdminAuthService.getCurrentAdmin()
     
-    // Validasi Autentikasi
-    if (!session || !session.user) {
+    // Validasi Autentikasi Admin
+    if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-    
-    // Pastikan user memiliki role ADMIN / SUPER_ADMIN
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
-      select: { role: true }
-    })
-    
-    if (!user || user.role !== UserRole.ADMIN) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     const body = await req.json()
@@ -100,8 +90,8 @@ export async function POST(req: Request) {
         difficulty: 'MEDIUM', // Tingkat kesulitan default
         status: QuestionStatus.PUBLISHED,
         image_urls,
-        created_by: session.user.id,
-        updated_by: session.user.id,
+        created_by: session.admin.id,
+        updated_by: session.admin.id,
       }
     })
 
@@ -115,7 +105,7 @@ export async function POST(req: Request) {
       // Catat log proses unggah (opsional namun disarankan jika tabel BulkUploadJob tersedia)
       await tx.bulkUploadJob.create({
         data: {
-          admin_id: session.user.id,
+          admin_id: session.admin.id,
           file_name: `Excel Import - ${packageCode}`,
           package_code: packageCode,
           status: BulkUploadStatus.DONE,
