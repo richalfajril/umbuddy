@@ -17,10 +17,17 @@ export const ADMIN_DASHBOARD_NAV_ITEMS: AdminNavItem[] = [
     prefetch: true,
   },
   {
+    label: 'Sinkron Soal',
+    href: '/admin/questions/taxonomy',
+    icon: 'questions',
+    description: 'Manajemen taksonomi dan materi CPNS.',
+    prefetch: true,
+  },
+  {
     label: 'Subtes',
     href: '/admin/questions/subtests',
     icon: 'questions',
-    description: 'Manajemen taksonomi tes CPNS.',
+    description: 'Kelola wadah paket soal dan import.',
     prefetch: true,
   },
   {
@@ -28,13 +35,6 @@ export const ADMIN_DASHBOARD_NAV_ITEMS: AdminNavItem[] = [
     href: '/admin/questions/bank',
     icon: 'questions',
     description: 'Draft, publish, arsip, dan restore soal.',
-    prefetch: true,
-  },
-  {
-    label: 'Import Excel',
-    href: '/admin/questions/import',
-    icon: 'questions',
-    description: 'Import soal dari file spreadsheet.',
     prefetch: true,
   },
   {

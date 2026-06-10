@@ -79,7 +79,7 @@ export function AdminTaxonomyView() {
               CPNS Taxonomy
             </p>
             <h1 className="mt-2 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
-              Manajemen <span className="text-primary">Subtes & Materi</span>
+              Sinkron <span className="text-primary">Soal</span>
             </h1>
             <p className="mt-1 text-sm text-body">
               Kelola struktur kategori dan materi soal yang akan muncul di Try Out dan Practice.

@@ -1,14 +1,10 @@
-import { Metadata } from 'next'
-import { redirect } from 'next/navigation'
-import { AdminAuthService } from '@/server/admin-auth'
-import { AdminTaxonomyView } from '@/features/admin-question-taxonomy/_components'
+import { AdminSubtestsView } from '@/features/admin-subtests/_components/admin-subtests-view'
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Manajemen Subtes | Umbuddy Admin',
+  description: 'Kelola paket soal dan import soal CPNS',
 }
 
-export default async function AdminSubtestsPage() {
-  const admin = await AdminAuthService.getCachedCurrentAdmin()
-  if (!admin) redirect('/admin/login')
-  return <AdminTaxonomyView />
+export default function AdminSubtestsPage() {
+  return <AdminSubtestsView />
 }
