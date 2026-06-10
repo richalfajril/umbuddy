@@ -45,7 +45,7 @@ export async function POST(
     if (error instanceof Error && error.message === 'User tidak ditemukan') {
       return apiErrorResponse('NOT_FOUND', 'User tidak ditemukan', 404)
     }
-    // Return explicit error to UI if AuthEmailService throws (e.g. quota limit, rate limit)
+    // Mengembalikan pesan error secara eksplisit ke UI jika AuthEmailService gagal (misal: limit kuota, rate limit)
     if (error instanceof Error) {
       return apiErrorResponse('BAD_REQUEST', error.message, 400)
     }

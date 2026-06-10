@@ -74,7 +74,7 @@ export function AdminQuestionsView({
     setForm(initialAdminQuestionForm)
   }
 
-  // Fetch list soal memakai filter admin saat ini.
+  // Mengambil list soal memakai filter admin saat ini.
   const loadQuestions = React.useCallback(async () => {
     setIsLoading(true)
     const params = new URLSearchParams()

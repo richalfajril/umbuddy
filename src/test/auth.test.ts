@@ -6,7 +6,7 @@ type User = Awaited<ReturnType<typeof prisma.user.create>>
 type SecurityEvent = Awaited<ReturnType<typeof prisma.securityEvent.create>>
 
 
-// Mock Prisma client to prevent real database connections during tests
+// Mock Prisma client untuk mencegah koneksi database sungguhan selama testing
 vi.mock('@/server/db', () => {
   const mockPrisma = {
     user: {
@@ -94,10 +94,10 @@ describe('U1 Auth — AuthService Unit Tests', () => {
         password: 'securepassword123',
       }
 
-      // Mock that user does not exist yet
+      // Simulasi bahwa user belum ada
       vi.mocked(prisma.user.findFirst).mockResolvedValue(null)
       
-      // Mock creation return
+      // Simulasi kembalian saat pembuatan user
       vi.mocked(prisma.user.create).mockResolvedValue({
         id: 'user-uuid-123',
         name: registerData.name,
@@ -132,7 +132,7 @@ describe('U1 Auth — AuthService Unit Tests', () => {
         password: 'securepassword123',
       }
 
-      // Mock user already exists
+      // Simulasi bahwa user sudah ada
       vi.mocked(prisma.user.findFirst).mockResolvedValue({
         id: 'existing-id',
         email: registerData.email,

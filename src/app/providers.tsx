@@ -6,7 +6,7 @@ import { ThemeProvider } from 'next-themes'
 import { SessionConflictGuard } from '@/features/user-auth/_components/session-conflict-guard'
 import { ToastContainer } from '@/components/ui'
 
-// Suppress the React 19 script warning for next-themes in development
+// Menekan peringatan script React 19 untuk next-themes di environment development
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
   const origError = console.error
   console.error = (...args: unknown[]) => {

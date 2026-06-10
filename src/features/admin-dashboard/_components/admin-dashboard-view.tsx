@@ -22,7 +22,7 @@ function AdminKpiDataFallback() {
 
 // View dashboard admin menampilkan ringkasan analitik dan jalan pintas manajemen.
 export async function AdminDashboardView({ admin }: AdminDashboardViewProps) {
-  // Fetch data untuk chart di level ini agar bisa di-pass ke Client Component
+  // Mengambil data untuk chart di level ini agar bisa di-pass ke Client Component
   const [trendData, questionsKpi] = await Promise.all([
     AnalyticsService.getRegistrationTrend7Days(),
     AnalyticsService.getQuestionsKpi(),
