@@ -1,12 +1,12 @@
 'use client'
 
+import { ThemeToggle } from '@/components/atoms/theme-toggle'
+import { AdminLogoutButton } from '@/features/admin-auth/_components/admin-logout-button'
+import type { LucideIcon } from 'lucide-react'
+import { Bell, ClipboardList, Database, FileQuestion, LayoutDashboard, Package, RefreshCw, Settings, ShieldCheck, Users, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Bell, FileQuestion, LayoutDashboard, Settings, Users, X, Package, ClipboardList, Database, RefreshCw, ShieldCheck } from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
-import { ThemeToggle } from '@/components/atoms/theme-toggle'
-import { AdminLogoutButton } from '@/features/admin-auth/_components/admin-logout-button'
 import { ADMIN_DASHBOARD_NAV_ITEMS } from '../_constants/admin-dashboard.constants'
 import type { AdminNavIconKey } from '../_types/admin-dashboard.types'
 
@@ -67,8 +67,8 @@ export function AdminSidebar({
           <Image
             src="/logo/logo_text.png"
             alt="Umbuddy Logo"
-            width={160}
-            height={40}
+            width={320}
+            height={80}
             className="h-8 w-auto object-contain"
             priority
           />
