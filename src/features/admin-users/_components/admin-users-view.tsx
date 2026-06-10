@@ -29,10 +29,7 @@ export function AdminUsersView({
   const [limit, setLimit] = React.useState(initialData.limit)
   const [totalPages, setTotalPages] = React.useState(initialData.totalPages)
   
-  const [status, setStatus] = React.useState('')
   const [keyword, setKeyword] = React.useState('')
-  const [instansi, setInstansi] = React.useState('')
-  const [registrationSource, setRegistrationSource] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
 
   // Modal State
@@ -47,10 +44,7 @@ export function AdminUsersView({
     const params = new URLSearchParams()
     params.set('page', targetPage.toString())
     params.set('limit', currentLimit.toString())
-    if (status) params.set('status', status)
     if (keyword.trim()) params.set('keyword', keyword.trim())
-    if (instansi.trim()) params.set('instansi', instansi.trim())
-    if (registrationSource.trim()) params.set('registrationSource', registrationSource.trim())
 
     try {
       const response = await fetch(`/api/v1/admin/users?${params.toString()}`)
@@ -70,7 +64,7 @@ export function AdminUsersView({
     } finally {
       setIsLoading(false)
     }
-  }, [addToast, instansi, keyword, limit, page, registrationSource, status])
+  }, [addToast, keyword, limit, page])
 
   const handleFilter = () => {
     setPage(1)
@@ -125,14 +119,8 @@ export function AdminUsersView({
           <section className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-6 dark:bg-surface">
             <AdminUsersFilters
               keyword={keyword}
-              status={status}
-              instansi={instansi}
-              registrationSource={registrationSource}
               isLoading={isLoading}
               onKeywordChange={setKeyword}
-              onStatusChange={setStatus}
-              onInstansiChange={setInstansi}
-              onRegistrationSourceChange={setRegistrationSource}
               onFilter={handleFilter}
             />
             
