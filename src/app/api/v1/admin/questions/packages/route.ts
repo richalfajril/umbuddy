@@ -7,7 +7,7 @@ export async function GET() {
   try {
     const session = await getCachedUserSession()
     
-    // Auth validation
+    // Validasi Autentikasi
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -58,11 +58,11 @@ export async function GET() {
         category: displayCategory,
         totalQuestions: g._count.id,
         createdAt: g._min.created_at || new Date(),
-        updatedAt: g._min.created_at || new Date(), // Simplicity, or you can query _max.updated_at
+        updatedAt: g._min.created_at || new Date(), // Sederhananya menggunakan created_at, atau Anda bisa query _max.updated_at
       }
     }))
 
-    // Sort descending by createdAt
+    // Mengurutkan menurun berdasarkan tanggal dibuat (createdAt)
     packages.sort((a: { createdAt: Date }, b: { createdAt: Date }) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
     return NextResponse.json({ success: true, data: packages })

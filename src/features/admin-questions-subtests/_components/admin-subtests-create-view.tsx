@@ -13,7 +13,7 @@ export function AdminSubtestsCreateView() {
   const { addToast } = useToastStore()
   const [isSubmitting, setIsSubmitting] = React.useState(false)
 
-  // Form states
+  // State untuk form
   const [packageName, setPackageName] = React.useState('')
   const [category, setCategory] = React.useState('CAMPURAN')
   const [totalQuestions, setTotalQuestions] = React.useState<number | null>(null)
@@ -33,10 +33,9 @@ export function AdminSubtestsCreateView() {
         const firstSheetName = workbook.SheetNames[0]
         const worksheet = workbook.Sheets[firstSheetName]
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 })
-        // We need to keep the object data for submitting, so we map rows
-        // Note: sheet_to_json with header: 1 returns array of arrays. 
-        // We should use header: 1 to check empty, but to map properly we should use default sheet_to_json to get objects!
-        // Let's re-parse as objects to send to backend
+        // Kita perlu menyimpan data berformat objek untuk dikirimkan (submit).
+        // Catatan: sheet_to_json dengan parameter header: 1 mengembalikan format array of arrays.
+        // Sebaiknya kita parsing ulang menjadi objek murni untuk dikirim ke backend.
         const jsonObjects = XLSX.utils.sheet_to_json<Record<string, unknown>>(worksheet)
         const validObjects = jsonObjects.filter((obj) => obj && (obj['Soal'] || obj['Subtes'] || obj['No']))
         

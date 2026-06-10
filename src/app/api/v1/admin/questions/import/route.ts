@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   try {
     const session = await getCachedUserSession()
     
-    // Auth validation
+    // Validasi Autentikasi
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
       }, { status: 400 })
     }
 
-    // Mapping excel rows to Question objects
+    // Melakukan pemetaan baris Excel menjadi objek Question
     const questionDataToInsert = questions.map((q: Record<string, unknown>, index: number) => {
       // Tentukan kategori soal
       let category: QuestionCategory = globalCategory === 'CAMPURAN' 
@@ -66,7 +66,7 @@ export async function POST(req: Request) {
       const rawBobot = String(q['Kunci/Bobot (bobot 1-5)'] || '').trim()
 
       if (category === 'TKP') {
-        // Parsing "A:5, B:4, C:3, D:2, E:1"
+        // Memparsing format teks "A:5, B:4, C:3, D:2, E:1"
         tkp_weights = {} as Record<string, number>
         const parts = rawBobot.split(',')
         parts.forEach(part => {
@@ -76,7 +76,7 @@ export async function POST(req: Request) {
           }
         })
         
-        // TKP biasanya tidak punya answer_key absolute, tapi kita bisa set null
+        // TKP biasanya tidak punya kunci jawaban absolut, jadi kita bisa set null
       } else {
         // TWK / TIU
         answer_key = rawBobot.toUpperCase()
@@ -97,7 +97,7 @@ export async function POST(req: Request) {
         answer_key,
         tkp_weights: tkp_weights ? (tkp_weights as Prisma.InputJsonValue) : Prisma.JsonNull,
         explanation: String(q['Pembahasan'] || ''),
-        difficulty: 'MEDIUM', // Default
+        difficulty: 'MEDIUM', // Tingkat kesulitan default
         status: QuestionStatus.PUBLISHED,
         image_urls,
         created_by: session.user.id,
@@ -105,14 +105,14 @@ export async function POST(req: Request) {
       }
     })
 
-    // Insert to database inside a transaction to ensure all or nothing
+    // Menyimpan ke database dalam sebuah transaksi untuk memastikan berhasil semua atau dibatalkan semua
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       await tx.question.createMany({
         data: questionDataToInsert,
-        skipDuplicates: true // Just in case
+        skipDuplicates: true // Untuk berjaga-jaga menghindari duplikasi
       })
       
-      // Catat log upload (optional tapi direkomendasikan jika kita punya BulkUploadJob table)
+      // Catat log proses unggah (opsional namun disarankan jika tabel BulkUploadJob tersedia)
       await tx.bulkUploadJob.create({
         data: {
           admin_id: session.user.id,

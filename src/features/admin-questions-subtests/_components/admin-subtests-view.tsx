@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Plus, MoreHorizontal, FileSpreadsheet } from 'lucide-react'
 import { Button } from '@/components/ui'
 
-// Mock interface untuk sementara
+// Interface untuk struktur data paket
 interface SubtestPackage {
   id: string
   packageCode: string
@@ -42,7 +42,7 @@ export function AdminSubtestsView() {
   return (
     <section className="px-4 py-6 text-headline sm:px-6 lg:px-8 lg:py-8">
       <div className="mx-auto max-w-7xl space-y-6">
-        {/* Header & Actions */}
+        {/* Header & Aksi */}
         <header className="flex flex-col gap-4 rounded-3xl border border-border bg-background p-5 sm:p-7 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
@@ -130,7 +130,7 @@ export function AdminSubtestsView() {
                           <MoreHorizontal className="h-4 w-4" />
                         </button>
                         
-                        {/* Dropdown Menu */}
+                        {/* Menu Dropdown */}
                         {activeDropdown === st.id && (
                           <>
                             <div 
