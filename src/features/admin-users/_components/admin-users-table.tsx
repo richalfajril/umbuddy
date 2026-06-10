@@ -141,6 +141,11 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
             </AdminTableRow>
           )
         })}
+        {limit > users.length && Array.from({ length: limit - users.length }).map((_, i) => (
+          <AdminTableRow key={`empty-${i}`} className="h-[65px] hover:bg-transparent">
+            <AdminTableCell colSpan={17} className="text-transparent border-0">&nbsp;</AdminTableCell>
+          </AdminTableRow>
+        ))}
       </AdminTableBody>
     </AdminTable>
   )

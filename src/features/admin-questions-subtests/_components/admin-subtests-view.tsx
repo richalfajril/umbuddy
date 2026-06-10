@@ -218,6 +218,13 @@ export function AdminSubtestsView() {
                     </AdminTableRow>
                   ))
                 )}
+                {!isLoading && filteredSubtests.length > 0 && limit > paginatedSubtests.length && (
+                  Array.from({ length: limit - paginatedSubtests.length }).map((_, i) => (
+                    <AdminTableRow key={`empty-${i}`} className="h-[65px] hover:bg-transparent">
+                      <AdminTableCell colSpan={7} className="text-transparent">&nbsp;</AdminTableCell>
+                    </AdminTableRow>
+                  ))
+                )}
               </AdminTableBody>
             </AdminTable>
           </div>

@@ -237,6 +237,7 @@ export function AdminQuestionsView({
             />
             <AdminQuestionTable
               questions={questions}
+              limit={limit}
               onRunAction={(questionId, action) => void runQuestionAction(questionId, action)}
               onEditQuestion={handleEditQuestion}
             />
