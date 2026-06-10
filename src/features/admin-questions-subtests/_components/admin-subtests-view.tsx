@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { Plus, MoreHorizontal, FileSpreadsheet } from 'lucide-react'
+import { Plus, MoreHorizontal, FileSpreadsheet, Eye, Pencil, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { SmartPagination } from '@/components/molecules'
 
@@ -81,7 +81,7 @@ export function AdminSubtestsView() {
 
         {/* Table/List Area */}
         <div className="rounded-3xl border border-border bg-background p-1 shadow-sm dark:bg-surface">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto min-h-[250px] pb-10">
             <table className="w-full text-left text-sm text-body">
               <thead className="border-b border-border text-xs uppercase text-muted">
                 <tr>
@@ -147,14 +147,22 @@ export function AdminSubtestsView() {
                               className="fixed inset-0 z-10" 
                               onClick={() => setActiveDropdown(null)} 
                             />
-                            <div className="absolute right-6 top-12 z-20 w-36 rounded-xl border border-border bg-background p-1.5 shadow-lg dark:bg-surface">
-                              <button className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-headline hover:bg-muted/10">
+                            <div className="absolute right-6 top-12 z-20 w-48 rounded-xl border border-border bg-background p-1.5 shadow-lg dark:bg-surface">
+                              <div className="px-3 py-1.5 text-xs font-bold text-muted text-left">Aksi</div>
+                              <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-headline hover:bg-muted/10">
+                                <Plus className="h-4 w-4 text-muted" />
+                                Tambah Pertanyaan
+                              </button>
+                              <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-headline hover:bg-muted/10">
+                                <Eye className="h-4 w-4 text-muted" />
                                 Detail
                               </button>
-                              <button className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-headline hover:bg-muted/10">
+                              <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-amber-600 hover:bg-amber-50 dark:text-amber-500 dark:hover:bg-amber-950/30">
+                                <Pencil className="h-4 w-4" />
                                 Edit
                               </button>
-                              <button className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30">
+                              <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30">
+                                <Trash2 className="h-4 w-4" />
                                 Hapus
                               </button>
                             </div>
