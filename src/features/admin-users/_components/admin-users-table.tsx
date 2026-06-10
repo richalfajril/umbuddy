@@ -38,7 +38,7 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
   return (
     <div className="overflow-x-auto rounded-xl border border-border">
       <table className="w-full text-left text-sm text-body">
-        <thead className="bg-surface text-xs font-black uppercase tracking-wider text-muted">
+        <thead className="bg-surface text-sm font-bold text-headline">
           <tr>
             <th className="px-4 py-5 whitespace-nowrap">No</th>
             <th className="px-4 py-5 min-w-[200px]">Nama</th>
