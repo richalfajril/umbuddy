@@ -124,7 +124,6 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
                   {user.progression ? (
                     <div>
                       <p className="font-semibold text-sm text-headline">{rankJabatan} {rankGolongan}</p>
-                      <p className="text-xs text-muted mt-0.5">Lv. {user.progression.level}</p>
                     </div>
                   ) : (
                     <span className="text-muted">-</span>
