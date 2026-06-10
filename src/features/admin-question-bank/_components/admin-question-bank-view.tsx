@@ -7,7 +7,8 @@ import { QUESTION_CATEGORIES, QUESTION_STATUS, QUESTION_STATUS_COLORS } from '..
 import type { AdminQuestion, AdminQuestionFilters, AdminQuestionListResponse } from '../_types/admin-question-bank.types'
 import { useToastStore } from '@/stores/useToastStore'
 import { AdminQuestionBankTable } from './admin-question-bank-table'
-import { AdminTableLayout, AdminPageHeader } from '@/components/organisms'
+import { AdminTableLayout } from '@/components/templates'
+import { AdminPageHeader } from '@/components/organisms'
 import { SmartPagination } from '@/components/molecules'
 
 export function AdminQuestionBankView({ initialData }: { initialData: AdminQuestionListResponse }) {

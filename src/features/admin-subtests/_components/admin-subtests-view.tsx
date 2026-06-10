@@ -4,8 +4,10 @@ import * as React from 'react'
 import Link from 'next/link'
 import { Plus, MoreHorizontal, FileSpreadsheet, Eye, Pencil, Trash2, AlertCircle, Search, Package } from 'lucide-react'
 import { Button } from '@/components/ui'
-import { SmartPagination, AdminTable, AdminTableHeader, AdminTableHead, AdminTableBody, AdminTableRow, AdminTableCell } from '@/components/molecules'
-import { AdminPageHeader, AdminTableLayout } from '@/components/organisms'
+import { AdminTableHead, AdminTableRow, AdminTableCell } from '@/components/atoms'
+import { SmartPagination, AdminTable, AdminTableHeader, AdminTableBody } from '@/components/molecules'
+import { AdminTableLayout } from '@/components/templates'
+import { AdminPageHeader } from '@/components/organisms'
 import { useToastStore } from '@/stores/useToastStore'
 
 // Interface untuk struktur data paket

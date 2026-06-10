@@ -15,3 +15,5 @@ export {
   OnboardingRouteLoadingSkeleton,
   UserRouteLoadingSkeleton,
 } from './route-loading-skeleton'
+
+export * from './admin-table-layout'

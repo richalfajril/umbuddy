@@ -2,7 +2,8 @@
 
 import * as React from 'react'
 import { AlertCircle } from 'lucide-react'
-import { AdminTable, AdminTableHeader, AdminTableHead, AdminTableBody, AdminTableRow, AdminTableCell } from '@/components/molecules'
+import { AdminTableHead, AdminTableRow, AdminTableCell } from '@/components/atoms'
+import { AdminTable, AdminTableHeader, AdminTableBody } from '@/components/molecules'
 import { Button } from '@/components/ui'
 import { QUESTION_STATUS_COLORS } from '../_constants/admin-question-bank.constants'
 import type { AdminQuestion } from '../_types/admin-question-bank.types'
