@@ -9,7 +9,7 @@ import type {
   AdminUsersListResponse,
 } from '../_types/admin-users.types'
 import { AdminUsersFilters } from './admin-users-filters'
-import { AdminTableLayout } from '@/components/organisms'
+import { AdminTableLayout, AdminPageHeader } from '@/components/organisms'
 import { AdminUsersSummaryCards } from './admin-users-summary-cards'
 import { AdminUsersTable } from './admin-users-table'
 import { AdminUserStatusModal } from './admin-user-status-modal'
@@ -110,25 +110,17 @@ export function AdminUsersView({
       <section className="px-4 py-6 text-headline sm:px-6 lg:px-8 lg:py-8">
         <div className="mx-auto max-w-7xl space-y-6">
           {/* Header halaman */}
-          <div className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-7 dark:bg-surface">
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
-                  User Management
-                </p>
-                <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
-                  <Users className="h-7 w-7 text-primary" />
-                  Direktori <span className="text-primary">Pengguna</span>
-                </h1>
-                <p className="mt-2 text-sm font-medium text-muted">
-                  Kelola pengguna dan status akun.
-                </p>
-              </div>
+          <AdminPageHeader
+            icon={<Users className="h-5 w-5 text-primary" />}
+            eyebrow="User Management"
+            title={<>Direktori <span className="text-primary">Pengguna</span></>}
+            description="Kelola pengguna dan status akun."
+            actions={
               <div className="rounded-2xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm font-black text-primary-dark dark:text-primary">
                 Total: {total.toLocaleString('id-ID')} akun
               </div>
-            </div>
-          </div>
+            }
+          />
 
           {/* Summary Cards */}
           <AdminUsersSummaryCards initialStats={initialSummary} />

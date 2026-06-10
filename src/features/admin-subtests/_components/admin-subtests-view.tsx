@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Plus, MoreHorizontal, FileSpreadsheet, Eye, Pencil, Trash2, AlertCircle, Search, Package } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { SmartPagination, AdminTable, AdminTableHeader, AdminTableHead, AdminTableBody, AdminTableRow, AdminTableCell } from '@/components/molecules'
+import { AdminPageHeader } from '@/components/organisms'
 import { useToastStore } from '@/stores/useToastStore'
 
 // Interface untuk struktur data paket
@@ -94,21 +95,13 @@ export function AdminSubtestsView() {
     <section className="px-4 py-6 text-headline sm:px-6 lg:px-8 lg:py-8">
       <div className="mx-auto max-w-7xl space-y-6">
         {/* Header & Aksi */}
-        <div className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-7 dark:bg-surface">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
-                Question Packages
-              </p>
-              <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
-                <Package className="h-7 w-7 text-primary" />
-                Manajemen <span className="text-primary">Subtes</span>
-              </h1>
-              <p className="mt-2 text-sm font-medium text-muted">
-                Kelola koleksi subtes yang akan digunakan dalam Try Out.
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <AdminPageHeader
+          icon={<Package className="h-6 w-6 text-primary" />}
+          eyebrow="Question Packages"
+          title={<>Manajemen <span className="text-primary">Subtes</span></>}
+          description="Kelola koleksi subtes yang akan digunakan dalam Try Out."
+          actions={
+            <>
               <Button variant="secondary" className="gap-2 rounded-xl">
                 <FileSpreadsheet className="h-4 w-4 text-green-600" />
                 Template Excel
@@ -119,9 +112,9 @@ export function AdminSubtestsView() {
                   Tambah Subtes
                 </Button>
               </Link>
-            </div>
-          </div>
-        </div>
+            </>
+          }
+        />
 
         {/* Table/List Area */}
         <section className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-6 dark:bg-surface">

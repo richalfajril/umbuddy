@@ -7,6 +7,7 @@ import { QUESTION_CATEGORIES, QUESTION_STATUS, QUESTION_STATUS_COLORS } from '..
 import type { AdminQuestion, AdminQuestionFilters, AdminQuestionListResponse } from '../_types/admin-question-bank.types'
 import { useToastStore } from '@/stores/useToastStore'
 import { AdminQuestionBankTable } from './admin-question-bank-table'
+import { AdminTableLayout, AdminPageHeader } from '@/components/organisms'
 import { SmartPagination } from '@/components/molecules'
 
 export function AdminQuestionBankView({ initialData }: { initialData: AdminQuestionListResponse }) {
@@ -77,26 +78,12 @@ export function AdminQuestionBankView({ initialData }: { initialData: AdminQuest
       <div className="mx-auto max-w-7xl space-y-6">
         
         {/* Header */}
-        <div className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-7 dark:bg-surface">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-start gap-4 sm:items-center">
-              <div className="mt-1 grid min-h-11 min-w-11 shrink-0 place-items-center rounded-2xl border border-border bg-background text-muted sm:mt-0">
-                <Database className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
-                  Read-Only Database
-                </p>
-                <h1 className="mt-2 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
-                  Bank <span className="text-primary">Soal</span>
-                </h1>
-                <p className="mt-2 text-sm font-medium text-muted">
-                  Lihat seluruh inventaris soal yang telah diimpor ke sistem.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <AdminPageHeader
+          icon={<Database className="h-5 w-5 text-primary" />}
+          eyebrow="Read-Only Database"
+          title={<>Bank <span className="text-primary">Soal</span></>}
+          description="Lihat seluruh inventaris soal yang telah diimpor ke sistem."
+        />
 
         {/* Unified Table Section */}
         <section className="overflow-hidden rounded-3xl border border-border bg-background shadow-sm dark:bg-surface">
