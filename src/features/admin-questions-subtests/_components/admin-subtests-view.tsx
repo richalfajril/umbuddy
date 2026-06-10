@@ -12,16 +12,15 @@ interface SubtestPackage {
   category: string
   totalQuestions: number
   createdAt: string
+  updatedAt: string
 }
 
-const mockSubtests: SubtestPackage[] = [
-  { id: '1', packageCode: 'UM05_Wawasan Kebangsaan', category: 'TWK', totalQuestions: 30, createdAt: '2026-06-10T10:00:00Z' },
-  { id: '2', packageCode: 'UM04_Penalaran Logis', category: 'TIU', totalQuestions: 35, createdAt: '2026-06-09T14:20:00Z' },
-]
+const mockSubtests: SubtestPackage[] = []
 
 export function AdminSubtestsView() {
   const [subtests, _setSubtests] = React.useState<SubtestPackage[]>(mockSubtests)
   const [_isLoading, _setIsLoading] = React.useState(false)
+  const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null)
 
   // Nanti akan dihubungkan ke API nyata yang membaca dari tabel questions / bulk_upload_jobs
   
@@ -66,6 +65,7 @@ export function AdminSubtestsView() {
                   <th scope="col" className="px-6 py-4 font-bold">Kategori</th>
                   <th scope="col" className="px-6 py-4 font-bold">Maksimal Soal</th>
                   <th scope="col" className="px-6 py-4 font-bold">Tanggal Dibuat</th>
+                  <th scope="col" className="px-6 py-4 font-bold">Terakhir Diubah</th>
                   <th scope="col" className="px-6 py-4 font-bold text-center">Aksi</th>
                 </tr>
               </thead>
@@ -87,16 +87,47 @@ export function AdminSubtestsView() {
                         year: 'numeric'
                       })}
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <button className="rounded-lg p-2 text-muted hover:bg-border/50 hover:text-headline transition-colors">
+                    <td className="px-6 py-4">
+                      {new Date(st.updatedAt).toLocaleDateString('id-ID', {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric'
+                      })}
+                    </td>
+                    <td className="px-6 py-4 text-center relative">
+                      <button 
+                        onClick={() => setActiveDropdown(activeDropdown === st.id ? null : st.id)}
+                        className="rounded-lg p-2 text-muted hover:bg-border/50 hover:text-headline transition-colors"
+                      >
                         <MoreHorizontal className="h-4 w-4" />
                       </button>
+                      
+                      {/* Dropdown Menu */}
+                      {activeDropdown === st.id && (
+                        <>
+                          <div 
+                            className="fixed inset-0 z-10" 
+                            onClick={() => setActiveDropdown(null)} 
+                          />
+                          <div className="absolute right-6 top-12 z-20 w-36 rounded-xl border border-border bg-background p-1.5 shadow-lg dark:bg-surface">
+                            <button className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-headline hover:bg-muted/10">
+                              Detail
+                            </button>
+                            <button className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-headline hover:bg-muted/10">
+                              Edit
+                            </button>
+                            <button className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30">
+                              Hapus
+                            </button>
+                          </div>
+                        </>
+                      )}
                     </td>
                   </tr>
                 ))}
                 {subtests.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="px-6 py-12 text-center text-muted">
+                    <td colSpan={7} className="px-6 py-12 text-center text-muted">
                       Belum ada paket subtes yang dibuat.
                     </td>
                   </tr>
