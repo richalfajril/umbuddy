@@ -47,7 +47,7 @@ export function AdminUserDetailView({
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <Link
-                href="/admin/data/users"
+                href="/admin/users"
                 prefetch
                 transitionTypes={['app-nav']}
                 className="inline-flex min-h-[44px] items-center gap-2 text-sm font-black text-primary hover:underline"

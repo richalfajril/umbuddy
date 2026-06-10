@@ -113,7 +113,7 @@ export function AdminSubtestsView() {
                 <FileSpreadsheet className="h-4 w-4 text-green-600" />
                 Template Excel
               </Button>
-              <Link href="/admin/questions/subtests/create">
+              <Link href="/admin/subtests/create">
                 <Button className="w-full gap-2 rounded-xl sm:w-auto">
                   <Plus className="h-4 w-4" />
                   Tambah Subtes

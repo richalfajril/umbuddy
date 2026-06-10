@@ -86,7 +86,7 @@ export function AdminSubtestsCreateView() {
         title: 'Subtes Berhasil Dibuat',
         message: data.message || `Paket ${packageName} berhasil di-import.`
       })
-      router.push('/admin/questions/subtests')
+      router.push('/admin/subtests')
     } catch (error: unknown) {
       console.error('Import Submit Error:', error)
       addToast({ type: 'error', title: 'Gagal Import', message: error instanceof Error ? error.message : 'Terjadi kesalahan saat menyimpan data.' })
@@ -103,7 +103,7 @@ export function AdminSubtestsCreateView() {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-start gap-4 sm:items-center">
               <Link
-                href="/admin/questions/subtests"
+                href="/admin/subtests"
                 className="mt-1 grid min-h-11 min-w-11 shrink-0 place-items-center rounded-2xl border border-border bg-background text-muted transition-colors hover:bg-surface hover:text-headline sm:mt-0"
               >
                 <ArrowLeft className="h-5 w-5" />
@@ -203,7 +203,7 @@ export function AdminSubtestsCreateView() {
             </div>
 
             <div className="pt-4 flex items-center justify-end gap-3 border-t border-border">
-              <Link href="/admin/questions/subtests">
+              <Link href="/admin/subtests">
                 <Button variant="secondary" type="button" className="rounded-xl">
                   Batal
                 </Button>

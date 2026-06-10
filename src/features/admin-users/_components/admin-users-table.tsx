@@ -202,7 +202,7 @@ function ActionCell({
               Moderasi
             </button>
             <Link
-              href={`/admin/data/users/${user.id}`}
+              href={`/admin/users/${user.id}`}
               onClick={() => setIsOpen(false)}
               prefetch
               transitionTypes={['app-nav']}
