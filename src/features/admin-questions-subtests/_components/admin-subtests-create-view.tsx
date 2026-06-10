@@ -19,6 +19,7 @@ export function AdminSubtestsCreateView() {
   const [totalQuestions, setTotalQuestions] = React.useState<number | null>(null)
   const [isParsing, setIsParsing] = React.useState(false)
   const [file, setFile] = React.useState<File | null>(null)
+  const [parsedQuestions, setParsedQuestions] = React.useState<unknown[]>([])
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -32,15 +33,20 @@ export function AdminSubtestsCreateView() {
         const firstSheetName = workbook.SheetNames[0]
         const worksheet = workbook.Sheets[firstSheetName]
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 })
-        // Exclude empty rows
-        const rows = jsonData.filter((row: unknown) => Array.isArray(row) && row.length > 0)
-        // Assume row 1 is header, so total = rows - 1
-        const count = rows.length > 1 ? rows.length - 1 : 0
-        setTotalQuestions(count)
+        // We need to keep the object data for submitting, so we map rows
+        // Note: sheet_to_json with header: 1 returns array of arrays. 
+        // We should use header: 1 to check empty, but to map properly we should use default sheet_to_json to get objects!
+        // Let's re-parse as objects to send to backend
+        const jsonObjects = XLSX.utils.sheet_to_json<Record<string, unknown>>(worksheet)
+        const validObjects = jsonObjects.filter((obj) => obj && (obj['Soal'] || obj['Subtes'] || obj['No']))
+        
+        setTotalQuestions(validObjects.length)
+        setParsedQuestions(validObjects)
       } catch (error) {
         console.error('Error parsing excel:', error)
         addToast({ type: 'error', title: 'Gagal Membaca File', message: 'Pastikan file Excel memiliki format yang valid.' })
         setTotalQuestions(null)
+        setParsedQuestions([])
       } finally {
         setIsParsing(false)
       }
@@ -53,24 +59,42 @@ export function AdminSubtestsCreateView() {
       addToast({ type: 'error', title: 'Validasi Gagal', message: 'Nama Subtes wajib diisi.' })
       return
     }
-    if (!file) {
-      addToast({ type: 'error', title: 'Validasi Gagal', message: 'File Excel wajib diunggah untuk membuat subtes.' })
+    if (!file || parsedQuestions.length === 0) {
+      addToast({ type: 'error', title: 'Validasi Gagal', message: 'File Excel wajib diunggah dan harus berisi minimal 1 soal.' })
       return
     }
 
     setIsSubmitting(true)
     
-    // TODO: Connect to actual /api/v1/admin/questions/import endpoint
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false)
+    try {
+      const res = await fetch('/api/v1/admin/questions/import', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          packageCode: packageName,
+          category,
+          questions: parsedQuestions
+        })
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Terjadi kesalahan pada server.')
+      }
+
       addToast({
         type: 'success',
         title: 'Subtes Berhasil Dibuat',
-        message: `Paket ${packageName} berhasil di-import dari file Excel.`
+        message: data.message || `Paket ${packageName} berhasil di-import.`
       })
       router.push('/admin/questions/subtests')
-    }, 1500)
+    } catch (error: unknown) {
+      console.error('Import Submit Error:', error)
+      addToast({ type: 'error', title: 'Gagal Import', message: error instanceof Error ? error.message : 'Terjadi kesalahan saat menyimpan data.' })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (

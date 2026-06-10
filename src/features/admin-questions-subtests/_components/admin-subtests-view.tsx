@@ -15,14 +15,29 @@ interface SubtestPackage {
   updatedAt: string
 }
 
-const mockSubtests: SubtestPackage[] = []
-
 export function AdminSubtestsView() {
-  const [subtests, _setSubtests] = React.useState<SubtestPackage[]>(mockSubtests)
-  const [_isLoading, _setIsLoading] = React.useState(false)
+  const [subtests, setSubtests] = React.useState<SubtestPackage[]>([])
+  const [isLoading, setIsLoading] = React.useState(true)
   const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null)
 
-  // Nanti akan dihubungkan ke API nyata yang membaca dari tabel questions / bulk_upload_jobs
+  React.useEffect(() => {
+    async function fetchPackages() {
+      try {
+        const res = await fetch('/api/v1/admin/questions/packages')
+        const data = await res.json()
+        if (data.success) {
+          setSubtests(data.data)
+        } else {
+          console.error(data.error)
+        }
+      } catch (err) {
+        console.error('Failed to fetch packages', err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchPackages()
+  }, [])
   
   return (
     <section className="px-4 py-6 text-headline sm:px-6 lg:px-8 lg:py-8">
@@ -70,67 +85,74 @@ export function AdminSubtestsView() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {subtests.map((st, i) => (
-                  <tr key={st.id} className="transition-colors hover:bg-muted/5">
-                    <td className="whitespace-nowrap px-6 py-4 font-medium text-headline">{i + 1}</td>
-                    <td className="px-6 py-4 font-bold text-headline">{st.packageCode}</td>
-                    <td className="px-6 py-4">
-                      <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">
-                        {st.category}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">{st.totalQuestions} Soal</td>
-                    <td className="px-6 py-4">
-                      {new Date(st.createdAt).toLocaleDateString('id-ID', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric'
-                      })}
-                    </td>
-                    <td className="px-6 py-4">
-                      {new Date(st.updatedAt).toLocaleDateString('id-ID', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric'
-                      })}
-                    </td>
-                    <td className="px-6 py-4 text-center relative">
-                      <button 
-                        onClick={() => setActiveDropdown(activeDropdown === st.id ? null : st.id)}
-                        className="rounded-lg p-2 text-muted hover:bg-border/50 hover:text-headline transition-colors"
-                      >
-                        <MoreHorizontal className="h-4 w-4" />
-                      </button>
-                      
-                      {/* Dropdown Menu */}
-                      {activeDropdown === st.id && (
-                        <>
-                          <div 
-                            className="fixed inset-0 z-10" 
-                            onClick={() => setActiveDropdown(null)} 
-                          />
-                          <div className="absolute right-6 top-12 z-20 w-36 rounded-xl border border-border bg-background p-1.5 shadow-lg dark:bg-surface">
-                            <button className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-headline hover:bg-muted/10">
-                              Detail
-                            </button>
-                            <button className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-headline hover:bg-muted/10">
-                              Edit
-                            </button>
-                            <button className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30">
-                              Hapus
-                            </button>
-                          </div>
-                        </>
-                      )}
+                {isLoading ? (
+                  <tr>
+                    <td colSpan={7} className="px-6 py-12 text-center text-muted">
+                      Memuat daftar paket soal...
                     </td>
                   </tr>
-                ))}
-                {subtests.length === 0 && (
+                ) : subtests.length === 0 ? (
                   <tr>
                     <td colSpan={7} className="px-6 py-12 text-center text-muted">
                       Belum ada paket subtes yang dibuat.
                     </td>
                   </tr>
+                ) : (
+                  subtests.map((st, i) => (
+                    <tr key={st.id} className="transition-colors hover:bg-muted/5">
+                      <td className="whitespace-nowrap px-6 py-4 font-medium text-headline">{i + 1}</td>
+                      <td className="px-6 py-4 font-bold text-headline">{st.packageCode}</td>
+                      <td className="px-6 py-4">
+                        <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">
+                          {st.category}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">{st.totalQuestions} Soal</td>
+                      <td className="px-6 py-4">
+                        {new Date(st.createdAt).toLocaleDateString('id-ID', {
+                          day: '2-digit',
+                          month: 'long',
+                          year: 'numeric'
+                        })}
+                      </td>
+                      <td className="px-6 py-4">
+                        {new Date(st.updatedAt).toLocaleDateString('id-ID', {
+                          day: '2-digit',
+                          month: 'long',
+                          year: 'numeric'
+                        })}
+                      </td>
+                      <td className="px-6 py-4 text-center relative">
+                        <button 
+                          onClick={() => setActiveDropdown(activeDropdown === st.id ? null : st.id)}
+                          className="rounded-lg p-2 text-muted hover:bg-border/50 hover:text-headline transition-colors"
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                        </button>
+                        
+                        {/* Dropdown Menu */}
+                        {activeDropdown === st.id && (
+                          <>
+                            <div 
+                              className="fixed inset-0 z-10" 
+                              onClick={() => setActiveDropdown(null)} 
+                            />
+                            <div className="absolute right-6 top-12 z-20 w-36 rounded-xl border border-border bg-background p-1.5 shadow-lg dark:bg-surface">
+                              <button className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-headline hover:bg-muted/10">
+                                Detail
+                              </button>
+                              <button className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-headline hover:bg-muted/10">
+                                Edit
+                              </button>
+                              <button className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30">
+                                Hapus
+                              </button>
+                            </div>
+                          </>
+                        )}
+                      </td>
+                    </tr>
+                  ))
                 )}
               </tbody>
             </table>
