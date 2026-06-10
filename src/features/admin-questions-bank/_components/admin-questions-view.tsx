@@ -77,15 +77,23 @@ export function AdminQuestionsView({
     setForm(initialAdminQuestionForm)
   }
 
+  const isFirstRender = React.useRef(true)
+
   // Mengambil list soal memakai filter admin saat ini.
-  const loadQuestions = React.useCallback(async () => {
+  const loadQuestions = React.useCallback(async (
+    targetPage = page,
+    currentLimit = limit,
+    currentStatus = status,
+    currentCategory = category,
+    currentKeyword = keyword
+  ) => {
     setIsLoading(true)
     const params = new URLSearchParams()
-    params.set('page', page.toString())
-    params.set('limit', limit.toString())
-    if (status) params.set('status', status)
-    if (category) params.set('category', category)
-    if (keyword.trim()) params.set('keyword', keyword.trim())
+    params.set('page', targetPage.toString())
+    params.set('limit', currentLimit.toString())
+    if (currentStatus) params.set('status', currentStatus)
+    if (currentCategory) params.set('category', currentCategory)
+    if (currentKeyword.trim()) params.set('keyword', currentKeyword.trim())
 
     try {
       const response = await fetch(`/api/v1/admin/questions?${params.toString()}`)
@@ -104,17 +112,37 @@ export function AdminQuestionsView({
     }
   }, [addToast, category, keyword, status, page, limit])
 
-  // Reset page ke 1 saat filter diubah
+  // Smart Search: debounce keyword, status, category changes
+  React.useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+
+    const timer = setTimeout(() => {
+      setPage(1)
+      loadQuestions(1, limit, status, category, keyword)
+    }, 500)
+
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keyword, status, category])
+
   const handleFilter = () => {
-    if (page !== 1) setPage(1)
-    else loadQuestions()
+    setPage(1)
+    loadQuestions(1, limit, status, category, keyword)
   }
 
-  // Jika page atau limit berubah, muat ulang
-  React.useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    void loadQuestions()
-  }, [page, limit, loadQuestions])
+  const handleLimitChange = (newLimit: number) => {
+    setLimit(newLimit)
+    setPage(1)
+    loadQuestions(1, newLimit, status, category, keyword)
+  }
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage)
+    loadQuestions(newPage, limit, status, category, keyword)
+  }
 
   // Submit create draft atau update draft mengirim payload sesuai kontrak.
   const saveQuestion = async (event: React.FormEvent) => {
@@ -218,11 +246,8 @@ export function AdminQuestionsView({
               limit={limit}
               total={total}
               totalPages={Math.ceil(total / limit)}
-              onPageChange={setPage}
-              onLimitChange={(newLimit) => {
-                setLimit(newLimit)
-                setPage(1)
-              }}
+              onPageChange={handlePageChange}
+              onLimitChange={handleLimitChange}
               isLoading={isLoading}
             />
           </section>

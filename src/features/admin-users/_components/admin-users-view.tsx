@@ -79,7 +79,8 @@ export function AdminUsersView({
     }, 500)
 
     return () => clearTimeout(timer)
-  }, [keyword, limit, loadUsers])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keyword])
 
   const handleFilter = () => {
     setPage(1)
