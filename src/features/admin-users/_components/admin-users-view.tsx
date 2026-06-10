@@ -1,8 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import Link from 'next/link'
-import { ArrowLeft, Users } from 'lucide-react'
+import { Users } from 'lucide-react'
 import { useToastStore } from '@/stores/useToastStore'
 import type {
   AdminUserListItem,
@@ -103,16 +102,7 @@ export function AdminUsersView({
           {/* Header halaman */}
           <header className="flex flex-col gap-4 rounded-3xl border border-border bg-background p-5 sm:p-7 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
             <div>
-              <Link
-                href="/admin/dashboard"
-                prefetch
-                transitionTypes={['app-nav']}
-                className="inline-flex min-h-[44px] items-center gap-2 text-sm font-black text-primary hover:underline"
-              >
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                Kembali ke Dashboard
-              </Link>
-              <p className="mt-3 text-xs font-black uppercase tracking-[0.22em] text-primary">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
                 User Management
               </p>
               <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
