@@ -60,12 +60,21 @@ export class AdminUsersService {
           id: true,
           name: true,
           email: true,
+          email_verified: true,
+          phone: true,
           status: true,
           role: true,
           created_at: true,
+          registration_source: true,
           profile: {
             select: {
               target_instansi: true,
+            }
+          },
+          progression: {
+            select: {
+              level: true,
+              total_xp: true,
             }
           }
         }

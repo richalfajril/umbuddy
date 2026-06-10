@@ -2,15 +2,24 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { MoreHorizontal, AlertCircle, ShieldAlert, CheckCircle2, ChevronRight } from 'lucide-react'
+import { MoreHorizontal, AlertCircle, ShieldAlert, ChevronRight, CheckCircle2, Copy } from 'lucide-react'
+import { useToastStore } from '@/stores/useToastStore'
 import type { AdminUserListItem } from '../_types/admin-users.types'
 
 interface AdminUsersTableProps {
   users: AdminUserListItem[]
+  page: number
+  limit: number
   onChangeStatusClick: (userId: string, currentStatus: string, name: string) => void
 }
 
-export function AdminUsersTable({ users, onChangeStatusClick }: AdminUsersTableProps) {
+export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: AdminUsersTableProps) {
+  const addToast = useToastStore(state => state.addToast)
+
+  const handleCopyId = (id: string) => {
+    navigator.clipboard.writeText(id)
+    addToast({ message: 'ID tersalin ke clipboard', type: 'success' })
+  }
   if (users.length === 0) {
     return (
       <div className="flex min-h-[300px] flex-col items-center justify-center rounded-3xl border border-dashed border-border bg-surface/50 p-8 text-center">
@@ -30,20 +39,47 @@ export function AdminUsersTable({ users, onChangeStatusClick }: AdminUsersTableP
       <table className="w-full text-left text-sm text-body">
         <thead className="bg-surface text-xs font-black uppercase tracking-wider text-muted">
           <tr>
+            <th className="px-6 py-4">No</th>
             <th className="px-6 py-4">User</th>
+            <th className="px-6 py-4">ID</th>
             <th className="px-6 py-4">Role / Instansi</th>
+            <th className="px-6 py-4">Progress</th>
+            <th className="px-6 py-4">Sumber</th>
             <th className="px-6 py-4">Bergabung</th>
             <th className="px-6 py-4">Status</th>
             <th className="px-6 py-4 text-right">Aksi</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border bg-background">
-          {users.map((user) => (
+          {users.map((user, index) => (
             <tr key={user.id} className="transition hover:bg-surface/50">
+              <td className="px-6 py-4 text-muted font-medium">
+                {(page - 1) * limit + index + 1}
+              </td>
               <td className="px-6 py-4">
                 <div>
                   <p className="font-bold text-headline">{user.name}</p>
-                  <p className="text-xs text-muted">{user.email}</p>
+                  <div className="flex items-center gap-1 text-xs text-muted mt-0.5">
+                    {user.email}
+                    {user.email_verified && (
+                      <span title="Email Terverifikasi" className="flex items-center">
+                        <CheckCircle2 className="h-3 w-3 text-green-500" />
+                      </span>
+                    )}
+                  </div>
+                  {user.phone && <p className="text-xs text-muted mt-0.5">{user.phone}</p>}
+                </div>
+              </td>
+              <td className="px-6 py-4">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs text-muted">{user.id.substring(0, 8)}...</span>
+                  <button 
+                    onClick={() => handleCopyId(user.id)}
+                    className="p-1 text-muted hover:text-headline transition-colors rounded-md hover:bg-border"
+                    title="Salin ID"
+                  >
+                    <Copy className="h-3 w-3" />
+                  </button>
                 </div>
               </td>
               <td className="px-6 py-4">
@@ -52,11 +88,30 @@ export function AdminUsersTable({ users, onChangeStatusClick }: AdminUsersTableP
                     {user.role}
                   </span>
                   {user.profile?.target_instansi && (
-                    <p className="mt-1 text-xs font-semibold text-muted max-w-[200px] truncate">
+                    <p className="mt-1 text-xs font-semibold text-muted max-w-[150px] truncate" title={user.profile.target_instansi}>
                       {user.profile.target_instansi}
                     </p>
                   )}
                 </div>
+              </td>
+              <td className="px-6 py-4">
+                {user.progression ? (
+                  <div>
+                    <span className="inline-flex rounded-md bg-amber-500/10 px-2 py-1 text-xs font-bold text-amber-600 dark:text-amber-500">
+                      Lv. {user.progression.level}
+                    </span>
+                    <p className="mt-1 text-xs font-semibold text-muted">
+                      {user.progression.total_xp.toLocaleString('id-ID')} XP
+                    </p>
+                  </div>
+                ) : (
+                  <span className="text-xs text-muted">-</span>
+                )}
+              </td>
+              <td className="px-6 py-4">
+                <span className="text-xs font-semibold text-muted capitalize">
+                  {user.registration_source || 'Unknown'}
+                </span>
               </td>
               <td className="px-6 py-4 font-semibold text-muted">
                 {new Date(user.created_at).toLocaleDateString('id-ID', {

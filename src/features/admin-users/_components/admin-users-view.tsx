@@ -139,6 +139,8 @@ export function AdminUsersView({
             <div className={isLoading ? 'opacity-50 pointer-events-none transition-opacity' : 'transition-opacity'}>
               <AdminUsersTable
                 users={users}
+                page={page}
+                limit={limit}
                 onChangeStatusClick={openStatusModal}
               />
             </div>

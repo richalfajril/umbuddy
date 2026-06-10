@@ -2,11 +2,18 @@ export interface AdminUserListItem {
   id: string
   name: string
   email: string
+  email_verified: boolean
+  phone: string | null
   status: string
   role: string
   created_at: string | Date
+  registration_source: string | null
   profile?: {
     target_instansi?: string | null
+  } | null
+  progression?: {
+    level: number
+    total_xp: number
   } | null
 }
 
