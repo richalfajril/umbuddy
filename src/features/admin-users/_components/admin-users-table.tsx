@@ -191,6 +191,7 @@ function ActionCell({
 
         {isOpen && (
           <div className="absolute right-10 top-0 w-44 animate-in fade-in zoom-in-95 rounded-xl border border-border bg-background p-1.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] z-[70]">
+            <div className="px-3 py-1.5 text-xs font-bold text-muted text-left">Aksi</div>
             <button
               onClick={() => {
                 setIsOpen(false)
