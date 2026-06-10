@@ -222,19 +222,18 @@ export function AdminSubtestsView() {
             </AdminTable>
           </div>
 
-          <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <SmartPagination 
-              page={page}
-              limit={limit}
-              total={total}
-              totalPages={totalPages}
-              onPageChange={setPage}
-              onLimitChange={(newLimit) => {
-                setLimit(newLimit)
-                setPage(1)
-              }}
-            />
-          </div>
+          <SmartPagination 
+            page={page}
+            limit={limit}
+            total={total}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            onLimitChange={(newLimit) => {
+              setLimit(newLimit)
+              setPage(1)
+            }}
+            isLoading={isLoading}
+          />
         </section>
       </div>
 
