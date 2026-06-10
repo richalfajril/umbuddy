@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { Database } from 'lucide-react'
 import { useToastStore } from '@/stores/useToastStore'
 import { initialAdminQuestionForm } from '../_constants/admin-questions.constants'
 import type {
@@ -205,22 +206,25 @@ export function AdminQuestionsView({
     <section className="px-4 py-6 pb-24 text-headline sm:px-6 lg:px-8 lg:py-8">
       <div className="mx-auto max-w-7xl space-y-6">
         {/* Header halaman admin questions menjaga konteks backoffice. */}
-        <header className="flex flex-col gap-4 rounded-3xl border border-border bg-background p-5 sm:p-7 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
-              Question Management
-            </p>
-            <h1 className="mt-2 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
-              Kurasi <span className="text-primary">Bank Soal</span>
-            </h1>
-            <p className="mt-1 text-sm text-body">
-              Login untuk membuat draft, me-review, lalu mem-publish soal berkualitas.
-            </p>
+        <div className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-7 dark:bg-surface">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
+                Question Management
+              </p>
+              <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
+                <Database className="h-7 w-7 text-primary" />
+                Kurasi <span className="text-primary">Bank Soal</span>
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-body sm:text-base">
+                Login untuk membuat draft, me-review, lalu mem-publish soal berkualitas.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm font-black text-primary-dark dark:text-primary">
+              {total} soal ditemukan
+            </div>
           </div>
-          <div className="rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm font-black text-primary-dark dark:text-primary">
-            {total} soal ditemukan
-          </div>
-        </header>
+        </div>
 
         <div className="grid gap-6 items-start xl:grid-cols-[minmax(0,1fr)_420px]">
           {/* Panel list soal berisi filter dan tabel padat untuk admin content. */}

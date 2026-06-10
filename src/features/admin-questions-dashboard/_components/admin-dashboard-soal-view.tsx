@@ -12,7 +12,8 @@ import {
   HelpCircle,
   FileText,
   Image as ImageIcon,
-  AlertCircle
+  AlertCircle,
+  FileQuestion
 } from 'lucide-react'
 
 // Tipe metrik sesuai yang direturn dari service
@@ -41,35 +42,38 @@ export function AdminDashboardSoalView({ metrics }: { metrics: AdminDashboardMet
   return (
     <section className="px-4 py-6 text-headline sm:px-6 lg:px-8 lg:py-8">
       <div className="mx-auto max-w-7xl space-y-6">
-        <header className="flex flex-col gap-4 rounded-3xl border border-border bg-background p-5 sm:p-7 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
-              Overview
-            </p>
-            <h1 className="mt-2 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
-              Dashboard <span className="text-primary">Soal</span>
-            </h1>
-            <p className="mt-1 text-sm text-body">
-              Ringkasan performa dan metrik bank soal Anda.
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link
+        <div className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-7 dark:bg-surface">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
+                Overview
+              </p>
+              <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
+                <FileQuestion className="h-7 w-7 text-primary" />
+                Dashboard <span className="text-primary">Soal</span>
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-body sm:text-base">
+                Ringkasan performa dan metrik bank soal Anda.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <Link
               href="/admin/questions/import"
               className="inline-flex h-10 items-center justify-center rounded-xl border border-border bg-background px-4 text-sm font-bold text-headline transition-colors hover:bg-surface hover:text-primary dark:bg-surface dark:hover:bg-background"
             >
               <Upload className="mr-2 h-4 w-4" />
               Import Excel
             </Link>
-            <Link
-              href="/admin/questions/bank"
-              className="inline-flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
-            >
-              <FileEdit className="mr-2 h-4 w-4" />
-              Kelola Soal
-            </Link>
+              <Link
+                href="/admin/questions/bank"
+                className="inline-flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+              >
+                <FileEdit className="mr-2 h-4 w-4" />
+                Kelola Soal
+              </Link>
+            </div>
           </div>
-        </header>
+        </div>
         
         {/* Top Metrics Cards */}
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">

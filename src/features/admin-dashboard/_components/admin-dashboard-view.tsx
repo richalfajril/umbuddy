@@ -1,5 +1,6 @@
 import { AnalyticsService } from '@/server/analytics/analytics.service'
 import * as React from 'react'
+import { LayoutDashboard } from 'lucide-react'
 import type { AdminDashboardViewProps } from '../_types/admin-dashboard.types'
 import { AdminKpiCards } from './admin-kpi-cards'
 import { AdminQuestionsPieChart } from './admin-questions-pie-chart'
@@ -37,7 +38,8 @@ export async function AdminDashboardView({ admin }: AdminDashboardViewProps) {
               <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
                 Umbuddy Backoffice
               </p>
-              <h1 className="mt-2 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
+              <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
+                <LayoutDashboard className="h-7 w-7 text-primary" />
                 Markas admin sudah <span className="text-primary">siap</span>
               </h1>
               <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-body sm:text-base">

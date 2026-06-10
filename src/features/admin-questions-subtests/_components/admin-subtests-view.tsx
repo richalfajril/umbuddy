@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { Plus, MoreHorizontal, FileSpreadsheet, Eye, Pencil, Trash2, AlertCircle, Search } from 'lucide-react'
+import { Plus, MoreHorizontal, FileSpreadsheet, Eye, Pencil, Trash2, AlertCircle, Search, Package } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { SmartPagination, AdminTable, AdminTableHeader, AdminTableHead, AdminTableBody, AdminTableRow, AdminTableCell } from '@/components/molecules'
 import { useToastStore } from '@/stores/useToastStore'
@@ -94,33 +94,35 @@ export function AdminSubtestsView() {
     <section className="px-4 py-6 text-headline sm:px-6 lg:px-8 lg:py-8">
       <div className="mx-auto max-w-7xl space-y-6">
         {/* Header & Aksi */}
-        <header className="flex flex-col gap-4 rounded-3xl border border-border bg-background p-5 sm:p-7 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
-              Question Packages
-            </p>
-            <h1 className="mt-2 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
-              Manajemen <span className="text-primary">Subtes</span>
-            </h1>
-            <p className="mt-1 text-sm text-body">
-              Kelola wadah paket soal (subtes) dan unggah soal melalui format Excel.
-            </p>
-          </div>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Button variant="secondary" className="gap-2 rounded-xl">
-              <FileSpreadsheet className="h-4 w-4 text-green-600" />
-              Template Excel
-            </Button>
-            <Link href="/admin/questions/subtests/create">
-              <Button className="w-full gap-2 rounded-xl sm:w-auto">
-                <Plus className="h-4 w-4" />
-                Tambah Subtes
+        <div className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-7 dark:bg-surface">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
+                Question Packages
+              </p>
+              <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
+                <Package className="h-7 w-7 text-primary" />
+                Manajemen <span className="text-primary">Subtes</span>
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-body sm:text-base">
+                Kelola wadah paket soal (subtes) dan unggah soal melalui format Excel.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Button variant="secondary" className="gap-2 rounded-xl">
+                <FileSpreadsheet className="h-4 w-4 text-green-600" />
+                Template Excel
               </Button>
-            </Link>
+              <Link href="/admin/questions/subtests/create">
+                <Button className="w-full gap-2 rounded-xl sm:w-auto">
+                  <Plus className="h-4 w-4" />
+                  Tambah Subtes
+                </Button>
+              </Link>
+            </div>
           </div>
-        </header>
+        </div>
 
-        {/* Table/List Area */}
         {/* Table/List Area */}
         <section className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-6 dark:bg-surface">
           {/* Search Bar */}
