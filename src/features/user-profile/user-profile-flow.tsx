@@ -38,7 +38,7 @@ export async function UserProfileFlow() {
         avatar_url: true,
         target_instansi: true,
         target_score: true,
-        exam_date: true,
+        birth_date: true,
         province: true,
         city: true,
         institution: true,
@@ -100,7 +100,7 @@ export async function UserProfileFlow() {
     targetInstansi: profile?.target_instansi || '-',
     targetScore: formatProfileNumber(profile?.target_score),
     targetLocation,
-    examDate: formatProfileDate(profile?.exam_date),
+    birthDate: formatProfileDate(profile?.birth_date),
     institution: profile?.institution || '-',
     major: profile?.major || '-',
   }

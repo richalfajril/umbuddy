@@ -68,7 +68,7 @@ model UserProfile {
   avatar_url      String?
   target_instansi String?
   target_score    Int?
-  exam_date       DateTime?
+  birth_date      DateTime?
   province        String?
   city            String?
   institution     String?

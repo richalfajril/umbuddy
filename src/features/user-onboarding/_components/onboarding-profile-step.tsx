@@ -72,13 +72,13 @@ export function OnboardingProfileStep({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="exam_date">Tanggal Ujian</Label>
+            <Label htmlFor="birth_date">Tanggal Lahir</Label>
             <Input
-              id="exam_date"
+              id="birth_date"
               type="date"
               required
-              value={profile.exam_date}
-              onChange={(event) => onProfileChange((current) => ({ ...current, exam_date: event.target.value }))}
+              value={profile.birth_date}
+              onChange={(event) => onProfileChange((current) => ({ ...current, birth_date: event.target.value }))}
             />
           </div>
           <div className="space-y-2">

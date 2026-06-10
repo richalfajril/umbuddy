@@ -77,7 +77,7 @@ export function OnboardingFlow() {
           ...initialProfile,
           target_instansi: status.profile?.target_instansi ?? '',
           target_score: status.profile?.target_score ? String(status.profile.target_score) : initialProfile.target_score,
-          exam_date: toDateInputValue(status.profile?.exam_date),
+          birth_date: toDateInputValue(status.profile?.birth_date),
           province: status.profile?.province ?? '',
           city: status.profile?.city ?? '',
           institution: status.profile?.institution ?? '',
@@ -146,7 +146,7 @@ export function OnboardingFlow() {
         body: JSON.stringify({
           target_instansi: profile.target_instansi,
           target_score: Number(profile.target_score),
-          exam_date: profile.exam_date,
+          birth_date: profile.birth_date,
           province: profile.province,
           city: profile.city,
           institution: profile.institution || undefined,

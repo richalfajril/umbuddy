@@ -89,17 +89,17 @@ describe('U18 OnboardingService', () => {
       user_id: 'user-1',
       target_instansi: 'Kementerian Keuangan',
       target_score: 430,
-      exam_date: new Date('2026-08-01'),
+      birth_date: new Date('2000-01-01'),
       province: 'Jawa Barat',
       city: 'Bandung',
       institution: 'ITB',
       major: 'Akuntansi',
-    } as Awaited<ReturnType<typeof prisma.userProfile.upsert>>)
+    } as unknown as Awaited<ReturnType<typeof prisma.userProfile.upsert>>)
 
     await OnboardingService.saveProfile('user-1', {
       target_instansi: 'Kementerian Keuangan',
       target_score: 430,
-      exam_date: '2026-08-01',
+      birth_date: '2000-01-01',
       province: 'Jawa Barat',
       city: 'Bandung',
       institution: 'ITB',

@@ -12,7 +12,7 @@ export class OnboardingProfileDto {
   target_score!: number
 
   @IsDateString()
-  exam_date!: string
+  birth_date!: string
 
   @IsString()
   @MinLength(2)

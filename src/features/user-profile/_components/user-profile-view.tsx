@@ -121,8 +121,8 @@ export function UserProfileView({
                   <p className="mt-1 font-display text-2xl font-black text-primary">{target.targetScore}</p>
                 </div>
                 <div className="rounded-2xl border border-border bg-surface p-4">
-                  <p className="text-xs font-bold text-muted">Tanggal Ujian</p>
-                  <p className="mt-1 font-bold text-headline">{target.examDate}</p>
+                  <p className="text-xs font-bold text-muted">Tanggal Lahir</p>
+                  <p className="mt-1 font-bold text-headline">{target.birthDate}</p>
                 </div>
               </div>
               <p className="flex items-center gap-2 text-sm font-semibold text-body">

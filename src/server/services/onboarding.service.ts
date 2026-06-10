@@ -22,7 +22,7 @@ type TransactionClient = Omit<
 export interface OnboardingProfileInput {
   target_instansi: string
   target_score: number
-  exam_date: string
+  birth_date: string
   province: string
   city: string
   institution?: string
@@ -254,7 +254,7 @@ export class OnboardingService {
         ? {
             target_instansi: profile.target_instansi,
             target_score: profile.target_score,
-            exam_date: profile.exam_date?.toISOString() ?? null,
+            birth_date: profile.birth_date?.toISOString() ?? null,
             province: profile.province,
             city: profile.city,
             institution: profile.institution,
@@ -276,9 +276,9 @@ export class OnboardingService {
     const institution = input.institution ? sanitizeText(input.institution) : undefined
     const major = input.major ? sanitizeText(input.major) : undefined
     const phone = input.phone ? sanitizeText(input.phone, 32) : undefined
-    const examDate = new Date(input.exam_date)
+    const birthDate = new Date(input.birth_date)
 
-    if (!targetInstansi || !province || !city || Number.isNaN(examDate.getTime())) {
+    if (!targetInstansi || !province || !city || Number.isNaN(birthDate.getTime())) {
       throw new OnboardingError('VALIDATION_ERROR', 'Data profil onboarding belum lengkap.', 400)
     }
 
@@ -293,7 +293,7 @@ export class OnboardingService {
         update: {
           target_instansi: targetInstansi,
           target_score: input.target_score,
-          exam_date: examDate,
+          birth_date: birthDate,
           province,
           city,
           institution,
@@ -303,7 +303,7 @@ export class OnboardingService {
           user_id: userId,
           target_instansi: targetInstansi,
           target_score: input.target_score,
-          exam_date: examDate,
+          birth_date: birthDate,
           province,
           city,
           institution,
@@ -326,7 +326,7 @@ export class OnboardingService {
         profile: {
           target_instansi: profile.target_instansi,
           target_score: profile.target_score,
-          exam_date: profile.exam_date?.toISOString() ?? null,
+          birth_date: profile.birth_date?.toISOString() ?? null,
           province: profile.province,
           city: profile.city,
           institution: profile.institution,

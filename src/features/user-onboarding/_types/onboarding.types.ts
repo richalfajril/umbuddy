@@ -46,7 +46,7 @@ export type StatusResponse = {
 export type ProfileForm = {
   target_instansi: string
   target_score: string
-  exam_date: string
+  birth_date: string
   province: string
   city: string
   institution: string

@@ -5,7 +5,7 @@ export type UserProfileTarget = {
   targetInstansi: string
   targetScore: string
   targetLocation: string
-  examDate: string
+  birthDate: string
   institution: string
   major: string
 }
