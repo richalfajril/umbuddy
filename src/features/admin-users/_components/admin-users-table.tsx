@@ -40,23 +40,23 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
       <table className="w-full text-left text-sm text-body">
         <thead className="bg-surface text-xs font-black uppercase tracking-wider text-muted">
           <tr>
-            <th className="px-4 py-4 whitespace-nowrap">No</th>
-            <th className="px-4 py-4 min-w-[200px]">Nama</th>
-            <th className="px-4 py-4 whitespace-nowrap">Role</th>
-            <th className="px-4 py-4 whitespace-nowrap">Email</th>
-            <th className="px-4 py-4 whitespace-nowrap">No HP</th>
-            <th className="px-4 py-4 whitespace-nowrap">Tanggal Lahir</th>
-            <th className="px-4 py-4 whitespace-nowrap">Institusi</th>
-            <th className="px-4 py-4 whitespace-nowrap">Jurusan</th>
-            <th className="px-4 py-4 whitespace-nowrap">Kota/Kabupaten</th>
-            <th className="px-4 py-4 whitespace-nowrap">Provinsi</th>
-            <th className="px-4 py-4 whitespace-nowrap">Instansi</th>
-            <th className="px-4 py-4 whitespace-nowrap">Target Skor</th>
-            <th className="px-4 py-4 whitespace-nowrap">Pangkat</th>
-            <th className="px-4 py-4 whitespace-nowrap text-right min-w-[140px]">XP</th>
-            <th className="px-4 py-4 whitespace-nowrap">Bergabung</th>
-            <th className="px-4 py-4 whitespace-nowrap">Status</th>
-            <th className="px-4 py-4 text-right whitespace-nowrap sticky right-0 bg-surface shadow-[-4px_0_12px_rgba(0,0,0,0.05)]">Aksi</th>
+            <th className="px-4 py-5 whitespace-nowrap">No</th>
+            <th className="px-4 py-5 min-w-[200px]">Nama</th>
+            <th className="px-4 py-5 whitespace-nowrap">Role</th>
+            <th className="px-4 py-5 whitespace-nowrap">Email</th>
+            <th className="px-4 py-5 whitespace-nowrap">No HP</th>
+            <th className="px-4 py-5 whitespace-nowrap">Tanggal Lahir</th>
+            <th className="px-4 py-5 whitespace-nowrap">Institusi</th>
+            <th className="px-4 py-5 whitespace-nowrap">Jurusan</th>
+            <th className="px-4 py-5 whitespace-nowrap">Kota/Kabupaten</th>
+            <th className="px-4 py-5 whitespace-nowrap">Provinsi</th>
+            <th className="px-4 py-5 whitespace-nowrap">Instansi</th>
+            <th className="px-4 py-5 whitespace-nowrap">Target Skor</th>
+            <th className="px-4 py-5 whitespace-nowrap">Pangkat</th>
+            <th className="px-4 py-5 whitespace-nowrap text-right min-w-[140px]">XP</th>
+            <th className="px-4 py-5 whitespace-nowrap">Bergabung</th>
+            <th className="px-4 py-5 whitespace-nowrap">Status</th>
+            <th className="px-4 py-5 text-right whitespace-nowrap sticky right-0 bg-surface shadow-[-4px_0_12px_rgba(0,0,0,0.05)]">Aksi</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border bg-background">
