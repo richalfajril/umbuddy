@@ -20,7 +20,7 @@ interface SubtestPackage {
 export function AdminSubtestsView() {
   const [subtests, setSubtests] = React.useState<SubtestPackage[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
-  const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null)
+  const [activeDropdown, setActiveDropdown] = React.useState<{id: string, top: number, right: number} | null>(null)
   
   // State untuk Delete Modal
   const [deleteConfirmation, setDeleteConfirmation] = React.useState<SubtestPackage | null>(null)
@@ -112,7 +112,7 @@ export function AdminSubtestsView() {
 
         {/* Table/List Area */}
         <div className="rounded-3xl border border-border bg-background p-1 shadow-sm dark:bg-surface">
-          <div className="overflow-x-auto min-h-[250px] pb-10">
+          <div className="overflow-x-auto">
             <table className="w-full text-left text-sm text-body">
               <thead className="border-b border-border text-xs uppercase text-muted">
                 <tr>
@@ -163,48 +163,24 @@ export function AdminSubtestsView() {
                           year: 'numeric'
                         })}
                       </td>
-                      <td className="px-6 py-4 text-center relative">
+                      <td className="px-6 py-4 text-center">
                         <button 
-                          onClick={() => setActiveDropdown(activeDropdown === st.id ? null : st.id)}
+                          onClick={(e) => {
+                            if (activeDropdown?.id === st.id) {
+                              setActiveDropdown(null)
+                            } else {
+                              const rect = e.currentTarget.getBoundingClientRect()
+                              setActiveDropdown({
+                                id: st.id,
+                                top: rect.bottom + 8,
+                                right: window.innerWidth - rect.right
+                              })
+                            }
+                          }}
                           className="rounded-lg p-2 text-muted hover:bg-border/50 hover:text-headline transition-colors"
                         >
                           <MoreHorizontal className="h-4 w-4" />
                         </button>
-                        
-                        {/* Menu Dropdown */}
-                        {activeDropdown === st.id && (
-                          <>
-                            <div 
-                              className="fixed inset-0 z-10" 
-                              onClick={() => setActiveDropdown(null)} 
-                            />
-                            <div className="absolute right-6 top-12 z-20 w-48 rounded-xl border border-border bg-background p-1.5 shadow-lg dark:bg-surface">
-                              <div className="px-3 py-1.5 text-xs font-bold text-muted text-left">Aksi</div>
-                              <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-headline hover:bg-muted/10">
-                                <Plus className="h-4 w-4 text-muted" />
-                                Tambah Pertanyaan
-                              </button>
-                              <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-headline hover:bg-muted/10">
-                                <Eye className="h-4 w-4 text-muted" />
-                                Detail
-                              </button>
-                              <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-amber-600 hover:bg-amber-50 dark:text-amber-500 dark:hover:bg-amber-950/30">
-                                <Pencil className="h-4 w-4" />
-                                Edit
-                              </button>
-                              <button 
-                                onClick={() => {
-                                  setActiveDropdown(null)
-                                  setDeleteConfirmation(st)
-                                }}
-                                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                                Hapus
-                              </button>
-                            </div>
-                          </>
-                        )}
                       </td>
                     </tr>
                   ))
@@ -233,6 +209,41 @@ export function AdminSubtestsView() {
           </div>
         </div>
       </div>
+
+      {/* Global Dropdown Menu */}
+      {activeDropdown && (
+        <>
+          <div 
+            className="fixed inset-0 z-40" 
+            onClick={() => setActiveDropdown(null)} 
+          />
+          <div 
+            className="fixed z-50 w-48 rounded-xl border border-border bg-background p-1.5 shadow-lg dark:bg-surface"
+            style={{ top: activeDropdown.top, right: activeDropdown.right }}
+          >
+            <div className="px-3 py-1.5 text-xs font-bold text-muted text-left">Aksi</div>
+            <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-headline hover:bg-muted/10">
+              <Eye className="h-4 w-4 text-muted" />
+              Detail
+            </button>
+            <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-amber-600 hover:bg-amber-50 dark:text-amber-500 dark:hover:bg-amber-950/30">
+              <Pencil className="h-4 w-4" />
+              Edit
+            </button>
+            <button 
+              onClick={() => {
+                const st = subtests.find(s => s.id === activeDropdown.id)
+                setActiveDropdown(null)
+                if (st) setDeleteConfirmation(st)
+              }}
+              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
+            >
+              <Trash2 className="h-4 w-4" />
+              Hapus
+            </button>
+          </div>
+        </>
+      )}
 
       {/* Modal Konfirmasi Hapus */}
       {deleteConfirmation && (
