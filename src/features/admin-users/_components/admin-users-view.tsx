@@ -32,19 +32,19 @@ export function AdminUsersView({
   const [keyword, setKeyword] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
 
-  // Modal State
+  const isFirstRender = React.useRef(true)
+
   const [isModalOpen, setIsModalOpen] = React.useState(false)
   const [modalUser, setModalUser] = React.useState({ id: '', name: '', status: '' })
 
   const { addToast } = useToastStore()
 
-  // Mengambil list users dengan paginasi & filter
-  const loadUsers = React.useCallback(async (targetPage = page, currentLimit = limit) => {
+  const loadUsers = React.useCallback(async (targetPage = page, currentLimit = limit, currentKeyword = keyword) => {
     setIsLoading(true)
     const params = new URLSearchParams()
     params.set('page', targetPage.toString())
     params.set('limit', currentLimit.toString())
-    if (keyword.trim()) params.set('keyword', keyword.trim())
+    if (currentKeyword.trim()) params.set('keyword', currentKeyword.trim())
 
     try {
       const response = await fetch(`/api/v1/admin/users?${params.toString()}`)
@@ -66,21 +66,36 @@ export function AdminUsersView({
     }
   }, [addToast, keyword, limit, page])
 
+  // Smart Search: fetch when keyword changes with debounce
+  React.useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+
+    const timer = setTimeout(() => {
+      setPage(1)
+      loadUsers(1, limit, keyword)
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [keyword, limit, loadUsers])
+
   const handleFilter = () => {
     setPage(1)
-    loadUsers(1)
+    loadUsers(1, limit, keyword)
   }
 
   const handleLimitChange = (newLimit: number) => {
     setLimit(newLimit)
     setPage(1)
-    loadUsers(1, newLimit)
+    loadUsers(1, newLimit, keyword)
   }
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setPage(newPage)
-      loadUsers(newPage)
+      loadUsers(newPage, limit, keyword)
     }
   }
 

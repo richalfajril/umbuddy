@@ -24,16 +24,6 @@ export function AdminUsersFilters({
     }
   }
 
-  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
-
-  const handleInputChange = (val: string) => {
-    onKeywordChange(val)
-    if (timeoutRef.current) clearTimeout(timeoutRef.current)
-    timeoutRef.current = setTimeout(() => {
-      onFilter()
-    }, 500)
-  }
-
   return (
     <div className="mb-5 flex flex-wrap items-center gap-3 border-b border-border pb-5">
       {/* Search bar */}
@@ -46,7 +36,7 @@ export function AdminUsersFilters({
           className="block w-full rounded-3xl border border-border bg-surface py-2.5 pl-10 pr-3 text-sm font-semibold text-headline transition placeholder:text-muted focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10"
           placeholder="Cari nama, email, hp, ID..."
           value={keyword}
-          onChange={(e) => handleInputChange(e.target.value)}
+          onChange={(e) => onKeywordChange(e.target.value)}
           onKeyDown={handleKeyDown}
         />
       </div>
