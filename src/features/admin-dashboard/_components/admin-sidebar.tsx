@@ -69,7 +69,7 @@ export function AdminSidebar({
             alt="Umbuddy Logo"
             width={320}
             height={80}
-            className="h-8 w-auto object-contain"
+            className="h-16 w-auto object-contain"
             priority
           />
         </Link>
