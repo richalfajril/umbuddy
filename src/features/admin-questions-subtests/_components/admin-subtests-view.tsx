@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { Plus, MoreHorizontal, FileSpreadsheet, Eye, Pencil, Trash2, AlertCircle } from 'lucide-react'
+import { Plus, MoreHorizontal, FileSpreadsheet, Eye, Pencil, Trash2, AlertCircle, Search } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { SmartPagination, AdminTable, AdminTableHeader, AdminTableHead, AdminTableBody, AdminTableRow, AdminTableCell } from '@/components/molecules'
 import { useToastStore } from '@/stores/useToastStore'
@@ -27,14 +27,24 @@ export function AdminSubtestsView() {
   const [isDeleting, setIsDeleting] = React.useState(false)
   const { addToast } = useToastStore()
   
-  // Pagination state
+  // Pagination & Search state
   const [page, setPage] = React.useState(1)
   const [limit, setLimit] = React.useState(10)
+  const [keyword, setKeyword] = React.useState('')
 
-  // Client-side pagination logic
-  const total = subtests.length
+  // Client-side filtering & pagination logic
+  const filteredSubtests = React.useMemo(() => {
+    if (!keyword.trim()) return subtests
+    const lower = keyword.toLowerCase()
+    return subtests.filter(st => 
+      st.packageCode.toLowerCase().includes(lower) || 
+      st.category.toLowerCase().includes(lower)
+    )
+  }, [subtests, keyword])
+
+  const total = filteredSubtests.length
   const totalPages = Math.ceil(total / limit)
-  const paginatedSubtests = subtests.slice((page - 1) * limit, page * limit)
+  const paginatedSubtests = filteredSubtests.slice((page - 1) * limit, page * limit)
 
   const fetchPackages = React.useCallback(async () => {
     try {
@@ -112,86 +122,107 @@ export function AdminSubtestsView() {
 
         {/* Table/List Area */}
         {/* Table/List Area */}
-        <div className="rounded-2xl bg-background shadow-sm dark:bg-surface">
-          <AdminTable>
-            <AdminTableHeader>
-              <tr>
-                <AdminTableHead>No</AdminTableHead>
-                <AdminTableHead>Nama Subtes / Paket</AdminTableHead>
-                <AdminTableHead>Kategori</AdminTableHead>
-                <AdminTableHead>Total Soal</AdminTableHead>
-                <AdminTableHead>Tanggal Dibuat</AdminTableHead>
-                <AdminTableHead>Terakhir Diubah</AdminTableHead>
-                <AdminTableHead className="text-right">Aksi</AdminTableHead>
-              </tr>
-            </AdminTableHeader>
-            <AdminTableBody>
-              {isLoading ? (
-                <AdminTableRow>
-                  <AdminTableCell colSpan={7} className="px-6 py-12 text-center text-muted">
-                    Memuat daftar paket soal...
-                  </AdminTableCell>
-                </AdminTableRow>
-              ) : subtests.length === 0 ? (
-                <AdminTableRow>
-                  <AdminTableCell colSpan={7} className="px-6 py-12 text-center text-muted">
-                    Belum ada paket subtes yang dibuat.
-                  </AdminTableCell>
-                </AdminTableRow>
-              ) : (
-                paginatedSubtests.map((st, i) => (
-                  <AdminTableRow key={st.id}>
-                    <AdminTableCell className="font-medium text-muted">{((page - 1) * limit) + i + 1}</AdminTableCell>
-                    <AdminTableCell className="font-bold text-headline">{st.packageCode}</AdminTableCell>
-                    <AdminTableCell>
-                      <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-bold text-primary">
-                        {st.category}
-                      </span>
-                    </AdminTableCell>
-                    <AdminTableCell className="text-muted">{st.totalQuestions} Soal</AdminTableCell>
-                    <AdminTableCell className="text-muted">
-                      {new Date(st.createdAt).toLocaleDateString('id-ID', {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric'
-                      })}
-                    </AdminTableCell>
-                    <AdminTableCell className="text-muted">
-                      {new Date(st.updatedAt).toLocaleDateString('id-ID', {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric'
-                      })}
-                    </AdminTableCell>
-                    <AdminTableCell className="text-right">
-                      <div className="relative flex justify-end">
-                        <button 
-                          onClick={(e) => {
-                            if (activeDropdown?.id === st.id) {
-                              setActiveDropdown(null)
-                            } else {
-                              const rect = e.currentTarget.getBoundingClientRect()
-                              setActiveDropdown({
-                                id: st.id,
-                                top: rect.bottom + 8,
-                                right: window.innerWidth - rect.right
-                              })
-                            }
-                          }}
-                          className={`rounded-xl p-2 transition ${activeDropdown?.id === st.id ? 'bg-surface text-headline' : 'text-muted hover:bg-surface hover:text-headline'}`}
-                          title="Aksi Lainnya"
-                        >
-                          <MoreHorizontal className="h-5 w-5" />
-                        </button>
-                      </div>
+        <section className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-6 dark:bg-surface">
+          {/* Search Bar */}
+          <div className="mb-5 flex flex-wrap items-center gap-3 border-b border-border pb-5">
+            <div className="relative w-full sm:max-w-[280px]">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                <Search className="h-4 w-4 text-muted" aria-hidden="true" />
+              </div>
+              <input
+                type="text"
+                className="block w-full rounded-3xl border border-border bg-surface py-2.5 pl-10 pr-3 text-sm font-semibold text-headline transition placeholder:text-muted focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10"
+                placeholder="Cari subtes atau kategori..."
+                value={keyword}
+                onChange={(e) => {
+                  setKeyword(e.target.value)
+                  setPage(1)
+                }}
+              />
+            </div>
+          </div>
+
+          <div className={isLoading ? 'opacity-50 pointer-events-none transition-opacity' : 'transition-opacity'}>
+            <AdminTable>
+              <AdminTableHeader>
+                <tr>
+                  <AdminTableHead>No</AdminTableHead>
+                  <AdminTableHead>Nama Subtes / Paket</AdminTableHead>
+                  <AdminTableHead>Kategori</AdminTableHead>
+                  <AdminTableHead>Total Soal</AdminTableHead>
+                  <AdminTableHead>Tanggal Dibuat</AdminTableHead>
+                  <AdminTableHead>Terakhir Diubah</AdminTableHead>
+                  <AdminTableHead className="text-right">Aksi</AdminTableHead>
+                </tr>
+              </AdminTableHeader>
+              <AdminTableBody>
+                {isLoading ? (
+                  <AdminTableRow>
+                    <AdminTableCell colSpan={7} className="px-6 py-12 text-center text-muted">
+                      Memuat daftar paket soal...
                     </AdminTableCell>
                   </AdminTableRow>
-                ))
-              )}
-            </AdminTableBody>
-          </AdminTable>
+                ) : filteredSubtests.length === 0 ? (
+                  <AdminTableRow>
+                    <AdminTableCell colSpan={7} className="px-6 py-12 text-center text-muted">
+                      Belum ada paket subtes yang ditemukan.
+                    </AdminTableCell>
+                  </AdminTableRow>
+                ) : (
+                  paginatedSubtests.map((st, i) => (
+                    <AdminTableRow key={st.id}>
+                      <AdminTableCell className="font-medium text-muted">{((page - 1) * limit) + i + 1}</AdminTableCell>
+                      <AdminTableCell className="font-bold text-headline">{st.packageCode}</AdminTableCell>
+                      <AdminTableCell>
+                        <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-bold text-primary">
+                          {st.category}
+                        </span>
+                      </AdminTableCell>
+                      <AdminTableCell className="text-muted">{st.totalQuestions} Soal</AdminTableCell>
+                      <AdminTableCell className="text-muted">
+                        {new Date(st.createdAt).toLocaleDateString('id-ID', {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric'
+                        })}
+                      </AdminTableCell>
+                      <AdminTableCell className="text-muted">
+                        {new Date(st.updatedAt).toLocaleDateString('id-ID', {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric'
+                        })}
+                      </AdminTableCell>
+                      <AdminTableCell className="text-right">
+                        <div className="relative flex justify-end">
+                          <button 
+                            onClick={(e) => {
+                              if (activeDropdown?.id === st.id) {
+                                setActiveDropdown(null)
+                              } else {
+                                const rect = e.currentTarget.getBoundingClientRect()
+                                setActiveDropdown({
+                                  id: st.id,
+                                  top: rect.bottom + 8,
+                                  right: window.innerWidth - rect.right
+                                })
+                              }
+                            }}
+                            className={`rounded-xl p-2 transition ${activeDropdown?.id === st.id ? 'bg-surface text-headline' : 'text-muted hover:bg-surface hover:text-headline'}`}
+                            title="Aksi Lainnya"
+                          >
+                            <MoreHorizontal className="h-5 w-5" />
+                          </button>
+                        </div>
+                      </AdminTableCell>
+                    </AdminTableRow>
+                  ))
+                )}
+              </AdminTableBody>
+            </AdminTable>
+          </div>
 
-          <div className="px-5 pb-5 sm:px-6 sm:pb-6">
+          <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <SmartPagination 
               page={page}
               limit={limit}
@@ -204,7 +235,7 @@ export function AdminSubtestsView() {
               }}
             />
           </div>
-        </div>
+        </section>
       </div>
 
       {/* Global Dropdown Menu */}
