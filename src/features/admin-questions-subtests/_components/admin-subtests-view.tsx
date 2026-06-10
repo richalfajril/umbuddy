@@ -189,12 +189,7 @@ export function AdminSubtestsView() {
             </table>
           </div>
 
-          <div className="flex flex-col items-center justify-between gap-4 border-t border-border p-5 sm:flex-row sm:p-6">
-            <p className="text-sm font-medium text-muted">
-              Menampilkan <span className="font-bold text-headline">{Math.min((page - 1) * limit + 1, total)}</span>-
-              <span className="font-bold text-headline">{Math.min(page * limit, total)}</span> dari <span className="font-bold text-headline">{total}</span> data
-            </p>
-
+          <div className="px-5 pb-5 sm:px-6 sm:pb-6">
             <SmartPagination 
               page={page}
               limit={limit}
