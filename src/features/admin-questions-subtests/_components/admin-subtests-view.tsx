@@ -104,8 +104,8 @@ export function AdminSubtestsView() {
                 <Package className="h-7 w-7 text-primary" />
                 Manajemen <span className="text-primary">Subtes</span>
               </h1>
-              <p className="mt-1 text-sm text-body">
-                Kelola wadah paket soal (subtes) dan unggah soal melalui format Excel.
+              <p className="mt-2 text-sm font-medium text-muted">
+                Kelola koleksi subtes yang akan digunakan dalam Try Out.
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

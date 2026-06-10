@@ -12,10 +12,10 @@ export function AdminTryoutsView() {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
-                <ClipboardList className="h-8 w-8 sm:h-10 sm:w-10 text-primary" />
+                <ClipboardList className="h-7 w-7 text-primary" />
                 Manajemen <span className="text-primary">Try Out</span>
               </h1>
-              <p className="mt-2 text-base font-medium text-muted">
+              <p className="mt-2 text-sm font-medium text-muted">
                 Kelola paket Try Out dan integrasi subtes.
               </p>
             </div>

@@ -112,7 +112,7 @@ export function AdminSubtestsCreateView() {
                 <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
                   Tambah <span className="text-primary">Subtes</span>
                 </h1>
-                <p className="mt-2 text-base font-medium text-muted">
+                <p className="mt-2 text-sm font-medium text-muted">
                   Buat wadah paket soal baru dan unggah dari Excel.
                 </p>
               </div>

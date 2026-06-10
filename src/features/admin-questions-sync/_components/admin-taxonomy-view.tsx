@@ -83,8 +83,8 @@ export function AdminTaxonomyView() {
                 <RefreshCw className="h-7 w-7 text-primary" />
                 Sinkron <span className="text-primary">Soal</span>
               </h1>
-              <p className="mt-1 text-sm text-body">
-                Kelola struktur kategori dan materi soal yang akan muncul di Try Out dan Practice.
+              <p className="mt-2 text-sm font-medium text-muted">
+                Kelola hierarki materi dan kompetensi CPNS.
               </p>
             </div>
             <Button
