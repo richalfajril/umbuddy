@@ -21,14 +21,14 @@ export interface AdminTableLayoutProps {
  */
 export function AdminTableLayout({ filters, children, pagination }: AdminTableLayoutProps) {
   return (
-    <section className="overflow-hidden rounded-3xl border border-border bg-background shadow-sm dark:bg-surface">
+    <section className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-6 dark:bg-surface">
       {filters && (
-        <div className="flex flex-col gap-4 border-b border-border p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+        <div className="mb-5 flex flex-col gap-4 border-b border-border pb-5 sm:flex-row sm:items-center sm:justify-between">
           {filters}
         </div>
       )}
       
-      <div className="overflow-x-auto">
+      <div className={pagination?.isLoading ? 'pointer-events-none opacity-50 transition-opacity' : 'transition-opacity'}>
         {children}
       </div>
 
