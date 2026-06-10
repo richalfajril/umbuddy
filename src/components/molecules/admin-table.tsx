@@ -73,7 +73,7 @@ const AdminTableCell = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <td
     ref={ref}
-    className={cn("px-4 py-2.5", className)}
+    className={cn("px-4 py-2.5 whitespace-nowrap", className)}
     {...props}
   />
 ))

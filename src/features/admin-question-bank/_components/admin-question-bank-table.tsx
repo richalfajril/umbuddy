@@ -48,7 +48,7 @@ export function AdminQuestionBankTable({ questions }: AdminQuestionBankTableProp
               <span className="font-bold text-headline">{q.category}</span>
             </AdminTableCell>
             <AdminTableCell>
-              <p className="line-clamp-2 max-w-lg text-sm text-body">
+              <p className="truncate max-w-lg text-sm text-body">
                 {q.text}
               </p>
             </AdminTableCell>
