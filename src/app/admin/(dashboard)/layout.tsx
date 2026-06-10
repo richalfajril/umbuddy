@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { redirect } from 'next/navigation'
 import { AdminAuthService } from '@/server/admin-auth'
 import { AdminDashboardShell } from '@/features/admin-dashboard/_components/admin-dashboard-shell'
 
@@ -9,10 +10,9 @@ export default async function AdminLayout({
 }) {
   const session = await AdminAuthService.getCachedCurrentAdmin()
 
-  // Jika tidak ada session, render children tanpa shell agar halaman login (/admin/login)
-  // bisa tampil bersih tanpa sidebar dashboard. Proteksi rute ada di level Flow.
+  // Jika tidak ada session, redirect ke halaman login
   if (!session) {
-    return <>{children}</>
+    redirect('/admin/login')
   }
 
   // Jika ada session, bungkus dengan persisten shell
