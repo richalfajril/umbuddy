@@ -10,6 +10,12 @@ export interface AdminUserListItem {
   registration_source: string | null
   profile?: {
     target_instansi?: string | null
+    target_score?: number | null
+    birth_date?: string | Date | null
+    institution?: string | null
+    major?: string | null
+    city?: string | null
+    province?: string | null
   } | null
   progression?: {
     level: number

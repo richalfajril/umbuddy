@@ -69,6 +69,12 @@ export class AdminUsersService {
           profile: {
             select: {
               target_instansi: true,
+              target_score: true,
+              birth_date: true,
+              institution: true,
+              major: true,
+              city: true,
+              province: true,
             }
           },
           progression: {
