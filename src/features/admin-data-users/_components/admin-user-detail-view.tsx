@@ -55,9 +55,15 @@ export function AdminUserDetailView({
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                 Kembali ke Direktori
               </Link>
+              <p className="mt-4 text-xs font-black uppercase tracking-[0.22em] text-primary">
+                User Directory
+              </p>
               <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
                 Detail <span className="text-primary">Profil Pengguna</span>
               </h1>
+              <p className="mt-2 text-sm font-medium text-muted">
+                Pantau riwayat aktivitas dan moderasi pengguna spesifik.
+              </p>
             </div>
             <div className="flex shrink-0 flex-col items-end gap-2">
               <StatusBadge status={currentStatus} />

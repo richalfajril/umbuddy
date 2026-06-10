@@ -11,6 +11,9 @@ export function AdminTryoutsView() {
         <div className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-7 dark:bg-surface">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
+                Try Out
+              </p>
               <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
                 <ClipboardList className="h-7 w-7 text-primary" />
                 Manajemen <span className="text-primary">Try Out</span>
