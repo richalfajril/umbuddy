@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { AdminUsersFlow } from '@/features/admin-users/admin-users-flow'
+import { AdminUsersFlow } from '@/features/admin-data-users/admin-users-flow'
 
 export const metadata: Metadata = {
   title: 'User Management - Umbuddy Backoffice',
