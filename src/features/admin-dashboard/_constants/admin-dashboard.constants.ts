@@ -26,6 +26,13 @@ export const ADMIN_DASHBOARD_NAV_ITEMS: AdminNavItem[] = [
   },
 
   {
+    label: 'Bank Soal',
+    href: '/admin/question-bank',
+    icon: 'bank',
+    description: 'Manajemen database soal, status publikasi, dan kategori.',
+    prefetch: true,
+  },
+  {
     label: 'Sinkron Soal',
     href: '/admin/sync',
     icon: 'sync',
