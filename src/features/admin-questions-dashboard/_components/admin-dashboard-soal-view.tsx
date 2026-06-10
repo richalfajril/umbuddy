@@ -52,7 +52,7 @@ export function AdminDashboardSoalView({ metrics }: { metrics: AdminDashboardMet
                 <FileQuestion className="h-7 w-7 text-primary" />
                 Dashboard <span className="text-primary">Soal</span>
               </h1>
-              <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-body sm:text-base">
+              <p className="mt-1 text-sm text-body">
                 Ringkasan performa dan metrik bank soal Anda.
               </p>
             </div>

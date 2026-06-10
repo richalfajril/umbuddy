@@ -42,7 +42,7 @@ export async function AdminDashboardView({ admin }: AdminDashboardViewProps) {
                 <LayoutDashboard className="h-7 w-7 text-primary" />
                 Markas admin sudah <span className="text-primary">siap</span>
               </h1>
-              <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-body sm:text-base">
+              <p className="mt-1 text-sm text-body">
                 Kelola konten, pantau modul operasional, dan jaga kualitas soal CPNS dari satu dashboard.
               </p>
             </div>

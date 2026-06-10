@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { CheckCircle2, ChevronRight, XCircle } from 'lucide-react'
+import { CheckCircle2, ChevronRight, XCircle, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { useToastStore } from '@/stores/useToastStore'
 import type { AdminSubtest } from '../_types/admin-taxonomy.types'
@@ -73,27 +73,30 @@ export function AdminTaxonomyView() {
   return (
     <section className="px-4 py-6 text-headline sm:px-6 lg:px-8 lg:py-8">
       <div className="mx-auto max-w-7xl space-y-6">
-        <header className="flex flex-col gap-4 rounded-3xl border border-border bg-background p-5 sm:p-7 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
-              CPNS Taxonomy
-            </p>
-            <h1 className="mt-2 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
-              Sinkron <span className="text-primary">Soal</span>
-            </h1>
-            <p className="mt-1 text-sm text-body">
-              Kelola struktur kategori dan materi soal yang akan muncul di Try Out dan Practice.
-            </p>
+        <div className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-7 dark:bg-surface">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
+                CPNS Taxonomy
+              </p>
+              <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
+                <RefreshCw className="h-7 w-7 text-primary" />
+                Sinkron <span className="text-primary">Soal</span>
+              </h1>
+              <p className="mt-1 text-sm text-body">
+                Kelola struktur kategori dan materi soal yang akan muncul di Try Out dan Practice.
+              </p>
+            </div>
+            <Button
+              variant="secondary"
+              onClick={handleSeed}
+              isLoading={isSeeding}
+              loadingLabel="Menyinkronkan..."
+            >
+              Sinkronkan Default CPNS
+            </Button>
           </div>
-          <Button
-            variant="secondary"
-            onClick={handleSeed}
-            isLoading={isSeeding}
-            loadingLabel="Menyinkronkan..."
-          >
-            Sinkronkan Default CPNS
-          </Button>
-        </header>
+        </div>
 
         <div className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-6 dark:bg-surface">
           {isLoading ? (

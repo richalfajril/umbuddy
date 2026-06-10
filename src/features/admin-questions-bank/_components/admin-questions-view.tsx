@@ -216,7 +216,7 @@ export function AdminQuestionsView({
                 <Database className="h-7 w-7 text-primary" />
                 Kurasi <span className="text-primary">Bank Soal</span>
               </h1>
-              <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-body sm:text-base">
+              <p className="mt-1 text-sm text-body">
                 Login untuk membuat draft, me-review, lalu mem-publish soal berkualitas.
               </p>
             </div>

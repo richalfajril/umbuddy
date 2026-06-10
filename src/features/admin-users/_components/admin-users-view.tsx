@@ -120,7 +120,7 @@ export function AdminUsersView({
                   <Users className="h-7 w-7 text-primary" />
                   Direktori <span className="text-primary">Pengguna</span>
                 </h1>
-                <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-body sm:text-base">
+                <p className="mt-1 text-sm text-body">
                   Kelola status akun, moderasi indikasi pelanggaran, dan lihat metrik pengguna.
                 </p>
               </div>
