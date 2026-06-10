@@ -43,26 +43,28 @@ export function AdminUserDetailView({
     <section className="px-4 py-6 text-headline sm:px-6 lg:px-8 lg:py-8">
       <div className="mx-auto max-w-7xl space-y-6">
         {/* Header */}
-        <header className="flex flex-col gap-4 rounded-3xl border border-border bg-background p-5 sm:p-7 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:bg-surface">
-          <div>
-            <Link
-              href="/admin/data/users"
-              prefetch
-              transitionTypes={['app-nav']}
-              className="inline-flex min-h-[44px] items-center gap-2 text-sm font-black text-primary hover:underline"
-            >
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              Kembali ke Direktori
-            </Link>
-            <h1 className="mt-2 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
-              Detail <span className="text-primary">Profil Pengguna</span>
-            </h1>
+        <div className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-7 dark:bg-surface">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <Link
+                href="/admin/data/users"
+                prefetch
+                transitionTypes={['app-nav']}
+                className="inline-flex min-h-[44px] items-center gap-2 text-sm font-black text-primary hover:underline"
+              >
+                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                Kembali ke Direktori
+              </Link>
+              <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
+                Detail <span className="text-primary">Profil Pengguna</span>
+              </h1>
+            </div>
+            <div className="flex shrink-0 flex-col items-end gap-2">
+              <StatusBadge status={currentStatus} />
+              <p className="text-xs font-semibold text-muted">User ID: {user.id}</p>
+            </div>
           </div>
-          <div className="flex flex-col items-end">
-            <StatusBadge status={currentStatus} />
-            <p className="mt-2 text-xs font-semibold text-muted">User ID: {user.id}</p>
-          </div>
-        </header>
+        </div>
 
         <div className="grid gap-6 md:grid-cols-3">
           {/* Kartu Profil Utama */}
