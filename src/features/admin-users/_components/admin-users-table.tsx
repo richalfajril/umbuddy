@@ -53,6 +53,7 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
             <th className="px-4 py-4 whitespace-nowrap">Instansi</th>
             <th className="px-4 py-4 whitespace-nowrap">Target Skor</th>
             <th className="px-4 py-4 whitespace-nowrap">Pangkat</th>
+            <th className="px-4 py-4 whitespace-nowrap text-right">XP</th>
             <th className="px-4 py-4 whitespace-nowrap">Bergabung</th>
             <th className="px-4 py-4 whitespace-nowrap">Status</th>
             <th className="px-4 py-4 text-right whitespace-nowrap sticky right-0 bg-surface shadow-[-4px_0_12px_rgba(0,0,0,0.05)]">Aksi</th>
@@ -123,11 +124,14 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
                   {user.progression ? (
                     <div>
                       <p className="font-semibold text-sm text-headline">{rankJabatan} {rankGolongan}</p>
-                      <p className="text-xs text-muted mt-0.5">Lv. {user.progression.level} ({user.progression.total_xp.toLocaleString('id-ID')} XP)</p>
+                      <p className="text-xs text-muted mt-0.5">Lv. {user.progression.level}</p>
                     </div>
                   ) : (
                     <span className="text-muted">-</span>
                   )}
+                </td>
+                <td className="px-4 py-4 whitespace-nowrap text-muted font-mono text-right">
+                  {user.progression ? user.progression.total_xp.toLocaleString('id-ID') : '-'}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap font-semibold text-muted">
                   {new Date(user.created_at).toLocaleDateString('id-ID', {
