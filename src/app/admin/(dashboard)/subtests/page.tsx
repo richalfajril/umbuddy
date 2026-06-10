@@ -1,4 +1,4 @@
-import { AdminSubtestsView } from '@/features/admin-questions-subtests/_components/admin-subtests-view'
+import { AdminSubtestsView } from '@/features/admin-subtests/_components/admin-subtests-view'
 
 export const metadata = {
   title: 'Manajemen Subtes | Umbuddy Admin',

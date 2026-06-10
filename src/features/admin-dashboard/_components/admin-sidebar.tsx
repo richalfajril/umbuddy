@@ -36,7 +36,6 @@ export function AdminSidebar({
   onCloseMobile,
 }: AdminSidebarProps) {
   const pathname = usePathname()
-
   const soalIcons = ['questions', 'subtests', 'tryouts', 'bank', 'sync']
   const groups = [
     {
@@ -52,7 +51,6 @@ export function AdminSidebar({
       items: ADMIN_DASHBOARD_NAV_ITEMS.filter((i) => i.icon !== 'dashboard' && !soalIcons.includes(i.icon)),
     },
   ]
-
   const sidebarContent = (
     <aside className="flex h-full w-64 flex-col border-r border-border bg-background text-headline">
       {/* Header Logo Clean using image */}
