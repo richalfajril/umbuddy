@@ -1,14 +1,24 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/server/db/client'
-import { AdminAuthService } from '@/server/admin-auth'
+import { UserRole } from '@prisma/client'
+import { getCachedUserSession } from '@/server/auth/session'
 
 export async function GET() {
   try {
-    const session = await AdminAuthService.getCurrentAdmin()
+    const session = await getCachedUserSession()
     
-    // Validasi Autentikasi Admin
-    if (!session) {
+    // Validasi Autentikasi
+    if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { role: true }
+    })
+    
+    if (!user || user.role !== UserRole.ADMIN) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     // Melakukan grouping berdasarkan package_code
