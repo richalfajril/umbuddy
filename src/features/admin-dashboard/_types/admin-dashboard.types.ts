@@ -1,5 +1,5 @@
 // Key icon yang dipetakan di sidebar agar constants tetap sederhana dan mudah dibaca.
-export type AdminNavIconKey = 'dashboard' | 'questions' | 'users' | 'notifications' | 'settings'
+export type AdminNavIconKey = 'dashboard' | 'questions' | 'users' | 'notifications' | 'settings' | 'subtests' | 'tryouts' | 'bank' | 'sync'
 
 // Item navigasi admin yang hanya berisi fitur backoffice.
 export type AdminNavItem = {

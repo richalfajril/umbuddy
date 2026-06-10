@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Bell, FileQuestion, LayoutDashboard, Settings, ShieldCheck, Users, X } from 'lucide-react'
+import { Bell, FileQuestion, LayoutDashboard, Settings, Users, X, Package, ClipboardList, Database, RefreshCw, ShieldCheck } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { ThemeToggle } from '@/components/atoms/theme-toggle'
 import { AdminLogoutButton } from '@/features/admin-auth/_components/admin-logout-button'
@@ -13,6 +13,10 @@ import type { AdminNavIconKey } from '../_types/admin-dashboard.types'
 const adminNavIcons: Record<AdminNavIconKey, LucideIcon> = {
   dashboard: LayoutDashboard,
   questions: FileQuestion,
+  subtests: Package,
+  tryouts: ClipboardList,
+  bank: Database,
+  sync: RefreshCw,
   users: Users,
   notifications: Bell,
   settings: Settings,
@@ -33,7 +37,7 @@ export function AdminSidebar({
 }: AdminSidebarProps) {
   const pathname = usePathname()
 
-  // Kelompokkan navigasi agar sesuai desain referensi.
+  const soalIcons = ['questions', 'subtests', 'tryouts', 'bank', 'sync']
   const groups = [
     {
       title: 'Dashboard',
@@ -41,11 +45,11 @@ export function AdminSidebar({
     },
     {
       title: 'Manajemen Soal',
-      items: ADMIN_DASHBOARD_NAV_ITEMS.filter((i) => i.icon === 'questions'),
+      items: ADMIN_DASHBOARD_NAV_ITEMS.filter((i) => soalIcons.includes(i.icon)),
     },
     {
       title: 'Manajemen Data',
-      items: ADMIN_DASHBOARD_NAV_ITEMS.filter((i) => i.icon !== 'dashboard' && i.icon !== 'questions'),
+      items: ADMIN_DASHBOARD_NAV_ITEMS.filter((i) => i.icon !== 'dashboard' && !soalIcons.includes(i.icon)),
     },
   ]
 
