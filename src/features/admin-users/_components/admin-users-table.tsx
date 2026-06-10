@@ -190,13 +190,13 @@ function ActionCell({
         </button>
 
         {isOpen && (
-          <div className="absolute right-10 top-0 z-[60] w-40 animate-in fade-in zoom-in-95 rounded-xl border border-border bg-background p-1.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] dark:bg-[#1f2937]">
+          <div className="absolute right-10 top-0 z-[60] w-40 animate-in fade-in zoom-in-95 rounded-xl border border-border bg-background p-1.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)]">
             <button
               onClick={() => {
                 setIsOpen(false)
                 onChangeStatusClick(user.id, user.status, user.name)
               }}
-              className="w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-headline transition hover:bg-surface dark:hover:bg-background"
+              className="w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-headline transition hover:bg-surface"
             >
               Moderasi
             </button>
@@ -205,7 +205,7 @@ function ActionCell({
               onClick={() => setIsOpen(false)}
               prefetch
               transitionTypes={['app-nav']}
-              className="block w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-headline transition hover:bg-surface dark:hover:bg-background"
+              className="block w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-headline transition hover:bg-surface"
             >
               Detail akun
             </Link>
