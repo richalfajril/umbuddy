@@ -9,13 +9,7 @@ export const ADMIN_DASHBOARD_NAV_ITEMS: AdminNavItem[] = [
     description: 'Ringkasan operasional admin.',
     prefetch: true,
   },
-  {
-    label: 'Dashboard Soal',
-    href: '/admin/questions-overview',
-    icon: 'questions',
-    description: 'Ringkasan performa dan metrik bank soal.',
-    prefetch: true,
-  },
+
   {
     label: 'Subtes',
     href: '/admin/subtests',
@@ -30,13 +24,7 @@ export const ADMIN_DASHBOARD_NAV_ITEMS: AdminNavItem[] = [
     description: 'Manajemen paket soal Try Out.',
     prefetch: true,
   },
-  {
-    label: 'Bank Soal',
-    href: '/admin/questions',
-    icon: 'bank',
-    description: 'Draft, publish, arsip, dan restore soal.',
-    prefetch: true,
-  },
+
   {
     label: 'Sinkron Soal',
     href: '/admin/sync',

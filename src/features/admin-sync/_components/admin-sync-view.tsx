@@ -4,10 +4,10 @@ import * as React from 'react'
 import { CheckCircle2, ChevronRight, XCircle, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { useToastStore } from '@/stores/useToastStore'
-import type { AdminSubtest } from '../_types/admin-taxonomy.types'
+import type { AdminSubtest } from '../_types/admin-sync.types'
 
 // View utama untuk memantau hierarki Subtes, Materi, dan Sub-Materi CPNS.
-export function AdminTaxonomyView() {
+export function AdminSyncView() {
   const [subtests, setSubtests] = React.useState<AdminSubtest[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
   const [isSeeding, setIsSeeding] = React.useState(false)

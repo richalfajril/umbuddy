@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { AdminAuthService } from '@/server/admin-auth'
-import { AdminTaxonomyView } from '@/features/admin-sync/_components'
+import { AdminSyncView } from '@/features/admin-sync/_components'
 
 export const metadata: Metadata = {
   title: 'Manajemen Subtes | Umbuddy Admin',
@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 export default async function AdminSubtestsPage() {
   const admin = await AdminAuthService.getCachedCurrentAdmin()
   if (!admin) redirect('/admin/login')
-  return <AdminTaxonomyView />
+  return <AdminSyncView />
 }

@@ -36,7 +36,7 @@ export function AdminSidebar({
   onCloseMobile,
 }: AdminSidebarProps) {
   const pathname = usePathname()
-  const soalIcons = ['questions', 'subtests', 'tryouts', 'bank', 'sync']
+  const soalIcons = ['subtests', 'tryouts', 'sync']
   const groups = [
     {
       title: 'Dashboard',

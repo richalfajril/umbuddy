@@ -1,1 +1,1 @@
-export { AdminTaxonomyView } from './admin-taxonomy-view'
+export { AdminSyncView } from './admin-sync-view'
