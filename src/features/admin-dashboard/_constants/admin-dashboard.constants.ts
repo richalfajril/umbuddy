@@ -11,7 +11,7 @@ export const ADMIN_DASHBOARD_NAV_ITEMS: AdminNavItem[] = [
   },
   {
     label: 'Dashboard Soal',
-    href: '/admin/questions',
+    href: '/admin/questions/dashboard',
     icon: 'questions',
     description: 'Ringkasan performa dan metrik bank soal.',
     prefetch: true,
@@ -25,7 +25,7 @@ export const ADMIN_DASHBOARD_NAV_ITEMS: AdminNavItem[] = [
   },
   {
     label: 'Try Out',
-    href: '/admin/tryout',
+    href: '/admin/questions/tryouts',
     icon: 'tryouts',
     description: 'Manajemen paket soal Try Out.',
     prefetch: true,
@@ -39,7 +39,7 @@ export const ADMIN_DASHBOARD_NAV_ITEMS: AdminNavItem[] = [
   },
   {
     label: 'Sinkron Soal',
-    href: '/admin/questions/taxonomy',
+    href: '/admin/questions/sync',
     icon: 'sync',
     description: 'Manajemen taksonomi dan materi CPNS.',
     prefetch: true,
