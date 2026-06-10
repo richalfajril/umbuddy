@@ -23,7 +23,10 @@ Arsitektur Umbuddy menggunakan pendekatan **Feature-Based Architecture** untuk l
 ## Feature-Based Architecture
 Semua logika domain harus dikelompokkan ke dalam folder fitur berdasarkan tujuannya.
 - **Fitur Pengguna**: `src/features/user-*` (contoh: `user-practice`, `user-onboarding`).
-- **Fitur Admin**: `src/features/admin-*` (contoh: `admin-dashboard`, `admin-questions`).
+- **Fitur Admin**: `src/features/admin-*`. Agar tetap rapi, fitur admin dikelompokkan lebih spesifik:
+  - **Manajemen Soal** menggunakan prefix `admin-questions-*` (contoh: `admin-questions-bank`, `admin-questions-sync`). Routing App dir berada di bawah grup `/admin/questions/`.
+  - **Manajemen Data** menggunakan prefix `admin-data-*` (contoh: `admin-data-users`). Routing App dir berada di bawah grup `/admin/data/`.
+  - **Umum/Lainnya** (contoh: `admin-dashboard`).
 - **Fitur Lintas Domain**: `src/features/shared`.
 
 **Contoh Struktur Fitur (`src/features/user-example/`):**
