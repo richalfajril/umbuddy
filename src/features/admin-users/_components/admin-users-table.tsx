@@ -142,33 +142,77 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
                 <td className="px-4 py-4 whitespace-nowrap">
                   <StatusBadge status={user.status} />
                 </td>
-                <td className="px-4 py-4 text-right whitespace-nowrap sticky right-0 bg-background group-hover:bg-surface/95 transition-colors shadow-[-4px_0_12px_rgba(0,0,0,0.05)] border-l border-border">
-                  <div className="flex items-center justify-end gap-2">
-                    <button
-                      type="button"
-                      onClick={() => onChangeStatusClick(user.id, user.status, user.name)}
-                      className="rounded-xl p-2 text-muted transition hover:bg-surface hover:text-headline"
-                      title="Ubah Status"
-                    >
-                      <MoreHorizontal className="h-5 w-5" />
-                    </button>
-                    <Link
-                      href={`/admin/users/${user.id}`}
-                      prefetch
-                      transitionTypes={['app-nav']}
-                      className="inline-flex items-center gap-1 rounded-xl bg-surface px-3 py-2 text-xs font-bold text-headline transition hover:bg-border"
-                    >
-                      Detail
-                      <ChevronRight className="h-3 w-3" />
-                    </Link>
-                  </div>
-                </td>
+                <ActionCell user={user} onChangeStatusClick={onChangeStatusClick} />
               </tr>
             )
           })}
         </tbody>
       </table>
     </div>
+  )
+}
+
+function ActionCell({ 
+  user, 
+  onChangeStatusClick 
+}: { 
+  user: AdminUserListItem
+  onChangeStatusClick: (userId: string, currentStatus: string, name: string) => void 
+}) {
+  const [isOpen, setIsOpen] = React.useState(false)
+  const ref = React.useRef<HTMLTableCellElement>(null)
+
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isOpen])
+
+  return (
+    <td 
+      ref={ref}
+      className="px-4 py-4 text-right whitespace-nowrap sticky right-0 bg-background group-hover:bg-surface/95 transition-colors shadow-[-4px_0_12px_rgba(0,0,0,0.05)] border-l border-border"
+    >
+      <div className="relative flex justify-end">
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          className={`rounded-xl p-2 transition ${isOpen ? 'bg-surface text-headline' : 'text-muted hover:bg-surface hover:text-headline'}`}
+          title="Aksi Lainnya"
+        >
+          <MoreHorizontal className="h-5 w-5" />
+        </button>
+
+        {isOpen && (
+          <div className="absolute right-10 top-0 z-[60] w-40 animate-in fade-in zoom-in-95 rounded-xl border border-border bg-background p-1.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] dark:bg-[#1f2937]">
+            <button
+              onClick={() => {
+                setIsOpen(false)
+                onChangeStatusClick(user.id, user.status, user.name)
+              }}
+              className="w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-headline transition hover:bg-surface dark:hover:bg-background"
+            >
+              Moderasi
+            </button>
+            <Link
+              href={`/admin/users/${user.id}`}
+              onClick={() => setIsOpen(false)}
+              prefetch
+              transitionTypes={['app-nav']}
+              className="block w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-headline transition hover:bg-surface dark:hover:bg-background"
+            >
+              Detail akun
+            </Link>
+          </div>
+        )}
+      </div>
+    </td>
   )
 }
 
