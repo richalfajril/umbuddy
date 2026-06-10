@@ -14,6 +14,7 @@ import {
 } from '../_utils/admin-questions.utils'
 import { AdminQuestionFilters } from './admin-question-filters'
 import { AdminQuestionForm } from './admin-question-form'
+import { SmartPagination } from '@/components/molecules'
 import { AdminQuestionTable } from './admin-question-table'
 
 type AdminQuestionsViewProps = {
@@ -32,6 +33,8 @@ export function AdminQuestionsView({
   const [status, setStatus] = React.useState('')
   const [category, setCategory] = React.useState('')
   const [keyword, setKeyword] = React.useState('')
+  const [page, setPage] = React.useState(1)
+  const [limit, setLimit] = React.useState(10)
   const [form, setForm] = React.useState<AdminQuestionFormState>(initialAdminQuestionForm)
   const [editingId, setEditingId] = React.useState<string | null>(null)
   const [isLoading, setIsLoading] = React.useState(false)
@@ -78,6 +81,8 @@ export function AdminQuestionsView({
   const loadQuestions = React.useCallback(async () => {
     setIsLoading(true)
     const params = new URLSearchParams()
+    params.set('page', page.toString())
+    params.set('limit', limit.toString())
     if (status) params.set('status', status)
     if (category) params.set('category', category)
     if (keyword.trim()) params.set('keyword', keyword.trim())
@@ -97,7 +102,19 @@ export function AdminQuestionsView({
     } finally {
       setIsLoading(false)
     }
-  }, [addToast, category, keyword, status])
+  }, [addToast, category, keyword, status, page, limit])
+
+  // Reset page ke 1 saat filter diubah
+  const handleFilter = () => {
+    if (page !== 1) setPage(1)
+    else loadQuestions()
+  }
+
+  // Jika page atau limit berubah, muat ulang
+  React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void loadQuestions()
+  }, [page, limit, loadQuestions])
 
   // Submit create draft atau update draft mengirim payload sesuai kontrak.
   const saveQuestion = async (event: React.FormEvent) => {
@@ -188,12 +205,25 @@ export function AdminQuestionsView({
               onKeywordChange={setKeyword}
               onStatusChange={setStatus}
               onCategoryChange={setCategory}
-              onFilter={() => void loadQuestions()}
+              onFilter={handleFilter}
             />
             <AdminQuestionTable
               questions={questions}
               onRunAction={(questionId, action) => void runQuestionAction(questionId, action)}
               onEditQuestion={handleEditQuestion}
+            />
+            
+            <SmartPagination
+              page={page}
+              limit={limit}
+              total={total}
+              totalPages={Math.ceil(total / limit)}
+              onPageChange={setPage}
+              onLimitChange={(newLimit) => {
+                setLimit(newLimit)
+                setPage(1)
+              }}
+              isLoading={isLoading}
             />
           </section>
 

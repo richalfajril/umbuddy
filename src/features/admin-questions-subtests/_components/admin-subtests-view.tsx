@@ -4,6 +4,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import { Plus, MoreHorizontal, FileSpreadsheet } from 'lucide-react'
 import { Button } from '@/components/ui'
+import { SmartPagination } from '@/components/molecules'
 
 // Interface untuk struktur data paket
 interface SubtestPackage {
@@ -19,6 +20,15 @@ export function AdminSubtestsView() {
   const [subtests, setSubtests] = React.useState<SubtestPackage[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
   const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null)
+  
+  // Pagination state
+  const [page, setPage] = React.useState(1)
+  const [limit, setLimit] = React.useState(10)
+
+  // Client-side pagination logic
+  const total = subtests.length
+  const totalPages = Math.ceil(total / limit)
+  const paginatedSubtests = subtests.slice((page - 1) * limit, page * limit)
 
   React.useEffect(() => {
     async function fetchPackages() {
@@ -98,9 +108,9 @@ export function AdminSubtestsView() {
                     </td>
                   </tr>
                 ) : (
-                  subtests.map((st, i) => (
+                  paginatedSubtests.map((st, i) => (
                     <tr key={st.id} className="transition-colors hover:bg-muted/5">
-                      <td className="whitespace-nowrap px-6 py-4 font-medium text-headline">{i + 1}</td>
+                      <td className="whitespace-nowrap px-6 py-4 font-medium text-headline">{((page - 1) * limit) + i + 1}</td>
                       <td className="px-6 py-4 font-bold text-headline">{st.packageCode}</td>
                       <td className="px-6 py-4">
                         <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">
@@ -156,6 +166,21 @@ export function AdminSubtestsView() {
                 )}
               </tbody>
             </table>
+          </div>
+
+          <div className="p-5 sm:p-6 border-t border-border">
+            <SmartPagination
+              page={page}
+              limit={limit}
+              total={total}
+              totalPages={totalPages}
+              onPageChange={setPage}
+              onLimitChange={(newLimit) => {
+                setLimit(newLimit)
+                setPage(1)
+              }}
+              isLoading={isLoading}
+            />
           </div>
         </div>
       </div>

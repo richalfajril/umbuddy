@@ -8,13 +8,11 @@ interface AdminUsersFiltersProps {
   status: string
   instansi?: string
   registrationSource?: string
-  limit: number
   isLoading: boolean
   onKeywordChange: (val: string) => void
   onStatusChange: (val: string) => void
   onInstansiChange: (val: string) => void
   onRegistrationSourceChange: (val: string) => void
-  onLimitChange: (val: number) => void
   onFilter: () => void
 }
 
@@ -23,13 +21,11 @@ export function AdminUsersFilters({
   status,
   instansi,
   registrationSource,
-  limit,
   isLoading,
   onKeywordChange,
   onStatusChange,
   onInstansiChange,
   onRegistrationSourceChange,
-  onLimitChange,
   onFilter
 }: AdminUsersFiltersProps) {
   // Trigger filter when enter key is pressed in search bar
@@ -76,20 +72,6 @@ export function AdminUsersFilters({
             <option value="BANNED">Banned</option>
           </select>
           
-          {/* Smart Pagination Limit Filter */}
-          <select
-            className="w-full rounded-3xl border border-border bg-surface px-4 py-2.5 text-sm font-bold text-headline transition focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10 sm:w-auto"
-            value={limit}
-            onChange={(e) => {
-              onLimitChange(Number(e.target.value))
-              setTimeout(onFilter, 50)
-            }}
-          >
-            <option value="15">15 Baris</option>
-            <option value="30">30 Baris</option>
-            <option value="60">60 Baris</option>
-            <option value="120">120 Baris</option>
-          </select>
         </div>
 
         <button

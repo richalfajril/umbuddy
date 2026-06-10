@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Users, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Users } from 'lucide-react'
 import { useToastStore } from '@/stores/useToastStore'
 import type {
   AdminUserListItem,
@@ -10,6 +10,7 @@ import type {
   AdminUsersListResponse,
 } from '../_types/admin-users.types'
 import { AdminUsersFilters } from './admin-users-filters'
+import { SmartPagination } from '@/components/molecules'
 import { AdminUsersSummaryCards } from './admin-users-summary-cards'
 import { AdminUsersTable } from './admin-users-table'
 import { AdminUserStatusModal } from './admin-user-status-modal'
@@ -137,13 +138,11 @@ export function AdminUsersView({
               status={status}
               instansi={instansi}
               registrationSource={registrationSource}
-              limit={limit}
               isLoading={isLoading}
               onKeywordChange={setKeyword}
               onStatusChange={setStatus}
               onInstansiChange={setInstansi}
               onRegistrationSourceChange={setRegistrationSource}
-              onLimitChange={handleLimitChange}
               onFilter={handleFilter}
             />
             
@@ -155,29 +154,15 @@ export function AdminUsersView({
             </div>
 
             {/* Smart Pagination Controls */}
-            {totalPages > 1 && (
-              <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border pt-4">
-                <p className="text-sm font-semibold text-muted">
-                  Menampilkan halaman <span className="font-bold text-headline">{page}</span> dari <span className="font-bold text-headline">{totalPages}</span>
-                </p>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => handlePageChange(page - 1)}
-                    disabled={page === 1 || isLoading}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface text-headline transition hover:border-primary/50 hover:text-primary disabled:opacity-50"
-                  >
-                    <ChevronLeft className="h-5 w-5" />
-                  </button>
-                  <button
-                    onClick={() => handlePageChange(page + 1)}
-                    disabled={page === totalPages || isLoading}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface text-headline transition hover:border-primary/50 hover:text-primary disabled:opacity-50"
-                  >
-                    <ChevronRight className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
-            )}
+            <SmartPagination
+              page={page}
+              limit={limit}
+              total={total}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              onLimitChange={handleLimitChange}
+              isLoading={isLoading}
+            />
           </section>
         </div>
       </section>

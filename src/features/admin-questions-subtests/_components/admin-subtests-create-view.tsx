@@ -32,7 +32,6 @@ export function AdminSubtestsCreateView() {
         const workbook = XLSX.read(buffer, { type: 'buffer' })
         const firstSheetName = workbook.SheetNames[0]
         const worksheet = workbook.Sheets[firstSheetName]
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 })
         // Kita perlu menyimpan data berformat objek untuk dikirimkan (submit).
         // Catatan: sheet_to_json dengan parameter header: 1 mengembalikan format array of arrays.
         // Sebaiknya kita parsing ulang menjadi objek murni untuk dikirim ke backend.
