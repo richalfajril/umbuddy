@@ -45,7 +45,7 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
             <th className="px-4 py-4 whitespace-nowrap">Role</th>
             <th className="px-4 py-4 whitespace-nowrap">Email</th>
             <th className="px-4 py-4 whitespace-nowrap">No HP</th>
-            <th className="px-4 py-4 whitespace-nowrap">TL (Tanggal Lahir)</th>
+            <th className="px-4 py-4 whitespace-nowrap">Tanggal Lahir</th>
             <th className="px-4 py-4 whitespace-nowrap">Institusi</th>
             <th className="px-4 py-4 whitespace-nowrap">Jurusan</th>
             <th className="px-4 py-4 whitespace-nowrap">Kota/Kabupaten</th>
@@ -76,16 +76,6 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
                 <td className="px-4 py-4">
                   <div>
                     <p className="font-bold text-headline">{user.name}</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="font-mono text-[10px] text-muted">{user.id.substring(0, 8)}...</span>
-                      <button 
-                        onClick={() => handleCopyId(user.id)}
-                        className="p-1 text-muted hover:text-headline transition-colors rounded hover:bg-border"
-                        title="Salin ID"
-                      >
-                        <Copy className="h-3 w-3" />
-                      </button>
-                    </div>
                   </div>
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap">
@@ -149,7 +139,7 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
                 <td className="px-4 py-4 whitespace-nowrap">
                   <StatusBadge status={user.status} />
                 </td>
-                <td className="px-4 py-4 text-right whitespace-nowrap sticky right-0 bg-background group-hover:bg-[#f8f9fa] dark:group-hover:bg-[#1f2937] transition-colors shadow-[-4px_0_12px_rgba(0,0,0,0.05)] border-l border-border">
+                <td className="px-4 py-4 text-right whitespace-nowrap sticky right-0 bg-background group-hover:bg-surface/95 transition-colors shadow-[-4px_0_12px_rgba(0,0,0,0.05)] border-l border-border">
                   <div className="flex items-center justify-end gap-2">
                     <button
                       type="button"
