@@ -40,23 +40,23 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
       <table className="w-full text-left text-sm text-body">
         <thead className="bg-surface text-xs font-black uppercase tracking-wider text-muted">
           <tr>
-            <th className="px-4 py-4 whitespace-nowrap">No</th>
-            <th className="px-4 py-4 min-w-[200px]">Nama</th>
-            <th className="px-4 py-4 whitespace-nowrap">Role</th>
-            <th className="px-4 py-4 whitespace-nowrap">Email</th>
-            <th className="px-4 py-4 whitespace-nowrap">No HP</th>
-            <th className="px-4 py-4 whitespace-nowrap">Tanggal Lahir</th>
-            <th className="px-4 py-4 whitespace-nowrap">Institusi</th>
-            <th className="px-4 py-4 whitespace-nowrap">Jurusan</th>
-            <th className="px-4 py-4 whitespace-nowrap">Kota/Kabupaten</th>
-            <th className="px-4 py-4 whitespace-nowrap">Provinsi</th>
-            <th className="px-4 py-4 whitespace-nowrap">Instansi</th>
-            <th className="px-4 py-4 whitespace-nowrap">Target Skor</th>
-            <th className="px-4 py-4 whitespace-nowrap">Pangkat</th>
-            <th className="px-4 py-4 whitespace-nowrap text-right">XP</th>
-            <th className="px-4 py-4 whitespace-nowrap">Bergabung</th>
-            <th className="px-4 py-4 whitespace-nowrap">Status</th>
-            <th className="px-4 py-4 text-right whitespace-nowrap sticky right-0 bg-surface shadow-[-4px_0_12px_rgba(0,0,0,0.05)]">Aksi</th>
+            <th className="px-4 py-2.5 whitespace-nowrap">No</th>
+            <th className="px-4 py-2.5 min-w-[200px]">Nama</th>
+            <th className="px-4 py-2.5 whitespace-nowrap">Role</th>
+            <th className="px-4 py-2.5 whitespace-nowrap">Email</th>
+            <th className="px-4 py-2.5 whitespace-nowrap">No HP</th>
+            <th className="px-4 py-2.5 whitespace-nowrap">Tanggal Lahir</th>
+            <th className="px-4 py-2.5 whitespace-nowrap">Institusi</th>
+            <th className="px-4 py-2.5 whitespace-nowrap">Jurusan</th>
+            <th className="px-4 py-2.5 whitespace-nowrap">Kota/Kabupaten</th>
+            <th className="px-4 py-2.5 whitespace-nowrap">Provinsi</th>
+            <th className="px-4 py-2.5 whitespace-nowrap">Instansi</th>
+            <th className="px-4 py-2.5 whitespace-nowrap">Target Skor</th>
+            <th className="px-4 py-2.5 whitespace-nowrap">Pangkat</th>
+            <th className="px-4 py-2.5 whitespace-nowrap text-right">XP</th>
+            <th className="px-4 py-2.5 whitespace-nowrap">Bergabung</th>
+            <th className="px-4 py-2.5 whitespace-nowrap">Status</th>
+            <th className="px-4 py-2.5 text-right whitespace-nowrap sticky right-0 bg-surface shadow-[-4px_0_12px_rgba(0,0,0,0.05)]">Aksi</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border bg-background">
@@ -71,20 +71,20 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
 
             return (
               <tr key={user.id} className="transition hover:bg-surface/50 group">
-                <td className="px-4 py-4 text-muted font-medium whitespace-nowrap">
+                <td className="px-4 py-2.5 text-muted font-medium whitespace-nowrap">
                   {(page - 1) * limit + index + 1}
                 </td>
-                <td className="px-4 py-4">
+                <td className="px-4 py-2.5">
                   <div>
                     <p className="font-bold text-headline">{user.name}</p>
                   </div>
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap">
+                <td className="px-4 py-2.5 whitespace-nowrap">
                   <span className="inline-flex rounded-md bg-primary/10 px-2 py-1 text-xs font-bold text-primary">
                     {user.role}
                   </span>
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap">
+                <td className="px-4 py-2.5 whitespace-nowrap">
                   <div className="flex items-center gap-1.5 text-sm">
                     {user.email}
                     {user.email_verified && (
@@ -94,33 +94,33 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
                     )}
                   </div>
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-muted">
+                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
                   {user.phone || '-'}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-muted">
+                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
                   {user.profile?.birth_date ? new Date(user.profile.birth_date).toLocaleDateString('id-ID', {
                     day: 'numeric', month: 'short', year: 'numeric'
                   }) : '-'}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-muted">
+                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
                   {user.profile?.institution || '-'}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-muted">
+                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
                   {user.profile?.major || '-'}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-muted">
+                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
                   {user.profile?.city || '-'}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-muted">
+                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
                   {user.profile?.province || '-'}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-muted">
+                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
                   {user.profile?.target_instansi || '-'}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-muted">
+                <td className="px-4 py-2.5 whitespace-nowrap text-muted">
                   {user.profile?.target_score || '-'}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap">
+                <td className="px-4 py-2.5 whitespace-nowrap">
                   {user.progression ? (
                     <div>
                       <p className="font-semibold text-sm text-headline">{rankJabatan} {rankGolongan}</p>
@@ -129,17 +129,17 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
                     <span className="text-muted">-</span>
                   )}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap text-muted font-mono text-right">
+                <td className="px-4 py-2.5 whitespace-nowrap text-muted font-mono text-right">
                   {user.progression ? user.progression.total_xp.toLocaleString('id-ID') : '-'}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap font-semibold text-muted">
+                <td className="px-4 py-2.5 whitespace-nowrap font-semibold text-muted">
                   {new Date(user.created_at).toLocaleDateString('id-ID', {
                     day: 'numeric',
                     month: 'short',
                     year: 'numeric',
                   })}
                 </td>
-                <td className="px-4 py-4 whitespace-nowrap">
+                <td className="px-4 py-2.5 whitespace-nowrap">
                   <StatusBadge status={user.status} />
                 </td>
                 <ActionCell user={user} onChangeStatusClick={onChangeStatusClick} />
@@ -177,7 +177,7 @@ function ActionCell({
   return (
     <td 
       ref={ref}
-      className="px-4 py-4 text-right whitespace-nowrap sticky right-0 bg-background group-hover:bg-surface/95 transition-colors shadow-[-4px_0_12px_rgba(0,0,0,0.05)] border-l border-border"
+      className="px-4 py-2.5 text-right whitespace-nowrap sticky right-0 bg-background group-hover:bg-surface/95 transition-colors shadow-[-4px_0_12px_rgba(0,0,0,0.05)] border-l border-border"
     >
       <div className="relative flex justify-end">
         <button
