@@ -197,7 +197,7 @@ function ActionCell({
                 setIsOpen(false)
                 onChangeStatusClick(user.id, user.status, user.name)
               }}
-              className="group flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-headline transition hover:bg-amber-500/10 hover:text-amber-600 dark:hover:text-amber-500"
+              className="group flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-amber-600 dark:text-amber-500 transition hover:bg-amber-500/10"
             >
               <ShieldAlert className="h-4 w-4 text-amber-500" />
               Moderasi
@@ -207,7 +207,7 @@ function ActionCell({
               onClick={() => setIsOpen(false)}
               prefetch
               transitionTypes={['app-nav']}
-              className="group flex w-full items-center gap-2.5 mt-1 rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-headline transition hover:bg-primary/10 hover:text-primary"
+              className="group flex w-full items-center gap-2.5 mt-1 rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-primary transition hover:bg-primary/10"
             >
               <User className="h-4 w-4 text-primary" />
               Detail akun
