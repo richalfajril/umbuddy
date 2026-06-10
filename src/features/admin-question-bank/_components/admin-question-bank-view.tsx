@@ -7,8 +7,7 @@ import { QUESTION_CATEGORIES, QUESTION_STATUS, QUESTION_STATUS_COLORS } from '..
 import type { AdminQuestion, AdminQuestionFilters, AdminQuestionListResponse } from '../_types/admin-question-bank.types'
 import { useToastStore } from '@/stores/useToastStore'
 import { AdminQuestionBankTable } from './admin-question-bank-table'
-import { AdminTableLayout } from '@/components/templates'
-import { AdminPageHeader } from '@/components/organisms'
+import { AdminTableLayout, AdminPageHeader } from '@/components/organisms'
 import { SmartPagination } from '@/components/molecules'
 
 export function AdminQuestionBankView({ initialData }: { initialData: AdminQuestionListResponse }) {
@@ -87,51 +86,55 @@ export function AdminQuestionBankView({ initialData }: { initialData: AdminQuest
         />
 
         {/* Unified Table Section */}
-        <AdminTableLayout
-          filters={
-            <>
-              <div className="flex flex-1 items-center gap-3">
-                <div className="relative flex-1 sm:max-w-xs">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
-                  <input
-                    type="text"
-                    value={filters.search}
-                    onChange={handleSearchChange}
-                    placeholder="Cari teks soal..."
-                    className="w-full rounded-xl border border-border bg-background py-2.5 pl-10 pr-4 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:bg-surface/50"
-                  />
-                </div>
+        <section className="overflow-hidden rounded-3xl border border-border bg-background shadow-sm dark:bg-surface">
+          {/* Filters Area */}
+          <div className="flex flex-col gap-4 border-b border-border p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+            <div className="flex flex-1 items-center gap-3">
+              <div className="relative flex-1 sm:max-w-xs">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+                <input
+                  type="text"
+                  value={filters.search}
+                  onChange={handleSearchChange}
+                  placeholder="Cari teks soal..."
+                  className="w-full rounded-xl border border-border bg-background py-2.5 pl-10 pr-4 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:bg-surface/50"
+                />
               </div>
-              <div className="flex flex-wrap items-center gap-3">
-                <select
-                  value={filters.category}
-                  onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value as any, page: 1 }))}
-                  className="rounded-xl border border-border bg-background py-2.5 pl-3 pr-8 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:bg-surface/50"
-                >
-                  {QUESTION_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
-                </select>
-                <select
-                  value={filters.status}
-                  onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value as any, page: 1 }))}
-                  className="rounded-xl border border-border bg-background py-2.5 pl-3 pr-8 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:bg-surface/50"
-                >
-                  {QUESTION_STATUS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
-                </select>
-              </div>
-            </>
-          }
-          pagination={{
-            page: filters.page,
-            limit: filters.limit,
-            total,
-            totalPages,
-            onPageChange: handlePageChange,
-            onLimitChange: handleLimitChange,
-            isLoading
-          }}
-        >
-          <AdminQuestionBankTable questions={questions} />
-        </AdminTableLayout>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <select
+                value={filters.category}
+                onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value as any, page: 1 }))}
+                className="rounded-xl border border-border bg-background py-2.5 pl-3 pr-8 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:bg-surface/50"
+              >
+                {QUESTION_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+              </select>
+              <select
+                value={filters.status}
+                onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value as any, page: 1 }))}
+                className="rounded-xl border border-border bg-background py-2.5 pl-3 pr-8 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:bg-surface/50"
+              >
+                {QUESTION_STATUS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+              </select>
+            </div>
+          </div>
+
+          {/* Data Table */}
+          <div className="overflow-x-auto">
+            <AdminQuestionBankTable questions={questions} />
+          </div>
+          
+          {/* Smart Pagination Controls */}
+          <SmartPagination
+            page={filters.page}
+            limit={filters.limit}
+            total={total}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            onLimitChange={handleLimitChange}
+            isLoading={isLoading}
+          />
+        </section>
 
       </div>
     </section>

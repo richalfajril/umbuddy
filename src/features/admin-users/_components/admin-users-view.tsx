@@ -9,8 +9,7 @@ import type {
   AdminUsersListResponse,
 } from '../_types/admin-users.types'
 import { AdminUsersFilters } from './admin-users-filters'
-import { AdminTableLayout } from '@/components/templates'
-import { AdminPageHeader } from '@/components/organisms'
+import { AdminTableLayout, AdminPageHeader } from '@/components/organisms'
 import { AdminUsersSummaryCards } from './admin-users-summary-cards'
 import { AdminUsersTable } from './admin-users-table'
 import { AdminUserStatusModal } from './admin-user-status-modal'

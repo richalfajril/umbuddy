@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { SmartPagination } from '@/components/molecules'
+import { SmartPagination } from '@/components/molecules/smart-pagination'
 
 export interface AdminTableLayoutProps {
   filters?: React.ReactNode
