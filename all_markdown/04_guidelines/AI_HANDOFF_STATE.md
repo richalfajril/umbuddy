@@ -69,20 +69,20 @@ Setelah setiap satu sesi pengembangan atau refaktor fungsional usai, Anda **WAJI
 
 <!-- AI_HANDOFF_AUTO_START -->
 ## Auto Snapshot (Git State)
-*Auto-generated pada: 9/6/2026, 22.31.25 WIB*
+*Auto-generated pada: 11/6/2026, 17.42.32 WIB*
 
 - **Current branch:** `main`
 - **Working tree status:** Clean (Tidak ada perubahan)
 - **Unpushed commits:** 0 commit belum di-push
-- **Latest commit:** `c301ab0 feat: implement user profile view and loading states`
+- **Latest commit:** `c5f720c chore: remove outdated project structure documentation file`
 
 **Last 5 Commits:**
 ```text
-c301ab0 feat: implement user profile view and loading states
-ac4c0e4 feat: enhance admin dashboard and user management loading states
-b3ddd44 refactor(admin): compact backoffice sidebar
-32f31f4 docs: update AI handoff state after admin login fix
-641aefb fix(admin-auth): reload shell after admin login
+c5f720c chore: remove outdated project structure documentation file
+b6f925e revert: batalkan 3 refaktor terakhir kembali ke 52b6e93
+4b12d6f refactor: migrate admin table components to atomic architecture and remove cn utility dependency
+1e08209 refactor: standardize admin views by migrating to AdminPageHeader and AdminTableLayout components
+e5d8d20 refactor: migrate admin subtests and tryouts views to use the reusable AdminTableLayout component
 ```
 
 **Changed Files:**

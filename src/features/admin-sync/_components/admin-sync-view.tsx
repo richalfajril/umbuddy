@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { CheckCircle2, ChevronRight, XCircle, RefreshCw, FolderSync } from 'lucide-react'
+import { CheckCircle2, ChevronRight, XCircle, FolderSync } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { AdminPageHeader } from '@/components/organisms'
 import { useToastStore } from '@/stores/useToastStore'

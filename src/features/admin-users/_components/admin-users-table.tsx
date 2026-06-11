@@ -2,9 +2,8 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { MoreHorizontal, AlertCircle, ShieldAlert, ChevronRight, CheckCircle2, Copy, User } from 'lucide-react'
+import { MoreHorizontal, AlertCircle, ShieldAlert, CheckCircle2, User } from 'lucide-react'
 import { AdminTable, AdminTableHeader, AdminTableHead, AdminTableBody, AdminTableRow, AdminTableCell } from '@/components/molecules'
-import { useToastStore } from '@/stores/useToastStore'
 import { USER_PROGRESSION_RANKS } from '@/features/shared/_constants/user-app.constants'
 import type { AdminUserListItem } from '../_types/admin-users.types'
 
@@ -16,12 +15,6 @@ interface AdminUsersTableProps {
 }
 
 export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: AdminUsersTableProps) {
-  const addToast = useToastStore(state => state.addToast)
-
-  const handleCopyId = (id: string) => {
-    navigator.clipboard.writeText(id)
-    addToast({ message: 'ID tersalin ke clipboard', type: 'success' })
-  }
   if (users.length === 0) {
     return (
       <div className="flex min-h-[300px] flex-col items-center justify-center rounded-3xl border border-dashed border-border bg-surface/50 p-8 text-center">

@@ -3,6 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { ArrowLeft, User, Mail, Activity, CheckCircle2, ShieldAlert, AlertCircle } from 'lucide-react'
+import { AdminPageHeader } from '@/components/organisms'
 import type { AdminUserDetail, AdminUserSupportNote } from '../_types/admin-users.types'
 import { AdminUserSupportNoteForm } from './admin-user-support-note-form'
 import { AdminUserVerificationActions } from './admin-user-verification-actions'
@@ -42,35 +43,30 @@ export function AdminUserDetailView({
   return (
     <section className="px-4 py-6 text-headline sm:px-6 lg:px-8 lg:py-8">
       <div className="mx-auto max-w-7xl space-y-6">
-        {/* Header */}
-        <div className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-7 dark:bg-surface">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div>
+        {/* Header detail user memakai pola standar dengan back link dan status di area action. */}
+        <AdminPageHeader
+          icon={
+            <User className="h-5 w-5 text-primary" />
+          }
+          eyebrow="User Directory"
+          title={<>Detail <span className="text-primary">Profil Pengguna</span></>}
+          description="Pantau riwayat aktivitas dan moderasi pengguna spesifik."
+          actions={
+            <div className="flex flex-col gap-3 sm:items-end">
               <Link
                 href="/admin/users"
                 prefetch
                 transitionTypes={['app-nav']}
-                className="inline-flex min-h-[44px] items-center gap-2 text-sm font-black text-primary hover:underline"
+                className="inline-flex min-h-[44px] items-center gap-2 rounded-2xl border border-border bg-surface px-4 py-2 text-sm font-black text-primary transition-colors hover:bg-surface-hover"
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                 Kembali ke Direktori
               </Link>
-              <p className="mt-4 text-xs font-black uppercase tracking-[0.22em] text-primary">
-                User Directory
-              </p>
-              <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
-                Detail <span className="text-primary">Profil Pengguna</span>
-              </h1>
-              <p className="mt-2 text-sm font-medium text-muted">
-                Pantau riwayat aktivitas dan moderasi pengguna spesifik.
-              </p>
-            </div>
-            <div className="flex shrink-0 flex-col items-end gap-2">
               <StatusBadge status={currentStatus} />
               <p className="text-xs font-semibold text-muted">User ID: {user.id}</p>
             </div>
-          </div>
-        </div>
+          }
+        />
 
         <div className="grid gap-6 md:grid-cols-3">
           {/* Kartu Profil Utama */}

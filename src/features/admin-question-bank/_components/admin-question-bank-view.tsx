@@ -2,12 +2,11 @@
 
 import * as React from 'react'
 import { Database, Search } from 'lucide-react'
-import { Button } from '@/components/ui'
-import { QUESTION_CATEGORIES, QUESTION_STATUS, QUESTION_STATUS_COLORS } from '../_constants/admin-question-bank.constants'
-import type { AdminQuestion, AdminQuestionFilters, AdminQuestionListResponse } from '../_types/admin-question-bank.types'
+import { QUESTION_CATEGORIES, QUESTION_STATUS } from '../_constants/admin-question-bank.constants'
+import type { AdminQuestion, AdminQuestionFilters, AdminQuestionListResponse, QuestionCategory, QuestionStatus } from '../_types/admin-question-bank.types'
 import { useToastStore } from '@/stores/useToastStore'
 import { AdminQuestionBankTable } from './admin-question-bank-table'
-import { AdminTableLayout, AdminPageHeader } from '@/components/organisms'
+import { AdminPageHeader } from '@/components/organisms'
 import { SmartPagination } from '@/components/molecules'
 
 export function AdminQuestionBankView({ initialData }: { initialData: AdminQuestionListResponse }) {
@@ -71,6 +70,14 @@ export function AdminQuestionBankView({ initialData }: { initialData: AdminQuest
     setFilters(prev => ({ ...prev, limit: newLimit, page: 1 }))
   }
 
+  const handleCategoryChange = (value: QuestionCategory | 'ALL') => {
+    setFilters(prev => ({ ...prev, category: value, page: 1 }))
+  }
+
+  const handleStatusChange = (value: QuestionStatus | 'ALL') => {
+    setFilters(prev => ({ ...prev, status: value, page: 1 }))
+  }
+
   const totalPages = Math.ceil(total / filters.limit)
 
   return (
@@ -104,14 +111,14 @@ export function AdminQuestionBankView({ initialData }: { initialData: AdminQuest
             <div className="flex flex-wrap items-center gap-3">
               <select
                 value={filters.category}
-                onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value as any, page: 1 }))}
+                onChange={(e) => handleCategoryChange(e.target.value as QuestionCategory | 'ALL')}
                 className="rounded-xl border border-border bg-background py-2.5 pl-3 pr-8 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:bg-surface/50"
               >
                 {QUESTION_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
               </select>
               <select
                 value={filters.status}
-                onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value as any, page: 1 }))}
+                onChange={(e) => handleStatusChange(e.target.value as QuestionStatus | 'ALL')}
                 className="rounded-xl border border-border bg-background py-2.5 pl-3 pr-8 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:bg-surface/50"
               >
                 {QUESTION_STATUS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}

@@ -1,4 +1,5 @@
 import { AnalyticsService } from '@/server/analytics/analytics.service'
+import { AdminPageHeader } from '@/components/organisms'
 import * as React from 'react'
 import { LayoutDashboard } from 'lucide-react'
 import type { AdminDashboardViewProps } from '../_types/admin-dashboard.types'
@@ -31,26 +32,18 @@ export async function AdminDashboardView({ admin }: AdminDashboardViewProps) {
   return (
     <section className="px-4 py-6 text-headline sm:px-6 lg:px-8 lg:py-8">
       <div className="mx-auto max-w-7xl space-y-6">
-        {/* Hero backoffice menegaskan area admin*/}
-        <div className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-7 dark:bg-surface">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">
-                Umbuddy Backoffice
-              </p>
-              <h1 className="mt-2 flex items-center gap-3 font-display text-3xl font-black leading-tight sm:text-4xl text-headline">
-                <LayoutDashboard className="h-7 w-7 text-primary" />
-                Markas admin sudah <span className="text-primary">siap</span>
-              </h1>
-              <p className="mt-2 text-sm font-medium text-muted">
-                Pantau performa sistem dan metrik pembelajaran.
-              </p>
-            </div>
+        {/* Header dashboard memakai komponen standar agar konsisten dengan page admin lain. */}
+        <AdminPageHeader
+          icon={<LayoutDashboard className="h-5 w-5 text-primary" />}
+          eyebrow="Umbuddy Backoffice"
+          title={<>Markas admin sudah <span className="text-primary">siap</span></>}
+          description="Pantau performa sistem dan metrik pembelajaran."
+          actions={
             <div className="rounded-2xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm font-black text-primary">
               Role aktif: {admin.role}
             </div>
-          </div>
-        </div>
+          }
+        />
 
         {/* Ringkasan status KPI */}
         <div>

@@ -8,10 +8,7 @@ export interface AdminPageHeaderProps {
   actions?: React.ReactNode
 }
 
-/**
- * A standardized reusable header card for all Admin Pages.
- * Ensures consistent 3-layer typography (Eyebrow, Title, Subtitle) and styling.
- */
+// Header standar halaman admin menjaga eyebrow, title, deskripsi, icon, dan action tetap konsisten.
 export function AdminPageHeader({
   icon,
   eyebrow,
