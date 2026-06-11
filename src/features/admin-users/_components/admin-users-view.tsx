@@ -149,6 +149,7 @@ export function AdminUsersView({
               users={users}
               page={page}
               limit={limit}
+              isLoading={isLoading}
               onChangeStatusClick={openStatusModal}
             />
           </AdminTableLayout>

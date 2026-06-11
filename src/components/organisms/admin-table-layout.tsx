@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { SmartPagination } from '@/components/molecules/smart-pagination'
 
+// Kontrak layout tabel admin menyatukan filter, isi tabel, dan pagination.
 export interface AdminTableLayoutProps {
   filters?: React.ReactNode
   children: React.ReactNode
@@ -15,23 +16,23 @@ export interface AdminTableLayoutProps {
   }
 }
 
-/**
- * A standardized wrapper for Admin Tables that unifies the Filters, the Table, and the Pagination
- * into a single gamified/clean interface card.
- */
+// Wrapper standar agar tabel admin punya padding, filter, dan pagination yang konsisten.
 export function AdminTableLayout({ filters, children, pagination }: AdminTableLayoutProps) {
   return (
     <section className="rounded-3xl border border-border bg-background p-5 shadow-sm sm:p-6 dark:bg-surface">
+      {/* Area filter dibuat satu pola supaya tiap tabel admin tidak punya wrapper ganda. */}
       {filters && (
         <div className="mb-5 flex flex-col gap-4 border-b border-border pb-5 sm:flex-row sm:items-center sm:justify-between">
           {filters}
         </div>
       )}
       
-      <div className={pagination?.isLoading ? 'pointer-events-none opacity-50 transition-opacity' : 'transition-opacity'}>
+      {/* Isi tabel tetap stabil; loading divisualkan di teks/list, bukan seluruh komponen. */}
+      <div className="transition-opacity">
         {children}
       </div>
 
+      {/* Pagination tetap interaktif sesuai state loading dari fitur pemilik data. */}
       {pagination && (
         <SmartPagination
           page={pagination.page}

@@ -6,10 +6,10 @@ import { QUESTION_CATEGORIES, QUESTION_STATUS } from '../_constants/admin-questi
 import type { AdminQuestion, AdminQuestionFilters, AdminQuestionListResponse, QuestionCategory, QuestionStatus } from '../_types/admin-question-bank.types'
 import { useToastStore } from '@/stores/useToastStore'
 import { AdminQuestionBankTable } from './admin-question-bank-table'
-import { AdminPageHeader } from '@/components/organisms'
-import { SmartPagination } from '@/components/molecules'
+import { AdminPageHeader, AdminTableLayout } from '@/components/organisms'
 
 export function AdminQuestionBankView({ initialData }: { initialData: AdminQuestionListResponse }) {
+  // Filter lokal mengontrol pencarian, kategori, status, dan pagination bank soal.
   const [filters, setFilters] = React.useState<AdminQuestionFilters>({
     category: 'ALL',
     status: 'ALL',
@@ -23,7 +23,9 @@ export function AdminQuestionBankView({ initialData }: { initialData: AdminQuest
   const [total, setTotal] = React.useState(initialData.total)
   const [isLoading, setIsLoading] = React.useState(false)
   const { addToast } = useToastStore()
+  const hasHydratedRef = React.useRef(false)
 
+  // Memuat ulang bank soal hanya saat admin mengubah filter setelah data awal server-side tersedia.
   const loadQuestions = React.useCallback(async (currentFilters: AdminQuestionFilters) => {
     setIsLoading(true)
     const params = new URLSearchParams()
@@ -50,35 +52,78 @@ export function AdminQuestionBankView({ initialData }: { initialData: AdminQuest
     }
   }, [addToast])
 
-  // Simple debounce effect for filters
+  // Debounce filter tanpa melakukan refetch ganda pada render pertama.
   React.useEffect(() => {
+    if (!hasHydratedRef.current) {
+      hasHydratedRef.current = true
+      return
+    }
+
     const timer = setTimeout(() => {
       loadQuestions(filters)
     }, 400)
     return () => clearTimeout(timer)
   }, [filters, loadQuestions])
 
+  // Mengubah keyword selalu mengembalikan admin ke halaman pertama.
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters(prev => ({ ...prev, search: e.target.value, page: 1 }))
   }
 
+  // Memuat halaman berikutnya melalui API tanpa full route reload.
   const handlePageChange = (newPage: number) => {
     setFilters(prev => ({ ...prev, page: newPage }))
   }
 
+  // Mengubah jumlah baris mengulang pagination dari halaman pertama.
   const handleLimitChange = (newLimit: number) => {
     setFilters(prev => ({ ...prev, limit: newLimit, page: 1 }))
   }
 
+  // Filter kategori mengikuti enum kategori soal dari server.
   const handleCategoryChange = (value: QuestionCategory | 'ALL') => {
     setFilters(prev => ({ ...prev, category: value, page: 1 }))
   }
 
+  // Filter status mengikuti status publish bank soal.
   const handleStatusChange = (value: QuestionStatus | 'ALL') => {
     setFilters(prev => ({ ...prev, status: value, page: 1 }))
   }
 
+  // Total halaman diturunkan dari total server dan limit aktif.
   const totalPages = Math.ceil(total / filters.limit)
+
+  // Kontrol filter dikirim ke layout agar wrapper tabel tetap satu pola.
+  const filtersNode = (
+    <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="relative w-full sm:max-w-[320px]">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+        <input
+          type="text"
+          value={filters.search}
+          onChange={handleSearchChange}
+          placeholder="Cari teks soal..."
+          className="block w-full rounded-3xl border border-border bg-surface py-2.5 pl-10 pr-3 text-sm font-semibold text-headline transition placeholder:text-muted focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10"
+        />
+      </div>
+      <div className="flex flex-wrap items-center gap-3">
+        <select
+          value={filters.category}
+          onChange={(e) => handleCategoryChange(e.target.value as QuestionCategory | 'ALL')}
+          className="rounded-3xl border border-border bg-surface py-2.5 pl-3 pr-8 text-sm font-semibold text-headline transition focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10"
+        >
+          {QUESTION_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+        </select>
+        <select
+          value={filters.status}
+          onChange={(e) => handleStatusChange(e.target.value as QuestionStatus | 'ALL')}
+          className="rounded-3xl border border-border bg-surface py-2.5 pl-3 pr-8 text-sm font-semibold text-headline transition focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10"
+        >
+          {QUESTION_STATUS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+        </select>
+      </div>
+    </div>
+  )
 
   return (
     <section className="px-4 py-6 text-headline sm:px-6 lg:px-8 lg:py-8">
@@ -92,56 +137,21 @@ export function AdminQuestionBankView({ initialData }: { initialData: AdminQuest
           description="Lihat seluruh inventaris soal yang telah diimpor ke sistem."
         />
 
-        {/* Unified Table Section */}
-        <section className="overflow-hidden rounded-3xl border border-border bg-background shadow-sm dark:bg-surface">
-          {/* Filters Area */}
-          <div className="flex flex-col gap-4 border-b border-border p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-            <div className="flex flex-1 items-center gap-3">
-              <div className="relative flex-1 sm:max-w-xs">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
-                <input
-                  type="text"
-                  value={filters.search}
-                  onChange={handleSearchChange}
-                  placeholder="Cari teks soal..."
-                  className="w-full rounded-xl border border-border bg-background py-2.5 pl-10 pr-4 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:bg-surface/50"
-                />
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center gap-3">
-              <select
-                value={filters.category}
-                onChange={(e) => handleCategoryChange(e.target.value as QuestionCategory | 'ALL')}
-                className="rounded-xl border border-border bg-background py-2.5 pl-3 pr-8 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:bg-surface/50"
-              >
-                {QUESTION_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
-              </select>
-              <select
-                value={filters.status}
-                onChange={(e) => handleStatusChange(e.target.value as QuestionStatus | 'ALL')}
-                className="rounded-xl border border-border bg-background py-2.5 pl-3 pr-8 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:bg-surface/50"
-              >
-                {QUESTION_STATUS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
-              </select>
-            </div>
-          </div>
-
-          {/* Data Table */}
-          <div className="overflow-x-auto">
-            <AdminQuestionBankTable questions={questions} />
-          </div>
-          
-          {/* Smart Pagination Controls */}
-          <SmartPagination
-            page={filters.page}
-            limit={filters.limit}
-            total={total}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-            onLimitChange={handleLimitChange}
-            isLoading={isLoading}
-          />
-        </section>
+        {/* Tabel bank soal memakai initial server-side data lalu refetch ringan saat filter berubah. */}
+        <AdminTableLayout
+          filters={filtersNode}
+          pagination={{
+            page: filters.page,
+            limit: filters.limit,
+            total,
+            totalPages,
+            onPageChange: handlePageChange,
+            onLimitChange: handleLimitChange,
+            isLoading,
+          }}
+        >
+          <AdminQuestionBankTable questions={questions} isLoading={isLoading} />
+        </AdminTableLayout>
 
       </div>
     </section>

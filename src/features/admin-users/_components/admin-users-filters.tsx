@@ -16,7 +16,7 @@ export function AdminUsersFilters({
   onKeywordChange,
   onFilter
 }: AdminUsersFiltersProps) {
-  // Trigger filter when enter key is pressed in search bar
+  // Menjalankan filter ketika admin menekan Enter pada kolom pencarian.
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault()
@@ -25,8 +25,8 @@ export function AdminUsersFilters({
   }
 
   return (
-    <div className="mb-5 flex flex-wrap items-center gap-3 border-b border-border pb-5">
-      {/* Search bar */}
+    <div className="flex w-full flex-wrap items-center gap-3">
+      {/* Kolom pencarian pengguna mengikuti wrapper filter dari AdminTableLayout. */}
       <div className="relative w-full sm:max-w-[280px]">
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
           <Search className="h-4 w-4 text-muted" aria-hidden="true" />
@@ -41,7 +41,7 @@ export function AdminUsersFilters({
         />
       </div>
 
-      {/* Loading Indicator */}
+      {/* Spinner kecil hanya memberi sinyal refetch tanpa mengubah layout tabel. */}
       {isLoading && (
         <div className="flex w-full items-center justify-center sm:w-auto sm:ml-2">
           <Loader2 className="h-5 w-5 animate-spin text-primary" />

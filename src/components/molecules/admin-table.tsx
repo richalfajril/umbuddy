@@ -1,8 +1,10 @@
 import * as React from "react"
+
 function cn(...classes: (string | undefined | null | false)[]) {
   return classes.filter(Boolean).join(' ')
 }
 
+// Wrapper tabel admin menjaga overflow horizontal tetap rapi pada layar kecil.
 const AdminTable = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
@@ -17,6 +19,7 @@ const AdminTable = React.forwardRef<
 ))
 AdminTable.displayName = "AdminTable"
 
+// Header tabel memakai tone netral agar konsisten di semua halaman admin.
 const AdminTableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
@@ -25,6 +28,7 @@ const AdminTableHeader = React.forwardRef<
 ))
 AdminTableHeader.displayName = "AdminTableHeader"
 
+// Body tabel memusatkan warna dasar dan garis antar baris.
 const AdminTableBody = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
@@ -37,6 +41,7 @@ const AdminTableBody = React.forwardRef<
 ))
 AdminTableBody.displayName = "AdminTableBody"
 
+// Row tabel memberi hover ringan tanpa mengubah struktur layout.
 const AdminTableRow = React.forwardRef<
   HTMLTableRowElement,
   React.HTMLAttributes<HTMLTableRowElement>
@@ -52,6 +57,7 @@ const AdminTableRow = React.forwardRef<
 ))
 AdminTableRow.displayName = "AdminTableRow"
 
+// Cell heading dibuat lapang agar tabel admin mudah dipindai.
 const AdminTableHead = React.forwardRef<
   HTMLTableCellElement,
   React.ThHTMLAttributes<HTMLTableCellElement>
@@ -67,17 +73,28 @@ const AdminTableHead = React.forwardRef<
 ))
 AdminTableHead.displayName = "AdminTableHead"
 
+// Cell data memakai padding vertikal standar untuk semua tabel admin.
 const AdminTableCell = React.forwardRef<
   HTMLTableCellElement,
   React.TdHTMLAttributes<HTMLTableCellElement>
 >(({ className, ...props }, ref) => (
   <td
     ref={ref}
-    className={cn("px-4 py-2.5 whitespace-nowrap", className)}
+    className={cn("px-4 py-4 whitespace-nowrap", className)}
     {...props}
   />
 ))
 AdminTableCell.displayName = "AdminTableCell"
+
+// Skeleton teks dipakai hanya pada data/list yang sedang refetch.
+function AdminTableTextSkeleton({ className }: { className?: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={cn("inline-block h-4 animate-pulse rounded-full bg-surface-hover", className)}
+    />
+  )
+}
 
 export {
   AdminTable,
@@ -86,4 +103,5 @@ export {
   AdminTableRow,
   AdminTableHead,
   AdminTableCell,
+  AdminTableTextSkeleton,
 }

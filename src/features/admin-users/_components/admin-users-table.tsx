@@ -3,7 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { MoreHorizontal, AlertCircle, ShieldAlert, CheckCircle2, User } from 'lucide-react'
-import { AdminTable, AdminTableHeader, AdminTableHead, AdminTableBody, AdminTableRow, AdminTableCell } from '@/components/molecules'
+import { AdminTable, AdminTableHeader, AdminTableHead, AdminTableBody, AdminTableRow, AdminTableCell, AdminTableTextSkeleton } from '@/components/molecules'
 import { USER_PROGRESSION_RANKS } from '@/features/shared/_constants/user-app.constants'
 import type { AdminUserListItem } from '../_types/admin-users.types'
 
@@ -11,11 +11,13 @@ interface AdminUsersTableProps {
   users: AdminUserListItem[]
   page: number
   limit: number
+  isLoading?: boolean
   onChangeStatusClick: (userId: string, currentStatus: string, name: string) => void
 }
 
-export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: AdminUsersTableProps) {
-  if (users.length === 0) {
+export function AdminUsersTable({ users, page, limit, isLoading = false, onChangeStatusClick }: AdminUsersTableProps) {
+  // Empty state hanya muncul setelah request selesai dan tidak ada pengguna.
+  if (!isLoading && users.length === 0) {
     return (
       <div className="flex min-h-[300px] flex-col items-center justify-center rounded-3xl border border-dashed border-border bg-surface/50 p-8 text-center">
         <div className="grid h-16 w-16 place-items-center rounded-2xl bg-muted/20 text-muted">
@@ -28,6 +30,9 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
       </div>
     )
   }
+
+  // Baris skeleton menjaga layout tabel stabil saat refetch data pengguna.
+  const loadingRows = Array.from({ length: Math.min(Math.max(users.length, 5), 8) })
 
   return (
     <AdminTable>
@@ -53,7 +58,27 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
         </tr>
       </AdminTableHeader>
       <AdminTableBody>
-        {users.map((user, index) => {
+        {isLoading ? (
+          loadingRows.map((_, index) => (
+            <AdminTableRow key={`user-loading-${index}`}>
+              {Array.from({ length: 16 }).map((__, cellIndex) => (
+                <AdminTableCell key={`user-loading-${index}-${cellIndex}`}>
+                  <AdminTableTextSkeleton className={cellIndex === 1 ? 'w-36' : cellIndex === 3 ? 'w-44' : 'w-20'} />
+                </AdminTableCell>
+              ))}
+              <AdminTableCell className="sticky right-0 border-l border-border bg-background text-right shadow-[-4px_0_12px_rgba(0,0,0,0.05)]">
+                <button
+                  type="button"
+                  disabled
+                  className="rounded-xl p-2 text-muted opacity-60"
+                  title="Memuat aksi"
+                >
+                  <MoreHorizontal className="h-5 w-5" />
+                </button>
+              </AdminTableCell>
+            </AdminTableRow>
+          ))
+        ) : users.map((user, index) => {
           const rankJabatan = user.progression ? USER_PROGRESSION_RANKS.find(r => user.progression!.total_xp >= r.requiredXp)?.jabatan || 'Pemula' : '-'
           const rankGolongan = user.progression ? USER_PROGRESSION_RANKS.find(r => user.progression!.total_xp >= r.requiredXp)?.golongan || 'I/a' : '-'
 
@@ -134,7 +159,7 @@ export function AdminUsersTable({ users, page, limit, onChangeStatusClick }: Adm
             </AdminTableRow>
           )
         })}
-        {limit > users.length && Array.from({ length: limit - users.length }).map((_, i) => (
+        {!isLoading && limit > users.length && Array.from({ length: limit - users.length }).map((_, i) => (
           <AdminTableRow key={`empty-${i}`} className="h-[65px] hover:bg-transparent">
             <AdminTableCell colSpan={17} className="text-transparent border-0">&nbsp;</AdminTableCell>
           </AdminTableRow>
@@ -151,9 +176,11 @@ function ActionCell({
   user: AdminUserListItem
   onChangeStatusClick: (userId: string, currentStatus: string, name: string) => void 
 }) {
+  // State dropdown lokal menjaga menu aksi tidak memengaruhi baris lain.
   const [isOpen, setIsOpen] = React.useState(false)
   const ref = React.useRef<HTMLTableCellElement>(null)
 
+  // Menutup dropdown saat klik di luar cell aksi.
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -212,6 +239,7 @@ function ActionCell({
 }
 
 function StatusBadge({ status }: { status: string }) {
+  // Status aktif diberi aksen hijau agar cepat dikenali admin.
   if (status === 'ACTIVE') {
     return (
       <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">
@@ -220,6 +248,7 @@ function StatusBadge({ status }: { status: string }) {
     )
   }
   
+  // Status suspend menandai akun yang perlu moderasi lanjutan.
   if (status === 'SUSPENDED') {
     return (
       <span className="inline-flex items-center gap-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 px-2.5 py-1 text-xs font-bold text-orange-500 dark:text-orange-400">
@@ -228,6 +257,7 @@ function StatusBadge({ status }: { status: string }) {
     )
   }
 
+  // Status banned diberi warna bahaya untuk keputusan moderasi final.
   if (status === 'BANNED') {
     return (
       <span className="inline-flex items-center gap-1.5 rounded-full border border-red-500/30 bg-red-500/10 px-2.5 py-1 text-xs font-bold text-red-500 dark:text-red-400">
