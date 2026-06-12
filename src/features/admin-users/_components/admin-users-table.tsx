@@ -1,9 +1,8 @@
 'use client'
 
 import * as React from 'react'
-import Link from 'next/link'
 import { MoreHorizontal, AlertCircle, ShieldAlert, CheckCircle2, User } from 'lucide-react'
-import { AdminTable, AdminTableHeader, AdminTableHead, AdminTableBody, AdminTableRow, AdminTableCell, AdminTableTextSkeleton } from '@/components/molecules'
+import { AdminActionMenu, AdminTable, AdminTableHeader, AdminTableHead, AdminTableBody, AdminTableRow, AdminTableCell, AdminTableTextSkeleton } from '@/components/molecules'
 import { USER_PROGRESSION_RANKS } from '@/features/shared/_constants/user-app.constants'
 import type { AdminUserListItem } from '../_types/admin-users.types'
 
@@ -176,64 +175,27 @@ function ActionCell({
   user: AdminUserListItem
   onChangeStatusClick: (userId: string, currentStatus: string, name: string) => void 
 }) {
-  // State dropdown lokal menjaga menu aksi tidak memengaruhi baris lain.
-  const [isOpen, setIsOpen] = React.useState(false)
-  const ref = React.useRef<HTMLTableCellElement>(null)
-
-  // Menutup dropdown saat klik di luar cell aksi.
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        setIsOpen(false)
-      }
-    }
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-    }
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [isOpen])
+  // Item aksi user memakai wrapper dropdown standar admin.
+  const actionItems = [
+    {
+      label: 'Moderasi',
+      icon: ShieldAlert,
+      tone: 'warning' as const,
+      onClick: () => onChangeStatusClick(user.id, user.status, user.name),
+    },
+    {
+      label: 'Detail akun',
+      icon: User,
+      tone: 'primary' as const,
+      href: `/admin/users/${user.id}`,
+    },
+  ]
 
   return (
     <AdminTableCell 
-      ref={ref}
-      className={`text-right sticky right-0 bg-background group-hover:bg-surface/95 transition-colors shadow-[-4px_0_12px_rgba(0,0,0,0.05)] border-l border-border ${isOpen ? 'z-[60]' : 'z-10'}`}
+      className="sticky right-0 z-10 border-l border-border bg-background text-right shadow-[-4px_0_12px_rgba(0,0,0,0.05)] transition-colors group-hover:bg-surface/95"
     >
-      <div className="relative flex justify-end">
-        <button
-          type="button"
-          onClick={() => setIsOpen(!isOpen)}
-          className={`rounded-xl p-2 transition ${isOpen ? 'bg-surface text-headline' : 'text-muted hover:bg-surface hover:text-headline'}`}
-          title="Aksi Lainnya"
-        >
-          <MoreHorizontal className="h-5 w-5" />
-        </button>
-
-        {isOpen && (
-          <div className="absolute right-10 top-0 w-44 animate-in fade-in zoom-in-95 rounded-xl border border-border bg-background p-1.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] z-[70]">
-            <div className="px-3 py-1.5 text-xs font-bold text-muted text-left">Aksi</div>
-            <button
-              onClick={() => {
-                setIsOpen(false)
-                onChangeStatusClick(user.id, user.status, user.name)
-              }}
-              className="group flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-amber-600 dark:text-amber-500 transition hover:bg-amber-500/10"
-            >
-              <ShieldAlert className="h-4 w-4 text-amber-500" />
-              Moderasi
-            </button>
-            <Link
-              href={`/admin/users/${user.id}`}
-              onClick={() => setIsOpen(false)}
-              prefetch
-              transitionTypes={['app-nav']}
-              className="group flex w-full items-center gap-2.5 mt-1 rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-primary transition hover:bg-primary/10"
-            >
-              <User className="h-4 w-4 text-primary" />
-              Detail akun
-            </Link>
-          </div>
-        )}
-      </div>
+      <AdminActionMenu items={actionItems} />
     </AdminTableCell>
   )
 }

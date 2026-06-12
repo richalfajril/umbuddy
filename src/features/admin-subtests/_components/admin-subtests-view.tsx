@@ -4,7 +4,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import { Plus, MoreHorizontal, FileSpreadsheet, Eye, Pencil, Trash2, AlertCircle, Search, Package } from 'lucide-react'
 import { Button } from '@/components/ui'
-import { AdminTable, AdminTableHeader, AdminTableHead, AdminTableBody, AdminTableRow, AdminTableCell, AdminTableTextSkeleton } from '@/components/molecules'
+import { AdminActionMenu, AdminTable, AdminTableHeader, AdminTableHead, AdminTableBody, AdminTableRow, AdminTableCell, AdminTableTextSkeleton } from '@/components/molecules'
 import { AdminPageHeader, AdminTableLayout } from '@/components/organisms'
 import { useToastStore } from '@/stores/useToastStore'
 
@@ -320,69 +320,31 @@ function SubtestActionCell({
   subtest: SubtestPackage
   onDeleteClick: (subtest: SubtestPackage) => void
 }) {
-  // Dropdown aksi per baris menghindari overlay global yang terasa berat.
-  const [isOpen, setIsOpen] = React.useState(false)
-  const ref = React.useRef<HTMLTableCellElement>(null)
-
-  // Menutup menu ketika admin klik di luar cell.
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        setIsOpen(false)
-      }
-    }
-    if (isOpen) document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [isOpen])
+  // Item aksi subtes memakai wrapper dropdown standar admin.
+  const actionItems = [
+    {
+      label: 'Detail',
+      icon: Eye,
+      tone: 'default' as const,
+    },
+    {
+      label: 'Edit',
+      icon: Pencil,
+      tone: 'warning' as const,
+    },
+    {
+      label: 'Hapus',
+      icon: Trash2,
+      tone: 'danger' as const,
+      onClick: () => onDeleteClick(subtest),
+    },
+  ]
 
   return (
     <AdminTableCell
-      ref={ref}
-      className={`sticky right-0 border-l border-border bg-background text-right shadow-[-4px_0_12px_rgba(0,0,0,0.05)] transition-colors group-hover:bg-surface/95 ${isOpen ? 'z-[60]' : 'z-10'}`}
+      className="sticky right-0 z-10 border-l border-border bg-background text-right shadow-[-4px_0_12px_rgba(0,0,0,0.05)] transition-colors group-hover:bg-surface/95"
     >
-      <div className="relative flex justify-end">
-        <button
-          type="button"
-          onClick={() => setIsOpen(!isOpen)}
-          className={`rounded-xl p-2 transition ${isOpen ? 'bg-surface text-headline' : 'text-muted hover:bg-surface hover:text-headline'}`}
-          title="Aksi Lainnya"
-        >
-          <MoreHorizontal className="h-5 w-5" />
-        </button>
-
-        {isOpen && (
-          <div className="absolute right-10 top-0 z-[70] w-48 animate-in fade-in zoom-in-95 rounded-xl border border-border bg-background p-1.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] dark:bg-surface">
-            <div className="px-3 py-1.5 text-left text-xs font-bold text-muted">Aksi</div>
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-headline hover:bg-muted/10"
-            >
-              <Eye className="h-4 w-4 text-muted" />
-              Detail
-            </button>
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-amber-600 hover:bg-amber-50 dark:text-amber-500 dark:hover:bg-amber-950/30"
-            >
-              <Pencil className="h-4 w-4" />
-              Edit
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setIsOpen(false)
-                onDeleteClick(subtest)
-              }}
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
-            >
-              <Trash2 className="h-4 w-4" />
-              Hapus
-            </button>
-          </div>
-        )}
-      </div>
+      <AdminActionMenu items={actionItems} />
     </AdminTableCell>
   )
 }
