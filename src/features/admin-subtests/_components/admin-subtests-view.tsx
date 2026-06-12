@@ -326,6 +326,7 @@ function SubtestActionCell({
       label: 'Detail',
       icon: Eye,
       tone: 'default' as const,
+      href: `/admin/subtests/${encodeURIComponent(subtest.packageCode)}`,
     },
     {
       label: 'Edit',

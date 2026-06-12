@@ -13,6 +13,7 @@ export type AdminQuestionStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED' | 'FLAGGED'
 export type AdminQuestionListInput = {
   status?: AdminQuestionStatus
   category?: AdminQuestionCategory
+  package_code?: string
   keyword?: string
   page?: number
   page_size?: number
@@ -64,4 +65,3 @@ export type AdminQuestionListItem = {
 
 // Context admin aktif yang sudah melewati guard session.
 export type AdminQuestionActor = AdminSessionContext['admin']
-

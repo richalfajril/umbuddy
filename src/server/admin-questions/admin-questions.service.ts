@@ -23,10 +23,12 @@ export class AdminQuestionService {
     const page = Math.max(1, input.page ?? 1)
     const pageSize = Math.max(1, Math.min(input.page_size ?? 20, ADMIN_QUESTION_MAX_PAGE_SIZE))
     const keyword = input.keyword?.trim()
+    const packageCode = input.package_code?.trim()
     const where: Prisma.QuestionWhereInput = {
       deleted_at: null,
       ...(input.status ? { status: input.status } : {}),
       ...(input.category ? { category: input.category } : {}),
+      ...(packageCode ? { package_code: packageCode } : {}),
       ...(keyword ? {
         OR: [
           { text: { contains: keyword, mode: 'insensitive' } },
@@ -239,4 +241,3 @@ export class AdminQuestionService {
     return toAdminQuestionListItem(question)
   }
 }
-
