@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { MoreHorizontal, type LucideIcon } from 'lucide-react'
 
@@ -23,6 +24,14 @@ type AdminActionMenuProps = {
   align?: 'left' | 'right'
 }
 
+type MenuPosition = {
+  top: number
+  left: number
+}
+
+const menuWidth = 208
+const menuGap = 10
+
 const toneClasses: Record<AdminActionTone, string> = {
   default: 'text-headline hover:bg-surface',
   primary: 'text-primary hover:bg-primary/10',
@@ -34,12 +43,37 @@ const toneClasses: Record<AdminActionTone, string> = {
 export function AdminActionMenu({ items, align = 'right' }: AdminActionMenuProps) {
   // State lokal cukup untuk membuka menu pada satu baris tabel.
   const [isOpen, setIsOpen] = React.useState(false)
-  const ref = React.useRef<HTMLDivElement>(null)
+  const [menuPosition, setMenuPosition] = React.useState<MenuPosition | null>(null)
+  const triggerRef = React.useRef<HTMLButtonElement>(null)
+  const menuRef = React.useRef<HTMLDivElement>(null)
+
+  // Menghitung posisi fixed agar dropdown tidak terpotong overflow tabel.
+  const updateMenuPosition = React.useCallback(() => {
+    const rect = triggerRef.current?.getBoundingClientRect()
+    if (!rect) return
+
+    const preferredLeft = align === 'right' ? rect.right - menuWidth : rect.left
+    const safeLeft = Math.min(
+      Math.max(preferredLeft, 12),
+      window.innerWidth - menuWidth - 12
+    )
+
+    setMenuPosition({
+      top: rect.bottom + menuGap,
+      left: safeLeft,
+    })
+  }, [align])
 
   // Klik di luar menu otomatis menutup dropdown agar tidak bertumpuk.
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
+      const target = event.target as Node
+      if (
+        triggerRef.current &&
+        !triggerRef.current.contains(target) &&
+        menuRef.current &&
+        !menuRef.current.contains(target)
+      ) {
         setIsOpen(false)
       }
     }
@@ -48,10 +82,25 @@ export function AdminActionMenu({ items, align = 'right' }: AdminActionMenuProps
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isOpen])
 
+  // Saat dropdown terbuka, posisinya disinkronkan terhadap tombol dan viewport.
+  React.useEffect(() => {
+    if (!isOpen) return
+
+    updateMenuPosition()
+    window.addEventListener('resize', updateMenuPosition)
+    window.addEventListener('scroll', updateMenuPosition, true)
+
+    return () => {
+      window.removeEventListener('resize', updateMenuPosition)
+      window.removeEventListener('scroll', updateMenuPosition, true)
+    }
+  }, [isOpen, updateMenuPosition])
+
   return (
-    <div ref={ref} className="relative flex justify-end">
+    <div className="relative flex justify-end">
       {/* Tombol titik tiga menjadi trigger standar semua tabel admin. */}
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
@@ -65,13 +114,15 @@ export function AdminActionMenu({ items, align = 'right' }: AdminActionMenuProps
         <MoreHorizontal className="h-5 w-5" />
       </button>
 
-      {isOpen && (
+      {isOpen && menuPosition && createPortal(
         <div
+          ref={menuRef}
           role="menu"
-          className={cn(
-            'absolute top-0 z-[70] w-48 rounded-3xl border border-border bg-background p-3 shadow-[0_22px_55px_-28px_rgba(31,41,55,0.45)] dark:bg-surface',
-            align === 'right' ? 'right-12' : 'left-12'
-          )}
+          className="fixed z-[90] w-[208px] rounded-3xl border border-border bg-background p-3 shadow-[0_22px_55px_-28px_rgba(31,41,55,0.45)] dark:bg-surface"
+          style={{
+            top: menuPosition.top,
+            left: menuPosition.left,
+          }}
         >
           <div className="px-3 pb-2 text-left text-sm font-black text-muted">Aksi</div>
 
@@ -85,7 +136,8 @@ export function AdminActionMenu({ items, align = 'right' }: AdminActionMenuProps
               />
             ))}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )
