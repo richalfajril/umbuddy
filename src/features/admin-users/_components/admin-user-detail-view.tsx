@@ -43,25 +43,24 @@ export function AdminUserDetailView({
   return (
     <section className="px-4 py-6 text-headline sm:px-6 lg:px-8 lg:py-8">
       <div className="mx-auto max-w-7xl space-y-6">
-        {/* Header detail user memakai pola standar dengan back link dan status di area action. */}
+        {/* Header detail user memakai icon kiri sebagai tombol kembali seperti sub-page admin lain. */}
         <AdminPageHeader
           icon={
-            <User className="h-5 w-5 text-primary" />
+            <Link
+              href="/admin/users"
+              prefetch
+              transitionTypes={['app-nav']}
+              className="grid h-full w-full place-items-center text-muted transition-colors hover:text-headline"
+              aria-label="Kembali ke direktori pengguna"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Link>
           }
           eyebrow="User Directory"
           title={<>Detail <span className="text-primary">Profil Pengguna</span></>}
           description="Pantau riwayat aktivitas dan moderasi pengguna spesifik."
           actions={
             <div className="flex flex-col gap-3 sm:items-end">
-              <Link
-                href="/admin/users"
-                prefetch
-                transitionTypes={['app-nav']}
-                className="inline-flex min-h-[44px] items-center gap-2 rounded-2xl border border-border bg-surface px-4 py-2 text-sm font-black text-primary transition-colors hover:bg-surface-hover"
-              >
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                Kembali ke Direktori
-              </Link>
               <StatusBadge status={currentStatus} />
               <p className="text-xs font-semibold text-muted">User ID: {user.id}</p>
             </div>
