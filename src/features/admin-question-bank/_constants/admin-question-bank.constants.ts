@@ -14,8 +14,8 @@ export const QUESTION_STATUS = [
 ] as const
 
 export const QUESTION_STATUS_COLORS: Record<string, string> = {
-  PUBLISHED: 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800',
-  DRAFT: 'bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800',
-  ARCHIVED: 'bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700',
-  FLAGGED: 'bg-red-100 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800',
+  PUBLISHED: 'bg-green-50 text-green-800 border-green-700 dark:bg-green-950/50 dark:text-green-200 dark:border-green-500',
+  DRAFT: 'bg-amber-50 text-amber-800 border-amber-600 dark:bg-amber-950/50 dark:text-amber-200 dark:border-amber-500',
+  ARCHIVED: 'bg-slate-100 text-slate-700 border-slate-500 dark:bg-slate-900 dark:text-slate-200 dark:border-slate-500',
+  FLAGGED: 'bg-red-50 text-red-800 border-red-600 dark:bg-red-950/50 dark:text-red-200 dark:border-red-500',
 }

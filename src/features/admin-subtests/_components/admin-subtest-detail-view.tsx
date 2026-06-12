@@ -103,7 +103,7 @@ function SubtestQuestionsTable({ questions }: { questions: AdminQuestionListResp
               {question.answer_key || '-'}
             </AdminTableCell>
             <AdminTableCell>
-              <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-bold tracking-wider ${QUESTION_STATUS_COLORS[question.status] || ''}`}>
+              <span className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-black tracking-wider ${QUESTION_STATUS_COLORS[question.status] || ''}`}>
                 {question.status}
               </span>
             </AdminTableCell>

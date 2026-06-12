@@ -87,7 +87,7 @@ export function AdminQuestionBankTable({ questions, isLoading = false }: AdminQu
               </p>
             </AdminTableCell>
             <AdminTableCell>
-              <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-bold tracking-wider ${QUESTION_STATUS_COLORS[q.status] || ''}`}>
+              <span className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-black tracking-wider ${QUESTION_STATUS_COLORS[q.status] || ''}`}>
                 {q.status}
               </span>
             </AdminTableCell>
