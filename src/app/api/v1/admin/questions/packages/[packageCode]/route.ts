@@ -69,9 +69,35 @@ export async function PATCH(
     const resolvedParams = await params
     const currentPackageCode = decodeURIComponent(resolvedParams.packageCode)
     const body = await request.json()
+    const action = typeof body.action === 'string' ? body.action.toUpperCase() : ''
     const nextPackageCode = typeof body.packageCode === 'string' ? body.packageCode.trim() : ''
     const globalCategory = typeof body.category === 'string' ? body.category : 'CAMPURAN'
     const questions = Array.isArray(body.questions) ? body.questions as Record<string, unknown>[] : null
+
+    // Aksi publish mengaktifkan kembali paket archived tanpa mengubah isi soal.
+    if (action === 'PUBLISH') {
+      const restored = await prisma.question.updateMany({
+        where: {
+          package_code: currentPackageCode,
+          status: 'ARCHIVED',
+          deleted_at: { not: null },
+        },
+        data: {
+          status: 'PUBLISHED',
+          deleted_at: null,
+          updated_by: session.admin.id,
+        },
+      })
+
+      if (restored.count === 0) {
+        return NextResponse.json({ error: 'Subtes archived tidak ditemukan.' }, { status: 404 })
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: `Subtes ${currentPackageCode} berhasil dipublikasikan kembali.`,
+      })
+    }
 
     if (!currentPackageCode || !nextPackageCode) {
       return NextResponse.json({ error: 'Nama subtes wajib diisi.' }, { status: 400 })

@@ -1,6 +1,6 @@
 'use client'
 
-import { AlertCircle, Archive, Eye, MoreHorizontal, Pencil } from 'lucide-react'
+import { AlertCircle, Archive, CheckCircle2, Eye, MoreHorizontal, Pencil } from 'lucide-react'
 import { AdminActionMenu, AdminTable, AdminTableBody, AdminTableCell, AdminTableHead, AdminTableHeader, AdminTableRow, AdminTableTextSkeleton } from '@/components/molecules'
 import type { SubtestPackage } from '../_types/admin-subtests.types'
 
@@ -11,6 +11,7 @@ type AdminSubtestsTableProps = {
   filteredCount: number
   subtests: SubtestPackage[]
   onDeleteClick: (subtest: SubtestPackage) => void
+  onPublishClick: (subtest: SubtestPackage) => void
 }
 
 // Tabel subtes menampilkan paket soal, jumlah soal, tanggal, dan aksi admin.
@@ -21,6 +22,7 @@ export function AdminSubtestsTable({
   filteredCount,
   subtests,
   onDeleteClick,
+  onPublishClick,
 }: AdminSubtestsTableProps) {
   // Loading skeleton hanya mengganti teks/list, bukan card atau tombol utama.
   const loadingRows = Array.from({ length: Math.min(Math.max(subtests.length, 5), 8) })
@@ -46,6 +48,7 @@ export function AdminSubtestsTable({
           <AdminTableHead>No</AdminTableHead>
           <AdminTableHead>Nama Subtes / Paket</AdminTableHead>
           <AdminTableHead>Kategori</AdminTableHead>
+          <AdminTableHead>Status</AdminTableHead>
           <AdminTableHead>Total Soal</AdminTableHead>
           <AdminTableHead>Tanggal Dibuat</AdminTableHead>
           <AdminTableHead>Terakhir Diubah</AdminTableHead>
@@ -59,6 +62,7 @@ export function AdminSubtestsTable({
               <AdminTableCell><AdminTableTextSkeleton className="w-8" /></AdminTableCell>
               <AdminTableCell><AdminTableTextSkeleton className="w-40" /></AdminTableCell>
               <AdminTableCell><AdminTableTextSkeleton className="w-16" /></AdminTableCell>
+              <AdminTableCell><AdminTableTextSkeleton className="w-20" /></AdminTableCell>
               <AdminTableCell><AdminTableTextSkeleton className="w-20" /></AdminTableCell>
               <AdminTableCell><AdminTableTextSkeleton className="w-24" /></AdminTableCell>
               <AdminTableCell><AdminTableTextSkeleton className="w-24" /></AdminTableCell>
@@ -79,6 +83,15 @@ export function AdminSubtestsTable({
                   {st.category}
                 </span>
               </AdminTableCell>
+              <AdminTableCell>
+                <span className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-black tracking-wider ${
+                  st.status === 'PUBLISHED'
+                    ? 'border-primary/30 bg-primary/10 text-primary'
+                    : 'border-muted/30 bg-muted/10 text-muted'
+                }`}>
+                  {st.status === 'PUBLISHED' ? 'Published' : 'Archived'}
+                </span>
+              </AdminTableCell>
               <AdminTableCell className="text-muted">{st.totalQuestions} Soal</AdminTableCell>
               <AdminTableCell className="text-muted">
                 {new Date(st.createdAt).toLocaleDateString('id-ID', {
@@ -94,14 +107,14 @@ export function AdminSubtestsTable({
                   year: 'numeric',
                 })}
               </AdminTableCell>
-              <SubtestActionCell subtest={st} onDeleteClick={onDeleteClick} />
+              <SubtestActionCell subtest={st} onDeleteClick={onDeleteClick} onPublishClick={onPublishClick} />
             </AdminTableRow>
           ))
         )}
         {!isLoading && filteredCount > 0 && limit > subtests.length && (
           Array.from({ length: limit - subtests.length }).map((_, i) => (
             <AdminTableRow key={`empty-${i}`} className="h-[65px] hover:bg-transparent">
-              <AdminTableCell colSpan={7} className="border-0 text-transparent">&nbsp;</AdminTableCell>
+              <AdminTableCell colSpan={8} className="border-0 text-transparent">&nbsp;</AdminTableCell>
             </AdminTableRow>
           ))
         )}
@@ -113,9 +126,11 @@ export function AdminSubtestsTable({
 function SubtestActionCell({
   subtest,
   onDeleteClick,
+  onPublishClick,
 }: {
   subtest: SubtestPackage
   onDeleteClick: (subtest: SubtestPackage) => void
+  onPublishClick: (subtest: SubtestPackage) => void
 }) {
   // Item aksi subtes memakai wrapper dropdown standar admin.
   const actionItems = [
@@ -131,12 +146,17 @@ function SubtestActionCell({
       tone: 'warning' as const,
       href: `/admin/subtests/${encodeURIComponent(subtest.packageCode)}/edit`,
     },
-    {
+    ...(subtest.status === 'PUBLISHED' ? [{
       label: 'Arsipkan',
       icon: Archive,
       tone: 'danger' as const,
       onClick: () => onDeleteClick(subtest),
-    },
+    }] : [{
+      label: 'Publikasi',
+      icon: CheckCircle2,
+      tone: 'primary' as const,
+      onClick: () => onPublishClick(subtest),
+    }]),
   ]
 
   return (

@@ -23,16 +23,21 @@ export function AdminSubtestsView() {
   const [page, setPage] = React.useState(1)
   const [limit, setLimit] = React.useState(10)
   const [keyword, setKeyword] = React.useState('')
+  const [statusFilter, setStatusFilter] = React.useState<'ALL' | 'PUBLISHED' | 'ARCHIVED'>('ALL')
 
   // Filter client-side cukup untuk daftar paket yang ringan.
   const filteredSubtests = React.useMemo(() => {
-    if (!keyword.trim()) return subtests
+    const byStatus = statusFilter === 'ALL'
+      ? subtests
+      : subtests.filter((subtest) => subtest.status === statusFilter)
+
+    if (!keyword.trim()) return byStatus
     const lower = keyword.toLowerCase()
-    return subtests.filter(st =>
+    return byStatus.filter(st =>
       st.packageCode.toLowerCase().includes(lower) ||
       st.category.toLowerCase().includes(lower)
     )
-  }, [subtests, keyword])
+  }, [subtests, keyword, statusFilter])
 
   // Nilai pagination diturunkan dari hasil filter lokal.
   const total = filteredSubtests.length
@@ -86,6 +91,26 @@ export function AdminSubtestsView() {
     }
   }
 
+  // Publikasi mengaktifkan kembali paket archived tanpa mengganti isi soalnya.
+  const handlePublishClick = async (subtest: SubtestPackage) => {
+    try {
+      const res = await fetch(`/api/v1/admin/questions/packages/${encodeURIComponent(subtest.packageCode)}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'PUBLISH' }),
+      })
+      const data = await res.json()
+
+      if (!res.ok) throw new Error(data.error || 'Gagal mempublikasikan subtes')
+
+      addToast({ type: 'success', title: 'Berhasil', message: data.message || `Subtes ${subtest.packageCode} telah dipublikasikan` })
+      void fetchPackages()
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Terjadi kesalahan'
+      addToast({ type: 'error', title: 'Gagal Publikasi', message })
+    }
+  }
+
   // Filter pencarian dikirim ke AdminTableLayout agar wrapper tetap konsisten.
   const filtersNode = (
     <div className="flex w-full flex-wrap items-center gap-3">
@@ -104,6 +129,18 @@ export function AdminSubtestsView() {
           }}
         />
       </div>
+      <select
+        value={statusFilter}
+        onChange={(event) => {
+          setStatusFilter(event.target.value as 'ALL' | 'PUBLISHED' | 'ARCHIVED')
+          setPage(1)
+        }}
+        className="rounded-3xl border border-border bg-surface py-2.5 pl-3 pr-8 text-sm font-semibold text-headline transition focus:border-primary/50 focus:outline-none focus:ring-4 focus:ring-primary/10"
+      >
+        <option value="ALL">Semua Status</option>
+        <option value="PUBLISHED">Published</option>
+        <option value="ARCHIVED">Archived</option>
+      </select>
     </div>
   )
 
@@ -155,6 +192,7 @@ export function AdminSubtestsView() {
             filteredCount={filteredSubtests.length}
             subtests={paginatedSubtests}
             onDeleteClick={setDeleteConfirmation}
+            onPublishClick={handlePublishClick}
           />
         </AdminTableLayout>
       </div>

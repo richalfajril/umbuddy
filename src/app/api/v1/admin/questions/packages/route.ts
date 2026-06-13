@@ -17,31 +17,38 @@ export async function GET() {
     
     const grouped = await prisma.question.groupBy({
       by: ['package_code'],
-      where: {
-        deleted_at: null,
-      },
       _count: {
         id: true,
       },
       _min: {
         created_at: true,
-      }
+      },
+      _max: {
+        updated_at: true,
+      },
     })
 
     // Kita juga perlu tahu kategori dominan dari package_code tersebut
     // Karena groupBy by package_code, category bisa bervariasi jika CAMPURAN.
     // Kita ambil salah satu kategori pertama dari tiap package_code
     
-    const packages = await Promise.all(grouped.map(async (g: { package_code: string; _count: { id: number }; _min: { created_at: Date | null } }) => {
+    const packages = await Promise.all(grouped.map(async (g: { package_code: string; _count: { id: number }; _min: { created_at: Date | null }; _max: { updated_at: Date | null } }) => {
       // Jika dalam 1 package ada berbagai category, kita bisa label 'CAMPURAN' 
       // Tapi untuk simplicity V1, kita pakai category dari sample (atau cek distinct).
       const distinctCategories = await prisma.question.findMany({
         where: {
           package_code: g.package_code,
-          deleted_at: null,
         },
         distinct: ['category'],
         select: { category: true }
+      })
+      const activeQuestion = await prisma.question.findFirst({
+        where: {
+          package_code: g.package_code,
+          deleted_at: null,
+          status: { not: 'ARCHIVED' },
+        },
+        select: { id: true },
       })
 
       const displayCategory = distinctCategories.length > 1 
@@ -52,9 +59,10 @@ export async function GET() {
         id: g.package_code, // Gunakan package_code sebagai ID unik tabel
         packageCode: g.package_code,
         category: displayCategory,
+        status: activeQuestion ? 'PUBLISHED' : 'ARCHIVED',
         totalQuestions: g._count.id,
         createdAt: g._min.created_at || new Date(),
-        updatedAt: g._min.created_at || new Date(), // Sederhananya menggunakan created_at, atau Anda bisa query _max.updated_at
+        updatedAt: g._max.updated_at || g._min.created_at || new Date(),
       }
     }))
 
