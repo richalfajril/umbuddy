@@ -1,4 +1,5 @@
 export * from './_components/admin-subtests-view'
 export * from './_components/admin-subtests-create-view'
+export * from './_components/admin-subtests-edit-view'
 export * from './_components/admin-subtests-table'
 export type { SubtestPackage } from './_types/admin-subtests.types'

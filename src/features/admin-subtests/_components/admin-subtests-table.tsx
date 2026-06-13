@@ -129,6 +129,7 @@ function SubtestActionCell({
       label: 'Edit',
       icon: Pencil,
       tone: 'warning' as const,
+      href: `/admin/subtests/${encodeURIComponent(subtest.packageCode)}/edit`,
     },
     {
       label: 'Hapus',
