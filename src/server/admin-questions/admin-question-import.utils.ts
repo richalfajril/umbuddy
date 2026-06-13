@@ -28,10 +28,19 @@ type ImportedQuestionDraft = {
   subMaterialName: string | null
 }
 
+// Menyamakan nama header Excel agar spasi, kapital, dan pemisah kecil tidak membuat field kosong.
+function normalizeHeader(value: string) {
+  return value.toLowerCase().replace(/[\s_/-]+/g, '')
+}
+
 // Membaca nilai cell dari beberapa kemungkinan header Excel agar format lama tetap kompatibel.
 function readCell(row: ExcelRow, keys: string[]) {
+  const normalizedRow = Object.fromEntries(
+    Object.entries(row).map(([key, value]) => [normalizeHeader(key), value])
+  )
+
   for (const key of keys) {
-    const value = row[key]
+    const value = row[key] ?? normalizedRow[normalizeHeader(key)]
     if (value !== undefined && value !== null && String(value).trim()) {
       return String(value).trim()
     }
