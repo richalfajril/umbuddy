@@ -130,6 +130,7 @@ export async function PATCH(
 
     // Jika Excel baru dikirim, isi paket diganti total agar nomor dan kategori tetap sinkron.
     if (questions) {
+      const archivePackageCode = `${currentPackageCode}__archived__${Date.now()}`
       const questionDrafts = questions.map((q, index) => (
         buildImportedQuestionDraft(q, index, {
           packageCode: nextPackageCode,
@@ -139,10 +140,16 @@ export async function PATCH(
       ))
       const taxonomyByKey = await resolveQuestionTaxonomyMap(prisma, questionDrafts)
 
-      // Transaksi reimport hanya menghapus/mengisi soal dan mencatat job, sedangkan taxonomy sudah dicache sebelumnya.
+      // Transaksi reimport mengarsipkan paket lama agar attempt user tidak kehilangan referensi question_id.
       await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-        await tx.question.deleteMany({
+        await tx.question.updateMany({
           where: { package_code: currentPackageCode },
+          data: {
+            package_code: archivePackageCode,
+            status: 'ARCHIVED',
+            deleted_at: new Date(),
+            updated_by: session.admin.id,
+          },
         })
 
         const questionDataToInsert = []
