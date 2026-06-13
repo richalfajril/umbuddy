@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/server/db/client'
 import { AdminAuthService } from '@/server/admin-auth'
 import { Prisma, BulkUploadStatus } from '@prisma/client'
-import { buildImportedQuestionDraft, resolveQuestionTaxonomy, toQuestionCreateInput } from '@/server/admin-questions'
+import { buildImportedQuestionDraft, getResolvedQuestionTaxonomy, resolveQuestionTaxonomyMap, toQuestionCreateInput } from '@/server/admin-questions'
 
 export async function POST(req: Request) {
   try {
@@ -39,13 +39,14 @@ export async function POST(req: Request) {
         adminId: session.admin.id,
       })
     ))
+    const taxonomyByKey = await resolveQuestionTaxonomyMap(prisma, questionDrafts)
 
-    // Menyimpan ke database dalam sebuah transaksi untuk memastikan berhasil semua atau dibatalkan semua
+    // Menyimpan insert soal dan log upload dalam transaksi singkat agar tidak melewati batas timeout Prisma.
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       const questionDataToInsert = []
 
       for (const draft of questionDrafts) {
-        const taxonomy = await resolveQuestionTaxonomy(tx, draft)
+        const taxonomy = getResolvedQuestionTaxonomy(taxonomyByKey, draft)
         questionDataToInsert.push(toQuestionCreateInput(draft, taxonomy))
       }
 

@@ -28,9 +28,26 @@ type ImportedQuestionDraft = {
   subMaterialName: string | null
 }
 
+type TaxonomyClient = Pick<Prisma.TransactionClient, 'questionSubtest' | 'questionMaterial' | 'questionSubMaterial'>
+
+type QuestionTaxonomy = {
+  subtest_id: string
+  material_id: string | null
+  sub_material_id: string | null
+}
+
 // Menyamakan nama header Excel agar spasi, kapital, dan pemisah kecil tidak membuat field kosong.
 function normalizeHeader(value: string) {
   return value.toLowerCase().replace(/[\s_/-]+/g, '')
+}
+
+// Membentuk key cache taxonomy agar lookup Materi/Sub-Materi tidak diulang untuk setiap soal.
+function getTaxonomyCacheKey(draft: Pick<ImportedQuestionDraft, 'category' | 'materialName' | 'subMaterialName'>) {
+  return [
+    draft.category,
+    draft.materialName?.trim().toLowerCase() ?? '',
+    draft.subMaterialName?.trim().toLowerCase() ?? '',
+  ].join('\u0000')
 }
 
 // Membaca nilai cell dari beberapa kemungkinan header Excel agar format lama tetap kompatibel.
@@ -111,9 +128,9 @@ export function buildImportedQuestionDraft(row: ExcelRow, index: number, context
 
 // Membuat/mengambil taxonomy CPNS dari kolom Subtes, Materi, dan Sub-Materi.
 export async function resolveQuestionTaxonomy(
-  tx: Prisma.TransactionClient,
+  tx: TaxonomyClient,
   draft: Pick<ImportedQuestionDraft, 'category' | 'materialName' | 'subMaterialName'>
-) {
+): Promise<QuestionTaxonomy> {
   const subtest = await tx.questionSubtest.upsert({
     where: { code: draft.category },
     update: {},
@@ -173,10 +190,42 @@ export async function resolveQuestionTaxonomy(
   }
 }
 
+// Menyiapkan semua taxonomy unik di luar transaksi insert agar upload besar tidak terkena timeout.
+export async function resolveQuestionTaxonomyMap(
+  db: TaxonomyClient,
+  drafts: Array<Pick<ImportedQuestionDraft, 'category' | 'materialName' | 'subMaterialName'>>
+) {
+  const taxonomyByKey = new Map<string, QuestionTaxonomy>()
+
+  for (const draft of drafts) {
+    const cacheKey = getTaxonomyCacheKey(draft)
+
+    if (!taxonomyByKey.has(cacheKey)) {
+      taxonomyByKey.set(cacheKey, await resolveQuestionTaxonomy(db, draft))
+    }
+  }
+
+  return taxonomyByKey
+}
+
+// Mengambil taxonomy hasil cache untuk draft soal tertentu.
+export function getResolvedQuestionTaxonomy(
+  taxonomyByKey: Map<string, QuestionTaxonomy>,
+  draft: Pick<ImportedQuestionDraft, 'category' | 'materialName' | 'subMaterialName'>
+) {
+  const taxonomy = taxonomyByKey.get(getTaxonomyCacheKey(draft))
+
+  if (!taxonomy) {
+    throw new Error('Taxonomy soal belum berhasil disiapkan.')
+  }
+
+  return taxonomy
+}
+
 // Menghapus field bantu sebelum data dikirim ke Prisma Question.
 export function toQuestionCreateInput(
   draft: ImportedQuestionDraft,
-  taxonomy: Awaited<ReturnType<typeof resolveQuestionTaxonomy>>
+  taxonomy: QuestionTaxonomy
 ) {
   const question = {
     category: draft.category,

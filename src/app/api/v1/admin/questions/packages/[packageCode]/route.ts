@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/server/db/client'
 import { AdminAuthService } from '@/server/admin-auth'
-import { buildImportedQuestionDraft, resolveQuestionTaxonomy, toQuestionCreateInput } from '@/server/admin-questions'
+import { buildImportedQuestionDraft, getResolvedQuestionTaxonomy, resolveQuestionTaxonomyMap, toQuestionCreateInput } from '@/server/admin-questions'
 import { BulkUploadStatus, Prisma, QuestionCategory } from '@prisma/client'
 
 export async function DELETE(
@@ -106,7 +106,9 @@ export async function PATCH(
           adminId: session.admin.id,
         })
       ))
+      const taxonomyByKey = await resolveQuestionTaxonomyMap(prisma, questionDrafts)
 
+      // Transaksi reimport hanya menghapus/mengisi soal dan mencatat job, sedangkan taxonomy sudah dicache sebelumnya.
       await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
         await tx.question.deleteMany({
           where: { package_code: currentPackageCode },
@@ -115,7 +117,7 @@ export async function PATCH(
         const questionDataToInsert = []
 
         for (const draft of questionDrafts) {
-          const taxonomy = await resolveQuestionTaxonomy(tx, draft)
+          const taxonomy = getResolvedQuestionTaxonomy(taxonomyByKey, draft)
           questionDataToInsert.push(toQuestionCreateInput(draft, taxonomy))
         }
 
