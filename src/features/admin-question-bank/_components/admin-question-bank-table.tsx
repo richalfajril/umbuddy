@@ -108,7 +108,7 @@ export function AdminQuestionBankTable({ questions, isLoading = false }: AdminQu
                 {q.status}
               </span>
             </AdminTableCell>
-            <QuestionActionCell />
+            <QuestionActionCell questionId={q.id} />
           </AdminTableRow>
         ))}
       </AdminTableBody>
@@ -116,13 +116,14 @@ export function AdminQuestionBankTable({ questions, isLoading = false }: AdminQu
   )
 }
 
-function QuestionActionCell() {
+function QuestionActionCell({ questionId }: { questionId: string }) {
   // Item aksi bank soal memakai wrapper dropdown standar admin.
   const actionItems = [
     {
       label: 'Detail',
       icon: Eye,
       tone: 'default' as const,
+      href: `/admin/question-bank/${questionId}`,
     },
   ]
 
