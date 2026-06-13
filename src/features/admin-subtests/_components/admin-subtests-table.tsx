@@ -1,6 +1,6 @@
 'use client'
 
-import { AlertCircle, Eye, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
+import { AlertCircle, Archive, Eye, MoreHorizontal, Pencil } from 'lucide-react'
 import { AdminActionMenu, AdminTable, AdminTableBody, AdminTableCell, AdminTableHead, AdminTableHeader, AdminTableRow, AdminTableTextSkeleton } from '@/components/molecules'
 import type { SubtestPackage } from '../_types/admin-subtests.types'
 
@@ -132,8 +132,8 @@ function SubtestActionCell({
       href: `/admin/subtests/${encodeURIComponent(subtest.packageCode)}/edit`,
     },
     {
-      label: 'Hapus',
-      icon: Trash2,
+      label: 'Arsipkan',
+      icon: Archive,
       tone: 'danger' as const,
       onClick: () => onDeleteClick(subtest),
     },

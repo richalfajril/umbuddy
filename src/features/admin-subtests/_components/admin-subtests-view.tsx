@@ -62,7 +62,7 @@ export function AdminSubtestsView() {
     void fetchPackages()
   }, [fetchPackages])
 
-  // Konfirmasi hapus tetap memakai endpoint delete yang sudah ada.
+  // Konfirmasi arsip memakai endpoint delete yang kini menjaga riwayat attempt tetap aman.
   const handleDeleteConfirm = async () => {
     if (!deleteConfirmation) return
 
@@ -75,12 +75,12 @@ export function AdminSubtestsView() {
 
       if (!res.ok) throw new Error(data.error || 'Gagal menghapus subtes')
 
-      addToast({ type: 'success', title: 'Berhasil', message: data.message || `Subtes ${deleteConfirmation.packageCode} telah dihapus` })
+      addToast({ type: 'success', title: 'Berhasil', message: data.message || `Subtes ${deleteConfirmation.packageCode} telah diarsipkan` })
       setDeleteConfirmation(null)
       void fetchPackages()
     } catch (error: unknown) {
       const msg = error instanceof Error ? error.message : 'Terjadi kesalahan'
-      addToast({ type: 'error', title: 'Gagal Hapus', message: msg })
+      addToast({ type: 'error', title: 'Gagal Arsip', message: msg })
     } finally {
       setIsDeleting(false)
     }
@@ -159,7 +159,7 @@ export function AdminSubtestsView() {
         </AdminTableLayout>
       </div>
 
-      {/* Modal konfirmasi hapus menjaga admin sadar dampak penghapusan paket. */}
+      {/* Modal konfirmasi arsip menjaga admin sadar paket akan disembunyikan dari daftar aktif. */}
       {deleteConfirmation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="fixed inset-0 bg-headline/50 backdrop-blur-sm" onClick={() => !isDeleting && setDeleteConfirmation(null)} />
@@ -169,10 +169,10 @@ export function AdminSubtestsView() {
             </div>
 
             <div className="mt-6 text-center">
-              <h3 className="text-xl font-black text-headline">Hapus Subtes?</h3>
+              <h3 className="text-xl font-black text-headline">Arsipkan Subtes?</h3>
               <p className="mt-2 text-sm font-medium text-muted">
-                Anda yakin ingin menghapus paket soal <span className="font-bold text-headline">{deleteConfirmation.packageCode}</span> secara permanen?
-                Total <strong>{deleteConfirmation.totalQuestions} soal</strong> di dalamnya akan ikut terhapus.
+                Anda yakin ingin mengarsipkan paket soal <span className="font-bold text-headline">{deleteConfirmation.packageCode}</span>?
+                Total <strong>{deleteConfirmation.totalQuestions} soal</strong> di dalamnya akan disembunyikan dari daftar aktif.
               </p>
             </div>
 
@@ -191,7 +191,7 @@ export function AdminSubtestsView() {
                 disabled={isDeleting}
                 className="w-full sm:w-auto"
               >
-                {isDeleting ? 'Menghapus...' : 'Ya, Hapus'}
+                {isDeleting ? 'Mengarsipkan...' : 'Ya, Arsipkan'}
               </Button>
             </div>
           </div>

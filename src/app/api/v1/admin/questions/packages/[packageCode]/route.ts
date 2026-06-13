@@ -23,21 +23,26 @@ export async function DELETE(
       return NextResponse.json({ error: 'Package code is required' }, { status: 400 })
     }
 
-    // Melakukan hard-delete seluruh soal yang memiliki package_code tersebut
-    // Hal ini karena di tahap ini (V1) PRD menyebutkan package/soal dihapus langsung.
-    // Jika soal sudah dipakai ujian, ini bisa menjadi masalah integritas, tapi untuk MVP 
-    // jika kita belum ada constraint, hapus semua question dengan packageCode tersebut.
-    const deleted = await prisma.question.deleteMany({
-      where: { package_code: packageCode }
+    // Paket yang sudah pernah dipakai latihan tidak boleh hard-delete karena masih direferensikan attempt user.
+    const deleted = await prisma.question.updateMany({
+      where: {
+        package_code: packageCode,
+        deleted_at: null,
+      },
+      data: {
+        status: 'ARCHIVED',
+        deleted_at: new Date(),
+        updated_by: session.admin.id,
+      },
     })
 
     if (deleted.count === 0) {
-      return NextResponse.json({ error: 'Subtes tidak ditemukan atau sudah dihapus' }, { status: 404 })
+      return NextResponse.json({ error: 'Subtes tidak ditemukan atau sudah diarsipkan' }, { status: 404 })
     }
 
     return NextResponse.json({ 
       success: true, 
-      message: `Berhasil menghapus ${deleted.count} soal dari subtes ${packageCode}` 
+      message: `Berhasil mengarsipkan ${deleted.count} soal dari subtes ${packageCode}` 
     })
 
   } catch (error) {

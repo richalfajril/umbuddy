@@ -17,6 +17,9 @@ export async function GET() {
     
     const grouped = await prisma.question.groupBy({
       by: ['package_code'],
+      where: {
+        deleted_at: null,
+      },
       _count: {
         id: true,
       },
@@ -33,7 +36,10 @@ export async function GET() {
       // Jika dalam 1 package ada berbagai category, kita bisa label 'CAMPURAN' 
       // Tapi untuk simplicity V1, kita pakai category dari sample (atau cek distinct).
       const distinctCategories = await prisma.question.findMany({
-        where: { package_code: g.package_code },
+        where: {
+          package_code: g.package_code,
+          deleted_at: null,
+        },
         distinct: ['category'],
         select: { category: true }
       })
