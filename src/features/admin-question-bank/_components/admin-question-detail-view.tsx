@@ -97,7 +97,17 @@ export function AdminQuestionDetailView({ question }: AdminQuestionDetailViewPro
                       }`}>
                         {optionKey}
                       </span>
-                      <span className="text-base font-normal leading-6">{String(optionValue)}</span>
+                      <span className="grid gap-2 text-base font-normal leading-6">
+                        {optionValue?.text && <span>{optionValue.text}</span>}
+                        {optionValue?.image_url && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={optionValue.image_url}
+                            alt={`Gambar pilihan ${optionKey}`}
+                            className="max-h-40 rounded-xl border border-border object-contain"
+                          />
+                        )}
+                      </span>
                       {isCorrect && (
                         <CheckCircle2 className="ml-auto h-5 w-5 shrink-0 text-primary" />
                       )}

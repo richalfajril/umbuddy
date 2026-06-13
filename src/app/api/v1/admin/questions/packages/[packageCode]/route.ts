@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/server/db/client'
 import { AdminAuthService } from '@/server/admin-auth'
-import { parseTkpWeightMap } from '@/server/admin-questions'
-import { BulkUploadStatus, Prisma, QuestionCategory, QuestionStatus } from '@prisma/client'
+import { buildImportedQuestionDraft, resolveQuestionTaxonomy, toQuestionCreateInput } from '@/server/admin-questions'
+import { BulkUploadStatus, Prisma, QuestionCategory } from '@prisma/client'
 
 export async function DELETE(
   request: Request,
@@ -99,60 +99,25 @@ export async function PATCH(
 
     // Jika Excel baru dikirim, isi paket diganti total agar nomor dan kategori tetap sinkron.
     if (questions) {
-      const questionDataToInsert = questions.map((q, index) => {
-        let category: QuestionCategory = globalCategory === 'CAMPURAN'
-          ? (q['Subtes (TWK, TIU, TKP)'] || 'TWK') as QuestionCategory
-          : globalCategory as QuestionCategory
-
-        if (!['TWK', 'TIU', 'TKP'].includes(category)) {
-          category = 'TWK'
-        }
-
-        const options = {
-          A: String(q['A'] || ''),
-          B: String(q['B'] || ''),
-          C: String(q['C'] || ''),
-          D: String(q['D'] || ''),
-          E: String(q['E'] || ''),
-        }
-
-        let tkp_weights: Record<string, number> | null = null
-        let answer_key: string | null = null
-        const rawBobot = String(q['Kunci/Bobot (bobot 1-5)'] || '').trim()
-
-        if (category === 'TKP') {
-          // Memparsing format bobot TKP dari Excel, baik "A=5" maupun "A:5".
-          tkp_weights = parseTkpWeightMap(rawBobot)
-        } else {
-          answer_key = rawBobot.toUpperCase()
-        }
-
-        const image_urls: string[] = []
-        if (q['Gambar']) {
-          image_urls.push(String(q['Gambar']))
-        }
-
-        return {
-          category,
-          package_code: nextPackageCode,
-          number: Number(q['No'] || index + 1),
-          text: String(q['Soal'] || ''),
-          options: options as Prisma.InputJsonValue,
-          answer_key,
-          tkp_weights: tkp_weights ? (tkp_weights as Prisma.InputJsonValue) : Prisma.JsonNull,
-          explanation: String(q['Pembahasan'] || ''),
-          difficulty: 'MEDIUM',
-          status: QuestionStatus.PUBLISHED,
-          image_urls,
-          created_by: session.admin.id,
-          updated_by: session.admin.id,
-        }
-      })
+      const questionDrafts = questions.map((q, index) => (
+        buildImportedQuestionDraft(q, index, {
+          packageCode: nextPackageCode,
+          globalCategory,
+          adminId: session.admin.id,
+        })
+      ))
 
       await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
         await tx.question.deleteMany({
           where: { package_code: currentPackageCode },
         })
+
+        const questionDataToInsert = []
+
+        for (const draft of questionDrafts) {
+          const taxonomy = await resolveQuestionTaxonomy(tx, draft)
+          questionDataToInsert.push(toQuestionCreateInput(draft, taxonomy))
+        }
 
         await tx.question.createMany({
           data: questionDataToInsert,
@@ -165,8 +130,8 @@ export async function PATCH(
             file_name: `Excel Reimport - ${nextPackageCode}`,
             package_code: nextPackageCode,
             status: BulkUploadStatus.DONE,
-            total_count: questionDataToInsert.length,
-            success_count: questionDataToInsert.length,
+            total_count: questionDrafts.length,
+            success_count: questionDrafts.length,
             completed_at: new Date(),
           },
         })
@@ -174,7 +139,7 @@ export async function PATCH(
 
       return NextResponse.json({
         success: true,
-        message: `${questionDataToInsert.length} soal berhasil diperbarui di paket ${nextPackageCode}.`,
+        message: `${questionDrafts.length} soal berhasil diperbarui di paket ${nextPackageCode}.`,
       })
     }
 

@@ -220,6 +220,19 @@ export function PracticeExamStep({
             <p className="font-sans font-normal leading-7 text-headline" style={{ fontSize: examFontSize }}>
               {currentQuestion.text}
             </p>
+            {currentQuestion.image_urls.length > 0 && (
+              <div className="grid gap-3 sm:grid-cols-2">
+                {currentQuestion.image_urls.map((imageUrl) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={imageUrl}
+                    src={imageUrl}
+                    alt="Gambar pendukung soal"
+                    className="max-h-72 w-full rounded-xl border border-border object-contain"
+                  />
+                ))}
+              </div>
+            )}
             {(message || timeExpired) && (
               <p role="status" aria-live="polite" className="rounded-xl bg-xp-light px-3 py-2 text-xs font-bold text-headline">
                 {message || 'Waktu habis. Umbuddy sedang mengunci jawaban Kamu...'}
@@ -251,7 +264,17 @@ export function PracticeExamStep({
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-current text-xs font-black">
                     {key}
                   </span>
-                  <span>{value}</span>
+                  <span className="grid gap-2">
+                    {value.text && <span>{value.text}</span>}
+                    {value.image_url && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={value.image_url}
+                        alt={`Gambar pilihan ${key}`}
+                        className="max-h-40 rounded-xl border border-border object-contain"
+                      />
+                    )}
+                  </span>
                 </button>
               )
             })}

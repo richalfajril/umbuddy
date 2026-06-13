@@ -61,7 +61,7 @@ interface PracticeReviewItem {
   category: PracticeCategory
   text: string | null
   image_urls: string[]
-  options: Record<string, string>
+  options: Record<string, { text?: string; image_url?: string }>
   selected_option: string | null
   answer_key: string | null
   correct: boolean | null
@@ -144,16 +144,9 @@ function toPublicQuestion(question: PrivatePracticeQuestion) {
     category: question.category,
     text: question.text,
     image_urls: question.image_urls,
-    options: toPublicOptions(question.options),
+    options: question.options,
     source: question.source,
   }
-}
-
-function toPublicOptions(options: PrivatePracticeQuestion['options']): Record<string, string> {
-  // UI practice saat ini merender teks opsi, jadi objek opsi dari DB dinormalisasi menjadi string aman.
-  return Object.fromEntries(
-    Object.entries(options).map(([key, option]) => [key, option.text ?? ''])
-  )
 }
 
 function getPracticeQuestionsFromMetadata(metadata: unknown): PrivatePracticeQuestion[] {
@@ -700,7 +693,7 @@ export class PracticeService {
         category: question.category,
         text: question.text,
         image_urls: question.image_urls,
-        options: toPublicOptions(question.options),
+        options: question.options,
         selected_option: selectedOption,
         answer_key: answerKey,
         correct,

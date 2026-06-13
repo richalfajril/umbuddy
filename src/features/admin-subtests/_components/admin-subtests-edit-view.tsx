@@ -3,11 +3,11 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import * as XLSX from 'xlsx'
 import { ArrowLeft, FileUp, Save } from 'lucide-react'
 import { AdminPageHeader } from '@/components/organisms'
 import { Button } from '@/components/ui'
 import { useToastStore } from '@/stores/useToastStore'
+import { parseAdminQuestionExcel } from '../_utils/admin-subtests-excel.utils'
 
 type AdminSubtestsEditViewProps = {
   initialPackageCode: string
@@ -43,10 +43,8 @@ export function AdminSubtestsEditView({
 
     try {
       const buffer = await selectedFile.arrayBuffer()
-      const workbook = XLSX.read(buffer, { type: 'buffer' })
-      const firstSheetName = workbook.SheetNames[0]
-      const worksheet = workbook.Sheets[firstSheetName]
-      const jsonObjects = XLSX.utils.sheet_to_json<Record<string, unknown>>(worksheet)
+      // Parser Excel menyatukan cell teks dan gambar embedded menjadi payload JSON import.
+      const jsonObjects = await parseAdminQuestionExcel(buffer)
       const validObjects = jsonObjects.filter((obj) => obj && (obj['Soal'] || obj['Subtes'] || obj['No']))
 
       setTotalQuestions(validObjects.length)

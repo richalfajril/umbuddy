@@ -148,6 +148,19 @@ export function PracticeReviewStep({
           <p className="font-sans font-normal leading-7 text-headline" style={{ fontSize: examFontSize }}>
             {currentReviewItem.text}
           </p>
+          {currentReviewItem.image_urls.length > 0 && (
+            <div className="grid gap-3 sm:grid-cols-2">
+              {currentReviewItem.image_urls.map((imageUrl) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={imageUrl}
+                  src={imageUrl}
+                  alt="Gambar pendukung soal"
+                  className="max-h-72 w-full rounded-xl border border-border object-contain"
+                />
+              ))}
+            </div>
+          )}
         </Card>
       }
       answerOptions={
@@ -181,7 +194,15 @@ export function PracticeReviewStep({
                   {key}
                 </span>
                 <span className="grid gap-1">
-                  <span>{value}</span>
+                  {value.text && <span>{value.text}</span>}
+                  {value.image_url && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={value.image_url}
+                      alt={`Gambar pilihan ${key}`}
+                      className="max-h-40 rounded-xl border border-border object-contain"
+                    />
+                  )}
                   {label && (
                     <span className={['text-xs font-black', isAnswer ? 'text-primary-dark' : 'text-error'].join(' ')}>
                       {label}

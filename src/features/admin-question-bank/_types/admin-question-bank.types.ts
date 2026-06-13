@@ -3,11 +3,11 @@ export type QuestionStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED' | 'FLAGGED'
 export type QuestionDifficulty = 'easy' | 'medium' | 'hard'
 
 export interface QuestionOptions {
-  A: string
-  B: string
-  C: string
-  D: string
-  E?: string
+  A?: { text?: string; image_url?: string }
+  B?: { text?: string; image_url?: string }
+  C?: { text?: string; image_url?: string }
+  D?: { text?: string; image_url?: string }
+  E?: { text?: string; image_url?: string }
 }
 
 export interface TKPWeights {

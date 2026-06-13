@@ -6,12 +6,19 @@ export type PracticeCategory = 'TWK' | 'TIU' | 'TKP'
 // State machine sederhana untuk menentukan tahapan saat ini dalam alur latihan.
 export type PracticeStep = 'setup' | 'loading' | 'practice' | 'result' | 'review'
 
+// Opsi latihan dapat berupa teks atau gambar sesuai hasil import Excel admin.
+export type PracticeQuestionOption = {
+  text?: string
+  image_url?: string
+}
+
 // Soal latihan publik yang diambil dari server (tanpa answer key).
 export type PublicPracticeQuestion = {
   id: string
   category: PracticeCategory
   text: string
-  options: Record<string, string>
+  image_urls: string[]
+  options: Record<string, PracticeQuestionOption>
   source: 'db' | 'fallback'
 }
 
@@ -20,7 +27,8 @@ export type PracticeReviewItem = {
   question_id: string
   category: PracticeCategory
   text: string
-  options: Record<string, string>
+  image_urls: string[]
+  options: Record<string, PracticeQuestionOption>
   selected_option: string | null
   answer_key: string | null
   correct: boolean | null

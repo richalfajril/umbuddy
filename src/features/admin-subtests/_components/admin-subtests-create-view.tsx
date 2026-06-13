@@ -3,11 +3,11 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import * as XLSX from 'xlsx'
 import { ArrowLeft, FileUp, Save } from 'lucide-react'
 import { AdminPageHeader } from '@/components/organisms'
 import { Button } from '@/components/ui'
 import { useToastStore } from '@/stores/useToastStore'
+import { parseAdminQuestionExcel } from '../_utils/admin-subtests-excel.utils'
 
 export function AdminSubtestsCreateView() {
   const router = useRouter()
@@ -30,13 +30,8 @@ export function AdminSubtestsCreateView() {
       
       try {
         const buffer = await selectedFile.arrayBuffer()
-        const workbook = XLSX.read(buffer, { type: 'buffer' })
-        const firstSheetName = workbook.SheetNames[0]
-        const worksheet = workbook.Sheets[firstSheetName]
-        // Kita perlu menyimpan data berformat objek untuk dikirimkan (submit).
-        // Catatan: sheet_to_json dengan parameter header: 1 mengembalikan format array of arrays.
-        // Sebaiknya kita parsing ulang menjadi objek murni untuk dikirim ke backend.
-        const jsonObjects = XLSX.utils.sheet_to_json<Record<string, unknown>>(worksheet)
+        // Parser Excel menyatukan cell teks dan gambar embedded menjadi payload JSON import.
+        const jsonObjects = await parseAdminQuestionExcel(buffer)
         const validObjects = jsonObjects.filter((obj) => obj && (obj['Soal'] || obj['Subtes'] || obj['No']))
         
         setTotalQuestions(validObjects.length)

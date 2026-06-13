@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/server/db/client'
 import { AdminAuthService } from '@/server/admin-auth'
-import { QuestionCategory, QuestionStatus, Prisma, BulkUploadStatus } from '@prisma/client'
-import { parseTkpWeightMap } from '@/server/admin-questions'
+import { Prisma, BulkUploadStatus } from '@prisma/client'
+import { buildImportedQuestionDraft, resolveQuestionTaxonomy, toQuestionCreateInput } from '@/server/admin-questions'
 
 export async function POST(req: Request) {
   try {
@@ -31,66 +31,24 @@ export async function POST(req: Request) {
       }, { status: 400 })
     }
 
-    // Melakukan pemetaan baris Excel menjadi objek Question
-    const questionDataToInsert = questions.map((q: Record<string, unknown>, index: number) => {
-      // Tentukan kategori soal
-      let category: QuestionCategory = globalCategory === 'CAMPURAN' 
-        ? (q['Subtes (TWK, TIU, TKP)'] || 'TWK') as QuestionCategory
-        : globalCategory as QuestionCategory
-
-      // Pastikan kategori valid
-      if (!['TWK', 'TIU', 'TKP'].includes(category)) {
-        category = 'TWK' // Default fallback
-      }
-
-      const options = {
-        A: String(q['A'] || ''),
-        B: String(q['B'] || ''),
-        C: String(q['C'] || ''),
-        D: String(q['D'] || ''),
-        E: String(q['E'] || ''),
-      }
-
-      let tkp_weights: Record<string, number> | null = null
-      let answer_key: string | null = null
-
-      const rawBobot = String(q['Kunci/Bobot (bobot 1-5)'] || '').trim()
-
-      if (category === 'TKP') {
-        // Memparsing format bobot TKP dari Excel, baik "A=5" maupun "A:5".
-        tkp_weights = parseTkpWeightMap(rawBobot)
-        
-        // TKP biasanya tidak punya kunci jawaban absolut, jadi kita bisa set null
-      } else {
-        // TWK / TIU
-        answer_key = rawBobot.toUpperCase()
-      }
-
-      // Gambar
-      const image_urls: string[] = []
-      if (q['Gambar']) {
-        image_urls.push(String(q['Gambar']))
-      }
-
-      return {
-        category,
-        package_code: packageCode,
-        number: Number(q['No'] || index + 1),
-        text: String(q['Soal'] || ''),
-        options: options as Prisma.InputJsonValue,
-        answer_key,
-        tkp_weights: tkp_weights ? (tkp_weights as Prisma.InputJsonValue) : Prisma.JsonNull,
-        explanation: String(q['Pembahasan'] || ''),
-        difficulty: 'MEDIUM', // Tingkat kesulitan default
-        status: QuestionStatus.PUBLISHED,
-        image_urls,
-        created_by: session.admin.id,
-        updated_by: session.admin.id,
-      }
-    })
+    // Melakukan pemetaan baris Excel ke draft soal sesuai template admin terbaru.
+    const questionDrafts = questions.map((q: Record<string, unknown>, index: number) => (
+      buildImportedQuestionDraft(q, index, {
+        packageCode,
+        globalCategory,
+        adminId: session.admin.id,
+      })
+    ))
 
     // Menyimpan ke database dalam sebuah transaksi untuk memastikan berhasil semua atau dibatalkan semua
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+      const questionDataToInsert = []
+
+      for (const draft of questionDrafts) {
+        const taxonomy = await resolveQuestionTaxonomy(tx, draft)
+        questionDataToInsert.push(toQuestionCreateInput(draft, taxonomy))
+      }
+
       await tx.question.createMany({
         data: questionDataToInsert,
         skipDuplicates: true // Untuk berjaga-jaga menghindari duplikasi
@@ -103,8 +61,8 @@ export async function POST(req: Request) {
           file_name: `Excel Import - ${packageCode}`,
           package_code: packageCode,
           status: BulkUploadStatus.DONE,
-          total_count: questionDataToInsert.length,
-          success_count: questionDataToInsert.length,
+          total_count: questionDrafts.length,
+          success_count: questionDrafts.length,
           completed_at: new Date()
         }
       })
@@ -112,7 +70,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ 
       success: true, 
-      message: `${questionDataToInsert.length} soal berhasil di-import ke paket ${packageCode}` 
+      message: `${questionDrafts.length} soal berhasil di-import ke paket ${packageCode}` 
     })
 
   } catch (error: unknown) {
