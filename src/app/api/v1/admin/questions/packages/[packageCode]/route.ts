@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/server/db/client'
 import { AdminAuthService } from '@/server/admin-auth'
+import { parseTkpWeightMap } from '@/server/admin-questions'
 import { BulkUploadStatus, Prisma, QuestionCategory, QuestionStatus } from '@prisma/client'
 
 export async function DELETE(
@@ -120,13 +121,8 @@ export async function PATCH(
         const rawBobot = String(q['Kunci/Bobot (bobot 1-5)'] || '').trim()
 
         if (category === 'TKP') {
-          tkp_weights = {}
-          rawBobot.split(',').forEach((part) => {
-            const [key, val] = part.split(':').map((item) => item.trim())
-            if (key && val && !Number.isNaN(Number(val)) && tkp_weights) {
-              tkp_weights[key.toUpperCase()] = Number(val)
-            }
-          })
+          // Memparsing format bobot TKP dari Excel, baik "A=5" maupun "A:5".
+          tkp_weights = parseTkpWeightMap(rawBobot)
         } else {
           answer_key = rawBobot.toUpperCase()
         }

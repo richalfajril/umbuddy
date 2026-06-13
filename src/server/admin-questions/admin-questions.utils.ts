@@ -214,3 +214,20 @@ export function isUniqueConstraintError(error: unknown) {
 export function toInputJson(value: unknown): Prisma.InputJsonValue {
   return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue
 }
+
+// Parser bobot TKP menerima format Excel "A=5" dan format teknis lama "A:5".
+export function parseTkpWeightMap(rawValue: string): Record<string, number> {
+  const weights: Record<string, number> = {}
+
+  rawValue.split(',').forEach((part) => {
+    const [rawKey, rawWeight] = part.split(/[:=]/).map((item) => item.trim())
+    const key = rawKey?.toUpperCase()
+    const weight = Number(rawWeight)
+
+    if (key && ['A', 'B', 'C', 'D', 'E'].includes(key) && !Number.isNaN(weight)) {
+      weights[key] = weight
+    }
+  })
+
+  return weights
+}

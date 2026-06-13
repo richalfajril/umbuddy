@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/server/db/client'
 import { AdminAuthService } from '@/server/admin-auth'
 import { QuestionCategory, QuestionStatus, Prisma, BulkUploadStatus } from '@prisma/client'
+import { parseTkpWeightMap } from '@/server/admin-questions'
 
 export async function POST(req: Request) {
   try {
@@ -56,15 +57,8 @@ export async function POST(req: Request) {
       const rawBobot = String(q['Kunci/Bobot (bobot 1-5)'] || '').trim()
 
       if (category === 'TKP') {
-        // Memparsing format teks "A:5, B:4, C:3, D:2, E:1"
-        tkp_weights = {} as Record<string, number>
-        const parts = rawBobot.split(',')
-        parts.forEach(part => {
-          const [key, val] = part.split(':').map(s => s.trim())
-          if (key && val && !isNaN(Number(val)) && tkp_weights) {
-            tkp_weights[key.toUpperCase()] = Number(val)
-          }
-        })
+        // Memparsing format bobot TKP dari Excel, baik "A=5" maupun "A:5".
+        tkp_weights = parseTkpWeightMap(rawBobot)
         
         // TKP biasanya tidak punya kunci jawaban absolut, jadi kita bisa set null
       } else {

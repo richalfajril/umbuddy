@@ -1,5 +1,5 @@
 export { AdminQuestionService } from './admin-questions.service'
-export { AdminQuestionError, parseAdminQuestionMutationPayload, isAdminQuestionCategory, isAdminQuestionStatus } from './admin-questions.utils'
+export { AdminQuestionError, parseAdminQuestionMutationPayload, isAdminQuestionCategory, isAdminQuestionStatus, parseTkpWeightMap } from './admin-questions.utils'
 export type {
   AdminQuestionActor,
   AdminQuestionCategory,
@@ -8,4 +8,3 @@ export type {
   AdminQuestionMutationInput,
   AdminQuestionStatus,
 } from './admin-questions.types'
-
