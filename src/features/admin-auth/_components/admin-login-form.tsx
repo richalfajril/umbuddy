@@ -7,11 +7,19 @@ import { FormSettingsLayout } from '@/components/templates/form-settings-layout'
 import { Button, Input, Label } from '@/components/ui'
 import { AuthSplashScreen } from '@/components/organisms/auth-splash-screen'
 import { useToastStore } from '@/stores/useToastStore'
-import type { AdminAuthApiError, AdminLoginFormState } from '../_types/admin-auth.types'
+import {
+  ADMIN_AUTH_ROUTES,
+  ADMIN_LOGIN_INITIAL_FORM,
+  ADMIN_LOGIN_LOADING_TEXT,
+  ADMIN_LOGIN_PROGRESS,
+} from '../_constants/admin-auth.constants'
+import { loginAdmin } from '../_services/admin-auth.service'
+import type { AdminLoginFormState } from '../_types/admin-auth.types'
+import { readAdminAuthError } from '../_utils/admin-auth.utils'
 
 // Form login admin memakai visual auth user, tetapi tetap memakai endpoint dan cookie admin.
 export function AdminLoginForm() {
-  const [form, setForm] = React.useState<AdminLoginFormState>({ email: '', password: '' })
+  const [form, setForm] = React.useState<AdminLoginFormState>(ADMIN_LOGIN_INITIAL_FORM)
   const [showPassword, setShowPassword] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isProcessingSuccess, setIsProcessingSuccess] = React.useState(false)
@@ -29,21 +37,21 @@ export function AdminLoginForm() {
     // Saat sukses, jalankan bar perlahan agar memakan waktu ~2.5 detik (50 ticks * 50ms)
     const interval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 98) {
+        if (prev >= ADMIN_LOGIN_PROGRESS.maxBeforeRedirect) {
           clearInterval(interval)
           return prev
         }
-        return prev + 2
+        return prev + ADMIN_LOGIN_PROGRESS.step
       })
-    }, 50)
+    }, ADMIN_LOGIN_PROGRESS.intervalMs)
     return () => clearInterval(interval)
   }, [isProcessingSuccess])
 
   // Watcher terpisah untuk menangani redirect agar fungsi state updater tetap murni (pure)
   React.useEffect(() => {
-    if (isProcessingSuccess && progress >= 98) {
+    if (isProcessingSuccess && progress >= ADMIN_LOGIN_PROGRESS.maxBeforeRedirect) {
       // Navigasi dokumen penuh memastikan layout admin membaca ulang cookie session baru.
-      window.location.assign('/admin/dashboard')
+      window.location.assign(ADMIN_AUTH_ROUTES.dashboard)
     }
   }, [isProcessingSuccess, progress])
 
@@ -53,15 +61,11 @@ export function AdminLoginForm() {
     setIsLoading(true)
 
     try {
-      const response = await fetch('/api/v1/admin/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      })
-      const data = (await response.json()) as AdminAuthApiError
+      // Request login admin dibungkus service agar endpoint tidak tersebar di komponen.
+      const { response, data } = await loginAdmin(form)
 
       if (!response.ok) {
-        throw new Error(data.error?.message ?? 'Login admin belum berhasil.')
+        throw new Error(readAdminAuthError(data))
       }
 
       addToast({
@@ -74,7 +78,7 @@ export function AdminLoginForm() {
       addToast({
         type: 'error',
         title: 'Login Admin Gagal',
-        message: error instanceof Error ? error.message : 'Login admin belum berhasil.',
+        message: error instanceof Error ? error.message : readAdminAuthError({}),
       })
     } finally {
       setIsLoading(false)
@@ -86,7 +90,7 @@ export function AdminLoginForm() {
       <AuthSplashScreen 
         isProcessingSuccess={isProcessingSuccess} 
         progress={progress}
-        loadingText="Menyiapkan ruang kendali Umbuddy..."
+        loadingText={ADMIN_LOGIN_LOADING_TEXT}
       />
 
       <FormSettingsLayout staticCard header={<AuthLogoHeader />}>

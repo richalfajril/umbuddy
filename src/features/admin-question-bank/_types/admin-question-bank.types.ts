@@ -29,6 +29,10 @@ export interface AdminQuestionBase {
   explanation?: string
   difficulty?: QuestionDifficulty
   image_urls?: string[]
+  material_id?: string | null
+  material_name?: string | null
+  sub_material_id?: string | null
+  sub_material_name?: string | null
 }
 
 export interface AdminQuestion extends AdminQuestionBase {

@@ -57,7 +57,9 @@ export type AdminQuestionListItem = {
   difficulty: string | null
   subtest_id: string | null
   material_id: string | null
+  material_name?: string | null
   sub_material_id: string | null
+  sub_material_name?: string | null
   status: AdminQuestionStatus
   created_at: string
   updated_at: string

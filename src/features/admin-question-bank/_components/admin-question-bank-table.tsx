@@ -34,8 +34,11 @@ export function AdminQuestionBankTable({ questions, isLoading = false }: AdminQu
     <AdminTable>
       <AdminTableHeader>
         <tr>
-          <AdminTableHead>Paket & No</AdminTableHead>
+          <AdminTableHead>No</AdminTableHead>
+          <AdminTableHead>Paket</AdminTableHead>
           <AdminTableHead>Kategori</AdminTableHead>
+          <AdminTableHead>Materi</AdminTableHead>
+          <AdminTableHead>Sub-Materi</AdminTableHead>
           <AdminTableHead>Pertanyaan</AdminTableHead>
           <AdminTableHead>Status</AdminTableHead>
           <AdminTableHead className="text-right sticky right-0 bg-surface shadow-[-4px_0_12px_rgba(0,0,0,0.05)]">Aksi</AdminTableHead>
@@ -46,13 +49,19 @@ export function AdminQuestionBankTable({ questions, isLoading = false }: AdminQu
           loadingRows.map((_, index) => (
             <AdminTableRow key={`question-loading-${index}`}>
               <AdminTableCell>
+                <AdminTableTextSkeleton className="w-10" />
+              </AdminTableCell>
+              <AdminTableCell>
                 <AdminTableTextSkeleton className="w-32" />
-                <div className="mt-2">
-                  <AdminTableTextSkeleton className="w-14" />
-                </div>
               </AdminTableCell>
               <AdminTableCell>
                 <AdminTableTextSkeleton className="w-14" />
+              </AdminTableCell>
+              <AdminTableCell>
+                <AdminTableTextSkeleton className="w-28" />
+              </AdminTableCell>
+              <AdminTableCell>
+                <AdminTableTextSkeleton className="w-28" />
               </AdminTableCell>
               <AdminTableCell>
                 <AdminTableTextSkeleton className="w-[min(420px,60vw)] max-w-full" />
@@ -75,11 +84,19 @@ export function AdminQuestionBankTable({ questions, isLoading = false }: AdminQu
         ) : questions.map((q) => (
           <AdminTableRow key={q.id}>
             <AdminTableCell>
-              <div className="font-bold text-headline">{q.package_code}</div>
-              <div className="text-xs text-muted">No. {q.number}</div>
+              <span className="font-bold text-headline">{q.number}</span>
+            </AdminTableCell>
+            <AdminTableCell>
+              <span className="font-bold text-headline">{q.package_code}</span>
             </AdminTableCell>
             <AdminTableCell>
               <span className="font-bold text-headline">{q.category}</span>
+            </AdminTableCell>
+            <AdminTableCell>
+              <span className="text-sm font-semibold text-body">{q.material_name ?? '-'}</span>
+            </AdminTableCell>
+            <AdminTableCell>
+              <span className="text-sm font-semibold text-body">{q.sub_material_name ?? '-'}</span>
             </AdminTableCell>
             <AdminTableCell>
               <p className="truncate max-w-lg text-sm text-body">

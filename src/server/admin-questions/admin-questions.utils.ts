@@ -174,7 +174,9 @@ export function toAdminQuestionListItem(question: {
   difficulty: string | null
   subtest_id: string | null
   material_id: string | null
+  material?: { name: string } | null
   sub_material_id: string | null
+  sub_material?: { name: string } | null
   status: AdminQuestionStatus
   created_at: Date
   updated_at: Date
@@ -194,7 +196,9 @@ export function toAdminQuestionListItem(question: {
     difficulty: question.difficulty,
     subtest_id: question.subtest_id,
     material_id: question.material_id,
+    material_name: question.material?.name ?? null,
     sub_material_id: question.sub_material_id,
+    sub_material_name: question.sub_material?.name ?? null,
     status: question.status,
     created_at: question.created_at.toISOString(),
     updated_at: question.updated_at.toISOString(),

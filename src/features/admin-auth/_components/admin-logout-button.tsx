@@ -2,6 +2,8 @@
 
 import * as React from 'react'
 import { Button } from '@/components/ui'
+import { ADMIN_AUTH_ROUTES } from '../_constants/admin-auth.constants'
+import { logoutAdmin } from '../_services/admin-auth.service'
 
 // Tombol logout admin memakai fetch agar user tetap diarahkan rapi ke halaman login.
 export function AdminLogoutButton() {
@@ -11,8 +13,9 @@ export function AdminLogoutButton() {
   const handleLogout = async () => {
     setIsLoading(true)
     try {
-      await fetch('/api/v1/admin/auth/logout', { method: 'POST' })
-      window.location.href = '/admin/login'
+      // Logout admin dibungkus service agar endpoint tetap konsisten dengan fitur admin-auth.
+      await logoutAdmin()
+      window.location.href = ADMIN_AUTH_ROUTES.login
     } finally {
       setIsLoading(false)
     }

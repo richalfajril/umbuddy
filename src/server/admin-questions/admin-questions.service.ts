@@ -40,6 +40,10 @@ export class AdminQuestionService {
     const [questions, total] = await prisma.$transaction([
       prisma.question.findMany({
         where,
+        include: {
+          material: { select: { name: true } },
+          sub_material: { select: { name: true } },
+        },
         orderBy: [{ updated_at: 'desc' }, { package_code: 'asc' }, { number: 'asc' }],
         skip: (page - 1) * pageSize,
         take: pageSize,
@@ -60,6 +64,10 @@ export class AdminQuestionService {
     this.ensureCanRead(actor)
     const question = await prisma.question.findFirst({
       where: { id: questionId, deleted_at: null },
+      include: {
+        material: { select: { name: true } },
+        sub_material: { select: { name: true } },
+      },
     })
 
     if (!question) {
